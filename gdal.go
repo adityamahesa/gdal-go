@@ -624,15 +624,15 @@ func GDALRegisterPlugins() {
 	gdalRegisterPlugins()
 }
 
-func gdalRegisterPlugin(name string) (err error) {
+func gdalRegisterPlugin(name string) (result CPLErr) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	err = cplErr(CPLErr(C.GDALRegisterPlugin(cName)))
+	result = CPLErr(C.GDALRegisterPlugin(cName))
 	return
 }
 
 func GDALRegisterPlugin(name string) (err error) {
-	err = gdalRegisterPlugin(name)
+	err = cplErr(gdalRegisterPlugin(name))
 	return
 }
 
@@ -679,8 +679,11 @@ func gdalIdentifyDriver(filename string, fileList []string) (result GDALDriver) 
 	return
 }
 
-func GDALIdentifyDriver(filename string, fileList []string) (result GDALDriver) {
+func GDALIdentifyDriver(filename string, fileList []string) (result GDALDriver, err error) {
 	result = gdalIdentifyDriver(filename, fileList)
+	if result.cValue == nil {
+		err = lastError()
+	}
 	return
 }
 
@@ -695,8 +698,11 @@ func gdalIdentifyDriverEx(filename string, identifyFlags uint, allowedDrivers, f
 	return
 }
 
-func GDALIdentifyDriverEx(filename string, identifyFlags uint, allowedDrivers, fileList []string) (result GDALDriver) {
+func GDALIdentifyDriverEx(filename string, identifyFlags uint, allowedDrivers, fileList []string) (result GDALDriver, err error) {
 	result = gdalIdentifyDriverEx(filename, identifyFlags, allowedDrivers, fileList)
+	if result.cValue == nil {
+		err = lastError()
+	}
 	return
 }
 
@@ -775,19 +781,18 @@ func GDALOpenEx(filename string, openFlags GDALOpenFlag, allowedDrivers, openOpt
 	return
 }
 
-func gdalDumpOpenDatasets(file *C.FILE) (result int) {
-	result = int(C.GDALDumpOpenDatasets(file))
-	return
-}
-
-func GDALDumpOpenDatasets(filename string) (result int, err error) {
+func gdalDumpOpenDatasets(filename string) (result int, err error) {
 	fp, closeFn, err := cFile(filename, "w")
 	if err != nil {
 		return
 	}
 	defer closeFn()
-	result = gdalDumpOpenDatasets(fp)
+	result = int(C.GDALDumpOpenDatasets(fp))
 	return
+}
+
+func GDALDumpOpenDatasets(filename string) (result int, err error) {
+	return gdalDumpOpenDatasets(filename)
 }
 
 func gdalGetDriverByName(name string) (result GDALDriver) {
@@ -797,8 +802,11 @@ func gdalGetDriverByName(name string) (result GDALDriver) {
 	return
 }
 
-func GDALGetDriverByName(name string) (result GDALDriver) {
+func GDALGetDriverByName(name string) (result GDALDriver, err error) {
 	result = gdalGetDriverByName(name)
+	if result.cValue == nil {
+		err = lastError()
+	}
 	return
 }
 
@@ -817,8 +825,11 @@ func gdalGetDriver(index int) (result GDALDriver) {
 	return
 }
 
-func GDALGetDriver(index int) (result GDALDriver) {
+func GDALGetDriver(index int) (result GDALDriver, err error) {
 	result = gdalGetDriver(index)
+	if result.cValue == nil {
+		err = lastError()
+	}
 	return
 }
 
@@ -827,8 +838,11 @@ func gdalCreateDriver() (result GDALDriver) {
 	return
 }
 
-func GDALCreateDriver() (result GDALDriver) {
+func GDALCreateDriver() (result GDALDriver, err error) {
 	result = gdalCreateDriver()
+	if result.cValue == nil {
+		err = lastError()
+	}
 	return
 }
 
@@ -874,43 +888,43 @@ func GDALDestroy() {
 	gdalDestroy()
 }
 
-func gdalDeleteDataset(driver GDALDriver, filename string) (err error) {
+func gdalDeleteDataset(driver GDALDriver, filename string) (result CPLErr) {
 	cName := C.CString(filename)
 	defer C.free(unsafe.Pointer(cName))
-	err = cplErr(CPLErr(C.GDALDeleteDataset(driver.cValue, cName)))
+	result = CPLErr(C.GDALDeleteDataset(driver.cValue, cName))
 	return
 }
 
 func (d GDALDriver) DeleteDataset(filename string) (err error) {
-	err = gdalDeleteDataset(d, filename)
+	err = cplErr(gdalDeleteDataset(d, filename))
 	return
 }
 
-func gdalRenameDataset(driver GDALDriver, newName, oldName string) (err error) {
+func gdalRenameDataset(driver GDALDriver, newName, oldName string) (result CPLErr) {
 	cNew := C.CString(newName)
 	defer C.free(unsafe.Pointer(cNew))
 	cOld := C.CString(oldName)
 	defer C.free(unsafe.Pointer(cOld))
-	err = cplErr(CPLErr(C.GDALRenameDataset(driver.cValue, cNew, cOld)))
+	result = CPLErr(C.GDALRenameDataset(driver.cValue, cNew, cOld))
 	return
 }
 
 func (d GDALDriver) RenameDataset(newName, oldName string) (err error) {
-	err = gdalRenameDataset(d, newName, oldName)
+	err = cplErr(gdalRenameDataset(d, newName, oldName))
 	return
 }
 
-func gdalCopyDatasetFiles(driver GDALDriver, newName, oldName string) (err error) {
+func gdalCopyDatasetFiles(driver GDALDriver, newName, oldName string) (result CPLErr) {
 	cNew := C.CString(newName)
 	defer C.free(unsafe.Pointer(cNew))
 	cOld := C.CString(oldName)
 	defer C.free(unsafe.Pointer(cOld))
-	err = cplErr(CPLErr(C.GDALCopyDatasetFiles(driver.cValue, cNew, cOld)))
+	result = CPLErr(C.GDALCopyDatasetFiles(driver.cValue, cNew, cOld))
 	return
 }
 
 func (d GDALDriver) CopyDatasetFiles(newName, oldName string) (err error) {
-	err = gdalCopyDatasetFiles(d, newName, oldName)
+	err = cplErr(gdalCopyDatasetFiles(d, newName, oldName))
 	return
 }
 
@@ -1212,17 +1226,17 @@ func (o GDALMajorObject) GetMetadata(domain string) (result []string) {
 	return
 }
 
-func gdalSetMetadata(object GDALMajorObject, metadata []string, domain string) (err error) {
+func gdalSetMetadata(object GDALMajorObject, metadata []string, domain string) (result CPLErr) {
 	md, free := cStrings(metadata)
 	defer free()
 	cDomain := C.CString(domain)
 	defer C.free(unsafe.Pointer(cDomain))
-	err = cplErr(CPLErr(C.GDALSetMetadata(object.cValue, C.CSLConstList(unsafe.Pointer(md)), cDomain)))
+	result = CPLErr(C.GDALSetMetadata(object.cValue, C.CSLConstList(unsafe.Pointer(md)), cDomain))
 	return
 }
 
 func (o GDALMajorObject) SetMetadata(metadata []string, domain string) (err error) {
-	err = gdalSetMetadata(o, metadata, domain)
+	err = cplErr(gdalSetMetadata(o, metadata, domain))
 	return
 }
 
@@ -1240,19 +1254,19 @@ func (o GDALMajorObject) GetMetadataItem(name, domain string) (result string) {
 	return
 }
 
-func gdalSetMetadataItem(object GDALMajorObject, name, value, domain string) (err error) {
+func gdalSetMetadataItem(object GDALMajorObject, name, value, domain string) (result CPLErr) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	cValue := C.CString(value)
 	defer C.free(unsafe.Pointer(cValue))
 	cDomain := C.CString(domain)
 	defer C.free(unsafe.Pointer(cDomain))
-	err = cplErr(CPLErr(C.GDALSetMetadataItem(object.cValue, cName, cValue, cDomain)))
+	result = CPLErr(C.GDALSetMetadataItem(object.cValue, cName, cValue, cDomain))
 	return
 }
 
 func (o GDALMajorObject) SetMetadataItem(name, value, domain string) (err error) {
-	err = gdalSetMetadataItem(o, name, value, domain)
+	err = cplErr(gdalSetMetadataItem(o, name, value, domain))
 	return
 }
 
@@ -1316,23 +1330,23 @@ func (ds GDALDataset) MarkSuppressOnClose() {
 	gdalDatasetMarkSuppressOnClose(ds)
 }
 
-func gdalClose(dataset GDALDataset) (err error) {
-	err = cplErr(CPLErr(C.GDALClose(dataset.cValue)))
+func gdalClose(dataset GDALDataset) (result CPLErr) {
+	result = CPLErr(C.GDALClose(dataset.cValue))
 	return
 }
 
 func (ds GDALDataset) Close() (err error) {
-	err = gdalClose(ds)
+	err = cplErr(gdalClose(ds))
 	return
 }
 
-func gdalDatasetRunCloseWithoutDestroying(dataset GDALDataset) (err error) {
-	err = cplErr(CPLErr(C.GDALDatasetRunCloseWithoutDestroying(dataset.cValue)))
+func gdalDatasetRunCloseWithoutDestroying(dataset GDALDataset) (result CPLErr) {
+	result = CPLErr(C.GDALDatasetRunCloseWithoutDestroying(dataset.cValue))
 	return
 }
 
 func (ds GDALDataset) RunCloseWithoutDestroying() (err error) {
-	err = gdalDatasetRunCloseWithoutDestroying(ds)
+	err = cplErr(gdalDatasetRunCloseWithoutDestroying(ds))
 	return
 }
 
@@ -1371,8 +1385,11 @@ func gdalGetRasterBand(dataset GDALDataset, band int) (result GDALRasterBand) {
 	return
 }
 
-func (ds GDALDataset) GetRasterBand(band int) (result GDALRasterBand) {
+func (ds GDALDataset) GetRasterBand(band int) (result GDALRasterBand, err error) {
 	result = gdalGetRasterBand(ds, band)
+	if result.cValue == nil {
+		err = lastError()
+	}
 	return
 }
 
@@ -1403,27 +1420,27 @@ func (ds GDALDataset) GetThreadSafeDataset(scopeFlags int, options []string) (re
 	return
 }
 
-func gdalAddBand(dataset GDALDataset, dataType GDALDataType, options []string) (err error) {
+func gdalAddBand(dataset GDALDataset, dataType GDALDataType, options []string) (result CPLErr) {
 	opts, free := cStrings(options)
 	defer free()
-	err = cplErr(CPLErr(C.GDALAddBand(dataset.cValue, C.GDALDataType(dataType), C.CSLConstList(unsafe.Pointer(opts)))))
+	result = CPLErr(C.GDALAddBand(dataset.cValue, C.GDALDataType(dataType), C.CSLConstList(unsafe.Pointer(opts))))
 	return
 }
 
 func (ds GDALDataset) AddBand(dataType GDALDataType, options []string) (err error) {
-	err = gdalAddBand(ds, dataType, options)
+	err = cplErr(gdalAddBand(ds, dataType, options))
 	return
 }
 
-func gdalBeginAsyncReader(dataset GDALDataset, xOff, yOff, xSize, ySize int, buf unsafe.Pointer, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandMap *C.int, pixelSpace, lineSpace, bandSpace int, options []string) (result GDALAsyncReader) {
+func gdalBeginAsyncReader(dataset GDALDataset, xOff, yOff, xSize, ySize int, buf unsafe.Pointer, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandMap []int, pixelSpace, lineSpace, bandSpace int, options []string) (result GDALAsyncReader) {
 	opts, free := cStrings(options)
 	defer free()
-	result = GDALAsyncReader{cValue: C.GDALBeginAsyncReader(dataset.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), buf, C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(bandCount), bandMap, C.int(pixelSpace), C.int(lineSpace), C.int(bandSpace), C.CSLConstList(unsafe.Pointer(opts)))}
+	result = GDALAsyncReader{cValue: C.GDALBeginAsyncReader(dataset.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), buf, C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(bandCount), cInts(bandMap), C.int(pixelSpace), C.int(lineSpace), C.int(bandSpace), C.CSLConstList(unsafe.Pointer(opts)))}
 	return
 }
 
 func (ds GDALDataset) BeginAsyncReader(xOff, yOff, xSize, ySize int, buf []byte, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandMap []int, pixelSpace, lineSpace, bandSpace int, options []string) (result GDALAsyncReader, err error) {
-	result = gdalBeginAsyncReader(ds, xOff, yOff, xSize, ySize, cBytes(buf), bufXSize, bufYSize, bufType, bandCount, cInts(bandMap), pixelSpace, lineSpace, bandSpace, options)
+	result = gdalBeginAsyncReader(ds, xOff, yOff, xSize, ySize, cBytes(buf), bufXSize, bufYSize, bufType, bandCount, bandMap, pixelSpace, lineSpace, bandSpace, options)
 	if result.cValue == nil {
 		err = lastError()
 	}
@@ -1438,40 +1455,40 @@ func (ds GDALDataset) EndAsyncReader(reader GDALAsyncReader) {
 	gdalEndAsyncReader(ds, reader)
 }
 
-func gdalDatasetRasterIO(dataset GDALDataset, rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer unsafe.Pointer, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList *C.int, pixelSpace, lineSpace, bandSpace int) (err error) {
-	err = cplErr(CPLErr(C.GDALDatasetRasterIO(dataset.cValue, C.GDALRWFlag(rwFlag), C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), buffer, C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(bandCount), bandList, C.int(pixelSpace), C.int(lineSpace), C.int(bandSpace))))
+func gdalDatasetRasterIO(dataset GDALDataset, rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer unsafe.Pointer, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList []int, pixelSpace, lineSpace, bandSpace int) (result CPLErr) {
+	result = CPLErr(C.GDALDatasetRasterIO(dataset.cValue, C.GDALRWFlag(rwFlag), C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), buffer, C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(bandCount), cInts(bandList), C.int(pixelSpace), C.int(lineSpace), C.int(bandSpace)))
 	return
 }
 
 func (ds GDALDataset) RasterIO(rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer []byte, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList []int, pixelSpace, lineSpace, bandSpace int) (err error) {
-	err = gdalDatasetRasterIO(ds, rwFlag, xOff, yOff, xSize, ySize, cBytes(buffer), bufXSize, bufYSize, bufType, bandCount, cInts(bandList), pixelSpace, lineSpace, bandSpace)
+	err = cplErr(gdalDatasetRasterIO(ds, rwFlag, xOff, yOff, xSize, ySize, cBytes(buffer), bufXSize, bufYSize, bufType, bandCount, bandList, pixelSpace, lineSpace, bandSpace))
 	return
 }
 
-func gdalDatasetRasterIOEx(dataset GDALDataset, rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer unsafe.Pointer, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList *C.int, pixelSpace, lineSpace, bandSpace int64, extraArg GDALRasterIOExtraArg) (err error) {
-	err = cplErr(CPLErr(C.GDALDatasetRasterIOEx(dataset.cValue, C.GDALRWFlag(rwFlag), C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), buffer, C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(bandCount), bandList, C.GSpacing(pixelSpace), C.GSpacing(lineSpace), C.GSpacing(bandSpace), extraArg.cValue)))
+func gdalDatasetRasterIOEx(dataset GDALDataset, rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer unsafe.Pointer, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList []int, pixelSpace, lineSpace, bandSpace int64, extraArg GDALRasterIOExtraArg) (result CPLErr) {
+	result = CPLErr(C.GDALDatasetRasterIOEx(dataset.cValue, C.GDALRWFlag(rwFlag), C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), buffer, C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(bandCount), cInts(bandList), C.GSpacing(pixelSpace), C.GSpacing(lineSpace), C.GSpacing(bandSpace), extraArg.cValue))
 	return
 }
 
 func (ds GDALDataset) RasterIOEx(rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer []byte, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList []int, pixelSpace, lineSpace, bandSpace int64, extraArg GDALRasterIOExtraArg) (err error) {
-	err = gdalDatasetRasterIOEx(ds, rwFlag, xOff, yOff, xSize, ySize, cBytes(buffer), bufXSize, bufYSize, bufType, bandCount, cInts(bandList), pixelSpace, lineSpace, bandSpace, extraArg)
+	err = cplErr(gdalDatasetRasterIOEx(ds, rwFlag, xOff, yOff, xSize, ySize, cBytes(buffer), bufXSize, bufYSize, bufType, bandCount, bandList, pixelSpace, lineSpace, bandSpace, extraArg))
 	return
 }
 
-func gdalDatasetAdviseRead(dataset GDALDataset, xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList *C.int, options []string) (err error) {
+func gdalDatasetAdviseRead(dataset GDALDataset, xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList []int, options []string) (result CPLErr) {
 	opts, free := cStrings(options)
 	defer free()
-	err = cplErr(CPLErr(C.GDALDatasetAdviseRead(dataset.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(bandCount), bandList, C.CSLConstList(unsafe.Pointer(opts)))))
+	result = CPLErr(C.GDALDatasetAdviseRead(dataset.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(bandCount), cInts(bandList), C.CSLConstList(unsafe.Pointer(opts))))
 	return
 }
 
 func (ds GDALDataset) AdviseRead(xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList []int, options []string) (err error) {
-	err = gdalDatasetAdviseRead(ds, xOff, yOff, xSize, ySize, bufXSize, bufYSize, bufType, bandCount, cInts(bandList), options)
+	err = cplErr(gdalDatasetAdviseRead(ds, xOff, yOff, xSize, ySize, bufXSize, bufYSize, bufType, bandCount, bandList, options))
 	return
 }
 
-func gdalDatasetGetCompressionFormats(dataset GDALDataset, xOff, yOff, xSize, ySize, bandCount int, bandList *C.int) (result []string) {
-	raw := C.GDALDatasetGetCompressionFormats(dataset.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), C.int(bandCount), bandList)
+func gdalDatasetGetCompressionFormats(dataset GDALDataset, xOff, yOff, xSize, ySize, bandCount int, bandList []int) (result []string) {
+	raw := C.GDALDatasetGetCompressionFormats(dataset.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), C.int(bandCount), cInts(bandList))
 	if raw == nil {
 		return
 	}
@@ -1481,32 +1498,42 @@ func gdalDatasetGetCompressionFormats(dataset GDALDataset, xOff, yOff, xSize, yS
 }
 
 func (ds GDALDataset) GetCompressionFormats(xOff, yOff, xSize, ySize, bandCount int, bandList []int) (result []string) {
-	result = gdalDatasetGetCompressionFormats(ds, xOff, yOff, xSize, ySize, bandCount, cInts(bandList))
+	result = gdalDatasetGetCompressionFormats(ds, xOff, yOff, xSize, ySize, bandCount, bandList)
 	return
 }
 
-func gdalDatasetReadCompressedData(dataset GDALDataset, format string, xOff, yOff, xSize, ySize, bandCount int, bandList *C.int, buffer *unsafe.Pointer, bufferSize *C.size_t, detailedFormat **C.char) (err error) {
+func gdalDatasetReadCompressedData(dataset GDALDataset, format string, xOff, yOff, xSize, ySize, bandCount int, bandList []int, buffer *unsafe.Pointer, bufferSize *int, detailedFormat *string) (result CPLErr) {
 	cFormat := C.CString(format)
 	defer C.free(unsafe.Pointer(cFormat))
-	err = cplErr(CPLErr(C.GDALDatasetReadCompressedData(dataset.cValue, cFormat, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), C.int(bandCount), bandList, buffer, bufferSize, detailedFormat)))
+	var cBuffer unsafe.Pointer
+	var size C.size_t
+	var cDetailed *C.char
+	result = CPLErr(C.GDALDatasetReadCompressedData(dataset.cValue, cFormat, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), C.int(bandCount), cInts(bandList), &cBuffer, &size, &cDetailed))
+	if buffer != nil {
+		*buffer = cBuffer
+	}
+	if bufferSize != nil {
+		*bufferSize = int(size)
+	}
+	if cDetailed != nil {
+		if detailedFormat != nil {
+			*detailedFormat = C.GoString(cDetailed)
+		}
+		C.VSIFree(unsafe.Pointer(cDetailed))
+	}
 	return
 }
 
 func (ds GDALDataset) ReadCompressedData(format string, xOff, yOff, xSize, ySize, bandCount int, bandList []int) (buffer []byte, detailedFormat string, err error) {
 	var cBuffer unsafe.Pointer
-	var size C.size_t
-	var cFormat *C.char
-	err = gdalDatasetReadCompressedData(ds, format, xOff, yOff, xSize, ySize, bandCount, cInts(bandList), &cBuffer, &size, &cFormat)
+	var size int
+	err = cplErr(gdalDatasetReadCompressedData(ds, format, xOff, yOff, xSize, ySize, bandCount, bandList, &cBuffer, &size, &detailedFormat))
 	if err != nil {
 		return
 	}
 	if cBuffer != nil {
 		buffer = C.GoBytes(cBuffer, C.int(size))
 		C.VSIFree(cBuffer)
-	}
-	if cFormat != nil {
-		detailedFormat = C.GoString(cFormat)
-		C.VSIFree(unsafe.Pointer(cFormat))
 	}
 	return
 }
@@ -1531,31 +1558,31 @@ func (ds GDALDataset) GetSpatialRef() (result OGRSpatialReference) {
 	return
 }
 
-func gdalSetProjection(dataset GDALDataset, projection string) (err error) {
+func gdalSetProjection(dataset GDALDataset, projection string) (result CPLErr) {
 	cProj := C.CString(projection)
 	defer C.free(unsafe.Pointer(cProj))
-	err = cplErr(CPLErr(C.GDALSetProjection(dataset.cValue, cProj)))
+	result = CPLErr(C.GDALSetProjection(dataset.cValue, cProj))
 	return
 }
 
 func (ds GDALDataset) SetProjection(projection string) (err error) {
-	err = gdalSetProjection(ds, projection)
+	err = cplErr(gdalSetProjection(ds, projection))
 	return
 }
 
-func gdalSetSpatialRef(dataset GDALDataset, srs OGRSpatialReference) (err error) {
-	err = cplErr(CPLErr(C.GDALSetSpatialRef(dataset.cValue, srs.cValue)))
+func gdalSetSpatialRef(dataset GDALDataset, srs OGRSpatialReference) (result CPLErr) {
+	result = CPLErr(C.GDALSetSpatialRef(dataset.cValue, srs.cValue))
 	return
 }
 
 func (ds GDALDataset) SetSpatialRef(srs OGRSpatialReference) (err error) {
-	err = gdalSetSpatialRef(ds, srs)
+	err = cplErr(gdalSetSpatialRef(ds, srs))
 	return
 }
 
-func gdalGetGeoTransform(dataset GDALDataset, geoTransform *[6]float64) (err error) {
+func gdalGetGeoTransform(dataset GDALDataset, geoTransform *[6]float64) (result CPLErr) {
 	var gt [6]C.double
-	err = cplErr(CPLErr(C.GDALGetGeoTransform(dataset.cValue, &gt[0])))
+	result = CPLErr(C.GDALGetGeoTransform(dataset.cValue, &gt[0]))
 	for i := range gt {
 		geoTransform[i] = float64(gt[i])
 	}
@@ -1563,1645 +1590,4833 @@ func gdalGetGeoTransform(dataset GDALDataset, geoTransform *[6]float64) (err err
 }
 
 func (ds GDALDataset) GetGeoTransform() (geoTransform [6]float64, err error) {
-	err = gdalGetGeoTransform(ds, &geoTransform)
+	err = cplErr(gdalGetGeoTransform(ds, &geoTransform))
 	return
 }
 
-func gdalSetGeoTransform(dataset GDALDataset, geoTransform [6]float64) (err error) {
+func gdalSetGeoTransform(dataset GDALDataset, geoTransform [6]float64) (result CPLErr) {
 	var gt [6]C.double
 	for i, v := range geoTransform {
 		gt[i] = C.double(v)
 	}
-	err = cplErr(CPLErr(C.GDALSetGeoTransform(dataset.cValue, &gt[0])))
+	result = CPLErr(C.GDALSetGeoTransform(dataset.cValue, &gt[0]))
 	return
 }
 
 func (ds GDALDataset) SetGeoTransform(geoTransform [6]float64) (err error) {
-	err = gdalSetGeoTransform(ds, geoTransform)
+	err = cplErr(gdalSetGeoTransform(ds, geoTransform))
 	return
 }
 
-func gdalGetExtent(dataset GDALDataset, envelope OGREnvelope, crs OGRSpatialReference) (err error) {
-	err = cplErr(CPLErr(C.GDALGetExtent(dataset.cValue, envelope.cValue, crs.cValue)))
+func gdalGetExtent(dataset GDALDataset, envelope OGREnvelope, crs OGRSpatialReference) (result CPLErr) {
+	result = CPLErr(C.GDALGetExtent(dataset.cValue, envelope.cValue, crs.cValue))
 	return
 }
 
 func (ds GDALDataset) GetExtent(crs OGRSpatialReference) (envelope OGREnvelope, err error) {
 	envelope = OGREnvelope{cValue: new(C.OGREnvelope)}
-	err = gdalGetExtent(ds, envelope, crs)
+	err = cplErr(gdalGetExtent(ds, envelope, crs))
 	return
 }
 
-func gdalGetExtentWGS84LongLat(dataset GDALDataset, envelope OGREnvelope) (err error) {
-	err = cplErr(CPLErr(C.GDALGetExtentWGS84LongLat(dataset.cValue, envelope.cValue)))
+func gdalGetExtentWGS84LongLat(dataset GDALDataset, envelope OGREnvelope) (result CPLErr) {
+	result = CPLErr(C.GDALGetExtentWGS84LongLat(dataset.cValue, envelope.cValue))
 	return
 }
 
 func (ds GDALDataset) GetExtentWGS84LongLat() (envelope OGREnvelope, err error) {
 	envelope = OGREnvelope{cValue: new(C.OGREnvelope)}
-	err = gdalGetExtentWGS84LongLat(ds, envelope)
+	err = cplErr(gdalGetExtentWGS84LongLat(ds, envelope))
 	return
 }
 
-func gdalDatasetGeolocationToPixelLine(dataset GDALDataset, geolocX, geolocY float64, srs OGRSpatialReference, pixel, line *float64, transformerOptions []string) (err error) {
+func gdalDatasetGeolocationToPixelLine(dataset GDALDataset, geolocX, geolocY float64, srs OGRSpatialReference, pixel, line *float64, transformerOptions []string) (result CPLErr) {
 	opts, free := cStrings(transformerOptions)
 	defer free()
 	var cPixel, cLine C.double
-	err = cplErr(CPLErr(C.GDALDatasetGeolocationToPixelLine(dataset.cValue, C.double(geolocX), C.double(geolocY), srs.cValue, &cPixel, &cLine, C.CSLConstList(unsafe.Pointer(opts)))))
+	result = CPLErr(C.GDALDatasetGeolocationToPixelLine(dataset.cValue, C.double(geolocX), C.double(geolocY), srs.cValue, &cPixel, &cLine, C.CSLConstList(unsafe.Pointer(opts))))
 	*pixel = float64(cPixel)
 	*line = float64(cLine)
 	return
 }
 
 func (ds GDALDataset) GeolocationToPixelLine(geolocX, geolocY float64, srs OGRSpatialReference, transformerOptions []string) (pixel, line float64, err error) {
-	err = gdalDatasetGeolocationToPixelLine(ds, geolocX, geolocY, srs, &pixel, &line, transformerOptions)
+	err = cplErr(gdalDatasetGeolocationToPixelLine(ds, geolocX, geolocY, srs, &pixel, &line, transformerOptions))
 	return
 }
 
-// int CPL_DLL CPL_STDCALL GDALGetGCPCount(GDALDatasetH);
-// const char CPL_DLL *CPL_STDCALL GDALGetGCPProjection(GDALDatasetH);
-// OGRSpatialReferenceH CPL_DLL GDALGetGCPSpatialRef(GDALDatasetH);
-// const GDAL_GCP CPL_DLL *CPL_STDCALL GDALGetGCPs(GDALDatasetH);
-// CPLErr CPL_DLL CPL_STDCALL GDALSetGCPs(GDALDatasetH, int, const GDAL_GCP *,
-//                                        const char *);
-// CPLErr CPL_DLL GDALSetGCPs2(GDALDatasetH, int, const GDAL_GCP *,
-//                             OGRSpatialReferenceH);
+func gdalGetGCPCount(dataset GDALDataset) (result int) {
+	result = int(C.GDALGetGCPCount(dataset.cValue))
+	return
+}
 
-// void CPL_DLL *CPL_STDCALL GDALGetInternalHandle(GDALDatasetH, const char *);
-// int CPL_DLL CPL_STDCALL GDALReferenceDataset(GDALDatasetH);
-// int CPL_DLL CPL_STDCALL GDALDereferenceDataset(GDALDatasetH);
-// int CPL_DLL CPL_STDCALL GDALReleaseDataset(GDALDatasetH);
+func (ds GDALDataset) GetGCPCount() (result int) {
+	result = gdalGetGCPCount(ds)
+	return
+}
 
-// CPLErr CPL_DLL CPL_STDCALL GDALBuildOverviews(GDALDatasetH, const char *, int,
-//                                               const int *, int, const int *,
-//                                               GDALProgressFunc,
-//                                               void *) CPL_WARN_UNUSED_RESULT;
-// CPLErr CPL_DLL CPL_STDCALL GDALBuildOverviewsEx(
-//     GDALDatasetH, const char *, int, const int *, int, const int *,
-//     GDALProgressFunc, void *, CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// void CPL_DLL CPL_STDCALL GDALGetOpenDatasets(GDALDatasetH **hDS, int *pnCount);
-// int CPL_DLL CPL_STDCALL GDALGetAccess(GDALDatasetH hDS);
-// CPLErr CPL_DLL CPL_STDCALL GDALFlushCache(GDALDatasetH hDS);
-// CPLErr CPL_DLL CPL_STDCALL GDALDropCache(GDALDatasetH hDS);
+func gdalGetGCPProjection(dataset GDALDataset) (result string) {
+	result = C.GoString(C.GDALGetGCPProjection(dataset.cValue))
+	return
+}
 
-// CPLErr CPL_DLL CPL_STDCALL GDALCreateDatasetMaskBand(GDALDatasetH hDS,
-//                                                      int nFlags);
+func (ds GDALDataset) GetGCPProjection() (result string) {
+	result = gdalGetGCPProjection(ds)
+	return
+}
 
-// CPLErr CPL_DLL CPL_STDCALL GDALDatasetCopyWholeRaster(
-//     GDALDatasetH hSrcDS, GDALDatasetH hDstDS, CSLConstList papszOptions,
-//     GDALProgressFunc pfnProgress, void *pProgressData) CPL_WARN_UNUSED_RESULT;
+func gdalGetGCPSpatialRef(dataset GDALDataset) (result OGRSpatialReference) {
+	result = OGRSpatialReference{cValue: C.GDALGetGCPSpatialRef(dataset.cValue)}
+	return
+}
 
-// CPLErr CPL_DLL CPL_STDCALL GDALRasterBandCopyWholeRaster(
-//     GDALRasterBandH hSrcBand, GDALRasterBandH hDstBand,
-//     const char *const *constpapszOptions, GDALProgressFunc pfnProgress,
-//     void *pProgressData) CPL_WARN_UNUSED_RESULT;
+func (ds GDALDataset) GetGCPSpatialRef() (result OGRSpatialReference) {
+	result = gdalGetGCPSpatialRef(ds)
+	return
+}
 
-// CPLErr CPL_DLL GDALRegenerateOverviews(GDALRasterBandH hSrcBand,
-//                                        int nOverviewCount,
-//                                        GDALRasterBandH *pahOverviewBands,
-//                                        const char *pszResampling,
-//                                        GDALProgressFunc pfnProgress,
-//                                        void *pProgressData);
+func gdalGetGCPs(dataset GDALDataset) (result GDALGCPs) {
+	raw := C.GDALGetGCPs(dataset.cValue)
+	count := int(C.GDALGetGCPCount(dataset.cValue))
+	if raw == nil || count == 0 {
+		return
+	}
+	result = unsafe.Slice((*GDALGCP)(unsafe.Pointer(raw)), count)
+	return
+}
 
-// CPLErr CPL_DLL GDALRegenerateOverviewsEx(GDALRasterBandH hSrcBand,
-//                                          int nOverviewCount,
-//                                          GDALRasterBandH *pahOverviewBands,
-//                                          const char *pszResampling,
-//                                          GDALProgressFunc pfnProgress,
-//                                          void *pProgressData,
-//                                          CSLConstList papszOptions);
+func (ds GDALDataset) GetGCPs() (result GDALGCPs) {
+	result = gdalGetGCPs(ds)
+	return
+}
 
-// int CPL_DLL GDALDatasetGetLayerCount(GDALDatasetH);
-// OGRLayerH CPL_DLL GDALDatasetGetLayer(GDALDatasetH, int);
+func gdalSetGCPs(dataset GDALDataset, count int, gcps GDALGCPs, projection string) (result CPLErr) {
+	cProj := C.CString(projection)
+	defer C.free(unsafe.Pointer(cProj))
+	result = CPLErr(C.GDALSetGCPs(dataset.cValue, C.int(count), gcps.cPtr(), cProj))
+	return
+}
 
-// /* Defined here to avoid circular dependency with ogr_api.h */
-// GDALDatasetH CPL_DLL OGR_L_GetDataset(OGRLayerH hLayer);
+func (ds GDALDataset) SetGCPs(gcps GDALGCPs, projection string) (err error) {
+	err = cplErr(gdalSetGCPs(ds, len(gcps), gcps, projection))
+	return
+}
 
-// OGRLayerH CPL_DLL GDALDatasetGetLayerByName(GDALDatasetH, const char *);
-// int CPL_DLL GDALDatasetIsLayerPrivate(GDALDatasetH, int);
-// OGRErr CPL_DLL GDALDatasetDeleteLayer(GDALDatasetH, int);
-// OGRLayerH CPL_DLL GDALDatasetCreateLayer(GDALDatasetH, const char *,
-//                                          OGRSpatialReferenceH,
-//                                          OGRwkbGeometryType, CSLConstList);
-// OGRLayerH CPL_DLL GDALDatasetCreateLayerFromGeomFieldDefn(GDALDatasetH,
-//                                                           const char *,
-//                                                           OGRGeomFieldDefnH,
-//                                                           CSLConstList);
-// OGRLayerH CPL_DLL GDALDatasetCopyLayer(GDALDatasetH, OGRLayerH, const char *,
-//                                        CSLConstList);
-// void CPL_DLL GDALDatasetResetReading(GDALDatasetH);
-// OGRFeatureH CPL_DLL GDALDatasetGetNextFeature(GDALDatasetH hDS,
-//                                               OGRLayerH *phBelongingLayer,
-//                                               double *pdfProgressPct,
-//                                               GDALProgressFunc pfnProgress,
-//                                               void *pProgressData);
-// int CPL_DLL GDALDatasetTestCapability(GDALDatasetH, const char *);
-// OGRLayerH CPL_DLL GDALDatasetExecuteSQL(GDALDatasetH, const char *,
-//                                         OGRGeometryH, const char *);
-// OGRErr CPL_DLL GDALDatasetAbortSQL(GDALDatasetH);
-// void CPL_DLL GDALDatasetReleaseResultSet(GDALDatasetH, OGRLayerH);
-// OGRStyleTableH CPL_DLL GDALDatasetGetStyleTable(GDALDatasetH);
-// void CPL_DLL GDALDatasetSetStyleTableDirectly(GDALDatasetH, OGRStyleTableH);
-// void CPL_DLL GDALDatasetSetStyleTable(GDALDatasetH, OGRStyleTableH);
-// OGRErr CPL_DLL GDALDatasetStartTransaction(GDALDatasetH hDS, int bForce);
-// OGRErr CPL_DLL GDALDatasetCommitTransaction(GDALDatasetH hDS);
-// OGRErr CPL_DLL GDALDatasetRollbackTransaction(GDALDatasetH hDS);
-// void CPL_DLL GDALDatasetClearStatistics(GDALDatasetH hDS);
+func gdalSetGCPs2(dataset GDALDataset, count int, gcps GDALGCPs, srs OGRSpatialReference) (result CPLErr) {
+	result = CPLErr(C.GDALSetGCPs2(dataset.cValue, C.int(count), gcps.cPtr(), srs.cValue))
+	return
+}
 
-// GDALMDArrayH CPL_DLL GDALDatasetAsMDArray(
-//     GDALDatasetH hDS, CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
+func (ds GDALDataset) SetGCPs2(gcps GDALGCPs, srs OGRSpatialReference) (err error) {
+	err = cplErr(gdalSetGCPs2(ds, len(gcps), gcps, srs))
+	return
+}
 
-// char CPL_DLL **GDALDatasetGetFieldDomainNames(GDALDatasetH, CSLConstList)
-//     CPL_WARN_UNUSED_RESULT;
-// OGRFieldDomainH CPL_DLL GDALDatasetGetFieldDomain(GDALDatasetH hDS,
-//                                                   const char *pszName);
-// bool CPL_DLL GDALDatasetAddFieldDomain(GDALDatasetH hDS,
-//                                        OGRFieldDomainH hFieldDomain,
-//                                        char **ppszFailureReason);
-// bool CPL_DLL GDALDatasetDeleteFieldDomain(GDALDatasetH hDS, const char *pszName,
-//                                           char **ppszFailureReason);
-// bool CPL_DLL GDALDatasetUpdateFieldDomain(GDALDatasetH hDS,
-//                                           OGRFieldDomainH hFieldDomain,
-//                                           char **ppszFailureReason);
+func gdalGetInternalHandle(dataset GDALDataset, request string) unsafe.Pointer {
+	cRequest := C.CString(request)
+	defer C.free(unsafe.Pointer(cRequest))
+	return C.GDALGetInternalHandle(dataset.cValue, cRequest)
+}
 
-// char CPL_DLL **GDALDatasetGetRelationshipNames(GDALDatasetH, CSLConstList)
-//     CPL_WARN_UNUSED_RESULT;
-// GDALRelationshipH CPL_DLL GDALDatasetGetRelationship(GDALDatasetH hDS,
-//                                                      const char *pszName);
+func (ds GDALDataset) GetInternalHandle(request string) unsafe.Pointer {
+	return gdalGetInternalHandle(ds, request)
+}
 
-// bool CPL_DLL GDALDatasetAddRelationship(GDALDatasetH hDS,
-//                                         GDALRelationshipH hRelationship,
-//                                         char **ppszFailureReason);
-// bool CPL_DLL GDALDatasetDeleteRelationship(GDALDatasetH hDS,
-//                                            const char *pszName,
-//                                            char **ppszFailureReason);
-// bool CPL_DLL GDALDatasetUpdateRelationship(GDALDatasetH hDS,
-//                                            GDALRelationshipH hRelationship,
-//                                            char **ppszFailureReason);
+func gdalReferenceDataset(dataset GDALDataset) (result int) {
+	result = int(C.GDALReferenceDataset(dataset.cValue))
+	return
+}
+
+func (ds GDALDataset) Reference() (result int) {
+	result = gdalReferenceDataset(ds)
+	return
+}
+
+func gdalDereferenceDataset(dataset GDALDataset) (result int) {
+	result = int(C.GDALDereferenceDataset(dataset.cValue))
+	return
+}
+
+func (ds GDALDataset) Dereference() (result int) {
+	result = gdalDereferenceDataset(ds)
+	return
+}
+
+func gdalReleaseDataset(dataset GDALDataset) (result int) {
+	result = int(C.GDALReleaseDataset(dataset.cValue))
+	return
+}
+
+func (ds GDALDataset) Release() (result int) {
+	result = gdalReleaseDataset(ds)
+	return
+}
+
+func gdalBuildOverviews(dataset GDALDataset, resampling string, nOverviews int, overviewList []int, bandCount int, bandList []int, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
+	cResampling := C.CString(resampling)
+	defer C.free(unsafe.Pointer(cResampling))
+	result = CPLErr(C.GDALBuildOverviews(dataset.cValue, cResampling, C.int(nOverviews), cInts(overviewList), C.int(bandCount), cInts(bandList), progress.cValue, progressData))
+	return
+}
+
+func (ds GDALDataset) BuildOverviews(resampling string, overviewList, bandList []int, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+	err = cplErr(gdalBuildOverviews(ds, resampling, len(overviewList), overviewList, len(bandList), bandList, progress, progressData))
+	return
+}
+
+func gdalBuildOverviewsEx(dataset GDALDataset, resampling string, nOverviews int, overviewList []int, bandCount int, bandList []int, progress GDALProgressFunc, progressData unsafe.Pointer, options []string) (result CPLErr) {
+	cResampling := C.CString(resampling)
+	defer C.free(unsafe.Pointer(cResampling))
+	opts, free := cStrings(options)
+	defer free()
+	result = CPLErr(C.GDALBuildOverviewsEx(dataset.cValue, cResampling, C.int(nOverviews), cInts(overviewList), C.int(bandCount), cInts(bandList), progress.cValue, progressData, C.CSLConstList(unsafe.Pointer(opts))))
+	return
+}
+
+func (ds GDALDataset) BuildOverviewsEx(resampling string, overviewList, bandList []int, progress GDALProgressFunc, progressData unsafe.Pointer, options []string) (err error) {
+	err = cplErr(gdalBuildOverviewsEx(ds, resampling, len(overviewList), overviewList, len(bandList), bandList, progress, progressData, options))
+	return
+}
+
+func gdalGetOpenDatasets(datasets *GDALDatasets, count *int) {
+	var arr *C.GDALDatasetH
+	var n C.int
+	C.GDALGetOpenDatasets(&arr, &n)
+	if count != nil {
+		*count = int(n)
+	}
+	if datasets != nil {
+		datasets.cValue = arr
+	}
+}
+
+func GDALGetOpenDatasets() (result []GDALDataset) {
+	var datasets GDALDatasets
+	var count int
+	gdalGetOpenDatasets(&datasets, &count)
+	if datasets.cValue == nil || count == 0 {
+		return
+	}
+	src := unsafe.Slice(datasets.cValue, count)
+	result = make([]GDALDataset, count)
+	for i := range result {
+		result[i] = GDALDataset{cValue: src[i]}
+	}
+	return
+}
+
+func gdalGetAccess(dataset GDALDataset) (result int) {
+	result = int(C.GDALGetAccess(dataset.cValue))
+	return
+}
+
+func (ds GDALDataset) GetAccess() (result int) {
+	result = gdalGetAccess(ds)
+	return
+}
+
+func gdalFlushCache(dataset GDALDataset) (result CPLErr) {
+	result = CPLErr(C.GDALFlushCache(dataset.cValue))
+	return
+}
+
+func (ds GDALDataset) FlushCache() (err error) {
+	err = cplErr(gdalFlushCache(ds))
+	return
+}
+
+func gdalDropCache(dataset GDALDataset) (result CPLErr) {
+	result = CPLErr(C.GDALDropCache(dataset.cValue))
+	return
+}
+
+func (ds GDALDataset) DropCache() (err error) {
+	err = cplErr(gdalDropCache(ds))
+	return
+}
+
+func gdalCreateDatasetMaskBand(dataset GDALDataset, flags int) (result CPLErr) {
+	result = CPLErr(C.GDALCreateDatasetMaskBand(dataset.cValue, C.int(flags)))
+	return
+}
+
+func (ds GDALDataset) CreateMaskBand(flags int) (err error) {
+	err = cplErr(gdalCreateDatasetMaskBand(ds, flags))
+	return
+}
+
+func gdalDatasetCopyWholeRaster(srcDataset, dstDataset GDALDataset, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
+	opts, free := cStrings(options)
+	defer free()
+	result = CPLErr(C.GDALDatasetCopyWholeRaster(srcDataset.cValue, dstDataset.cValue, C.CSLConstList(unsafe.Pointer(opts)), progress.cValue, progressData))
+	return
+}
+
+func (src GDALDataset) CopyWholeRaster(dst GDALDataset, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+	err = cplErr(gdalDatasetCopyWholeRaster(src, dst, options, progress, progressData))
+	return
+}
+
+func gdalRasterBandCopyWholeRaster(srcBand, dstBand GDALRasterBand, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
+	opts, free := cStrings(options)
+	defer free()
+	result = CPLErr(C.GDALRasterBandCopyWholeRaster(srcBand.cValue, dstBand.cValue, opts, progress.cValue, progressData))
+	return
+}
+
+func (src GDALRasterBand) CopyWholeRaster(dst GDALRasterBand, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+	err = cplErr(gdalRasterBandCopyWholeRaster(src, dst, options, progress, progressData))
+	return
+}
+
+func gdalRegenerateOverviews(srcBand GDALRasterBand, overviewCount int, overviewBands GDALRasterBands, resampling string, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
+	cResampling := C.CString(resampling)
+	defer C.free(unsafe.Pointer(cResampling))
+	result = CPLErr(C.GDALRegenerateOverviews(srcBand.cValue, C.int(overviewCount), overviewBands.cPtr(), cResampling, progress.cValue, progressData))
+	return
+}
+
+func (src GDALRasterBand) RegenerateOverviews(overviewBands GDALRasterBands, resampling string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+	err = cplErr(gdalRegenerateOverviews(src, len(overviewBands), overviewBands, resampling, progress, progressData))
+	return
+}
+
+func gdalRegenerateOverviewsEx(srcBand GDALRasterBand, overviewCount int, overviewBands GDALRasterBands, resampling string, progress GDALProgressFunc, progressData unsafe.Pointer, options []string) (result CPLErr) {
+	cResampling := C.CString(resampling)
+	defer C.free(unsafe.Pointer(cResampling))
+	opts, free := cStrings(options)
+	defer free()
+	result = CPLErr(C.GDALRegenerateOverviewsEx(srcBand.cValue, C.int(overviewCount), overviewBands.cPtr(), cResampling, progress.cValue, progressData, C.CSLConstList(unsafe.Pointer(opts))))
+	return
+}
+
+func (src GDALRasterBand) RegenerateOverviewsEx(overviewBands GDALRasterBands, resampling string, progress GDALProgressFunc, progressData unsafe.Pointer, options []string) (err error) {
+	err = cplErr(gdalRegenerateOverviewsEx(src, len(overviewBands), overviewBands, resampling, progress, progressData, options))
+	return
+}
+
+func gdalDatasetGetLayerCount(dataset GDALDataset) (result int) {
+	result = int(C.GDALDatasetGetLayerCount(dataset.cValue))
+	return
+}
+
+func (ds GDALDataset) GetLayerCount() (result int) {
+	result = gdalDatasetGetLayerCount(ds)
+	return
+}
+
+func gdalDatasetGetLayer(dataset GDALDataset, index int) (result OGRLayer) {
+	result = OGRLayer{cValue: C.GDALDatasetGetLayer(dataset.cValue, C.int(index))}
+	return
+}
+
+func (ds GDALDataset) GetLayer(index int) (result OGRLayer, err error) {
+	result = gdalDatasetGetLayer(ds, index)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+// OGR_L_GetDataset is defined here to avoid a circular dependency with ogr_api.h.
+func ogrLGetDataset(layer OGRLayer) (result GDALDataset) {
+	result = GDALDataset{cValue: C.OGR_L_GetDataset(layer.cValue)}
+	return
+}
+
+func (l OGRLayer) GetDataset() (result GDALDataset, err error) {
+	result = ogrLGetDataset(l)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalDatasetGetLayerByName(dataset GDALDataset, name string) (result OGRLayer) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	result = OGRLayer{cValue: C.GDALDatasetGetLayerByName(dataset.cValue, cName)}
+	return
+}
+
+func (ds GDALDataset) GetLayerByName(name string) (result OGRLayer, err error) {
+	result = gdalDatasetGetLayerByName(ds, name)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalDatasetIsLayerPrivate(dataset GDALDataset, index int) (result bool) {
+	result = C.GDALDatasetIsLayerPrivate(dataset.cValue, C.int(index)) != 0
+	return
+}
+
+func (ds GDALDataset) IsLayerPrivate(index int) (result bool) {
+	result = gdalDatasetIsLayerPrivate(ds, index)
+	return
+}
+
+func gdalDatasetDeleteLayer(dataset GDALDataset, index int) (result OGRErr) {
+	result = OGRErr(C.GDALDatasetDeleteLayer(dataset.cValue, C.int(index)))
+	return
+}
+
+func (ds GDALDataset) DeleteLayer(index int) (err error) {
+	err = ogrError(gdalDatasetDeleteLayer(ds, index))
+	return
+}
+
+func gdalDatasetCreateLayer(dataset GDALDataset, name string, srs OGRSpatialReference, geomType OGRwkbGeometryType, options []string) (result OGRLayer) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	result = OGRLayer{cValue: C.GDALDatasetCreateLayer(dataset.cValue, cName, srs.cValue, C.OGRwkbGeometryType(geomType), C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (ds GDALDataset) CreateLayer(name string, srs OGRSpatialReference, geomType OGRwkbGeometryType, options []string) (result OGRLayer, err error) {
+	result = gdalDatasetCreateLayer(ds, name, srs, geomType, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalDatasetCreateLayerFromGeomFieldDefn(dataset GDALDataset, name string, geomFieldDefn OGRGeomFieldDefn, options []string) (result OGRLayer) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	result = OGRLayer{cValue: C.GDALDatasetCreateLayerFromGeomFieldDefn(dataset.cValue, cName, geomFieldDefn.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (ds GDALDataset) CreateLayerFromGeomFieldDefn(name string, geomFieldDefn OGRGeomFieldDefn, options []string) (result OGRLayer, err error) {
+	result = gdalDatasetCreateLayerFromGeomFieldDefn(ds, name, geomFieldDefn, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalDatasetCopyLayer(dataset GDALDataset, srcLayer OGRLayer, newName string, options []string) (result OGRLayer) {
+	cName := C.CString(newName)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	result = OGRLayer{cValue: C.GDALDatasetCopyLayer(dataset.cValue, srcLayer.cValue, cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (ds GDALDataset) CopyLayer(srcLayer OGRLayer, newName string, options []string) (result OGRLayer, err error) {
+	result = gdalDatasetCopyLayer(ds, srcLayer, newName, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalDatasetResetReading(dataset GDALDataset) {
+	C.GDALDatasetResetReading(dataset.cValue)
+}
+
+func (ds GDALDataset) ResetReading() {
+	gdalDatasetResetReading(ds)
+}
+
+func gdalDatasetGetNextFeature(dataset GDALDataset, belongingLayer *OGRLayer, progressPct *float64, progress GDALProgressFunc, progressData unsafe.Pointer) (result OGRFeature) {
+	var cLayer C.OGRLayerH
+	var cPct C.double
+	result = OGRFeature{cValue: C.GDALDatasetGetNextFeature(dataset.cValue, &cLayer, &cPct, progress.cValue, progressData)}
+	if belongingLayer != nil {
+		*belongingLayer = OGRLayer{cValue: cLayer}
+	}
+	if progressPct != nil {
+		*progressPct = float64(cPct)
+	}
+	return
+}
+
+func (ds GDALDataset) GetNextFeature(progress GDALProgressFunc, progressData unsafe.Pointer) (feature OGRFeature, belongingLayer OGRLayer, progressPct float64, err error) {
+	feature = gdalDatasetGetNextFeature(ds, &belongingLayer, &progressPct, progress, progressData)
+	if feature.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalDatasetTestCapability(dataset GDALDataset, capability string) (result bool) {
+	cCapability := C.CString(capability)
+	defer C.free(unsafe.Pointer(cCapability))
+	result = C.GDALDatasetTestCapability(dataset.cValue, cCapability) != 0
+	return
+}
+
+func (ds GDALDataset) TestCapability(capability string) (result bool) {
+	result = gdalDatasetTestCapability(ds, capability)
+	return
+}
+
+func gdalDatasetExecuteSQL(dataset GDALDataset, statement string, spatialFilter OGRGeometry, dialect string) (result OGRLayer) {
+	cStatement := C.CString(statement)
+	defer C.free(unsafe.Pointer(cStatement))
+	cDialect := C.CString(dialect)
+	defer C.free(unsafe.Pointer(cDialect))
+	result = OGRLayer{cValue: C.GDALDatasetExecuteSQL(dataset.cValue, cStatement, spatialFilter.cValue, cDialect)}
+	return
+}
+
+func (ds GDALDataset) ExecuteSQL(statement string, spatialFilter OGRGeometry, dialect string) (result OGRLayer, err error) {
+	result = gdalDatasetExecuteSQL(ds, statement, spatialFilter, dialect)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalDatasetAbortSQL(dataset GDALDataset) (result OGRErr) {
+	result = OGRErr(C.GDALDatasetAbortSQL(dataset.cValue))
+	return
+}
+
+func (ds GDALDataset) AbortSQL() (err error) {
+	err = ogrError(gdalDatasetAbortSQL(ds))
+	return
+}
+
+func gdalDatasetReleaseResultSet(dataset GDALDataset, layer OGRLayer) {
+	C.GDALDatasetReleaseResultSet(dataset.cValue, layer.cValue)
+}
+
+func (ds GDALDataset) ReleaseResultSet(layer OGRLayer) {
+	gdalDatasetReleaseResultSet(ds, layer)
+}
+
+func gdalDatasetGetStyleTable(dataset GDALDataset) (result OGRStyleTable) {
+	result = OGRStyleTable{cValue: C.GDALDatasetGetStyleTable(dataset.cValue)}
+	return
+}
+
+func (ds GDALDataset) GetStyleTable() (result OGRStyleTable, err error) {
+	result = gdalDatasetGetStyleTable(ds)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalDatasetSetStyleTableDirectly(dataset GDALDataset, styleTable OGRStyleTable) {
+	C.GDALDatasetSetStyleTableDirectly(dataset.cValue, styleTable.cValue)
+}
+
+func (ds GDALDataset) SetStyleTableDirectly(styleTable OGRStyleTable) {
+	gdalDatasetSetStyleTableDirectly(ds, styleTable)
+}
+
+func gdalDatasetSetStyleTable(dataset GDALDataset, styleTable OGRStyleTable) {
+	C.GDALDatasetSetStyleTable(dataset.cValue, styleTable.cValue)
+}
+
+func (ds GDALDataset) SetStyleTable(styleTable OGRStyleTable) {
+	gdalDatasetSetStyleTable(ds, styleTable)
+}
+
+func gdalDatasetStartTransaction(dataset GDALDataset, force int) (result OGRErr) {
+	result = OGRErr(C.GDALDatasetStartTransaction(dataset.cValue, C.int(force)))
+	return
+}
+
+func (ds GDALDataset) StartTransaction(force int) (err error) {
+	err = ogrError(gdalDatasetStartTransaction(ds, force))
+	return
+}
+
+func gdalDatasetCommitTransaction(dataset GDALDataset) (result OGRErr) {
+	result = OGRErr(C.GDALDatasetCommitTransaction(dataset.cValue))
+	return
+}
+
+func (ds GDALDataset) CommitTransaction() (err error) {
+	err = ogrError(gdalDatasetCommitTransaction(ds))
+	return
+}
+
+func gdalDatasetRollbackTransaction(dataset GDALDataset) (result OGRErr) {
+	result = OGRErr(C.GDALDatasetRollbackTransaction(dataset.cValue))
+	return
+}
+
+func (ds GDALDataset) RollbackTransaction() (err error) {
+	err = ogrError(gdalDatasetRollbackTransaction(ds))
+	return
+}
+
+func gdalDatasetClearStatistics(dataset GDALDataset) {
+	C.GDALDatasetClearStatistics(dataset.cValue)
+}
+
+func (ds GDALDataset) ClearStatistics() {
+	gdalDatasetClearStatistics(ds)
+}
+
+func gdalDatasetAsMDArray(dataset GDALDataset, options []string) (result GDALMDArray) {
+	opts, free := cStrings(options)
+	defer free()
+	result = GDALMDArray{cValue: C.GDALDatasetAsMDArray(dataset.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (ds GDALDataset) AsMDArray(options []string) (result GDALMDArray, err error) {
+	result = gdalDatasetAsMDArray(ds, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalDatasetGetFieldDomainNames(dataset GDALDataset, options []string) (result []string) {
+	opts, free := cStrings(options)
+	defer free()
+	raw := C.GDALDatasetGetFieldDomainNames(dataset.cValue, C.CSLConstList(unsafe.Pointer(opts)))
+	if raw == nil {
+		return
+	}
+	defer C.CSLDestroy(raw)
+	result = goStrings(raw)
+	return
+}
+
+func (ds GDALDataset) GetFieldDomainNames(options []string) (result []string) {
+	result = gdalDatasetGetFieldDomainNames(ds, options)
+	return
+}
+
+func gdalDatasetGetFieldDomain(dataset GDALDataset, name string) (result OGRFieldDomain) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	result = OGRFieldDomain{cValue: C.GDALDatasetGetFieldDomain(dataset.cValue, cName)}
+	return
+}
+
+func (ds GDALDataset) GetFieldDomain(name string) (result OGRFieldDomain, err error) {
+	result = gdalDatasetGetFieldDomain(ds, name)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalDatasetAddFieldDomain(dataset GDALDataset, fieldDomain OGRFieldDomain, failureReason *string) (result bool) {
+	var cReason *C.char
+	result = bool(C.GDALDatasetAddFieldDomain(dataset.cValue, fieldDomain.cValue, &cReason))
+	if cReason != nil {
+		if failureReason != nil {
+			*failureReason = C.GoString(cReason)
+		}
+		C.VSIFree(unsafe.Pointer(cReason))
+	}
+	return
+}
+
+func (ds GDALDataset) AddFieldDomain(fieldDomain OGRFieldDomain) (ok bool, failureReason string) {
+	ok = gdalDatasetAddFieldDomain(ds, fieldDomain, &failureReason)
+	return
+}
+
+func gdalDatasetDeleteFieldDomain(dataset GDALDataset, name string, failureReason *string) (result bool) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	var cReason *C.char
+	result = bool(C.GDALDatasetDeleteFieldDomain(dataset.cValue, cName, &cReason))
+	if cReason != nil {
+		if failureReason != nil {
+			*failureReason = C.GoString(cReason)
+		}
+		C.VSIFree(unsafe.Pointer(cReason))
+	}
+	return
+}
+
+func (ds GDALDataset) DeleteFieldDomain(name string) (ok bool, failureReason string) {
+	ok = gdalDatasetDeleteFieldDomain(ds, name, &failureReason)
+	return
+}
+
+func gdalDatasetUpdateFieldDomain(dataset GDALDataset, fieldDomain OGRFieldDomain, failureReason *string) (result bool) {
+	var cReason *C.char
+	result = bool(C.GDALDatasetUpdateFieldDomain(dataset.cValue, fieldDomain.cValue, &cReason))
+	if cReason != nil {
+		if failureReason != nil {
+			*failureReason = C.GoString(cReason)
+		}
+		C.VSIFree(unsafe.Pointer(cReason))
+	}
+	return
+}
+
+func (ds GDALDataset) UpdateFieldDomain(fieldDomain OGRFieldDomain) (ok bool, failureReason string) {
+	ok = gdalDatasetUpdateFieldDomain(ds, fieldDomain, &failureReason)
+	return
+}
+
+func gdalDatasetGetRelationshipNames(dataset GDALDataset, options []string) (result []string) {
+	opts, free := cStrings(options)
+	defer free()
+	raw := C.GDALDatasetGetRelationshipNames(dataset.cValue, C.CSLConstList(unsafe.Pointer(opts)))
+	if raw == nil {
+		return
+	}
+	defer C.CSLDestroy(raw)
+	result = goStrings(raw)
+	return
+}
+
+func (ds GDALDataset) GetRelationshipNames(options []string) (result []string) {
+	result = gdalDatasetGetRelationshipNames(ds, options)
+	return
+}
+
+func gdalDatasetGetRelationship(dataset GDALDataset, name string) (result GDALRelationship) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	result = GDALRelationship{cValue: C.GDALDatasetGetRelationship(dataset.cValue, cName)}
+	return
+}
+
+func (ds GDALDataset) GetRelationship(name string) (result GDALRelationship, err error) {
+	result = gdalDatasetGetRelationship(ds, name)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalDatasetAddRelationship(dataset GDALDataset, relationship GDALRelationship, failureReason *string) (result bool) {
+	var cReason *C.char
+	result = bool(C.GDALDatasetAddRelationship(dataset.cValue, relationship.cValue, &cReason))
+	if cReason != nil {
+		if failureReason != nil {
+			*failureReason = C.GoString(cReason)
+		}
+		C.VSIFree(unsafe.Pointer(cReason))
+	}
+	return
+}
+
+func (ds GDALDataset) AddRelationship(relationship GDALRelationship) (ok bool, failureReason string) {
+	ok = gdalDatasetAddRelationship(ds, relationship, &failureReason)
+	return
+}
+
+func gdalDatasetDeleteRelationship(dataset GDALDataset, name string, failureReason *string) (result bool) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	var cReason *C.char
+	result = bool(C.GDALDatasetDeleteRelationship(dataset.cValue, cName, &cReason))
+	if cReason != nil {
+		if failureReason != nil {
+			*failureReason = C.GoString(cReason)
+		}
+		C.VSIFree(unsafe.Pointer(cReason))
+	}
+	return
+}
+
+func (ds GDALDataset) DeleteRelationship(name string) (ok bool, failureReason string) {
+	ok = gdalDatasetDeleteRelationship(ds, name, &failureReason)
+	return
+}
+
+func gdalDatasetUpdateRelationship(dataset GDALDataset, relationship GDALRelationship, failureReason *string) (result bool) {
+	var cReason *C.char
+	result = bool(C.GDALDatasetUpdateRelationship(dataset.cValue, relationship.cValue, &cReason))
+	if cReason != nil {
+		if failureReason != nil {
+			*failureReason = C.GoString(cReason)
+		}
+		C.VSIFree(unsafe.Pointer(cReason))
+	}
+	return
+}
+
+func (ds GDALDataset) UpdateRelationship(relationship GDALRelationship) (ok bool, failureReason string) {
+	ok = gdalDatasetUpdateRelationship(ds, relationship, &failureReason)
+	return
+}
 
 // /** Type of functions to pass to GDALDatasetSetQueryLoggerFunc
 //  * @since GDAL 3.7 */
-// typedef void (*GDALQueryLoggerFunc)(const char *pszSQL, const char *pszError,
-//                                     int64_t lNumRecords,
-//                                     int64_t lExecutionTimeMilliseconds,
-//                                     void *pQueryLoggerArg);
-
-// /**
-//  * Sets the SQL query logger callback.
-//  *
-//  * When supported by the driver, the callback will be called with
-//  * the executed SQL text, the error message, the execution time in milliseconds,
-//  * the number of records fetched/affected and the client status data.
-//  *
-//  * A value of -1 in the execution time or in the number of records indicates
-//  * that the values are unknown.
-//  *
-//  * @param hDS                   Dataset handle.
-//  * @param pfnQueryLoggerFunc    Callback function
-//  * @param poQueryLoggerArg      Opaque client status data
-//  * @return                      true in case of success.
-//  * @since                       GDAL 3.7
-//  */
-// bool CPL_DLL GDALDatasetSetQueryLoggerFunc(
-//     GDALDatasetH hDS, GDALQueryLoggerFunc pfnQueryLoggerFunc,
-//     void *poQueryLoggerArg);
+// GDALDatasetSetQueryLoggerFunc (with the GDALQueryLoggerFunc callback) is
+// deferred: passing a Go function as a C callback needs //export plumbing and a
+// registration shim, to be designed later.
 
 // /* ==================================================================== */
 // /*      Informational utilities about subdatasets in file names         */
 // /* ==================================================================== */
 
 // /**
-//  * @brief Returns a new GDALSubdatasetInfo object with methods to extract
-//  *        and manipulate subdataset information.
-//  *        If the pszFileName argument is not recognized by any driver as
-//  *        a subdataset descriptor, NULL is returned.
-//  *        The returned object must be freed with GDALDestroySubdatasetInfo().
-//  * @param pszFileName           File name with subdataset information
-//  * @note                        This method does not check if the subdataset actually exists.
-//  * @return                      Opaque pointer to a GDALSubdatasetInfo object or NULL if no drivers accepted the file name.
-//  * @since                       GDAL 3.8
-//  */
-// GDALSubdatasetInfoH CPL_DLL GDALGetSubdatasetInfo(const char *pszFileName);
+//   - @brief Returns a new GDALSubdatasetInfo object with methods to extract
+//   - and manipulate subdataset information.
+//   - If the pszFileName argument is not recognized by any driver as
+//   - a subdataset descriptor, NULL is returned.
+//   - The returned object must be freed with GDALDestroySubdatasetInfo().
+//   - @param pszFileName           File name with subdataset information
+//   - @note                        This method does not check if the subdataset actually exists.
+//   - @return                      Opaque pointer to a GDALSubdatasetInfo object or NULL if no drivers accepted the file name.
+//   - @since                       GDAL 3.8
+//     */
+func gdalGetSubdatasetInfo(fileName string) (result GDALSubdatasetInfo) {
+	cName := C.CString(fileName)
+	defer C.free(unsafe.Pointer(cName))
+	result = GDALSubdatasetInfo{cValue: C.GDALGetSubdatasetInfo(cName)}
+	return
+}
+
+func GDALGetSubdatasetInfo(fileName string) (result GDALSubdatasetInfo, err error) {
+	result = gdalGetSubdatasetInfo(fileName)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
 
 // /**
-//  * @brief Returns the file path component of a
-//  *        subdataset descriptor effectively stripping the information about the subdataset
-//  *        and returning the "parent" dataset descriptor.
-//  *        The returned string must be freed with CPLFree().
-//  * @param hInfo                 Pointer to GDALSubdatasetInfo object
-//  * @note                        This method does not check if the subdataset actually exists.
-//  * @return                      The original string with the subdataset information removed.
-//  * @since                       GDAL 3.8
-//  */
-// char CPL_DLL *GDALSubdatasetInfoGetPathComponent(GDALSubdatasetInfoH hInfo);
+//   - @brief Returns the file path component of a
+//   - subdataset descriptor effectively stripping the information about the subdataset
+//   - and returning the "parent" dataset descriptor.
+//   - The returned string must be freed with CPLFree().
+//   - @param hInfo                 Pointer to GDALSubdatasetInfo object
+//   - @note                        This method does not check if the subdataset actually exists.
+//   - @return                      The original string with the subdataset information removed.
+//   - @since                       GDAL 3.8
+//     */
+func gdalSubdatasetInfoGetPathComponent(info GDALSubdatasetInfo) (result string) {
+	cResult := C.GDALSubdatasetInfoGetPathComponent(info.cValue)
+	if cResult != nil {
+		result = C.GoString(cResult)
+		C.VSIFree(unsafe.Pointer(cResult))
+	}
+	return
+}
+
+func (i GDALSubdatasetInfo) GetPathComponent() (result string) {
+	result = gdalSubdatasetInfoGetPathComponent(i)
+	return
+}
 
 // /**
-//  * @brief Returns the subdataset component of a subdataset descriptor descriptor.
-//  *        The returned string must be freed with CPLFree().
-//  * @param hInfo                 Pointer to GDALSubdatasetInfo object
-//  * @note                        This method does not check if the subdataset actually exists.
-//  * @return                      The subdataset name.
-//  * @since                       GDAL 3.8
-//  */
-// char CPL_DLL *
-// GDALSubdatasetInfoGetSubdatasetComponent(GDALSubdatasetInfoH hInfo);
+//   - @brief Returns the subdataset component of a subdataset descriptor descriptor.
+//   - The returned string must be freed with CPLFree().
+//   - @param hInfo                 Pointer to GDALSubdatasetInfo object
+//   - @note                        This method does not check if the subdataset actually exists.
+//   - @return                      The subdataset name.
+//   - @since                       GDAL 3.8
+//     */
+func gdalSubdatasetInfoGetSubdatasetComponent(info GDALSubdatasetInfo) (result string) {
+	cResult := C.GDALSubdatasetInfoGetSubdatasetComponent(info.cValue)
+	if cResult != nil {
+		result = C.GoString(cResult)
+		C.VSIFree(unsafe.Pointer(cResult))
+	}
+	return
+}
+
+func (i GDALSubdatasetInfo) GetSubdatasetComponent() (result string) {
+	result = gdalSubdatasetInfoGetSubdatasetComponent(i)
+	return
+}
 
 // /**
-//  * @brief Replaces the path component of a subdataset descriptor.
-//  *        The returned string must be freed with CPLFree().
-//  * @param hInfo                 Pointer to GDALSubdatasetInfo object
-//  * @param pszNewPath            New path.
-//  * @note                        This method does not check if the subdataset actually exists.
-//  * @return                      The original subdataset descriptor with the old path component replaced by newPath.
-//  * @since                       GDAL 3.8
-//  */
-// char CPL_DLL *GDALSubdatasetInfoModifyPathComponent(GDALSubdatasetInfoH hInfo,
-//                                                     const char *pszNewPath);
+//   - @brief Replaces the path component of a subdataset descriptor.
+//   - The returned string must be freed with CPLFree().
+//   - @param hInfo                 Pointer to GDALSubdatasetInfo object
+//   - @param pszNewPath            New path.
+//   - @note                        This method does not check if the subdataset actually exists.
+//   - @return                      The original subdataset descriptor with the old path component replaced by newPath.
+//   - @since                       GDAL 3.8
+//     */
+func gdalSubdatasetInfoModifyPathComponent(info GDALSubdatasetInfo, newPath string) (result string) {
+	cNewPath := C.CString(newPath)
+	defer C.free(unsafe.Pointer(cNewPath))
+	cResult := C.GDALSubdatasetInfoModifyPathComponent(info.cValue, cNewPath)
+	if cResult != nil {
+		result = C.GoString(cResult)
+		C.VSIFree(unsafe.Pointer(cResult))
+	}
+	return
+}
+
+func (i GDALSubdatasetInfo) ModifyPathComponent(newPath string) (result string) {
+	result = gdalSubdatasetInfoModifyPathComponent(i, newPath)
+	return
+}
 
 // /**
-//  * @brief Destroys a GDALSubdatasetInfo object.
-//  * @param hInfo                 Pointer to GDALSubdatasetInfo object
-//  * @since                       GDAL 3.8
-//  */
-// void CPL_DLL GDALDestroySubdatasetInfo(GDALSubdatasetInfoH hInfo);
+//   - @brief Destroys a GDALSubdatasetInfo object.
+//   - @param hInfo                 Pointer to GDALSubdatasetInfo object
+//   - @since                       GDAL 3.8
+//     */
+func gdalDestroySubdatasetInfo(info GDALSubdatasetInfo) {
+	C.GDALDestroySubdatasetInfo(info.cValue)
+}
+
+func (i GDALSubdatasetInfo) Destroy() {
+	gdalDestroySubdatasetInfo(i)
+}
 
 // /* ==================================================================== */
 // /*      GDALRasterBand ... one band/channel in a dataset.               */
 // /* ==================================================================== */
 
-// /* Note: the only user of SRCVAL() is alg/gdal_simplesurf.cpp */
+// The SRCVAL pixel macro and the GDALDerivedPixelFunc / GDALDerivedPixelFuncWithArgs
+// callback typedefs are omitted/deferred (a code macro and Go->C callback
+// plumbing respectively).
 
-// /* clang-format off */
-// /**
-//  * SRCVAL - Macro which may be used by pixel functions to obtain
-//  *          a pixel from a source buffer.
-//  */
-// #define SRCVAL(papoSource, eSrcType, ii) \
-//     (eSrcType == GDT_Byte ? CPL_REINTERPRET_CAST(const GByte *, papoSource)[ii] : \
-//      eSrcType == GDT_Int8 ? CPL_REINTERPRET_CAST(const GInt8 *, papoSource)[ii] : \
-//      eSrcType == GDT_UInt16 ? CPL_REINTERPRET_CAST(const GUInt16 *, papoSource)[ii] : \
-//      eSrcType == GDT_Int16 ? CPL_REINTERPRET_CAST(const GInt16 *, papoSource)[ii] : \
-//      eSrcType == GDT_UInt32 ? CPL_REINTERPRET_CAST(const GUInt32 *, papoSource)[ii] : \
-//      eSrcType == GDT_Int32 ? CPL_REINTERPRET_CAST(const GInt32 *, papoSource)[ii] : \
-//      eSrcType == GDT_UInt64 ? CPL_STATIC_CAST(double, CPL_REINTERPRET_CAST(const GUInt64 *, papoSource)[ii]) : \
-//      eSrcType == GDT_Int64 ? CPL_STATIC_CAST(double, CPL_REINTERPRET_CAST(const GUInt64 *, papoSource)[ii]) : \
-//      eSrcType == GDT_Float32 ? CPL_STATIC_CAST(double, CPL_REINTERPRET_CAST(const float *, papoSource)[ii]) : \
-//      eSrcType == GDT_Float64 ? CPL_REINTERPRET_CAST(const double *, papoSource)[ii] : \
-//      eSrcType == GDT_CInt16 ? CPL_REINTERPRET_CAST(const GInt16 *, papoSource)[(ii)*2] : \
-//      eSrcType == GDT_CInt32 ? CPL_REINTERPRET_CAST(const GInt32 *, papoSource)[(ii)*2] : \
-//      eSrcType == GDT_CFloat32 ? CPL_STATIC_CAST(double, CPL_REINTERPRET_CAST(const float *, papoSource)[ii*2]) : \
-//      eSrcType == GDT_CFloat64 ? CPL_REINTERPRET_CAST(const double *, papoSource)[ii*2] : \
-//      0)
+func gdalGetRasterDataType(band GDALRasterBand) (result GDALDataType) {
+	result = GDALDataType(C.GDALGetRasterDataType(band.cValue))
+	return
+}
 
-// /* clang-format on */
+func (b GDALRasterBand) GetRasterDataType() (result GDALDataType) {
+	result = gdalGetRasterDataType(b)
+	return
+}
 
-// /** Type of functions to pass to GDALAddDerivedBandPixelFunc.
-//  */
-// typedef CPLErr (*GDALDerivedPixelFunc)(void **papoSources, int nSources,
-//                                        void *pData, int nBufXSize,
-//                                        int nBufYSize, GDALDataType eSrcType,
-//                                        GDALDataType eBufType, int nPixelSpace,
-//                                        int nLineSpace);
+func gdalGetBlockSize(band GDALRasterBand, xSize, ySize *int) {
+	var cXSize, cYSize C.int
+	C.GDALGetBlockSize(band.cValue, &cXSize, &cYSize)
+	*xSize = int(cXSize)
+	*ySize = int(cYSize)
+}
 
-// /** Type of functions to pass to GDALAddDerivedBandPixelFuncWithArgs.
-//  * @since GDAL 3.4 */
-// typedef CPLErr (*GDALDerivedPixelFuncWithArgs)(
-//     void **papoSources, int nSources, void *pData, int nBufXSize, int nBufYSize,
-//     GDALDataType eSrcType, GDALDataType eBufType, int nPixelSpace,
-//     int nLineSpace, CSLConstList papszFunctionArgs);
+func (b GDALRasterBand) GetBlockSize() (xSize, ySize int) {
+	gdalGetBlockSize(b, &xSize, &ySize)
+	return
+}
 
-// GDALDataType CPL_DLL CPL_STDCALL GDALGetRasterDataType(GDALRasterBandH);
-// void CPL_DLL CPL_STDCALL GDALGetBlockSize(GDALRasterBandH, int *pnXSize,
-//                                           int *pnYSize);
+func gdalGetActualBlockSize(band GDALRasterBand, xBlockOff, yBlockOff int, xValid, yValid *int) (result CPLErr) {
+	var cXValid, cYValid C.int
+	result = CPLErr(C.GDALGetActualBlockSize(band.cValue, C.int(xBlockOff), C.int(yBlockOff), &cXValid, &cYValid))
+	*xValid = int(cXValid)
+	*yValid = int(cYValid)
+	return
+}
 
-// CPLErr CPL_DLL CPL_STDCALL GDALGetActualBlockSize(GDALRasterBandH,
-//                                                   int nXBlockOff,
-//                                                   int nYBlockOff, int *pnXValid,
-//                                                   int *pnYValid);
+func (b GDALRasterBand) GetActualBlockSize(xBlockOff, yBlockOff int) (xValid, yValid int, err error) {
+	err = cplErr(gdalGetActualBlockSize(b, xBlockOff, yBlockOff, &xValid, &yValid))
+	return
+}
 
-// CPLErr CPL_DLL CPL_STDCALL GDALRasterAdviseRead(GDALRasterBandH hRB,
-//                                                 int nDSXOff, int nDSYOff,
-//                                                 int nDSXSize, int nDSYSize,
-//                                                 int nBXSize, int nBYSize,
-//                                                 GDALDataType eBDataType,
-//                                                 CSLConstList papszOptions);
+func gdalRasterAdviseRead(band GDALRasterBand, xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, options []string) (result CPLErr) {
+	opts, free := cStrings(options)
+	defer free()
+	result = CPLErr(C.GDALRasterAdviseRead(band.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.CSLConstList(unsafe.Pointer(opts))))
+	return
+}
 
-// CPLErr CPL_DLL CPL_STDCALL GDALRasterIO(GDALRasterBandH hRBand,
-//                                         GDALRWFlag eRWFlag, int nDSXOff,
-//                                         int nDSYOff, int nDSXSize, int nDSYSize,
-//                                         void *pBuffer, int nBXSize, int nBYSize,
-//                                         GDALDataType eBDataType,
-//                                         int nPixelSpace,
-//                                         int nLineSpace) CPL_WARN_UNUSED_RESULT;
-// CPLErr CPL_DLL CPL_STDCALL GDALRasterIOEx(
-//     GDALRasterBandH hRBand, GDALRWFlag eRWFlag, int nDSXOff, int nDSYOff,
-//     int nDSXSize, int nDSYSize, void *pBuffer, int nBXSize, int nBYSize,
-//     GDALDataType eBDataType, GSpacing nPixelSpace, GSpacing nLineSpace,
-//     GDALRasterIOExtraArg *psExtraArg) CPL_WARN_UNUSED_RESULT;
-// CPLErr CPL_DLL CPL_STDCALL GDALReadBlock(GDALRasterBandH, int, int,
-//                                          void *) CPL_WARN_UNUSED_RESULT;
-// CPLErr CPL_DLL CPL_STDCALL GDALWriteBlock(GDALRasterBandH, int, int,
-//                                           void *) CPL_WARN_UNUSED_RESULT;
-// int CPL_DLL CPL_STDCALL GDALGetRasterBandXSize(GDALRasterBandH);
-// int CPL_DLL CPL_STDCALL GDALGetRasterBandYSize(GDALRasterBandH);
-// GDALAccess CPL_DLL CPL_STDCALL GDALGetRasterAccess(GDALRasterBandH);
-// int CPL_DLL CPL_STDCALL GDALGetBandNumber(GDALRasterBandH);
-// GDALDatasetH CPL_DLL CPL_STDCALL GDALGetBandDataset(GDALRasterBandH);
+func (b GDALRasterBand) AdviseRead(xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, options []string) (err error) {
+	err = cplErr(gdalRasterAdviseRead(b, xOff, yOff, xSize, ySize, bufXSize, bufYSize, bufType, options))
+	return
+}
 
-// GDALColorInterp
-//     CPL_DLL CPL_STDCALL GDALGetRasterColorInterpretation(GDALRasterBandH);
-// CPLErr CPL_DLL CPL_STDCALL GDALSetRasterColorInterpretation(GDALRasterBandH,
-//                                                             GDALColorInterp);
-// GDALColorTableH CPL_DLL CPL_STDCALL GDALGetRasterColorTable(GDALRasterBandH);
-// CPLErr CPL_DLL CPL_STDCALL GDALSetRasterColorTable(GDALRasterBandH,
-//                                                    GDALColorTableH);
-// int CPL_DLL CPL_STDCALL GDALHasArbitraryOverviews(GDALRasterBandH);
-// int CPL_DLL CPL_STDCALL GDALGetOverviewCount(GDALRasterBandH);
-// GDALRasterBandH CPL_DLL CPL_STDCALL GDALGetOverview(GDALRasterBandH, int);
-// double CPL_DLL CPL_STDCALL GDALGetRasterNoDataValue(GDALRasterBandH, int *);
-// int64_t CPL_DLL CPL_STDCALL GDALGetRasterNoDataValueAsInt64(GDALRasterBandH,
-//                                                             int *);
-// uint64_t CPL_DLL CPL_STDCALL GDALGetRasterNoDataValueAsUInt64(GDALRasterBandH,
-//                                                               int *);
-// CPLErr CPL_DLL CPL_STDCALL GDALSetRasterNoDataValue(GDALRasterBandH, double);
-// CPLErr CPL_DLL CPL_STDCALL GDALSetRasterNoDataValueAsInt64(GDALRasterBandH,
-//                                                            int64_t);
-// CPLErr CPL_DLL CPL_STDCALL GDALSetRasterNoDataValueAsUInt64(GDALRasterBandH,
-//                                                             uint64_t);
-// CPLErr CPL_DLL CPL_STDCALL GDALDeleteRasterNoDataValue(GDALRasterBandH);
-// char CPL_DLL **CPL_STDCALL GDALGetRasterCategoryNames(GDALRasterBandH);
-// CPLErr CPL_DLL CPL_STDCALL GDALSetRasterCategoryNames(GDALRasterBandH,
-//                                                       CSLConstList);
-// double CPL_DLL CPL_STDCALL GDALGetRasterMinimum(GDALRasterBandH,
-//                                                 int *pbSuccess);
-// double CPL_DLL CPL_STDCALL GDALGetRasterMaximum(GDALRasterBandH,
-//                                                 int *pbSuccess);
-// CPLErr CPL_DLL CPL_STDCALL GDALGetRasterStatistics(
-//     GDALRasterBandH, int bApproxOK, int bForce, double *pdfMin, double *pdfMax,
-//     double *pdfMean, double *pdfStdDev);
-// CPLErr CPL_DLL CPL_STDCALL
-// GDALComputeRasterStatistics(GDALRasterBandH, int bApproxOK, double *pdfMin,
-//                             double *pdfMax, double *pdfMean, double *pdfStdDev,
-//                             GDALProgressFunc pfnProgress, void *pProgressData);
-// CPLErr CPL_DLL CPL_STDCALL GDALSetRasterStatistics(GDALRasterBandH hBand,
-//                                                    double dfMin, double dfMax,
-//                                                    double dfMean,
-//                                                    double dfStdDev);
+func gdalRasterIO(band GDALRasterBand, rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer unsafe.Pointer, bufXSize, bufYSize int, bufType GDALDataType, pixelSpace, lineSpace int) (result CPLErr) {
+	result = CPLErr(C.GDALRasterIO(band.cValue, C.GDALRWFlag(rwFlag), C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), buffer, C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(pixelSpace), C.int(lineSpace)))
+	return
+}
 
-// GDALMDArrayH
-//     CPL_DLL GDALRasterBandAsMDArray(GDALRasterBandH) CPL_WARN_UNUSED_RESULT;
+func (b GDALRasterBand) RasterIO(rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer []byte, bufXSize, bufYSize int, bufType GDALDataType, pixelSpace, lineSpace int) (err error) {
+	err = cplErr(gdalRasterIO(b, rwFlag, xOff, yOff, xSize, ySize, cBytes(buffer), bufXSize, bufYSize, bufType, pixelSpace, lineSpace))
+	return
+}
 
-// const char CPL_DLL *CPL_STDCALL GDALGetRasterUnitType(GDALRasterBandH);
-// CPLErr CPL_DLL CPL_STDCALL GDALSetRasterUnitType(GDALRasterBandH hBand,
-//                                                  const char *pszNewValue);
-// double CPL_DLL CPL_STDCALL GDALGetRasterOffset(GDALRasterBandH, int *pbSuccess);
-// CPLErr CPL_DLL CPL_STDCALL GDALSetRasterOffset(GDALRasterBandH hBand,
-//                                                double dfNewOffset);
-// double CPL_DLL CPL_STDCALL GDALGetRasterScale(GDALRasterBandH, int *pbSuccess);
-// CPLErr CPL_DLL CPL_STDCALL GDALSetRasterScale(GDALRasterBandH hBand,
-//                                               double dfNewOffset);
-// CPLErr CPL_DLL CPL_STDCALL GDALComputeRasterMinMax(GDALRasterBandH hBand,
-//                                                    int bApproxOK,
-//                                                    double adfMinMax[2]);
-// CPLErr CPL_DLL GDALComputeRasterMinMaxLocation(GDALRasterBandH hBand,
-//                                                double *pdfMin, double *pdfMax,
-//                                                int *pnMinX, int *pnMinY,
-//                                                int *pnMaxX, int *pnMaxY);
-// CPLErr CPL_DLL CPL_STDCALL GDALFlushRasterCache(GDALRasterBandH hBand);
-// CPLErr CPL_DLL CPL_STDCALL GDALDropRasterCache(GDALRasterBandH hBand);
-// CPLErr CPL_DLL CPL_STDCALL GDALGetRasterHistogram(
-//     GDALRasterBandH hBand, double dfMin, double dfMax, int nBuckets,
-//     int *panHistogram, int bIncludeOutOfRange, int bApproxOK,
-//     GDALProgressFunc pfnProgress, void *pProgressData)
-//     /*! @cond Doxygen_Suppress */
-//     CPL_WARN_DEPRECATED("Use GDALGetRasterHistogramEx() instead")
-//     /*! @endcond */
-//     ;
-// CPLErr CPL_DLL CPL_STDCALL GDALGetRasterHistogramEx(
-//     GDALRasterBandH hBand, double dfMin, double dfMax, int nBuckets,
-//     GUIntBig *panHistogram, int bIncludeOutOfRange, int bApproxOK,
-//     GDALProgressFunc pfnProgress, void *pProgressData);
-// CPLErr CPL_DLL CPL_STDCALL
-// GDALGetDefaultHistogram(GDALRasterBandH hBand, double *pdfMin, double *pdfMax,
-//                         int *pnBuckets, int **ppanHistogram, int bForce,
-//                         GDALProgressFunc pfnProgress, void *pProgressData)
-//     /*! @cond Doxygen_Suppress */
-//     CPL_WARN_DEPRECATED("Use GDALGetDefaultHistogramEx() instead")
-//     /*! @endcond */
-//     ;
-// CPLErr CPL_DLL CPL_STDCALL
-// GDALGetDefaultHistogramEx(GDALRasterBandH hBand, double *pdfMin, double *pdfMax,
-//                           int *pnBuckets, GUIntBig **ppanHistogram, int bForce,
-//                           GDALProgressFunc pfnProgress, void *pProgressData);
-// CPLErr CPL_DLL CPL_STDCALL GDALSetDefaultHistogram(GDALRasterBandH hBand,
-//                                                    double dfMin, double dfMax,
-//                                                    int nBuckets,
-//                                                    int *panHistogram)
-//     /*! @cond Doxygen_Suppress */
-//     CPL_WARN_DEPRECATED("Use GDALSetDefaultHistogramEx() instead")
-//     /*! @endcond */
-//     ;
-// CPLErr CPL_DLL CPL_STDCALL GDALSetDefaultHistogramEx(GDALRasterBandH hBand,
-//                                                      double dfMin, double dfMax,
-//                                                      int nBuckets,
-//                                                      GUIntBig *panHistogram);
-// int CPL_DLL CPL_STDCALL GDALGetRandomRasterSample(GDALRasterBandH, int,
-//                                                   float *);
-// GDALRasterBandH CPL_DLL CPL_STDCALL GDALGetRasterSampleOverview(GDALRasterBandH,
-//                                                                 int);
-// GDALRasterBandH CPL_DLL CPL_STDCALL
-//     GDALGetRasterSampleOverviewEx(GDALRasterBandH, GUIntBig);
-// CPLErr CPL_DLL CPL_STDCALL GDALFillRaster(GDALRasterBandH hBand,
-//                                           double dfRealValue,
-//                                           double dfImaginaryValue);
-// CPLErr CPL_DLL CPL_STDCALL GDALComputeBandStats(
-//     GDALRasterBandH hBand, int nSampleStep, double *pdfMean, double *pdfStdDev,
-//     GDALProgressFunc pfnProgress, void *pProgressData);
-// CPLErr CPL_DLL GDALOverviewMagnitudeCorrection(GDALRasterBandH hBaseBand,
-//                                                int nOverviewCount,
-//                                                GDALRasterBandH *pahOverviews,
-//                                                GDALProgressFunc pfnProgress,
-//                                                void *pProgressData);
+func gdalRasterIOEx(band GDALRasterBand, rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer unsafe.Pointer, bufXSize, bufYSize int, bufType GDALDataType, pixelSpace, lineSpace int64, extraArg GDALRasterIOExtraArg) (result CPLErr) {
+	result = CPLErr(C.GDALRasterIOEx(band.cValue, C.GDALRWFlag(rwFlag), C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), buffer, C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.GSpacing(pixelSpace), C.GSpacing(lineSpace), extraArg.cValue))
+	return
+}
 
-// GDALRasterAttributeTableH CPL_DLL CPL_STDCALL
-// GDALGetDefaultRAT(GDALRasterBandH hBand);
-// CPLErr CPL_DLL CPL_STDCALL GDALSetDefaultRAT(GDALRasterBandH,
-//                                              GDALRasterAttributeTableH);
-// CPLErr CPL_DLL CPL_STDCALL GDALAddDerivedBandPixelFunc(
-//     const char *pszName, GDALDerivedPixelFunc pfnPixelFunc);
-// CPLErr CPL_DLL CPL_STDCALL GDALAddDerivedBandPixelFuncWithArgs(
-//     const char *pszName, GDALDerivedPixelFuncWithArgs pfnPixelFunc,
-//     const char *pszMetadata);
+func (b GDALRasterBand) RasterIOEx(rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer []byte, bufXSize, bufYSize int, bufType GDALDataType, pixelSpace, lineSpace int64, extraArg GDALRasterIOExtraArg) (err error) {
+	err = cplErr(gdalRasterIOEx(b, rwFlag, xOff, yOff, xSize, ySize, cBytes(buffer), bufXSize, bufYSize, bufType, pixelSpace, lineSpace, extraArg))
+	return
+}
 
-// CPLErr CPL_DLL GDALRasterInterpolateAtPoint(GDALRasterBandH hBand,
-//                                             double dfPixel, double dfLine,
-//                                             GDALRIOResampleAlg eInterpolation,
-//                                             double *pdfRealValue,
-//                                             double *pdfImagValue);
+func gdalReadBlock(band GDALRasterBand, xBlockOff, yBlockOff int, buffer unsafe.Pointer) (result CPLErr) {
+	result = CPLErr(C.GDALReadBlock(band.cValue, C.int(xBlockOff), C.int(yBlockOff), buffer))
+	return
+}
 
-// CPLErr CPL_DLL GDALRasterInterpolateAtGeolocation(
-//     GDALRasterBandH hBand, double dfGeolocX, double dfGeolocY,
-//     OGRSpatialReferenceH hSRS, GDALRIOResampleAlg eInterpolation,
-//     double *pdfRealValue, double *pdfImagValue,
-//     CSLConstList papszTransformerOptions);
+func (b GDALRasterBand) ReadBlock(xBlockOff, yBlockOff int, buffer []byte) (err error) {
+	err = cplErr(gdalReadBlock(b, xBlockOff, yBlockOff, cBytes(buffer)))
+	return
+}
 
-// /** Generic pointer for the working structure of VRTProcessedDataset
-//  * function. */
-// typedef void *VRTPDWorkingDataPtr;
+func gdalWriteBlock(band GDALRasterBand, xBlockOff, yBlockOff int, buffer unsafe.Pointer) (result CPLErr) {
+	result = CPLErr(C.GDALWriteBlock(band.cValue, C.int(xBlockOff), C.int(yBlockOff), buffer))
+	return
+}
 
-// /** Initialization function to pass to GDALVRTRegisterProcessedDatasetFunc.
-//  *
-//  * This initialization function is called for each step of a VRTProcessedDataset
-//  * that uses the related algorithm.
-//  * The initialization function returns the output data type, output band count
-//  * and potentially initializes a working structure, typically parsing arguments.
-//  *
-//  * @param pszFuncName Function name. Must be unique and not null.
-//  * @param pUserData User data. May be nullptr. Must remain valid during the
-//  *                  lifetime of GDAL.
-//  * @param papszFunctionArgs Function arguments as a list of key=value pairs.
-//  * @param nInBands Number of input bands.
-//  * @param eInDT Input data type.
-//  * @param[in,out] padfInNoData Array of nInBands values for the input nodata
-//  *                             value. The init function may also override them.
-//  * @param[in,out] pnOutBands Pointer whose value must be set to the number of
-//  *                           output bands. This will be set to 0 by the caller
-//  *                           when calling the function, unless this is the
-//  *                           final step, in which case it will be initialized
-//  *                           with the number of expected output bands.
-//  * @param[out] peOutDT Pointer whose value must be set to the output
-//  *                     data type.
-//  * @param[in,out] ppadfOutNoData Pointer to an array of *pnOutBands values
-//  *                               for the output nodata value that the
-//  *                               function must set.
-//  *                               For non-final steps, *ppadfOutNoData
-//  *                               will be nullptr and it is the responsibility
-//  *                               of the function to CPLMalloc()'ate it.
-//  *                               If this is the final step, it will be
-//  *                               already allocated and initialized with the
-//  *                               expected nodata values from the output
-//  *                               dataset (if the init function need to
-//  *                               reallocate it, it must use CPLRealloc())
-//  * @param pszVRTPath Directory of the VRT
-//  * @param[out] ppWorkingData Pointer whose value must be set to a working
-//  *                           structure, or nullptr.
-//  * @return CE_None in case of success, error otherwise.
-//  * @since GDAL 3.9 */
-// typedef CPLErr (*GDALVRTProcessedDatasetFuncInit)(
-//     const char *pszFuncName, void *pUserData, CSLConstList papszFunctionArgs,
-//     int nInBands, GDALDataType eInDT, double *padfInNoData, int *pnOutBands,
-//     GDALDataType *peOutDT, double **ppadfOutNoData, const char *pszVRTPath,
-//     VRTPDWorkingDataPtr *ppWorkingData);
+func (b GDALRasterBand) WriteBlock(xBlockOff, yBlockOff int, buffer []byte) (err error) {
+	err = cplErr(gdalWriteBlock(b, xBlockOff, yBlockOff, cBytes(buffer)))
+	return
+}
 
-// /** Free function to pass to GDALVRTRegisterProcessedDatasetFunc.
-//  *
-//  * @param pszFuncName Function name. Must be unique and not null.
-//  * @param pUserData User data. May be nullptr. Must remain valid during the
-//  *                  lifetime of GDAL.
-//  * @param pWorkingData Value of the *ppWorkingData output parameter of
-//  *                     GDALVRTProcessedDatasetFuncInit.
-//  * @since GDAL 3.9
-//  */
-// typedef void (*GDALVRTProcessedDatasetFuncFree)(
-//     const char *pszFuncName, void *pUserData, VRTPDWorkingDataPtr pWorkingData);
+func gdalGetRasterBandXSize(band GDALRasterBand) (result int) {
+	result = int(C.GDALGetRasterBandXSize(band.cValue))
+	return
+}
 
-// /** Processing function to pass to GDALVRTRegisterProcessedDatasetFunc.
-//  * @param pszFuncName Function name. Must be unique and not null.
-//  * @param pUserData User data. May be nullptr. Must remain valid during the
-//  *                  lifetime of GDAL.
-//  * @param pWorkingData Value of the *ppWorkingData output parameter of
-//  *                     GDALVRTProcessedDatasetFuncInit.
-//  * @param papszFunctionArgs Function arguments as a list of key=value pairs.
-//  * @param nBufXSize Width in pixels of pInBuffer and pOutBuffer
-//  * @param nBufYSize Height in pixels of pInBuffer and pOutBuffer
-//  * @param pInBuffer Input buffer. It is pixel-interleaved
-//  *                  (i.e. R00,G00,B00,R01,G01,B01, etc.)
-//  * @param nInBufferSize Size in bytes of pInBuffer
-//  * @param eInDT Data type of pInBuffer
-//  * @param nInBands Number of bands in pInBuffer.
-//  * @param padfInNoData Input nodata values.
-//  * @param pOutBuffer Output buffer. It is pixel-interleaved
-//  *                   (i.e. R00,G00,B00,R01,G01,B01, etc.)
-//  * @param nOutBufferSize Size in bytes of pOutBuffer
-//  * @param eOutDT Data type of pOutBuffer
-//  * @param nOutBands Number of bands in pOutBuffer.
-//  * @param padfOutNoData Input nodata values.
-//  * @param dfSrcXOff Source X coordinate in pixel of the top-left of the region
-//  * @param dfSrcYOff Source Y coordinate in pixel of the top-left of the region
-//  * @param dfSrcXSize Width in pixels of the region
-//  * @param dfSrcYSize Height in pixels of the region
-//  * @param adfSrcGT Source geotransform
-//  * @param pszVRTPath Directory of the VRT
-//  * @param papszExtra Extra arguments (unused for now)
-//  * @since GDAL 3.9
-//  */
-// typedef CPLErr (*GDALVRTProcessedDatasetFuncProcess)(
-//     const char *pszFuncName, void *pUserData, VRTPDWorkingDataPtr pWorkingData,
-//     CSLConstList papszFunctionArgs, int nBufXSize, int nBufYSize,
-//     const void *pInBuffer, size_t nInBufferSize, GDALDataType eInDT,
-//     int nInBands, const double *padfInNoData, void *pOutBuffer,
-//     size_t nOutBufferSize, GDALDataType eOutDT, int nOutBands,
-//     const double *padfOutNoData, double dfSrcXOff, double dfSrcYOff,
-//     double dfSrcXSize, double dfSrcYSize, const double adfSrcGT[/*6*/],
-//     const char *pszVRTPath, CSLConstList papszExtra);
+func (b GDALRasterBand) GetXSize() (result int) {
+	result = gdalGetRasterBandXSize(b)
+	return
+}
 
-// CPLErr CPL_DLL GDALVRTRegisterProcessedDatasetFunc(
-//     const char *pszFuncName, void *pUserData, const char *pszXMLMetadata,
-//     GDALDataType eRequestedInputDT, const GDALDataType *paeSupportedInputDT,
-//     size_t nSupportedInputDTSize, const int *panSupportedInputBandCount,
-//     size_t nSupportedInputBandCountSize,
-//     GDALVRTProcessedDatasetFuncInit pfnInit,
-//     GDALVRTProcessedDatasetFuncFree pfnFree,
-//     GDALVRTProcessedDatasetFuncProcess pfnProcess, CSLConstList papszOptions);
+func gdalGetRasterBandYSize(band GDALRasterBand) (result int) {
+	result = int(C.GDALGetRasterBandYSize(band.cValue))
+	return
+}
 
-// GDALRasterBandH CPL_DLL CPL_STDCALL GDALGetMaskBand(GDALRasterBandH hBand);
-// int CPL_DLL CPL_STDCALL GDALGetMaskFlags(GDALRasterBandH hBand);
-// CPLErr CPL_DLL CPL_STDCALL GDALCreateMaskBand(GDALRasterBandH hBand,
-//                                               int nFlags);
-// bool CPL_DLL GDALIsMaskBand(GDALRasterBandH hBand);
+func (b GDALRasterBand) GetYSize() (result int) {
+	result = gdalGetRasterBandYSize(b)
+	return
+}
 
-// /** Flag returned by GDALGetMaskFlags() to indicate that all pixels are valid */
-// #define GMF_ALL_VALID 0x01
-// /** Flag returned by GDALGetMaskFlags() to indicate that the mask band is
-//  * valid for all bands */
-// #define GMF_PER_DATASET 0x02
-// /** Flag returned by GDALGetMaskFlags() to indicate that the mask band is
-//  * an alpha band */
-// #define GMF_ALPHA 0x04
-// /** Flag returned by GDALGetMaskFlags() to indicate that the mask band is
-//  * computed from nodata values */
-// #define GMF_NODATA 0x08
+func gdalGetRasterAccess(band GDALRasterBand) (result GDALAccess) {
+	result = GDALAccess(C.GDALGetRasterAccess(band.cValue))
+	return
+}
 
-// /** Flag returned by GDALGetDataCoverageStatus() when the driver does not
-//  * implement GetDataCoverageStatus(). This flag should be returned together
-//  * with GDAL_DATA_COVERAGE_STATUS_DATA */
-// #define GDAL_DATA_COVERAGE_STATUS_UNIMPLEMENTED 0x01
+func (b GDALRasterBand) GetAccess() (result GDALAccess) {
+	result = gdalGetRasterAccess(b)
+	return
+}
 
-// /** Flag returned by GDALGetDataCoverageStatus() when there is (potentially)
-//  * data in the queried window. Can be combined with the binary or operator
-//  * with GDAL_DATA_COVERAGE_STATUS_UNIMPLEMENTED or
-//  * GDAL_DATA_COVERAGE_STATUS_EMPTY */
-// #define GDAL_DATA_COVERAGE_STATUS_DATA 0x02
+func gdalGetBandNumber(band GDALRasterBand) (result int) {
+	result = int(C.GDALGetBandNumber(band.cValue))
+	return
+}
 
-// /** Flag returned by GDALGetDataCoverageStatus() when there is nodata in the
-//  * queried window. This is typically identified by the concept of missing block
-//  * in formats that supports it.
-//  * Can be combined with the binary or operator with
-//  * GDAL_DATA_COVERAGE_STATUS_DATA */
-// #define GDAL_DATA_COVERAGE_STATUS_EMPTY 0x04
+func (b GDALRasterBand) GetBandNumber() (result int) {
+	result = gdalGetBandNumber(b)
+	return
+}
 
-// int CPL_DLL CPL_STDCALL GDALGetDataCoverageStatus(GDALRasterBandH hBand,
-//                                                   int nXOff, int nYOff,
-//                                                   int nXSize, int nYSize,
-//                                                   int nMaskFlagStop,
-//                                                   double *pdfDataPct);
+func gdalGetBandDataset(band GDALRasterBand) (result GDALDataset) {
+	result = GDALDataset{cValue: C.GDALGetBandDataset(band.cValue)}
+	return
+}
 
-// void CPL_DLL GDALComputedRasterBandRelease(GDALComputedRasterBandH hBand);
+func (b GDALRasterBand) GetDataset() (result GDALDataset, err error) {
+	result = gdalGetBandDataset(b)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
 
-// /** Raster algebra unary operation */
-// typedef enum
-// {
-//     /** Logical not */
-//     GRAUO_LOGICAL_NOT,
-//     /** Absolute value (module for complex data type) */
-//     GRAUO_ABS,
-//     /** Square root */
-//     GRAUO_SQRT,
-//     /** Natural logarithm (``ln``) */
-//     GRAUO_LOG,
-//     /** Logarithm base 10 */
-//     GRAUO_LOG10,
-// } GDALRasterAlgebraUnaryOperation;
+func gdalGetRasterColorInterpretation(band GDALRasterBand) (result GDALColorInterp) {
+	result = GDALColorInterp(C.GDALGetRasterColorInterpretation(band.cValue))
+	return
+}
 
-// GDALComputedRasterBandH CPL_DLL GDALRasterBandUnaryOp(
-//     GDALRasterBandH hBand,
-//     GDALRasterAlgebraUnaryOperation eOp) CPL_WARN_UNUSED_RESULT;
+func (b GDALRasterBand) GetColorInterpretation() (result GDALColorInterp) {
+	result = gdalGetRasterColorInterpretation(b)
+	return
+}
 
-// /** Raster algebra binary operation */
-// typedef enum
-// {
-//     /** Addition */
-//     GRABO_ADD,
-//     /** Subtraction */
-//     GRABO_SUB,
-//     /** Multiplication */
-//     GRABO_MUL,
-//     /** Division */
-//     GRABO_DIV,
-//     /** Power */
-//     GRABO_POW,
-//     /** Strictly greater than test*/
-//     GRABO_GT,
-//     /** Greater or equal to test */
-//     GRABO_GE,
-//     /** Strictly lesser than test */
-//     GRABO_LT,
-//     /** Lesser or equal to test */
-//     GRABO_LE,
-//     /** Equality test */
-//     GRABO_EQ,
-//     /** Non-equality test */
-//     GRABO_NE,
-//     /** Logical and */
-//     GRABO_LOGICAL_AND,
-//     /** Logical or */
-//     GRABO_LOGICAL_OR
-// } GDALRasterAlgebraBinaryOperation;
+func gdalSetRasterColorInterpretation(band GDALRasterBand, colorInterp GDALColorInterp) (result CPLErr) {
+	result = CPLErr(C.GDALSetRasterColorInterpretation(band.cValue, C.GDALColorInterp(colorInterp)))
+	return
+}
 
-// GDALComputedRasterBandH CPL_DLL GDALRasterBandBinaryOpBand(
-//     GDALRasterBandH hBand, GDALRasterAlgebraBinaryOperation eOp,
-//     GDALRasterBandH hOtherBand) CPL_WARN_UNUSED_RESULT;
-// GDALComputedRasterBandH CPL_DLL GDALRasterBandBinaryOpDouble(
-//     GDALRasterBandH hBand, GDALRasterAlgebraBinaryOperation eOp,
-//     double constant) CPL_WARN_UNUSED_RESULT;
-// GDALComputedRasterBandH CPL_DLL GDALRasterBandBinaryOpDoubleToBand(
-//     double constant, GDALRasterAlgebraBinaryOperation eOp,
-//     GDALRasterBandH hBand) CPL_WARN_UNUSED_RESULT;
+func (b GDALRasterBand) SetColorInterpretation(colorInterp GDALColorInterp) (err error) {
+	err = cplErr(gdalSetRasterColorInterpretation(b, colorInterp))
+	return
+}
 
-// GDALComputedRasterBandH CPL_DLL
-// GDALRasterBandIfThenElse(GDALRasterBandH hCondBand, GDALRasterBandH hThenBand,
-//                          GDALRasterBandH hElseBand) CPL_WARN_UNUSED_RESULT;
+func gdalGetRasterColorTable(band GDALRasterBand) (result GDALColorTable) {
+	result = GDALColorTable{cValue: C.GDALGetRasterColorTable(band.cValue)}
+	return
+}
 
-// GDALComputedRasterBandH CPL_DLL GDALRasterBandAsDataType(
-//     GDALRasterBandH hBand, GDALDataType eDT) CPL_WARN_UNUSED_RESULT;
+func (b GDALRasterBand) GetColorTable() (result GDALColorTable, err error) {
+	result = gdalGetRasterColorTable(b)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
 
-// GDALComputedRasterBandH CPL_DLL GDALMaximumOfNBands(
-//     size_t nBandCount, GDALRasterBandH *pahBands) CPL_WARN_UNUSED_RESULT;
-// GDALComputedRasterBandH CPL_DLL GDALRasterBandMaxConstant(
-//     GDALRasterBandH hBand, double dfConstant) CPL_WARN_UNUSED_RESULT;
-// GDALComputedRasterBandH CPL_DLL GDALMinimumOfNBands(
-//     size_t nBandCount, GDALRasterBandH *pahBands) CPL_WARN_UNUSED_RESULT;
-// GDALComputedRasterBandH CPL_DLL GDALRasterBandMinConstant(
-//     GDALRasterBandH hBand, double dfConstant) CPL_WARN_UNUSED_RESULT;
-// GDALComputedRasterBandH CPL_DLL GDALMeanOfNBands(
-//     size_t nBandCount, GDALRasterBandH *pahBands) CPL_WARN_UNUSED_RESULT;
+func gdalSetRasterColorTable(band GDALRasterBand, colorTable GDALColorTable) (result CPLErr) {
+	result = CPLErr(C.GDALSetRasterColorTable(band.cValue, colorTable.cValue))
+	return
+}
+
+func (b GDALRasterBand) SetColorTable(colorTable GDALColorTable) (err error) {
+	err = cplErr(gdalSetRasterColorTable(b, colorTable))
+	return
+}
+
+func gdalHasArbitraryOverviews(band GDALRasterBand) (result bool) {
+	result = C.GDALHasArbitraryOverviews(band.cValue) != 0
+	return
+}
+
+func (b GDALRasterBand) HasArbitraryOverviews() (result bool) {
+	result = gdalHasArbitraryOverviews(b)
+	return
+}
+
+func gdalGetOverviewCount(band GDALRasterBand) (result int) {
+	result = int(C.GDALGetOverviewCount(band.cValue))
+	return
+}
+
+func (b GDALRasterBand) GetOverviewCount() (result int) {
+	result = gdalGetOverviewCount(b)
+	return
+}
+
+func gdalGetOverview(band GDALRasterBand, index int) (result GDALRasterBand) {
+	result = GDALRasterBand{cValue: C.GDALGetOverview(band.cValue, C.int(index))}
+	return
+}
+
+func (b GDALRasterBand) GetOverview(index int) (result GDALRasterBand, err error) {
+	result = gdalGetOverview(b, index)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGetRasterNoDataValue(band GDALRasterBand, success *int) (result float64) {
+	var cSuccess C.int
+	result = float64(C.GDALGetRasterNoDataValue(band.cValue, &cSuccess))
+	*success = int(cSuccess)
+	return
+}
+
+func (b GDALRasterBand) GetNoDataValue() (value float64, ok bool) {
+	var success int
+	value = gdalGetRasterNoDataValue(b, &success)
+	ok = success != 0
+	return
+}
+
+func gdalGetRasterNoDataValueAsInt64(band GDALRasterBand, success *int) (result int64) {
+	var cSuccess C.int
+	result = int64(C.GDALGetRasterNoDataValueAsInt64(band.cValue, &cSuccess))
+	*success = int(cSuccess)
+	return
+}
+
+func (b GDALRasterBand) GetNoDataValueAsInt64() (value int64, ok bool) {
+	var success int
+	value = gdalGetRasterNoDataValueAsInt64(b, &success)
+	ok = success != 0
+	return
+}
+
+func gdalGetRasterNoDataValueAsUInt64(band GDALRasterBand, success *int) (result uint64) {
+	var cSuccess C.int
+	result = uint64(C.GDALGetRasterNoDataValueAsUInt64(band.cValue, &cSuccess))
+	*success = int(cSuccess)
+	return
+}
+
+func (b GDALRasterBand) GetNoDataValueAsUInt64() (value uint64, ok bool) {
+	var success int
+	value = gdalGetRasterNoDataValueAsUInt64(b, &success)
+	ok = success != 0
+	return
+}
+
+func gdalSetRasterNoDataValue(band GDALRasterBand, value float64) (result CPLErr) {
+	result = CPLErr(C.GDALSetRasterNoDataValue(band.cValue, C.double(value)))
+	return
+}
+
+func (b GDALRasterBand) SetNoDataValue(value float64) (err error) {
+	err = cplErr(gdalSetRasterNoDataValue(b, value))
+	return
+}
+
+func gdalSetRasterNoDataValueAsInt64(band GDALRasterBand, value int64) (result CPLErr) {
+	result = CPLErr(C.GDALSetRasterNoDataValueAsInt64(band.cValue, C.int64_t(value)))
+	return
+}
+
+func (b GDALRasterBand) SetNoDataValueAsInt64(value int64) (err error) {
+	err = cplErr(gdalSetRasterNoDataValueAsInt64(b, value))
+	return
+}
+
+func gdalSetRasterNoDataValueAsUInt64(band GDALRasterBand, value uint64) (result CPLErr) {
+	result = CPLErr(C.GDALSetRasterNoDataValueAsUInt64(band.cValue, C.uint64_t(value)))
+	return
+}
+
+func (b GDALRasterBand) SetNoDataValueAsUInt64(value uint64) (err error) {
+	err = cplErr(gdalSetRasterNoDataValueAsUInt64(b, value))
+	return
+}
+
+func gdalDeleteRasterNoDataValue(band GDALRasterBand) (result CPLErr) {
+	result = CPLErr(C.GDALDeleteRasterNoDataValue(band.cValue))
+	return
+}
+
+func (b GDALRasterBand) DeleteNoDataValue() (err error) {
+	err = cplErr(gdalDeleteRasterNoDataValue(b))
+	return
+}
+
+func gdalGetRasterCategoryNames(band GDALRasterBand) (result []string) {
+	result = goStrings(C.GDALGetRasterCategoryNames(band.cValue))
+	return
+}
+
+func (b GDALRasterBand) GetCategoryNames() (result []string) {
+	result = gdalGetRasterCategoryNames(b)
+	return
+}
+
+func gdalSetRasterCategoryNames(band GDALRasterBand, names []string) (result CPLErr) {
+	n, free := cStrings(names)
+	defer free()
+	result = CPLErr(C.GDALSetRasterCategoryNames(band.cValue, C.CSLConstList(unsafe.Pointer(n))))
+	return
+}
+
+func (b GDALRasterBand) SetCategoryNames(names []string) (err error) {
+	err = cplErr(gdalSetRasterCategoryNames(b, names))
+	return
+}
+
+func gdalGetRasterMinimum(band GDALRasterBand, success *int) (result float64) {
+	var cSuccess C.int
+	result = float64(C.GDALGetRasterMinimum(band.cValue, &cSuccess))
+	*success = int(cSuccess)
+	return
+}
+
+func (b GDALRasterBand) GetMinimum() (value float64, ok bool) {
+	var success int
+	value = gdalGetRasterMinimum(b, &success)
+	ok = success != 0
+	return
+}
+
+func gdalGetRasterMaximum(band GDALRasterBand, success *int) (result float64) {
+	var cSuccess C.int
+	result = float64(C.GDALGetRasterMaximum(band.cValue, &cSuccess))
+	*success = int(cSuccess)
+	return
+}
+
+func (b GDALRasterBand) GetMaximum() (value float64, ok bool) {
+	var success int
+	value = gdalGetRasterMaximum(b, &success)
+	ok = success != 0
+	return
+}
+
+func gdalGetRasterStatistics(band GDALRasterBand, approxOK, force int, min, max, mean, stdDev *float64) (result CPLErr) {
+	var cMin, cMax, cMean, cStdDev C.double
+	result = CPLErr(C.GDALGetRasterStatistics(band.cValue, C.int(approxOK), C.int(force), &cMin, &cMax, &cMean, &cStdDev))
+	*min = float64(cMin)
+	*max = float64(cMax)
+	*mean = float64(cMean)
+	*stdDev = float64(cStdDev)
+	return
+}
+
+func (b GDALRasterBand) GetStatistics(approxOK, force int) (min, max, mean, stdDev float64, err error) {
+	err = cplErr(gdalGetRasterStatistics(b, approxOK, force, &min, &max, &mean, &stdDev))
+	return
+}
+
+func gdalComputeRasterStatistics(band GDALRasterBand, approxOK int, min, max, mean, stdDev *float64, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
+	var cMin, cMax, cMean, cStdDev C.double
+	result = CPLErr(C.GDALComputeRasterStatistics(band.cValue, C.int(approxOK), &cMin, &cMax, &cMean, &cStdDev, progress.cValue, progressData))
+	*min = float64(cMin)
+	*max = float64(cMax)
+	*mean = float64(cMean)
+	*stdDev = float64(cStdDev)
+	return
+}
+
+func (b GDALRasterBand) ComputeStatistics(approxOK int, progress GDALProgressFunc, progressData unsafe.Pointer) (min, max, mean, stdDev float64, err error) {
+	err = cplErr(gdalComputeRasterStatistics(b, approxOK, &min, &max, &mean, &stdDev, progress, progressData))
+	return
+}
+
+func gdalSetRasterStatistics(band GDALRasterBand, min, max, mean, stdDev float64) (result CPLErr) {
+	result = CPLErr(C.GDALSetRasterStatistics(band.cValue, C.double(min), C.double(max), C.double(mean), C.double(stdDev)))
+	return
+}
+
+func (b GDALRasterBand) SetStatistics(min, max, mean, stdDev float64) (err error) {
+	err = cplErr(gdalSetRasterStatistics(b, min, max, mean, stdDev))
+	return
+}
+
+func gdalRasterBandAsMDArray(band GDALRasterBand) (result GDALMDArray) {
+	result = GDALMDArray{cValue: C.GDALRasterBandAsMDArray(band.cValue)}
+	return
+}
+
+func (b GDALRasterBand) AsMDArray() (result GDALMDArray, err error) {
+	result = gdalRasterBandAsMDArray(b)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGetRasterUnitType(band GDALRasterBand) (result string) {
+	result = C.GoString(C.GDALGetRasterUnitType(band.cValue))
+	return
+}
+
+func (b GDALRasterBand) GetUnitType() (result string) {
+	result = gdalGetRasterUnitType(b)
+	return
+}
+
+func gdalSetRasterUnitType(band GDALRasterBand, newValue string) (result CPLErr) {
+	cValue := C.CString(newValue)
+	defer C.free(unsafe.Pointer(cValue))
+	result = CPLErr(C.GDALSetRasterUnitType(band.cValue, cValue))
+	return
+}
+
+func (b GDALRasterBand) SetUnitType(newValue string) (err error) {
+	err = cplErr(gdalSetRasterUnitType(b, newValue))
+	return
+}
+
+func gdalGetRasterOffset(band GDALRasterBand, success *int) (result float64) {
+	var cSuccess C.int
+	result = float64(C.GDALGetRasterOffset(band.cValue, &cSuccess))
+	*success = int(cSuccess)
+	return
+}
+
+func (b GDALRasterBand) GetOffset() (value float64, ok bool) {
+	var success int
+	value = gdalGetRasterOffset(b, &success)
+	ok = success != 0
+	return
+}
+
+func gdalSetRasterOffset(band GDALRasterBand, newOffset float64) (result CPLErr) {
+	result = CPLErr(C.GDALSetRasterOffset(band.cValue, C.double(newOffset)))
+	return
+}
+
+func (b GDALRasterBand) SetOffset(newOffset float64) (err error) {
+	err = cplErr(gdalSetRasterOffset(b, newOffset))
+	return
+}
+
+func gdalGetRasterScale(band GDALRasterBand, success *int) (result float64) {
+	var cSuccess C.int
+	result = float64(C.GDALGetRasterScale(band.cValue, &cSuccess))
+	*success = int(cSuccess)
+	return
+}
+
+func (b GDALRasterBand) GetScale() (value float64, ok bool) {
+	var success int
+	value = gdalGetRasterScale(b, &success)
+	ok = success != 0
+	return
+}
+
+func gdalSetRasterScale(band GDALRasterBand, newScale float64) (result CPLErr) {
+	result = CPLErr(C.GDALSetRasterScale(band.cValue, C.double(newScale)))
+	return
+}
+
+func (b GDALRasterBand) SetScale(newScale float64) (err error) {
+	err = cplErr(gdalSetRasterScale(b, newScale))
+	return
+}
+
+func gdalComputeRasterMinMax(band GDALRasterBand, approxOK int, minMax *[2]float64) (result CPLErr) {
+	var cMinMax [2]C.double
+	result = CPLErr(C.GDALComputeRasterMinMax(band.cValue, C.int(approxOK), &cMinMax[0]))
+	minMax[0] = float64(cMinMax[0])
+	minMax[1] = float64(cMinMax[1])
+	return
+}
+
+func (b GDALRasterBand) ComputeMinMax(approxOK int) (minMax [2]float64, err error) {
+	err = cplErr(gdalComputeRasterMinMax(b, approxOK, &minMax))
+	return
+}
+
+func gdalComputeRasterMinMaxLocation(band GDALRasterBand, min, max *float64, minX, minY, maxX, maxY *int) (result CPLErr) {
+	var cMin, cMax C.double
+	var cMinX, cMinY, cMaxX, cMaxY C.int
+	result = CPLErr(C.GDALComputeRasterMinMaxLocation(band.cValue, &cMin, &cMax, &cMinX, &cMinY, &cMaxX, &cMaxY))
+	*min = float64(cMin)
+	*max = float64(cMax)
+	*minX = int(cMinX)
+	*minY = int(cMinY)
+	*maxX = int(cMaxX)
+	*maxY = int(cMaxY)
+	return
+}
+
+func (b GDALRasterBand) ComputeMinMaxLocation() (min, max float64, minX, minY, maxX, maxY int, err error) {
+	err = cplErr(gdalComputeRasterMinMaxLocation(b, &min, &max, &minX, &minY, &maxX, &maxY))
+	return
+}
+
+func gdalFlushRasterCache(band GDALRasterBand) (result CPLErr) {
+	result = CPLErr(C.GDALFlushRasterCache(band.cValue))
+	return
+}
+
+func (b GDALRasterBand) FlushCache() (err error) {
+	err = cplErr(gdalFlushRasterCache(b))
+	return
+}
+
+func gdalDropRasterCache(band GDALRasterBand) (result CPLErr) {
+	result = CPLErr(C.GDALDropRasterCache(band.cValue))
+	return
+}
+
+func (b GDALRasterBand) DropCache() (err error) {
+	err = cplErr(gdalDropRasterCache(b))
+	return
+}
+
+// Deprecated: use GetHistogramEx.
+func gdalGetRasterHistogram(band GDALRasterBand, min, max float64, nBuckets int, histogram []int, includeOutOfRange, approxOK int, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
+	cHist := make([]C.int, nBuckets)
+	var ptr *C.int
+	if nBuckets > 0 {
+		ptr = &cHist[0]
+	}
+	result = CPLErr(C.GDALGetRasterHistogram(band.cValue, C.double(min), C.double(max), C.int(nBuckets), ptr, C.int(includeOutOfRange), C.int(approxOK), progress.cValue, progressData))
+	for i := 0; i < nBuckets; i++ {
+		histogram[i] = int(cHist[i])
+	}
+	return
+}
+
+// Deprecated: use GetHistogramEx.
+func (b GDALRasterBand) GetHistogram(min, max float64, nBuckets, includeOutOfRange, approxOK int, progress GDALProgressFunc, progressData unsafe.Pointer) (histogram []int, err error) {
+	histogram = make([]int, nBuckets)
+	err = cplErr(gdalGetRasterHistogram(b, min, max, nBuckets, histogram, includeOutOfRange, approxOK, progress, progressData))
+	return
+}
+
+func gdalGetRasterHistogramEx(band GDALRasterBand, min, max float64, nBuckets int, histogram []uint64, includeOutOfRange, approxOK int, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
+	cHist := make([]C.GUIntBig, nBuckets)
+	var ptr *C.GUIntBig
+	if nBuckets > 0 {
+		ptr = &cHist[0]
+	}
+	result = CPLErr(C.GDALGetRasterHistogramEx(band.cValue, C.double(min), C.double(max), C.int(nBuckets), ptr, C.int(includeOutOfRange), C.int(approxOK), progress.cValue, progressData))
+	for i := 0; i < nBuckets; i++ {
+		histogram[i] = uint64(cHist[i])
+	}
+	return
+}
+
+func (b GDALRasterBand) GetHistogramEx(min, max float64, nBuckets, includeOutOfRange, approxOK int, progress GDALProgressFunc, progressData unsafe.Pointer) (histogram []uint64, err error) {
+	histogram = make([]uint64, nBuckets)
+	err = cplErr(gdalGetRasterHistogramEx(b, min, max, nBuckets, histogram, includeOutOfRange, approxOK, progress, progressData))
+	return
+}
+
+func gdalGetDefaultHistogramEx(band GDALRasterBand, min, max *float64, buckets *int, histogram *[]uint64, force int, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
+	var cMin, cMax C.double
+	var cBuckets C.int
+	var cHist *C.GUIntBig
+	result = CPLErr(C.GDALGetDefaultHistogramEx(band.cValue, &cMin, &cMax, &cBuckets, &cHist, C.int(force), progress.cValue, progressData))
+	*min = float64(cMin)
+	*max = float64(cMax)
+	*buckets = int(cBuckets)
+	if cHist != nil {
+		src := unsafe.Slice(cHist, int(cBuckets))
+		h := make([]uint64, int(cBuckets))
+		for i := range h {
+			h[i] = uint64(src[i])
+		}
+		*histogram = h
+		C.VSIFree(unsafe.Pointer(cHist))
+	}
+	return
+}
+
+func (b GDALRasterBand) GetDefaultHistogramEx(force int, progress GDALProgressFunc, progressData unsafe.Pointer) (min, max float64, buckets int, histogram []uint64, err error) {
+	err = cplErr(gdalGetDefaultHistogramEx(b, &min, &max, &buckets, &histogram, force, progress, progressData))
+	return
+}
+
+func gdalSetDefaultHistogramEx(band GDALRasterBand, min, max float64, nBuckets int, histogram []uint64) (result CPLErr) {
+	cHist := make([]C.GUIntBig, nBuckets)
+	for i := 0; i < nBuckets && i < len(histogram); i++ {
+		cHist[i] = C.GUIntBig(histogram[i])
+	}
+	var ptr *C.GUIntBig
+	if nBuckets > 0 {
+		ptr = &cHist[0]
+	}
+	result = CPLErr(C.GDALSetDefaultHistogramEx(band.cValue, C.double(min), C.double(max), C.int(nBuckets), ptr))
+	return
+}
+
+func (b GDALRasterBand) SetDefaultHistogramEx(min, max float64, histogram []uint64) (err error) {
+	err = cplErr(gdalSetDefaultHistogramEx(b, min, max, len(histogram), histogram))
+	return
+}
+
+func gdalGetRandomRasterSample(band GDALRasterBand, samples int, buffer []float32) (result int) {
+	var ptr *C.float
+	if len(buffer) > 0 {
+		ptr = (*C.float)(unsafe.Pointer(&buffer[0]))
+	}
+	result = int(C.GDALGetRandomRasterSample(band.cValue, C.int(samples), ptr))
+	return
+}
+
+func (b GDALRasterBand) GetRandomSample(samples int) (buffer []float32, count int) {
+	buffer = make([]float32, samples)
+	count = gdalGetRandomRasterSample(b, samples, buffer)
+	return
+}
+
+func gdalGetRasterSampleOverview(band GDALRasterBand, desiredSamples int) (result GDALRasterBand) {
+	result = GDALRasterBand{cValue: C.GDALGetRasterSampleOverview(band.cValue, C.int(desiredSamples))}
+	return
+}
+
+func (b GDALRasterBand) GetSampleOverview(desiredSamples int) (result GDALRasterBand, err error) {
+	result = gdalGetRasterSampleOverview(b, desiredSamples)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGetRasterSampleOverviewEx(band GDALRasterBand, desiredSamples uint64) (result GDALRasterBand) {
+	result = GDALRasterBand{cValue: C.GDALGetRasterSampleOverviewEx(band.cValue, C.GUIntBig(desiredSamples))}
+	return
+}
+
+func (b GDALRasterBand) GetSampleOverviewEx(desiredSamples uint64) (result GDALRasterBand, err error) {
+	result = gdalGetRasterSampleOverviewEx(b, desiredSamples)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalFillRaster(band GDALRasterBand, realValue, imaginaryValue float64) (result CPLErr) {
+	result = CPLErr(C.GDALFillRaster(band.cValue, C.double(realValue), C.double(imaginaryValue)))
+	return
+}
+
+func (b GDALRasterBand) Fill(realValue, imaginaryValue float64) (err error) {
+	err = cplErr(gdalFillRaster(b, realValue, imaginaryValue))
+	return
+}
+
+func gdalComputeBandStats(band GDALRasterBand, sampleStep int, mean, stdDev *float64, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
+	var cMean, cStdDev C.double
+	result = CPLErr(C.GDALComputeBandStats(band.cValue, C.int(sampleStep), &cMean, &cStdDev, progress.cValue, progressData))
+	*mean = float64(cMean)
+	*stdDev = float64(cStdDev)
+	return
+}
+
+func (b GDALRasterBand) ComputeBandStats(sampleStep int, progress GDALProgressFunc, progressData unsafe.Pointer) (mean, stdDev float64, err error) {
+	err = cplErr(gdalComputeBandStats(b, sampleStep, &mean, &stdDev, progress, progressData))
+	return
+}
+
+func gdalOverviewMagnitudeCorrection(baseBand GDALRasterBand, overviewCount int, overviews GDALRasterBands, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
+	result = CPLErr(C.GDALOverviewMagnitudeCorrection(baseBand.cValue, C.int(overviewCount), overviews.cPtr(), progress.cValue, progressData))
+	return
+}
+
+func (b GDALRasterBand) OverviewMagnitudeCorrection(overviews GDALRasterBands, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+	err = cplErr(gdalOverviewMagnitudeCorrection(b, len(overviews), overviews, progress, progressData))
+	return
+}
+
+func gdalGetDefaultRAT(band GDALRasterBand) (result GDALRasterAttributeTable) {
+	result = GDALRasterAttributeTable{cValue: C.GDALGetDefaultRAT(band.cValue)}
+	return
+}
+
+func (b GDALRasterBand) GetDefaultRAT() (result GDALRasterAttributeTable, err error) {
+	result = gdalGetDefaultRAT(b)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalSetDefaultRAT(band GDALRasterBand, rat GDALRasterAttributeTable) (result CPLErr) {
+	result = CPLErr(C.GDALSetDefaultRAT(band.cValue, rat.cValue))
+	return
+}
+
+func (b GDALRasterBand) SetDefaultRAT(rat GDALRasterAttributeTable) (err error) {
+	err = cplErr(gdalSetDefaultRAT(b, rat))
+	return
+}
+
+// GDALAddDerivedBandPixelFunc and GDALAddDerivedBandPixelFuncWithArgs are
+// deferred: registering a Go pixel function as a C callback needs //export
+// plumbing.
+
+func gdalRasterInterpolateAtPoint(band GDALRasterBand, pixel, line float64, interpolation GDALRIOResampleAlg, realValue, imagValue *float64) (result CPLErr) {
+	var cReal, cImag C.double
+	result = CPLErr(C.GDALRasterInterpolateAtPoint(band.cValue, C.double(pixel), C.double(line), C.GDALRIOResampleAlg(interpolation), &cReal, &cImag))
+	*realValue = float64(cReal)
+	*imagValue = float64(cImag)
+	return
+}
+
+func (b GDALRasterBand) InterpolateAtPoint(pixel, line float64, interpolation GDALRIOResampleAlg) (realValue, imagValue float64, err error) {
+	err = cplErr(gdalRasterInterpolateAtPoint(b, pixel, line, interpolation, &realValue, &imagValue))
+	return
+}
+
+func gdalRasterInterpolateAtGeolocation(band GDALRasterBand, geolocX, geolocY float64, srs OGRSpatialReference, interpolation GDALRIOResampleAlg, realValue, imagValue *float64, transformerOptions []string) (result CPLErr) {
+	opts, free := cStrings(transformerOptions)
+	defer free()
+	var cReal, cImag C.double
+	result = CPLErr(C.GDALRasterInterpolateAtGeolocation(band.cValue, C.double(geolocX), C.double(geolocY), srs.cValue, C.GDALRIOResampleAlg(interpolation), &cReal, &cImag, C.CSLConstList(unsafe.Pointer(opts))))
+	*realValue = float64(cReal)
+	*imagValue = float64(cImag)
+	return
+}
+
+func (b GDALRasterBand) InterpolateAtGeolocation(geolocX, geolocY float64, srs OGRSpatialReference, interpolation GDALRIOResampleAlg, transformerOptions []string) (realValue, imagValue float64, err error) {
+	err = cplErr(gdalRasterInterpolateAtGeolocation(b, geolocX, geolocY, srs, interpolation, &realValue, &imagValue, transformerOptions))
+	return
+}
+
+// The VRTProcessedDataset function API (VRTPDWorkingDataPtr, the Init/Free/
+// Process callback typedefs and GDALVRTRegisterProcessedDatasetFunc) is
+// deferred: it registers Go callbacks as C function pointers (//export).
+
+func gdalGetMaskBand(band GDALRasterBand) (result GDALRasterBand) {
+	result = GDALRasterBand{cValue: C.GDALGetMaskBand(band.cValue)}
+	return
+}
+
+func (b GDALRasterBand) GetMaskBand() (result GDALRasterBand, err error) {
+	result = gdalGetMaskBand(b)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGetMaskFlags(band GDALRasterBand) (result int) {
+	result = int(C.GDALGetMaskFlags(band.cValue))
+	return
+}
+
+func (b GDALRasterBand) GetMaskFlags() (result int) {
+	result = gdalGetMaskFlags(b)
+	return
+}
+
+func gdalCreateMaskBand(band GDALRasterBand, flags int) (result CPLErr) {
+	result = CPLErr(C.GDALCreateMaskBand(band.cValue, C.int(flags)))
+	return
+}
+
+func (b GDALRasterBand) CreateMaskBand(flags int) (err error) {
+	err = cplErr(gdalCreateMaskBand(b, flags))
+	return
+}
+
+func gdalIsMaskBand(band GDALRasterBand) (result bool) {
+	result = bool(C.GDALIsMaskBand(band.cValue))
+	return
+}
+
+func (b GDALRasterBand) IsMaskBand() (result bool) {
+	result = gdalIsMaskBand(b)
+	return
+}
+
+// Flags returned by GetMaskFlags.
+const (
+	GMFAllValid   = C.GMF_ALL_VALID
+	GMFPerDataset = C.GMF_PER_DATASET
+	GMFAlpha      = C.GMF_ALPHA
+	GMFNoData     = C.GMF_NODATA
+)
+
+// Flags returned by GetDataCoverageStatus.
+const (
+	GDALDataCoverageStatusUnimplemented = C.GDAL_DATA_COVERAGE_STATUS_UNIMPLEMENTED
+	GDALDataCoverageStatusData          = C.GDAL_DATA_COVERAGE_STATUS_DATA
+	GDALDataCoverageStatusEmpty         = C.GDAL_DATA_COVERAGE_STATUS_EMPTY
+)
+
+func gdalGetDataCoverageStatus(band GDALRasterBand, xOff, yOff, xSize, ySize, maskFlagStop int, dataPct *float64) (result int) {
+	var cDataPct C.double
+	result = int(C.GDALGetDataCoverageStatus(band.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), C.int(maskFlagStop), &cDataPct))
+	*dataPct = float64(cDataPct)
+	return
+}
+
+func (b GDALRasterBand) GetDataCoverageStatus(xOff, yOff, xSize, ySize, maskFlagStop int) (status int, dataPct float64) {
+	status = gdalGetDataCoverageStatus(b, xOff, yOff, xSize, ySize, maskFlagStop, &dataPct)
+	return
+}
+
+func gdalComputedRasterBandRelease(band GDALComputedRasterBand) {
+	C.GDALComputedRasterBandRelease(band.cValue)
+}
+
+func (b GDALComputedRasterBand) Release() {
+	gdalComputedRasterBandRelease(b)
+}
+
+// Raster algebra unary operation.
+type GDALRasterAlgebraUnaryOperation C.GDALRasterAlgebraUnaryOperation
+
+const (
+	GRAUOLogicalNot GDALRasterAlgebraUnaryOperation = C.GRAUO_LOGICAL_NOT
+	GRAUOAbs        GDALRasterAlgebraUnaryOperation = C.GRAUO_ABS
+	GRAUOSqrt       GDALRasterAlgebraUnaryOperation = C.GRAUO_SQRT
+	GRAUOLog        GDALRasterAlgebraUnaryOperation = C.GRAUO_LOG
+	GRAUOLog10      GDALRasterAlgebraUnaryOperation = C.GRAUO_LOG10
+)
+
+func gdalRasterBandUnaryOp(band GDALRasterBand, op GDALRasterAlgebraUnaryOperation) (result GDALComputedRasterBand) {
+	result = GDALComputedRasterBand{cValue: C.GDALRasterBandUnaryOp(band.cValue, C.GDALRasterAlgebraUnaryOperation(op))}
+	return
+}
+
+func (b GDALRasterBand) UnaryOp(op GDALRasterAlgebraUnaryOperation) (result GDALComputedRasterBand, err error) {
+	result = gdalRasterBandUnaryOp(b, op)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+// Raster algebra binary operation.
+type GDALRasterAlgebraBinaryOperation C.GDALRasterAlgebraBinaryOperation
+
+const (
+	GRABOAdd        GDALRasterAlgebraBinaryOperation = C.GRABO_ADD
+	GRABOSub        GDALRasterAlgebraBinaryOperation = C.GRABO_SUB
+	GRABOMul        GDALRasterAlgebraBinaryOperation = C.GRABO_MUL
+	GRABODiv        GDALRasterAlgebraBinaryOperation = C.GRABO_DIV
+	GRABOPow        GDALRasterAlgebraBinaryOperation = C.GRABO_POW
+	GRABOGt         GDALRasterAlgebraBinaryOperation = C.GRABO_GT
+	GRABOGe         GDALRasterAlgebraBinaryOperation = C.GRABO_GE
+	GRABOLt         GDALRasterAlgebraBinaryOperation = C.GRABO_LT
+	GRABOLe         GDALRasterAlgebraBinaryOperation = C.GRABO_LE
+	GRABOEq         GDALRasterAlgebraBinaryOperation = C.GRABO_EQ
+	GRABONe         GDALRasterAlgebraBinaryOperation = C.GRABO_NE
+	GRABOLogicalAnd GDALRasterAlgebraBinaryOperation = C.GRABO_LOGICAL_AND
+	GRABOLogicalOr  GDALRasterAlgebraBinaryOperation = C.GRABO_LOGICAL_OR
+)
+
+func gdalRasterBandBinaryOpBand(band GDALRasterBand, op GDALRasterAlgebraBinaryOperation, otherBand GDALRasterBand) (result GDALComputedRasterBand) {
+	result = GDALComputedRasterBand{cValue: C.GDALRasterBandBinaryOpBand(band.cValue, C.GDALRasterAlgebraBinaryOperation(op), otherBand.cValue)}
+	return
+}
+
+func (b GDALRasterBand) BinaryOpBand(op GDALRasterAlgebraBinaryOperation, otherBand GDALRasterBand) (result GDALComputedRasterBand, err error) {
+	result = gdalRasterBandBinaryOpBand(b, op, otherBand)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalRasterBandBinaryOpDouble(band GDALRasterBand, op GDALRasterAlgebraBinaryOperation, constant float64) (result GDALComputedRasterBand) {
+	result = GDALComputedRasterBand{cValue: C.GDALRasterBandBinaryOpDouble(band.cValue, C.GDALRasterAlgebraBinaryOperation(op), C.double(constant))}
+	return
+}
+
+func (b GDALRasterBand) BinaryOpDouble(op GDALRasterAlgebraBinaryOperation, constant float64) (result GDALComputedRasterBand, err error) {
+	result = gdalRasterBandBinaryOpDouble(b, op, constant)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalRasterBandBinaryOpDoubleToBand(constant float64, op GDALRasterAlgebraBinaryOperation, band GDALRasterBand) (result GDALComputedRasterBand) {
+	result = GDALComputedRasterBand{cValue: C.GDALRasterBandBinaryOpDoubleToBand(C.double(constant), C.GDALRasterAlgebraBinaryOperation(op), band.cValue)}
+	return
+}
+
+func GDALRasterBandBinaryOpDoubleToBand(constant float64, op GDALRasterAlgebraBinaryOperation, band GDALRasterBand) (result GDALComputedRasterBand, err error) {
+	result = gdalRasterBandBinaryOpDoubleToBand(constant, op, band)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalRasterBandIfThenElse(condBand, thenBand, elseBand GDALRasterBand) (result GDALComputedRasterBand) {
+	result = GDALComputedRasterBand{cValue: C.GDALRasterBandIfThenElse(condBand.cValue, thenBand.cValue, elseBand.cValue)}
+	return
+}
+
+func (b GDALRasterBand) IfThenElse(thenBand, elseBand GDALRasterBand) (result GDALComputedRasterBand, err error) {
+	result = gdalRasterBandIfThenElse(b, thenBand, elseBand)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalRasterBandAsDataType(band GDALRasterBand, dataType GDALDataType) (result GDALComputedRasterBand) {
+	result = GDALComputedRasterBand{cValue: C.GDALRasterBandAsDataType(band.cValue, C.GDALDataType(dataType))}
+	return
+}
+
+func (b GDALRasterBand) AsDataType(dataType GDALDataType) (result GDALComputedRasterBand, err error) {
+	result = gdalRasterBandAsDataType(b, dataType)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalMaximumOfNBands(bandCount int, bands GDALRasterBands) (result GDALComputedRasterBand) {
+	result = GDALComputedRasterBand{cValue: C.GDALMaximumOfNBands(C.size_t(bandCount), bands.cPtr())}
+	return
+}
+
+func GDALMaximumOfNBands(bands GDALRasterBands) (result GDALComputedRasterBand, err error) {
+	result = gdalMaximumOfNBands(len(bands), bands)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalRasterBandMaxConstant(band GDALRasterBand, constant float64) (result GDALComputedRasterBand) {
+	result = GDALComputedRasterBand{cValue: C.GDALRasterBandMaxConstant(band.cValue, C.double(constant))}
+	return
+}
+
+func (b GDALRasterBand) MaxConstant(constant float64) (result GDALComputedRasterBand, err error) {
+	result = gdalRasterBandMaxConstant(b, constant)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalMinimumOfNBands(bandCount int, bands GDALRasterBands) (result GDALComputedRasterBand) {
+	result = GDALComputedRasterBand{cValue: C.GDALMinimumOfNBands(C.size_t(bandCount), bands.cPtr())}
+	return
+}
+
+func GDALMinimumOfNBands(bands GDALRasterBands) (result GDALComputedRasterBand, err error) {
+	result = gdalMinimumOfNBands(len(bands), bands)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalRasterBandMinConstant(band GDALRasterBand, constant float64) (result GDALComputedRasterBand) {
+	result = GDALComputedRasterBand{cValue: C.GDALRasterBandMinConstant(band.cValue, C.double(constant))}
+	return
+}
+
+func (b GDALRasterBand) MinConstant(constant float64) (result GDALComputedRasterBand, err error) {
+	result = gdalRasterBandMinConstant(b, constant)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalMeanOfNBands(bandCount int, bands GDALRasterBands) (result GDALComputedRasterBand) {
+	result = GDALComputedRasterBand{cValue: C.GDALMeanOfNBands(C.size_t(bandCount), bands.cPtr())}
+	return
+}
+
+func GDALMeanOfNBands(bands GDALRasterBands) (result GDALComputedRasterBand, err error) {
+	result = gdalMeanOfNBands(len(bands), bands)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
 
 // /* ==================================================================== */
 // /*     GDALAsyncReader                                                  */
 // /* ==================================================================== */
 
-// GDALAsyncStatusType CPL_DLL CPL_STDCALL GDALARGetNextUpdatedRegion(
-//     GDALAsyncReaderH hARIO, double dfTimeout, int *pnXBufOff, int *pnYBufOff,
-//     int *pnXBufSize, int *pnYBufSize);
-// int CPL_DLL CPL_STDCALL GDALARLockBuffer(GDALAsyncReaderH hARIO,
-//                                          double dfTimeout);
-// void CPL_DLL CPL_STDCALL GDALARUnlockBuffer(GDALAsyncReaderH hARIO);
+func gdalARGetNextUpdatedRegion(reader GDALAsyncReader, timeout float64, xBufOff, yBufOff, xBufSize, yBufSize *int) (result GDALAsyncStatusType) {
+	var cXOff, cYOff, cXSize, cYSize C.int
+	result = GDALAsyncStatusType(C.GDALARGetNextUpdatedRegion(reader.cValue, C.double(timeout), &cXOff, &cYOff, &cXSize, &cYSize))
+	*xBufOff = int(cXOff)
+	*yBufOff = int(cYOff)
+	*xBufSize = int(cXSize)
+	*yBufSize = int(cYSize)
+	return
+}
 
-// /* -------------------------------------------------------------------- */
-// /*      Helper functions.                                               */
-// /* -------------------------------------------------------------------- */
-// int CPL_DLL CPL_STDCALL GDALGeneralCmdLineProcessor(int nArgc,
-//                                                     char ***ppapszArgv,
-//                                                     int nOptions);
-// void CPL_DLL CPL_STDCALL GDALSwapWords(void *pData, int nWordSize,
-//                                        int nWordCount, int nWordSkip);
-// void CPL_DLL CPL_STDCALL GDALSwapWordsEx(void *pData, int nWordSize,
-//                                          size_t nWordCount, int nWordSkip);
+func (r GDALAsyncReader) GetNextUpdatedRegion(timeout float64) (status GDALAsyncStatusType, xBufOff, yBufOff, xBufSize, yBufSize int) {
+	status = gdalARGetNextUpdatedRegion(r, timeout, &xBufOff, &yBufOff, &xBufSize, &yBufSize)
+	return
+}
 
-// void CPL_DLL CPL_STDCALL GDALCopyWords(const void *CPL_RESTRICT pSrcData,
-//                                        GDALDataType eSrcType,
-//                                        int nSrcPixelOffset,
-//                                        void *CPL_RESTRICT pDstData,
-//                                        GDALDataType eDstType,
-//                                        int nDstPixelOffset, int nWordCount);
+func gdalARLockBuffer(reader GDALAsyncReader, timeout float64) (result bool) {
+	result = C.GDALARLockBuffer(reader.cValue, C.double(timeout)) != 0
+	return
+}
 
-// void CPL_DLL CPL_STDCALL GDALCopyWords64(
-//     const void *CPL_RESTRICT pSrcData, GDALDataType eSrcType,
-//     int nSrcPixelOffset, void *CPL_RESTRICT pDstData, GDALDataType eDstType,
-//     int nDstPixelOffset, GPtrDiff_t nWordCount);
+func (r GDALAsyncReader) LockBuffer(timeout float64) (result bool) {
+	result = gdalARLockBuffer(r, timeout)
+	return
+}
 
-// void CPL_DLL GDALCopyBits(const GByte *pabySrcData, int nSrcOffset,
-//                           int nSrcStep, GByte *pabyDstData, int nDstOffset,
-//                           int nDstStep, int nBitCount, int nStepCount);
+func gdalARUnlockBuffer(reader GDALAsyncReader) {
+	C.GDALARUnlockBuffer(reader.cValue)
+}
 
-// void CPL_DLL GDALDeinterleave(const void *pSourceBuffer, GDALDataType eSourceDT,
-//                               int nComponents, void **ppDestBuffer,
-//                               GDALDataType eDestDT, size_t nIters);
+func (r GDALAsyncReader) UnlockBuffer() {
+	gdalARUnlockBuffer(r)
+}
 
-// void CPL_DLL GDALTranspose2D(const void *pSrc, GDALDataType eSrcType,
-//                              void *pDst, GDALDataType eDstType,
-//                              size_t nSrcWidth, size_t nSrcHeight);
+// Helper functions.
 
-// double CPL_DLL GDALGetNoDataReplacementValue(GDALDataType, double);
+// GDALGeneralCmdLineProcessor is deferred: its char*** in/out argv needs a
+// dedicated design.
 
-// int CPL_DLL CPL_STDCALL GDALLoadWorldFile(const char *, double *);
-// int CPL_DLL CPL_STDCALL GDALReadWorldFile(const char *, const char *, double *);
-// int CPL_DLL CPL_STDCALL GDALWriteWorldFile(const char *, const char *,
-//                                            double *);
-// int CPL_DLL CPL_STDCALL GDALLoadTabFile(const char *, double *, char **, int *,
-//                                         GDAL_GCP **);
-// int CPL_DLL CPL_STDCALL GDALReadTabFile(const char *, double *, char **, int *,
-//                                         GDAL_GCP **);
-// int CPL_DLL CPL_STDCALL GDALLoadOziMapFile(const char *, double *, char **,
-//                                            int *, GDAL_GCP **);
-// int CPL_DLL CPL_STDCALL GDALReadOziMapFile(const char *, double *, char **,
-//                                            int *, GDAL_GCP **);
+func gdalSwapWords(data unsafe.Pointer, wordSize, wordCount, wordSkip int) {
+	C.GDALSwapWords(data, C.int(wordSize), C.int(wordCount), C.int(wordSkip))
+}
 
-// const char CPL_DLL *CPL_STDCALL GDALDecToDMS(double, const char *, int);
-// double CPL_DLL CPL_STDCALL GDALPackedDMSToDec(double);
-// double CPL_DLL CPL_STDCALL GDALDecToPackedDMS(double);
+func GDALSwapWords(data []byte, wordSize, wordCount, wordSkip int) {
+	gdalSwapWords(cBytes(data), wordSize, wordCount, wordSkip)
+}
 
-// /* Note to developers : please keep this section in sync with ogr_core.h */
+func gdalSwapWordsEx(data unsafe.Pointer, wordSize int, wordCount int, wordSkip int) {
+	C.GDALSwapWordsEx(data, C.int(wordSize), C.size_t(wordCount), C.int(wordSkip))
+}
 
-// #ifndef GDAL_VERSION_INFO_DEFINED
-// #ifndef DOXYGEN_SKIP
-// #define GDAL_VERSION_INFO_DEFINED
-// #endif
-// const char CPL_DLL *CPL_STDCALL GDALVersionInfo(const char *);
-// #endif
+func GDALSwapWordsEx(data []byte, wordSize, wordCount, wordSkip int) {
+	gdalSwapWordsEx(cBytes(data), wordSize, wordCount, wordSkip)
+}
 
-// #ifndef GDAL_CHECK_VERSION
+func gdalCopyWords(src unsafe.Pointer, srcType GDALDataType, srcPixelOffset int, dst unsafe.Pointer, dstType GDALDataType, dstPixelOffset, wordCount int) {
+	C.GDALCopyWords(src, C.GDALDataType(srcType), C.int(srcPixelOffset), dst, C.GDALDataType(dstType), C.int(dstPixelOffset), C.int(wordCount))
+}
 
-// int CPL_DLL CPL_STDCALL GDALCheckVersion(int nVersionMajor, int nVersionMinor,
-//                                          const char *pszCallingComponentName);
+func GDALCopyWords(src []byte, srcType GDALDataType, srcPixelOffset int, dst []byte, dstType GDALDataType, dstPixelOffset, wordCount int) {
+	gdalCopyWords(cBytes(src), srcType, srcPixelOffset, cBytes(dst), dstType, dstPixelOffset, wordCount)
+}
 
-// /** Helper macro for GDALCheckVersion()
-//   @see GDALCheckVersion()
-//   */
-// #define GDAL_CHECK_VERSION(pszCallingComponentName)                            \
-//     GDALCheckVersion(GDAL_VERSION_MAJOR, GDAL_VERSION_MINOR,                   \
-//                      pszCallingComponentName)
+func gdalCopyWords64(src unsafe.Pointer, srcType GDALDataType, srcPixelOffset int, dst unsafe.Pointer, dstType GDALDataType, dstPixelOffset int, wordCount int64) {
+	C.GDALCopyWords64(src, C.GDALDataType(srcType), C.int(srcPixelOffset), dst, C.GDALDataType(dstType), C.int(dstPixelOffset), C.GPtrDiff_t(wordCount))
+}
 
-// #endif
+func GDALCopyWords64(src []byte, srcType GDALDataType, srcPixelOffset int, dst []byte, dstType GDALDataType, dstPixelOffset int, wordCount int64) {
+	gdalCopyWords64(cBytes(src), srcType, srcPixelOffset, cBytes(dst), dstType, dstPixelOffset, wordCount)
+}
 
-// /*! @cond Doxygen_Suppress */
-// #ifdef GDAL_COMPILATION
-// #define GDALExtractRPCInfoV1 GDALExtractRPCInfo
-// #else
-// #define GDALRPCInfo GDALRPCInfoV2
-// #define GDALExtractRPCInfo GDALExtractRPCInfoV2
-// #endif
+func gdalCopyBits(src unsafe.Pointer, srcOffset, srcStep int, dst unsafe.Pointer, dstOffset, dstStep, bitCount, stepCount int) {
+	C.GDALCopyBits((*C.GByte)(src), C.int(srcOffset), C.int(srcStep), (*C.GByte)(dst), C.int(dstOffset), C.int(dstStep), C.int(bitCount), C.int(stepCount))
+}
 
-// /* Deprecated: use GDALRPCInfoV2 */
-// typedef struct
-// {
-//     double dfLINE_OFF;   /*!< Line offset */
-//     double dfSAMP_OFF;   /*!< Sample/Pixel offset */
-//     double dfLAT_OFF;    /*!< Latitude offset */
-//     double dfLONG_OFF;   /*!< Longitude offset */
-//     double dfHEIGHT_OFF; /*!< Height offset */
+func GDALCopyBits(src []byte, srcOffset, srcStep int, dst []byte, dstOffset, dstStep, bitCount, stepCount int) {
+	gdalCopyBits(cBytes(src), srcOffset, srcStep, cBytes(dst), dstOffset, dstStep, bitCount, stepCount)
+}
 
-//     double dfLINE_SCALE;   /*!< Line scale */
-//     double dfSAMP_SCALE;   /*!< Sample/Pixel scale */
-//     double dfLAT_SCALE;    /*!< Latitude scale */
-//     double dfLONG_SCALE;   /*!< Longitude scale */
-//     double dfHEIGHT_SCALE; /*!< Height scale */
+// GDALDeinterleave is deferred: its void **ppDestBuffer output array of buffers
+// needs a dedicated design.
 
-//     double adfLINE_NUM_COEFF[20]; /*!< Line Numerator Coefficients */
-//     double adfLINE_DEN_COEFF[20]; /*!< Line Denominator Coefficients */
-//     double adfSAMP_NUM_COEFF[20]; /*!< Sample/Pixel Numerator Coefficients */
-//     double adfSAMP_DEN_COEFF[20]; /*!< Sample/Pixel Denominator Coefficients */
+func gdalTranspose2D(src unsafe.Pointer, srcType GDALDataType, dst unsafe.Pointer, dstType GDALDataType, srcWidth, srcHeight int) {
+	C.GDALTranspose2D(src, C.GDALDataType(srcType), dst, C.GDALDataType(dstType), C.size_t(srcWidth), C.size_t(srcHeight))
+}
 
-//     double dfMIN_LONG; /*!< Minimum longitude */
-//     double dfMIN_LAT;  /*!< Minimum latitude */
-//     double dfMAX_LONG; /*!< Maximum longitude */
-//     double dfMAX_LAT;  /*!< Maximum latitude */
-// } GDALRPCInfoV1;
+func GDALTranspose2D(src []byte, srcType GDALDataType, dst []byte, dstType GDALDataType, srcWidth, srcHeight int) {
+	gdalTranspose2D(cBytes(src), srcType, cBytes(dst), dstType, srcWidth, srcHeight)
+}
 
-// /*! @endcond */
+func gdalGetNoDataReplacementValue(dataType GDALDataType, value float64) (result float64) {
+	result = float64(C.GDALGetNoDataReplacementValue(C.GDALDataType(dataType), C.double(value)))
+	return
+}
 
-// /** Structure to store Rational Polynomial Coefficients / Rigorous Projection
-//  * Model. See http://geotiff.maptools.org/rpc_prop.html */
-// typedef struct
-// {
-//     double dfLINE_OFF;   /*!< Line offset */
-//     double dfSAMP_OFF;   /*!< Sample/Pixel offset */
-//     double dfLAT_OFF;    /*!< Latitude offset */
-//     double dfLONG_OFF;   /*!< Longitude offset */
-//     double dfHEIGHT_OFF; /*!< Height offset */
+func (dt GDALDataType) GetNoDataReplacementValue(value float64) (result float64) {
+	result = gdalGetNoDataReplacementValue(dt, value)
+	return
+}
 
-//     double dfLINE_SCALE;   /*!< Line scale */
-//     double dfSAMP_SCALE;   /*!< Sample/Pixel scale */
-//     double dfLAT_SCALE;    /*!< Latitude scale */
-//     double dfLONG_SCALE;   /*!< Longitude scale */
-//     double dfHEIGHT_SCALE; /*!< Height scale */
+func gdalLoadWorldFile(filename string, geoTransform *[6]float64) (result int) {
+	cName := C.CString(filename)
+	defer C.free(unsafe.Pointer(cName))
+	var gt [6]C.double
+	result = int(C.GDALLoadWorldFile(cName, &gt[0]))
+	for i := range gt {
+		geoTransform[i] = float64(gt[i])
+	}
+	return
+}
 
-//     double adfLINE_NUM_COEFF[20]; /*!< Line Numerator Coefficients */
-//     double adfLINE_DEN_COEFF[20]; /*!< Line Denominator Coefficients */
-//     double adfSAMP_NUM_COEFF[20]; /*!< Sample/Pixel Numerator Coefficients */
-//     double adfSAMP_DEN_COEFF[20]; /*!< Sample/Pixel Denominator Coefficients */
+func GDALLoadWorldFile(filename string) (geoTransform [6]float64, ok bool) {
+	ok = gdalLoadWorldFile(filename, &geoTransform) != 0
+	return
+}
 
-//     double dfMIN_LONG; /*!< Minimum longitude */
-//     double dfMIN_LAT;  /*!< Minimum latitude */
-//     double dfMAX_LONG; /*!< Maximum longitude */
-//     double dfMAX_LAT;  /*!< Maximum latitude */
+func gdalReadWorldFile(baseFilename, extension string, geoTransform *[6]float64) (result int) {
+	cBase := C.CString(baseFilename)
+	defer C.free(unsafe.Pointer(cBase))
+	cExt := C.CString(extension)
+	defer C.free(unsafe.Pointer(cExt))
+	var gt [6]C.double
+	result = int(C.GDALReadWorldFile(cBase, cExt, &gt[0]))
+	for i := range gt {
+		geoTransform[i] = float64(gt[i])
+	}
+	return
+}
 
-//     /* Those fields should be at the end. And all above fields should be the
-//      * same as in GDALRPCInfoV1 */
-//     double dfERR_BIAS; /*!< Bias error */
-//     double dfERR_RAND; /*!< Random error */
-// } GDALRPCInfoV2;
+func GDALReadWorldFile(baseFilename, extension string) (geoTransform [6]float64, ok bool) {
+	ok = gdalReadWorldFile(baseFilename, extension, &geoTransform) != 0
+	return
+}
 
-// /*! @cond Doxygen_Suppress */
-// int CPL_DLL CPL_STDCALL GDALExtractRPCInfoV1(CSLConstList, GDALRPCInfoV1 *);
-// /*! @endcond */
-// int CPL_DLL CPL_STDCALL GDALExtractRPCInfoV2(CSLConstList, GDALRPCInfoV2 *);
+func gdalWriteWorldFile(baseFilename, extension string, geoTransform [6]float64) (result int) {
+	cBase := C.CString(baseFilename)
+	defer C.free(unsafe.Pointer(cBase))
+	cExt := C.CString(extension)
+	defer C.free(unsafe.Pointer(cExt))
+	var gt [6]C.double
+	for i, v := range geoTransform {
+		gt[i] = C.double(v)
+	}
+	result = int(C.GDALWriteWorldFile(cBase, cExt, &gt[0]))
+	return
+}
+
+func GDALWriteWorldFile(baseFilename, extension string, geoTransform [6]float64) (ok bool) {
+	ok = gdalWriteWorldFile(baseFilename, extension, geoTransform) != 0
+	return
+}
+
+// GDALLoadTabFile, GDALReadTabFile, GDALLoadOziMapFile and GDALReadOziMapFile
+// are deferred: their char**/int*/GDAL_GCP** in/out parameters need a dedicated
+// design.
+
+func gdalDecToDMS(angle float64, axis string, precision int) (result string) {
+	cAxis := C.CString(axis)
+	defer C.free(unsafe.Pointer(cAxis))
+	result = C.GoString(C.GDALDecToDMS(C.double(angle), cAxis, C.int(precision)))
+	return
+}
+
+func GDALDecToDMS(angle float64, axis string, precision int) (result string) {
+	result = gdalDecToDMS(angle, axis, precision)
+	return
+}
+
+func gdalPackedDMSToDec(packed float64) (result float64) {
+	result = float64(C.GDALPackedDMSToDec(C.double(packed)))
+	return
+}
+
+func GDALPackedDMSToDec(packed float64) (result float64) {
+	result = gdalPackedDMSToDec(packed)
+	return
+}
+
+func gdalDecToPackedDMS(dec float64) (result float64) {
+	result = float64(C.GDALDecToPackedDMS(C.double(dec)))
+	return
+}
+
+func GDALDecToPackedDMS(dec float64) (result float64) {
+	result = gdalDecToPackedDMS(dec)
+	return
+}
+
+func gdalVersionInfo(request string) (result string) {
+	cRequest := C.CString(request)
+	defer C.free(unsafe.Pointer(cRequest))
+	result = C.GoString(C.GDALVersionInfo(cRequest))
+	return
+}
+
+func GDALVersionInfo(request string) (result string) {
+	result = gdalVersionInfo(request)
+	return
+}
+
+func gdalCheckVersion(versionMajor, versionMinor int, callingComponentName string) (result bool) {
+	cName := C.CString(callingComponentName)
+	defer C.free(unsafe.Pointer(cName))
+	result = C.GDALCheckVersion(C.int(versionMajor), C.int(versionMinor), cName) != 0
+	return
+}
+
+func GDALCheckVersion(versionMajor, versionMinor int, callingComponentName string) (result bool) {
+	result = gdalCheckVersion(versionMajor, versionMinor, callingComponentName)
+	return
+}
+
+// GDALRPCInfoV1 is a deprecated Rational Polynomial Coefficients structure.
+type GDALRPCInfoV1 struct {
+	cValue C.GDALRPCInfoV1
+}
+
+// GDALRPCInfoV2 stores Rational Polynomial Coefficients / Rigorous Projection
+// Model.
+type GDALRPCInfoV2 struct {
+	cValue C.GDALRPCInfoV2
+}
+
+func gdalExtractRPCInfoV1(metadata []string, rpcInfo *GDALRPCInfoV1) (result int) {
+	md, free := cStrings(metadata)
+	defer free()
+	result = int(C.GDALExtractRPCInfoV1(C.CSLConstList(unsafe.Pointer(md)), &rpcInfo.cValue))
+	return
+}
+
+func GDALExtractRPCInfoV1(metadata []string) (rpcInfo GDALRPCInfoV1, ok bool) {
+	ok = gdalExtractRPCInfoV1(metadata, &rpcInfo) != 0
+	return
+}
+
+func gdalExtractRPCInfoV2(metadata []string, rpcInfo *GDALRPCInfoV2) (result int) {
+	md, free := cStrings(metadata)
+	defer free()
+	result = int(C.GDALExtractRPCInfoV2(C.CSLConstList(unsafe.Pointer(md)), &rpcInfo.cValue))
+	return
+}
+
+func GDALExtractRPCInfoV2(metadata []string) (rpcInfo GDALRPCInfoV2, ok bool) {
+	ok = gdalExtractRPCInfoV2(metadata, &rpcInfo) != 0
+	return
+}
 
 // /* ==================================================================== */
 // /*      Color tables.                                                   */
 // /* ==================================================================== */
 
-// /** Color tuple */
-// typedef struct
-// {
-//     /*! gray, red, cyan or hue */
-//     short c1;
+// GDALColorEntry is a color tuple (c1..c4).
+type GDALColorEntry struct {
+	cValue C.GDALColorEntry
+}
 
-//     /*! green, magenta, or lightness */
-//     short c2;
+func gdalCreateColorTable(paletteInterp GDALPaletteInterp) (result GDALColorTable) {
+	result = GDALColorTable{cValue: C.GDALCreateColorTable(C.GDALPaletteInterp(paletteInterp))}
+	return
+}
 
-//     /*! blue, yellow, or saturation */
-//     short c3;
+func GDALCreateColorTable(paletteInterp GDALPaletteInterp) (result GDALColorTable, err error) {
+	result = gdalCreateColorTable(paletteInterp)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
 
-//     /*! alpha or blackband */
-//     short c4;
-// } GDALColorEntry;
+func gdalDestroyColorTable(colorTable GDALColorTable) {
+	C.GDALDestroyColorTable(colorTable.cValue)
+}
 
-// GDALColorTableH CPL_DLL CPL_STDCALL GDALCreateColorTable(GDALPaletteInterp)
-//     CPL_WARN_UNUSED_RESULT;
-// void CPL_DLL CPL_STDCALL GDALDestroyColorTable(GDALColorTableH);
-// GDALColorTableH CPL_DLL CPL_STDCALL GDALCloneColorTable(GDALColorTableH);
-// GDALPaletteInterp
-//     CPL_DLL CPL_STDCALL GDALGetPaletteInterpretation(GDALColorTableH);
-// int CPL_DLL CPL_STDCALL GDALGetColorEntryCount(GDALColorTableH);
-// const GDALColorEntry CPL_DLL *CPL_STDCALL GDALGetColorEntry(GDALColorTableH,
-//                                                             int);
-// int CPL_DLL CPL_STDCALL GDALGetColorEntryAsRGB(GDALColorTableH, int,
-//                                                GDALColorEntry *);
-// void CPL_DLL CPL_STDCALL GDALSetColorEntry(GDALColorTableH, int,
-//                                            const GDALColorEntry *);
-// void CPL_DLL CPL_STDCALL GDALCreateColorRamp(GDALColorTableH hTable,
-//                                              int nStartIndex,
-//                                              const GDALColorEntry *psStartColor,
-//                                              int nEndIndex,
-//                                              const GDALColorEntry *psEndColor);
+func (ct GDALColorTable) Destroy() {
+	gdalDestroyColorTable(ct)
+}
+
+func gdalCloneColorTable(colorTable GDALColorTable) (result GDALColorTable) {
+	result = GDALColorTable{cValue: C.GDALCloneColorTable(colorTable.cValue)}
+	return
+}
+
+func (ct GDALColorTable) Clone() (result GDALColorTable, err error) {
+	result = gdalCloneColorTable(ct)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGetPaletteInterpretation(colorTable GDALColorTable) (result GDALPaletteInterp) {
+	result = GDALPaletteInterp(C.GDALGetPaletteInterpretation(colorTable.cValue))
+	return
+}
+
+func (ct GDALColorTable) GetPaletteInterpretation() (result GDALPaletteInterp) {
+	result = gdalGetPaletteInterpretation(ct)
+	return
+}
+
+func gdalGetColorEntryCount(colorTable GDALColorTable) (result int) {
+	result = int(C.GDALGetColorEntryCount(colorTable.cValue))
+	return
+}
+
+func (ct GDALColorTable) GetColorEntryCount() (result int) {
+	result = gdalGetColorEntryCount(ct)
+	return
+}
+
+func gdalGetColorEntry(colorTable GDALColorTable, index int) (result GDALColorEntry) {
+	entry := C.GDALGetColorEntry(colorTable.cValue, C.int(index))
+	if entry != nil {
+		result.cValue = *entry
+	}
+	return
+}
+
+func (ct GDALColorTable) GetColorEntry(index int) (result GDALColorEntry) {
+	result = gdalGetColorEntry(ct, index)
+	return
+}
+
+func gdalGetColorEntryAsRGB(colorTable GDALColorTable, index int, result *GDALColorEntry) (ret int) {
+	ret = int(C.GDALGetColorEntryAsRGB(colorTable.cValue, C.int(index), &result.cValue))
+	return
+}
+
+func (ct GDALColorTable) GetColorEntryAsRGB(index int) (result GDALColorEntry, ok bool) {
+	ok = gdalGetColorEntryAsRGB(ct, index, &result) != 0
+	return
+}
+
+func gdalSetColorEntry(colorTable GDALColorTable, index int, entry GDALColorEntry) {
+	C.GDALSetColorEntry(colorTable.cValue, C.int(index), &entry.cValue)
+}
+
+func (ct GDALColorTable) SetColorEntry(index int, entry GDALColorEntry) {
+	gdalSetColorEntry(ct, index, entry)
+}
+
+func gdalCreateColorRamp(colorTable GDALColorTable, startIndex int, startColor GDALColorEntry, endIndex int, endColor GDALColorEntry) {
+	C.GDALCreateColorRamp(colorTable.cValue, C.int(startIndex), &startColor.cValue, C.int(endIndex), &endColor.cValue)
+}
+
+func (ct GDALColorTable) CreateColorRamp(startIndex int, startColor GDALColorEntry, endIndex int, endColor GDALColorEntry) {
+	gdalCreateColorRamp(ct, startIndex, startColor, endIndex, endColor)
+}
 
 // /* ==================================================================== */
 // /*      Raster Attribute Table                                          */
 // /* ==================================================================== */
 
-// /** Field type of raster attribute table */
-// typedef enum
-// {
-//     /*! Integer field */ GFT_Integer,
-//     /*! Floating point (double) field */ GFT_Real,
-//     /*! String field */ GFT_String,
-//     /*! Boolean field (GDAL >= 3.12) */ GFT_Boolean,
-//     /*! DateTime field (GDAL >= 3.12) */ GFT_DateTime,
-//     /*! Geometry field, as WKB (GDAL >= 3.12) */ GFT_WKBGeometry
-// } GDALRATFieldType;
+// Field type of raster attribute table.
+type GDALRATFieldType C.GDALRATFieldType
 
-// /** First invalid value for the GDALRATFieldType enumeration */
-// #define GFT_MaxCount (GFT_WKBGeometry + 1)
+const (
+	GFTInteger     GDALRATFieldType = C.GFT_Integer
+	GFTReal        GDALRATFieldType = C.GFT_Real
+	GFTString      GDALRATFieldType = C.GFT_String
+	GFTBoolean     GDALRATFieldType = C.GFT_Boolean
+	GFTDateTime    GDALRATFieldType = C.GFT_DateTime
+	GFTWKBGeometry GDALRATFieldType = C.GFT_WKBGeometry
+)
 
-// /** Field usage of raster attribute table */
-// typedef enum
-// {
-//     /*! General purpose field. */ GFU_Generic = 0,
-//     /*! Histogram pixel count */ GFU_PixelCount = 1,
-//     /*! Class name */ GFU_Name = 2,
-//     /*! Class range minimum */ GFU_Min = 3,
-//     /*! Class range maximum */ GFU_Max = 4,
-//     /*! Class value (min=max) */ GFU_MinMax = 5,
-//     /*! Red class color (0-255) */ GFU_Red = 6,
-//     /*! Green class color (0-255) */ GFU_Green = 7,
-//     /*! Blue class color (0-255) */ GFU_Blue = 8,
-//     /*! Alpha (0=transparent,255=opaque)*/ GFU_Alpha = 9,
-//     /*! Color Range Red Minimum */ GFU_RedMin = 10,
-//     /*! Color Range Green Minimum */ GFU_GreenMin = 11,
-//     /*! Color Range Blue Minimum */ GFU_BlueMin = 12,
-//     /*! Color Range Alpha Minimum */ GFU_AlphaMin = 13,
-//     /*! Color Range Red Maximum */ GFU_RedMax = 14,
-//     /*! Color Range Green Maximum */ GFU_GreenMax = 15,
-//     /*! Color Range Blue Maximum */ GFU_BlueMax = 16,
-//     /*! Color Range Alpha Maximum */ GFU_AlphaMax = 17,
-//     /*! Maximum GFU value (equals to GFU_AlphaMax+1 currently) */ GFU_MaxCount
-// } GDALRATFieldUsage;
+const GFTMaxCount = C.GFT_MaxCount
 
-// /** RAT table type (thematic or athematic)
-//  */
-// typedef enum
-// {
-//     /*! Thematic table type */ GRTT_THEMATIC,
-//     /*! Athematic table type */ GRTT_ATHEMATIC
-// } GDALRATTableType;
+// Field usage of raster attribute table.
+type GDALRATFieldUsage C.GDALRATFieldUsage
 
-// GDALRasterAttributeTableH CPL_DLL CPL_STDCALL
-// GDALCreateRasterAttributeTable(void) CPL_WARN_UNUSED_RESULT;
+const (
+	GFUGeneric    GDALRATFieldUsage = C.GFU_Generic
+	GFUPixelCount GDALRATFieldUsage = C.GFU_PixelCount
+	GFUName       GDALRATFieldUsage = C.GFU_Name
+	GFUMin        GDALRATFieldUsage = C.GFU_Min
+	GFUMax        GDALRATFieldUsage = C.GFU_Max
+	GFUMinMax     GDALRATFieldUsage = C.GFU_MinMax
+	GFURed        GDALRATFieldUsage = C.GFU_Red
+	GFUGreen      GDALRATFieldUsage = C.GFU_Green
+	GFUBlue       GDALRATFieldUsage = C.GFU_Blue
+	GFUAlpha      GDALRATFieldUsage = C.GFU_Alpha
+	GFURedMin     GDALRATFieldUsage = C.GFU_RedMin
+	GFUGreenMin   GDALRATFieldUsage = C.GFU_GreenMin
+	GFUBlueMin    GDALRATFieldUsage = C.GFU_BlueMin
+	GFUAlphaMin   GDALRATFieldUsage = C.GFU_AlphaMin
+	GFURedMax     GDALRATFieldUsage = C.GFU_RedMax
+	GFUGreenMax   GDALRATFieldUsage = C.GFU_GreenMax
+	GFUBlueMax    GDALRATFieldUsage = C.GFU_BlueMax
+	GFUAlphaMax   GDALRATFieldUsage = C.GFU_AlphaMax
+	GFUMaxCount   GDALRATFieldUsage = C.GFU_MaxCount
+)
 
-// void CPL_DLL CPL_STDCALL
-//     GDALDestroyRasterAttributeTable(GDALRasterAttributeTableH);
+// RAT table type (thematic or athematic).
+type GDALRATTableType C.GDALRATTableType
 
-// int CPL_DLL CPL_STDCALL GDALRATGetColumnCount(GDALRasterAttributeTableH);
+const (
+	GRTTThematic  GDALRATTableType = C.GRTT_THEMATIC
+	GRTTAthematic GDALRATTableType = C.GRTT_ATHEMATIC
+)
 
-// const char CPL_DLL *CPL_STDCALL GDALRATGetNameOfCol(GDALRasterAttributeTableH,
-//                                                     int);
-// GDALRATFieldUsage CPL_DLL CPL_STDCALL
-// GDALRATGetUsageOfCol(GDALRasterAttributeTableH, int);
-// GDALRATFieldType CPL_DLL CPL_STDCALL
-// GDALRATGetTypeOfCol(GDALRasterAttributeTableH, int);
+func gdalCreateRasterAttributeTable() (result GDALRasterAttributeTable) {
+	result = GDALRasterAttributeTable{cValue: C.GDALCreateRasterAttributeTable()}
+	return
+}
 
-// const char CPL_DLL *GDALGetRATFieldTypeName(GDALRATFieldType);
-// const char CPL_DLL *GDALGetRATFieldUsageName(GDALRATFieldUsage);
+func GDALCreateRasterAttributeTable() (result GDALRasterAttributeTable, err error) {
+	result = gdalCreateRasterAttributeTable()
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
 
-// int CPL_DLL CPL_STDCALL GDALRATGetColOfUsage(GDALRasterAttributeTableH,
-//                                              GDALRATFieldUsage);
-// int CPL_DLL CPL_STDCALL GDALRATGetRowCount(GDALRasterAttributeTableH);
+func gdalDestroyRasterAttributeTable(rat GDALRasterAttributeTable) {
+	C.GDALDestroyRasterAttributeTable(rat.cValue)
+}
 
-// const char CPL_DLL *CPL_STDCALL
-// GDALRATGetValueAsString(GDALRasterAttributeTableH, int iRow, int iField);
-// int CPL_DLL CPL_STDCALL GDALRATGetValueAsInt(GDALRasterAttributeTableH,
-//                                              int iRow, int iField);
-// double CPL_DLL CPL_STDCALL GDALRATGetValueAsDouble(GDALRasterAttributeTableH,
-//                                                    int iRow, int iField);
-// bool CPL_DLL GDALRATGetValueAsBoolean(GDALRasterAttributeTableH, int iRow,
-//                                       int iField);
+func (rat GDALRasterAttributeTable) Destroy() {
+	gdalDestroyRasterAttributeTable(rat)
+}
 
-// #ifdef __cplusplus
-// extern "C++"
-// {
-// #endif
+func gdalRATGetColumnCount(rat GDALRasterAttributeTable) (result int) {
+	result = int(C.GDALRATGetColumnCount(rat.cValue))
+	return
+}
 
-//     /** Structure encoding a DateTime field for a GDAL Raster Attribute Table.
-//  *
-//  * @since 3.12
-//  */
-//     struct GDALRATDateTime
-//     {
-//         /*! Year */ int nYear;
-//         /*! Month [1, 12] */ int nMonth;
-//         /*! Day [1, 31] */ int nDay;
-//         /*! Hour [0, 23] */ int nHour;
-//         /*! Minute [0, 59] */ int nMinute;
-//         /*! Second [0, 61) */ float fSecond;
-//         /*! Time zone hour [0, 23] */ int nTimeZoneHour;
-//         /*! Time zone minute: 0, 15, 30, 45 */ int nTimeZoneMinute;
-//         /*! Whether time zone is positive (or null) */ bool bPositiveTimeZone;
-//         /*! Whether this object is valid */ bool bIsValid;
+func (rat GDALRasterAttributeTable) GetColumnCount() (result int) {
+	result = gdalRATGetColumnCount(rat)
+	return
+}
 
-// #ifdef __cplusplus
-//         GDALRATDateTime()
-//             : nYear(0), nMonth(0), nDay(0), nHour(0), nMinute(0), fSecond(0),
-//               nTimeZoneHour(0), nTimeZoneMinute(0), bPositiveTimeZone(false),
-//               bIsValid(false)
-//         {
-//         }
-// #endif
-//     };
+func gdalRATGetNameOfCol(rat GDALRasterAttributeTable, col int) (result string) {
+	result = C.GoString(C.GDALRATGetNameOfCol(rat.cValue, C.int(col)))
+	return
+}
 
-// #ifdef __cplusplus
-// }
-// #endif
+func (rat GDALRasterAttributeTable) GetNameOfCol(col int) (result string) {
+	result = gdalRATGetNameOfCol(rat, col)
+	return
+}
 
-// /*! @cond Doxygen_Suppress */
-// typedef struct GDALRATDateTime GDALRATDateTime;
-// /*! @endcond */
+func gdalRATGetUsageOfCol(rat GDALRasterAttributeTable, col int) (result GDALRATFieldUsage) {
+	result = GDALRATFieldUsage(C.GDALRATGetUsageOfCol(rat.cValue, C.int(col)))
+	return
+}
 
-// CPLErr CPL_DLL GDALRATGetValueAsDateTime(GDALRasterAttributeTableH, int iRow,
-//                                          int iField,
-//                                          GDALRATDateTime *psDateTime);
-// const GByte CPL_DLL *GDALRATGetValueAsWKBGeometry(GDALRasterAttributeTableH,
-//                                                   int iRow, int iField,
-//                                                   size_t *pnWKBSize);
+func (rat GDALRasterAttributeTable) GetUsageOfCol(col int) (result GDALRATFieldUsage) {
+	result = gdalRATGetUsageOfCol(rat, col)
+	return
+}
 
-// void CPL_DLL CPL_STDCALL GDALRATSetValueAsString(GDALRasterAttributeTableH,
-//                                                  int iRow, int iField,
-//                                                  const char *);
-// void CPL_DLL CPL_STDCALL GDALRATSetValueAsInt(GDALRasterAttributeTableH,
-//                                               int iRow, int iField, int);
-// void CPL_DLL CPL_STDCALL GDALRATSetValueAsDouble(GDALRasterAttributeTableH,
-//                                                  int iRow, int iField, double);
-// CPLErr CPL_DLL GDALRATSetValueAsBoolean(GDALRasterAttributeTableH, int iRow,
-//                                         int iField, bool);
-// CPLErr CPL_DLL GDALRATSetValueAsDateTime(GDALRasterAttributeTableH, int iRow,
-//                                          int iField,
-//                                          const GDALRATDateTime *psDateTime);
-// CPLErr CPL_DLL GDALRATSetValueAsWKBGeometry(GDALRasterAttributeTableH, int iRow,
-//                                             int iField, const void *pabyWKB,
-//                                             size_t nWKBSize);
+func gdalRATGetTypeOfCol(rat GDALRasterAttributeTable, col int) (result GDALRATFieldType) {
+	result = GDALRATFieldType(C.GDALRATGetTypeOfCol(rat.cValue, C.int(col)))
+	return
+}
 
-// int CPL_DLL CPL_STDCALL
-// GDALRATChangesAreWrittenToFile(GDALRasterAttributeTableH hRAT);
+func (rat GDALRasterAttributeTable) GetTypeOfCol(col int) (result GDALRATFieldType) {
+	result = gdalRATGetTypeOfCol(rat, col)
+	return
+}
 
-// CPLErr CPL_DLL CPL_STDCALL GDALRATValuesIOAsDouble(
-//     GDALRasterAttributeTableH hRAT, GDALRWFlag eRWFlag, int iField,
-//     int iStartRow, int iLength, double *pdfData);
-// CPLErr CPL_DLL CPL_STDCALL
-// GDALRATValuesIOAsInteger(GDALRasterAttributeTableH hRAT, GDALRWFlag eRWFlag,
-//                          int iField, int iStartRow, int iLength, int *pnData);
-// CPLErr CPL_DLL CPL_STDCALL GDALRATValuesIOAsString(
-//     GDALRasterAttributeTableH hRAT, GDALRWFlag eRWFlag, int iField,
-//     int iStartRow, int iLength, char **papszStrList);
-// CPLErr CPL_DLL GDALRATValuesIOAsBoolean(GDALRasterAttributeTableH hRAT,
-//                                         GDALRWFlag eRWFlag, int iField,
-//                                         int iStartRow, int iLength,
-//                                         bool *pbData);
-// CPLErr CPL_DLL GDALRATValuesIOAsDateTime(GDALRasterAttributeTableH hRAT,
-//                                          GDALRWFlag eRWFlag, int iField,
-//                                          int iStartRow, int iLength,
-//                                          GDALRATDateTime *pasDateTime);
-// CPLErr CPL_DLL GDALRATValuesIOAsWKBGeometry(GDALRasterAttributeTableH hRAT,
-//                                             GDALRWFlag eRWFlag, int iField,
-//                                             int iStartRow, int iLength,
-//                                             GByte **ppabyWKB,
-//                                             size_t *pnWKBSize);
+func gdalGetRATFieldTypeName(fieldType GDALRATFieldType) (result string) {
+	result = C.GoString(C.GDALGetRATFieldTypeName(C.GDALRATFieldType(fieldType)))
+	return
+}
 
-// void CPL_DLL CPL_STDCALL GDALRATSetRowCount(GDALRasterAttributeTableH, int);
-// CPLErr CPL_DLL CPL_STDCALL GDALRATCreateColumn(GDALRasterAttributeTableH,
-//                                                const char *, GDALRATFieldType,
-//                                                GDALRATFieldUsage);
-// CPLErr CPL_DLL CPL_STDCALL GDALRATSetLinearBinning(GDALRasterAttributeTableH,
-//                                                    double, double);
-// int CPL_DLL CPL_STDCALL GDALRATGetLinearBinning(GDALRasterAttributeTableH,
-//                                                 double *, double *);
-// CPLErr CPL_DLL CPL_STDCALL GDALRATSetTableType(
-//     GDALRasterAttributeTableH hRAT, const GDALRATTableType eInTableType);
-// GDALRATTableType CPL_DLL CPL_STDCALL
-// GDALRATGetTableType(GDALRasterAttributeTableH hRAT);
-// CPLErr CPL_DLL CPL_STDCALL
-//     GDALRATInitializeFromColorTable(GDALRasterAttributeTableH, GDALColorTableH);
-// GDALColorTableH CPL_DLL CPL_STDCALL
-// GDALRATTranslateToColorTable(GDALRasterAttributeTableH, int nEntryCount);
-// void CPL_DLL CPL_STDCALL GDALRATDumpReadable(GDALRasterAttributeTableH, FILE *);
-// GDALRasterAttributeTableH CPL_DLL CPL_STDCALL
-// GDALRATClone(const GDALRasterAttributeTableH);
+func (ft GDALRATFieldType) GetName() (result string) {
+	result = gdalGetRATFieldTypeName(ft)
+	return
+}
 
-// void CPL_DLL *CPL_STDCALL GDALRATSerializeJSON(GDALRasterAttributeTableH)
-//     CPL_WARN_UNUSED_RESULT;
+func gdalGetRATFieldUsageName(usage GDALRATFieldUsage) (result string) {
+	result = C.GoString(C.GDALGetRATFieldUsageName(C.GDALRATFieldUsage(usage)))
+	return
+}
 
-// int CPL_DLL CPL_STDCALL GDALRATGetRowOfValue(GDALRasterAttributeTableH, double);
-// void CPL_DLL CPL_STDCALL GDALRATRemoveStatistics(GDALRasterAttributeTableH);
+func (fu GDALRATFieldUsage) GetName() (result string) {
+	result = gdalGetRATFieldUsageName(fu)
+	return
+}
+
+func gdalRATGetColOfUsage(rat GDALRasterAttributeTable, usage GDALRATFieldUsage) (result int) {
+	result = int(C.GDALRATGetColOfUsage(rat.cValue, C.GDALRATFieldUsage(usage)))
+	return
+}
+
+func (rat GDALRasterAttributeTable) GetColOfUsage(usage GDALRATFieldUsage) (result int) {
+	result = gdalRATGetColOfUsage(rat, usage)
+	return
+}
+
+func gdalRATGetRowCount(rat GDALRasterAttributeTable) (result int) {
+	result = int(C.GDALRATGetRowCount(rat.cValue))
+	return
+}
+
+func (rat GDALRasterAttributeTable) GetRowCount() (result int) {
+	result = gdalRATGetRowCount(rat)
+	return
+}
+
+func gdalRATGetValueAsString(rat GDALRasterAttributeTable, row, field int) (result string) {
+	result = C.GoString(C.GDALRATGetValueAsString(rat.cValue, C.int(row), C.int(field)))
+	return
+}
+
+func (rat GDALRasterAttributeTable) GetValueAsString(row, field int) (result string) {
+	result = gdalRATGetValueAsString(rat, row, field)
+	return
+}
+
+func gdalRATGetValueAsInt(rat GDALRasterAttributeTable, row, field int) (result int) {
+	result = int(C.GDALRATGetValueAsInt(rat.cValue, C.int(row), C.int(field)))
+	return
+}
+
+func (rat GDALRasterAttributeTable) GetValueAsInt(row, field int) (result int) {
+	result = gdalRATGetValueAsInt(rat, row, field)
+	return
+}
+
+func gdalRATGetValueAsDouble(rat GDALRasterAttributeTable, row, field int) (result float64) {
+	result = float64(C.GDALRATGetValueAsDouble(rat.cValue, C.int(row), C.int(field)))
+	return
+}
+
+func (rat GDALRasterAttributeTable) GetValueAsDouble(row, field int) (result float64) {
+	result = gdalRATGetValueAsDouble(rat, row, field)
+	return
+}
+
+func gdalRATGetValueAsBoolean(rat GDALRasterAttributeTable, row, field int) (result bool) {
+	result = bool(C.GDALRATGetValueAsBoolean(rat.cValue, C.int(row), C.int(field)))
+	return
+}
+
+func (rat GDALRasterAttributeTable) GetValueAsBoolean(row, field int) (result bool) {
+	result = gdalRATGetValueAsBoolean(rat, row, field)
+	return
+}
+
+// GDALRATDateTime encodes a DateTime field for a GDAL Raster Attribute Table.
+type GDALRATDateTime struct {
+	cValue C.GDALRATDateTime
+}
+
+func gdalRATGetValueAsDateTime(rat GDALRasterAttributeTable, row, field int, dateTime *GDALRATDateTime) (result CPLErr) {
+	result = CPLErr(C.GDALRATGetValueAsDateTime(rat.cValue, C.int(row), C.int(field), &dateTime.cValue))
+	return
+}
+
+func (rat GDALRasterAttributeTable) GetValueAsDateTime(row, field int) (dateTime GDALRATDateTime, err error) {
+	err = cplErr(gdalRATGetValueAsDateTime(rat, row, field, &dateTime))
+	return
+}
+
+func gdalRATGetValueAsWKBGeometry(rat GDALRasterAttributeTable, row, field int) (result []byte) {
+	var cSize C.size_t
+	ptr := C.GDALRATGetValueAsWKBGeometry(rat.cValue, C.int(row), C.int(field), &cSize)
+	if ptr != nil {
+		result = C.GoBytes(unsafe.Pointer(ptr), C.int(cSize))
+	}
+	return
+}
+
+func (rat GDALRasterAttributeTable) GetValueAsWKBGeometry(row, field int) (result []byte) {
+	result = gdalRATGetValueAsWKBGeometry(rat, row, field)
+	return
+}
+
+func gdalRATSetValueAsString(rat GDALRasterAttributeTable, row, field int, value string) {
+	cValue := C.CString(value)
+	defer C.free(unsafe.Pointer(cValue))
+	C.GDALRATSetValueAsString(rat.cValue, C.int(row), C.int(field), cValue)
+}
+
+func (rat GDALRasterAttributeTable) SetValueAsString(row, field int, value string) {
+	gdalRATSetValueAsString(rat, row, field, value)
+}
+
+func gdalRATSetValueAsInt(rat GDALRasterAttributeTable, row, field, value int) {
+	C.GDALRATSetValueAsInt(rat.cValue, C.int(row), C.int(field), C.int(value))
+}
+
+func (rat GDALRasterAttributeTable) SetValueAsInt(row, field, value int) {
+	gdalRATSetValueAsInt(rat, row, field, value)
+}
+
+func gdalRATSetValueAsDouble(rat GDALRasterAttributeTable, row, field int, value float64) {
+	C.GDALRATSetValueAsDouble(rat.cValue, C.int(row), C.int(field), C.double(value))
+}
+
+func (rat GDALRasterAttributeTable) SetValueAsDouble(row, field int, value float64) {
+	gdalRATSetValueAsDouble(rat, row, field, value)
+}
+
+func gdalRATSetValueAsBoolean(rat GDALRasterAttributeTable, row, field int, value bool) (result CPLErr) {
+	result = CPLErr(C.GDALRATSetValueAsBoolean(rat.cValue, C.int(row), C.int(field), C.bool(value)))
+	return
+}
+
+func (rat GDALRasterAttributeTable) SetValueAsBoolean(row, field int, value bool) (err error) {
+	err = cplErr(gdalRATSetValueAsBoolean(rat, row, field, value))
+	return
+}
+
+func gdalRATSetValueAsDateTime(rat GDALRasterAttributeTable, row, field int, dateTime GDALRATDateTime) (result CPLErr) {
+	result = CPLErr(C.GDALRATSetValueAsDateTime(rat.cValue, C.int(row), C.int(field), &dateTime.cValue))
+	return
+}
+
+func (rat GDALRasterAttributeTable) SetValueAsDateTime(row, field int, dateTime GDALRATDateTime) (err error) {
+	err = cplErr(gdalRATSetValueAsDateTime(rat, row, field, dateTime))
+	return
+}
+
+func gdalRATSetValueAsWKBGeometry(rat GDALRasterAttributeTable, row, field int, wkb unsafe.Pointer, wkbSize int) (result CPLErr) {
+	result = CPLErr(C.GDALRATSetValueAsWKBGeometry(rat.cValue, C.int(row), C.int(field), wkb, C.size_t(wkbSize)))
+	return
+}
+
+func (rat GDALRasterAttributeTable) SetValueAsWKBGeometry(row, field int, wkb []byte) (err error) {
+	err = cplErr(gdalRATSetValueAsWKBGeometry(rat, row, field, cBytes(wkb), len(wkb)))
+	return
+}
+
+func gdalRATChangesAreWrittenToFile(rat GDALRasterAttributeTable) (result bool) {
+	result = C.GDALRATChangesAreWrittenToFile(rat.cValue) != 0
+	return
+}
+
+func (rat GDALRasterAttributeTable) ChangesAreWrittenToFile() (result bool) {
+	result = gdalRATChangesAreWrittenToFile(rat)
+	return
+}
+
+func gdalRATValuesIOAsDouble(rat GDALRasterAttributeTable, rwFlag GDALRWFlag, field, startRow, length int, data []float64) (result CPLErr) {
+	cData := make([]C.double, length)
+	for i := 0; i < length && i < len(data); i++ {
+		cData[i] = C.double(data[i])
+	}
+	var ptr *C.double
+	if length > 0 {
+		ptr = &cData[0]
+	}
+	result = CPLErr(C.GDALRATValuesIOAsDouble(rat.cValue, C.GDALRWFlag(rwFlag), C.int(field), C.int(startRow), C.int(length), ptr))
+	for i := 0; i < length && i < len(data); i++ {
+		data[i] = float64(cData[i])
+	}
+	return
+}
+
+func (rat GDALRasterAttributeTable) ValuesIOAsDouble(rwFlag GDALRWFlag, field, startRow int, data []float64) (err error) {
+	err = cplErr(gdalRATValuesIOAsDouble(rat, rwFlag, field, startRow, len(data), data))
+	return
+}
+
+func gdalRATValuesIOAsInteger(rat GDALRasterAttributeTable, rwFlag GDALRWFlag, field, startRow, length int, data []int) (result CPLErr) {
+	cData := make([]C.int, length)
+	for i := 0; i < length && i < len(data); i++ {
+		cData[i] = C.int(data[i])
+	}
+	var ptr *C.int
+	if length > 0 {
+		ptr = &cData[0]
+	}
+	result = CPLErr(C.GDALRATValuesIOAsInteger(rat.cValue, C.GDALRWFlag(rwFlag), C.int(field), C.int(startRow), C.int(length), ptr))
+	for i := 0; i < length && i < len(data); i++ {
+		data[i] = int(cData[i])
+	}
+	return
+}
+
+func (rat GDALRasterAttributeTable) ValuesIOAsInteger(rwFlag GDALRWFlag, field, startRow int, data []int) (err error) {
+	err = cplErr(gdalRATValuesIOAsInteger(rat, rwFlag, field, startRow, len(data), data))
+	return
+}
+
+// GDALRATValuesIOAsString, GDALRATValuesIOAsBoolean, GDALRATValuesIOAsDateTime
+// and GDALRATValuesIOAsWKBGeometry are deferred: their in/out char**, bool*,
+// DateTime array and GByte** parameters need a dedicated design.
+
+func gdalRATSetRowCount(rat GDALRasterAttributeTable, count int) {
+	C.GDALRATSetRowCount(rat.cValue, C.int(count))
+}
+
+func (rat GDALRasterAttributeTable) SetRowCount(count int) {
+	gdalRATSetRowCount(rat, count)
+}
+
+func gdalRATCreateColumn(rat GDALRasterAttributeTable, name string, fieldType GDALRATFieldType, fieldUsage GDALRATFieldUsage) (result CPLErr) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	result = CPLErr(C.GDALRATCreateColumn(rat.cValue, cName, C.GDALRATFieldType(fieldType), C.GDALRATFieldUsage(fieldUsage)))
+	return
+}
+
+func (rat GDALRasterAttributeTable) CreateColumn(name string, fieldType GDALRATFieldType, fieldUsage GDALRATFieldUsage) (err error) {
+	err = cplErr(gdalRATCreateColumn(rat, name, fieldType, fieldUsage))
+	return
+}
+
+func gdalRATSetLinearBinning(rat GDALRasterAttributeTable, row0Min, binSize float64) (result CPLErr) {
+	result = CPLErr(C.GDALRATSetLinearBinning(rat.cValue, C.double(row0Min), C.double(binSize)))
+	return
+}
+
+func (rat GDALRasterAttributeTable) SetLinearBinning(row0Min, binSize float64) (err error) {
+	err = cplErr(gdalRATSetLinearBinning(rat, row0Min, binSize))
+	return
+}
+
+func gdalRATGetLinearBinning(rat GDALRasterAttributeTable, row0Min, binSize *float64) (result int) {
+	var cRow0Min, cBinSize C.double
+	result = int(C.GDALRATGetLinearBinning(rat.cValue, &cRow0Min, &cBinSize))
+	*row0Min = float64(cRow0Min)
+	*binSize = float64(cBinSize)
+	return
+}
+
+func (rat GDALRasterAttributeTable) GetLinearBinning() (row0Min, binSize float64, ok bool) {
+	ok = gdalRATGetLinearBinning(rat, &row0Min, &binSize) != 0
+	return
+}
+
+func gdalRATSetTableType(rat GDALRasterAttributeTable, tableType GDALRATTableType) (result CPLErr) {
+	result = CPLErr(C.GDALRATSetTableType(rat.cValue, C.GDALRATTableType(tableType)))
+	return
+}
+
+func (rat GDALRasterAttributeTable) SetTableType(tableType GDALRATTableType) (err error) {
+	err = cplErr(gdalRATSetTableType(rat, tableType))
+	return
+}
+
+func gdalRATGetTableType(rat GDALRasterAttributeTable) (result GDALRATTableType) {
+	result = GDALRATTableType(C.GDALRATGetTableType(rat.cValue))
+	return
+}
+
+func (rat GDALRasterAttributeTable) GetTableType() (result GDALRATTableType) {
+	result = gdalRATGetTableType(rat)
+	return
+}
+
+func gdalRATInitializeFromColorTable(rat GDALRasterAttributeTable, colorTable GDALColorTable) (result CPLErr) {
+	result = CPLErr(C.GDALRATInitializeFromColorTable(rat.cValue, colorTable.cValue))
+	return
+}
+
+func (rat GDALRasterAttributeTable) InitializeFromColorTable(colorTable GDALColorTable) (err error) {
+	err = cplErr(gdalRATInitializeFromColorTable(rat, colorTable))
+	return
+}
+
+func gdalRATTranslateToColorTable(rat GDALRasterAttributeTable, entryCount int) (result GDALColorTable) {
+	result = GDALColorTable{cValue: C.GDALRATTranslateToColorTable(rat.cValue, C.int(entryCount))}
+	return
+}
+
+func (rat GDALRasterAttributeTable) TranslateToColorTable(entryCount int) (result GDALColorTable, err error) {
+	result = gdalRATTranslateToColorTable(rat, entryCount)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalRATDumpReadable(rat GDALRasterAttributeTable, filename string) (err error) {
+	fp, closeFn, err := cFile(filename, "w")
+	if err != nil {
+		return
+	}
+	defer closeFn()
+	C.GDALRATDumpReadable(rat.cValue, fp)
+	return
+}
+
+func (rat GDALRasterAttributeTable) DumpReadable(filename string) (err error) {
+	return gdalRATDumpReadable(rat, filename)
+}
+
+func gdalRATClone(rat GDALRasterAttributeTable) (result GDALRasterAttributeTable) {
+	result = GDALRasterAttributeTable{cValue: C.GDALRATClone(rat.cValue)}
+	return
+}
+
+func (rat GDALRasterAttributeTable) Clone() (result GDALRasterAttributeTable, err error) {
+	result = gdalRATClone(rat)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+// GDALRATSerializeJSON is deferred: its void* return (a json-c object) needs a
+// dedicated design.
+
+func gdalRATGetRowOfValue(rat GDALRasterAttributeTable, value float64) (result int) {
+	result = int(C.GDALRATGetRowOfValue(rat.cValue, C.double(value)))
+	return
+}
+
+func (rat GDALRasterAttributeTable) GetRowOfValue(value float64) (result int) {
+	result = gdalRATGetRowOfValue(rat, value)
+	return
+}
+
+func gdalRATRemoveStatistics(rat GDALRasterAttributeTable) {
+	C.GDALRATRemoveStatistics(rat.cValue)
+}
+
+func (rat GDALRasterAttributeTable) RemoveStatistics() {
+	gdalRATRemoveStatistics(rat)
+}
 
 // /* -------------------------------------------------------------------- */
 // /*                          Relationships                               */
 // /* -------------------------------------------------------------------- */
 
-// /** Cardinality of relationship.
-//  *
-//  * @since GDAL 3.6
-//  */
-// typedef enum
-// {
-//     /** One-to-one */
-//     GRC_ONE_TO_ONE,
-//     /** One-to-many */
-//     GRC_ONE_TO_MANY,
-//     /** Many-to-one */
-//     GRC_MANY_TO_ONE,
-//     /** Many-to-many */
-//     GRC_MANY_TO_MANY,
-// } GDALRelationshipCardinality;
+// Cardinality of relationship.
+type GDALRelationshipCardinality C.GDALRelationshipCardinality
 
-// /** Type of relationship.
-//  *
-//  * @since GDAL 3.6
-//  */
-// typedef enum
-// {
-//     /** Composite relationship */
-//     GRT_COMPOSITE,
-//     /** Association relationship */
-//     GRT_ASSOCIATION,
-//     /** Aggregation relationship */
-//     GRT_AGGREGATION,
-// } GDALRelationshipType;
+const (
+	GRCOneToOne   GDALRelationshipCardinality = C.GRC_ONE_TO_ONE
+	GRCOneToMany  GDALRelationshipCardinality = C.GRC_ONE_TO_MANY
+	GRCManyToOne  GDALRelationshipCardinality = C.GRC_MANY_TO_ONE
+	GRCManyToMany GDALRelationshipCardinality = C.GRC_MANY_TO_MANY
+)
 
-// GDALRelationshipH CPL_DLL GDALRelationshipCreate(const char *, const char *,
-//                                                  const char *,
-//                                                  GDALRelationshipCardinality);
-// void CPL_DLL CPL_STDCALL GDALDestroyRelationship(GDALRelationshipH);
-// const char CPL_DLL *GDALRelationshipGetName(GDALRelationshipH);
-// GDALRelationshipCardinality
-//     CPL_DLL GDALRelationshipGetCardinality(GDALRelationshipH);
-// const char CPL_DLL *GDALRelationshipGetLeftTableName(GDALRelationshipH);
-// const char CPL_DLL *GDALRelationshipGetRightTableName(GDALRelationshipH);
-// const char CPL_DLL *GDALRelationshipGetMappingTableName(GDALRelationshipH);
-// void CPL_DLL GDALRelationshipSetMappingTableName(GDALRelationshipH,
-//                                                  const char *);
-// char CPL_DLL **GDALRelationshipGetLeftTableFields(GDALRelationshipH);
-// char CPL_DLL **GDALRelationshipGetRightTableFields(GDALRelationshipH);
-// void CPL_DLL GDALRelationshipSetLeftTableFields(GDALRelationshipH,
-//                                                 CSLConstList);
-// void CPL_DLL GDALRelationshipSetRightTableFields(GDALRelationshipH,
-//                                                  CSLConstList);
-// char CPL_DLL **GDALRelationshipGetLeftMappingTableFields(GDALRelationshipH);
-// char CPL_DLL **GDALRelationshipGetRightMappingTableFields(GDALRelationshipH);
-// void CPL_DLL GDALRelationshipSetLeftMappingTableFields(GDALRelationshipH,
-//                                                        CSLConstList);
-// void CPL_DLL GDALRelationshipSetRightMappingTableFields(GDALRelationshipH,
-//                                                         CSLConstList);
-// GDALRelationshipType CPL_DLL GDALRelationshipGetType(GDALRelationshipH);
-// void CPL_DLL GDALRelationshipSetType(GDALRelationshipH, GDALRelationshipType);
-// const char CPL_DLL *GDALRelationshipGetForwardPathLabel(GDALRelationshipH);
-// void CPL_DLL GDALRelationshipSetForwardPathLabel(GDALRelationshipH,
-//                                                  const char *);
-// const char CPL_DLL *GDALRelationshipGetBackwardPathLabel(GDALRelationshipH);
-// void CPL_DLL GDALRelationshipSetBackwardPathLabel(GDALRelationshipH,
-//                                                   const char *);
-// const char CPL_DLL *GDALRelationshipGetRelatedTableType(GDALRelationshipH);
-// void CPL_DLL GDALRelationshipSetRelatedTableType(GDALRelationshipH,
-//                                                  const char *);
+// Type of relationship.
+type GDALRelationshipType C.GDALRelationshipType
+
+const (
+	GRTComposite   GDALRelationshipType = C.GRT_COMPOSITE
+	GRTAssociation GDALRelationshipType = C.GRT_ASSOCIATION
+	GRTAggregation GDALRelationshipType = C.GRT_AGGREGATION
+)
+
+func gdalRelationshipCreate(name, leftTableName, rightTableName string, cardinality GDALRelationshipCardinality) (result GDALRelationship) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	cLeft := C.CString(leftTableName)
+	defer C.free(unsafe.Pointer(cLeft))
+	cRight := C.CString(rightTableName)
+	defer C.free(unsafe.Pointer(cRight))
+	result = GDALRelationship{cValue: C.GDALRelationshipCreate(cName, cLeft, cRight, C.GDALRelationshipCardinality(cardinality))}
+	return
+}
+
+func GDALRelationshipCreate(name, leftTableName, rightTableName string, cardinality GDALRelationshipCardinality) (result GDALRelationship, err error) {
+	result = gdalRelationshipCreate(name, leftTableName, rightTableName, cardinality)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalDestroyRelationship(relationship GDALRelationship) {
+	C.GDALDestroyRelationship(relationship.cValue)
+}
+
+func (r GDALRelationship) Destroy() {
+	gdalDestroyRelationship(r)
+}
+
+func gdalRelationshipGetName(relationship GDALRelationship) (result string) {
+	result = C.GoString(C.GDALRelationshipGetName(relationship.cValue))
+	return
+}
+
+func (r GDALRelationship) GetName() (result string) {
+	result = gdalRelationshipGetName(r)
+	return
+}
+
+func gdalRelationshipGetCardinality(relationship GDALRelationship) (result GDALRelationshipCardinality) {
+	result = GDALRelationshipCardinality(C.GDALRelationshipGetCardinality(relationship.cValue))
+	return
+}
+
+func (r GDALRelationship) GetCardinality() (result GDALRelationshipCardinality) {
+	result = gdalRelationshipGetCardinality(r)
+	return
+}
+
+func gdalRelationshipGetLeftTableName(relationship GDALRelationship) (result string) {
+	result = C.GoString(C.GDALRelationshipGetLeftTableName(relationship.cValue))
+	return
+}
+
+func (r GDALRelationship) GetLeftTableName() (result string) {
+	result = gdalRelationshipGetLeftTableName(r)
+	return
+}
+
+func gdalRelationshipGetRightTableName(relationship GDALRelationship) (result string) {
+	result = C.GoString(C.GDALRelationshipGetRightTableName(relationship.cValue))
+	return
+}
+
+func (r GDALRelationship) GetRightTableName() (result string) {
+	result = gdalRelationshipGetRightTableName(r)
+	return
+}
+
+func gdalRelationshipGetMappingTableName(relationship GDALRelationship) (result string) {
+	result = C.GoString(C.GDALRelationshipGetMappingTableName(relationship.cValue))
+	return
+}
+
+func (r GDALRelationship) GetMappingTableName() (result string) {
+	result = gdalRelationshipGetMappingTableName(r)
+	return
+}
+
+func gdalRelationshipSetMappingTableName(relationship GDALRelationship, name string) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	C.GDALRelationshipSetMappingTableName(relationship.cValue, cName)
+}
+
+func (r GDALRelationship) SetMappingTableName(name string) {
+	gdalRelationshipSetMappingTableName(r, name)
+}
+
+func gdalRelationshipGetLeftTableFields(relationship GDALRelationship) (result []string) {
+	raw := C.GDALRelationshipGetLeftTableFields(relationship.cValue)
+	if raw == nil {
+		return
+	}
+	defer C.CSLDestroy(raw)
+	result = goStrings(raw)
+	return
+}
+
+func (r GDALRelationship) GetLeftTableFields() (result []string) {
+	result = gdalRelationshipGetLeftTableFields(r)
+	return
+}
+
+func gdalRelationshipGetRightTableFields(relationship GDALRelationship) (result []string) {
+	raw := C.GDALRelationshipGetRightTableFields(relationship.cValue)
+	if raw == nil {
+		return
+	}
+	defer C.CSLDestroy(raw)
+	result = goStrings(raw)
+	return
+}
+
+func (r GDALRelationship) GetRightTableFields() (result []string) {
+	result = gdalRelationshipGetRightTableFields(r)
+	return
+}
+
+func gdalRelationshipSetLeftTableFields(relationship GDALRelationship, fields []string) {
+	f, free := cStrings(fields)
+	defer free()
+	C.GDALRelationshipSetLeftTableFields(relationship.cValue, C.CSLConstList(unsafe.Pointer(f)))
+}
+
+func (r GDALRelationship) SetLeftTableFields(fields []string) {
+	gdalRelationshipSetLeftTableFields(r, fields)
+}
+
+func gdalRelationshipSetRightTableFields(relationship GDALRelationship, fields []string) {
+	f, free := cStrings(fields)
+	defer free()
+	C.GDALRelationshipSetRightTableFields(relationship.cValue, C.CSLConstList(unsafe.Pointer(f)))
+}
+
+func (r GDALRelationship) SetRightTableFields(fields []string) {
+	gdalRelationshipSetRightTableFields(r, fields)
+}
+
+func gdalRelationshipGetLeftMappingTableFields(relationship GDALRelationship) (result []string) {
+	raw := C.GDALRelationshipGetLeftMappingTableFields(relationship.cValue)
+	if raw == nil {
+		return
+	}
+	defer C.CSLDestroy(raw)
+	result = goStrings(raw)
+	return
+}
+
+func (r GDALRelationship) GetLeftMappingTableFields() (result []string) {
+	result = gdalRelationshipGetLeftMappingTableFields(r)
+	return
+}
+
+func gdalRelationshipGetRightMappingTableFields(relationship GDALRelationship) (result []string) {
+	raw := C.GDALRelationshipGetRightMappingTableFields(relationship.cValue)
+	if raw == nil {
+		return
+	}
+	defer C.CSLDestroy(raw)
+	result = goStrings(raw)
+	return
+}
+
+func (r GDALRelationship) GetRightMappingTableFields() (result []string) {
+	result = gdalRelationshipGetRightMappingTableFields(r)
+	return
+}
+
+func gdalRelationshipSetLeftMappingTableFields(relationship GDALRelationship, fields []string) {
+	f, free := cStrings(fields)
+	defer free()
+	C.GDALRelationshipSetLeftMappingTableFields(relationship.cValue, C.CSLConstList(unsafe.Pointer(f)))
+}
+
+func (r GDALRelationship) SetLeftMappingTableFields(fields []string) {
+	gdalRelationshipSetLeftMappingTableFields(r, fields)
+}
+
+func gdalRelationshipSetRightMappingTableFields(relationship GDALRelationship, fields []string) {
+	f, free := cStrings(fields)
+	defer free()
+	C.GDALRelationshipSetRightMappingTableFields(relationship.cValue, C.CSLConstList(unsafe.Pointer(f)))
+}
+
+func (r GDALRelationship) SetRightMappingTableFields(fields []string) {
+	gdalRelationshipSetRightMappingTableFields(r, fields)
+}
+
+func gdalRelationshipGetType(relationship GDALRelationship) (result GDALRelationshipType) {
+	result = GDALRelationshipType(C.GDALRelationshipGetType(relationship.cValue))
+	return
+}
+
+func (r GDALRelationship) GetType() (result GDALRelationshipType) {
+	result = gdalRelationshipGetType(r)
+	return
+}
+
+func gdalRelationshipSetType(relationship GDALRelationship, relationshipType GDALRelationshipType) {
+	C.GDALRelationshipSetType(relationship.cValue, C.GDALRelationshipType(relationshipType))
+}
+
+func (r GDALRelationship) SetType(relationshipType GDALRelationshipType) {
+	gdalRelationshipSetType(r, relationshipType)
+}
+
+func gdalRelationshipGetForwardPathLabel(relationship GDALRelationship) (result string) {
+	result = C.GoString(C.GDALRelationshipGetForwardPathLabel(relationship.cValue))
+	return
+}
+
+func (r GDALRelationship) GetForwardPathLabel() (result string) {
+	result = gdalRelationshipGetForwardPathLabel(r)
+	return
+}
+
+func gdalRelationshipSetForwardPathLabel(relationship GDALRelationship, label string) {
+	cLabel := C.CString(label)
+	defer C.free(unsafe.Pointer(cLabel))
+	C.GDALRelationshipSetForwardPathLabel(relationship.cValue, cLabel)
+}
+
+func (r GDALRelationship) SetForwardPathLabel(label string) {
+	gdalRelationshipSetForwardPathLabel(r, label)
+}
+
+func gdalRelationshipGetBackwardPathLabel(relationship GDALRelationship) (result string) {
+	result = C.GoString(C.GDALRelationshipGetBackwardPathLabel(relationship.cValue))
+	return
+}
+
+func (r GDALRelationship) GetBackwardPathLabel() (result string) {
+	result = gdalRelationshipGetBackwardPathLabel(r)
+	return
+}
+
+func gdalRelationshipSetBackwardPathLabel(relationship GDALRelationship, label string) {
+	cLabel := C.CString(label)
+	defer C.free(unsafe.Pointer(cLabel))
+	C.GDALRelationshipSetBackwardPathLabel(relationship.cValue, cLabel)
+}
+
+func (r GDALRelationship) SetBackwardPathLabel(label string) {
+	gdalRelationshipSetBackwardPathLabel(r, label)
+}
+
+func gdalRelationshipGetRelatedTableType(relationship GDALRelationship) (result string) {
+	result = C.GoString(C.GDALRelationshipGetRelatedTableType(relationship.cValue))
+	return
+}
+
+func (r GDALRelationship) GetRelatedTableType() (result string) {
+	result = gdalRelationshipGetRelatedTableType(r)
+	return
+}
+
+func gdalRelationshipSetRelatedTableType(relationship GDALRelationship, relatedTableType string) {
+	cType := C.CString(relatedTableType)
+	defer C.free(unsafe.Pointer(cType))
+	C.GDALRelationshipSetRelatedTableType(relationship.cValue, cType)
+}
+
+func (r GDALRelationship) SetRelatedTableType(relatedTableType string) {
+	gdalRelationshipSetRelatedTableType(r, relatedTableType)
+}
 
 // /* ==================================================================== */
 // /*      GDAL Cache Management                                           */
 // /* ==================================================================== */
 
-// void CPL_DLL CPL_STDCALL GDALSetCacheMax(int nBytes);
-// int CPL_DLL CPL_STDCALL GDALGetCacheMax(void);
-// int CPL_DLL CPL_STDCALL GDALGetCacheUsed(void);
-// void CPL_DLL CPL_STDCALL GDALSetCacheMax64(GIntBig nBytes);
-// GIntBig CPL_DLL CPL_STDCALL GDALGetCacheMax64(void);
-// GIntBig CPL_DLL CPL_STDCALL GDALGetCacheUsed64(void);
+func gdalSetCacheMax(bytes int) {
+	C.GDALSetCacheMax(C.int(bytes))
+}
 
-// int CPL_DLL CPL_STDCALL GDALFlushCacheBlock(void);
+func GDALSetCacheMax(bytes int) {
+	gdalSetCacheMax(bytes)
+}
 
-// /* ==================================================================== */
-// /*      GDAL virtual memory                                             */
-// /* ==================================================================== */
+func gdalGetCacheMax() (result int) {
+	result = int(C.GDALGetCacheMax())
+	return
+}
 
-// CPLVirtualMem CPL_DLL *GDALDatasetGetVirtualMem(
-//     GDALDatasetH hDS, GDALRWFlag eRWFlag, int nXOff, int nYOff, int nXSize,
-//     int nYSize, int nBufXSize, int nBufYSize, GDALDataType eBufType,
-//     int nBandCount, int *panBandMap, int nPixelSpace, GIntBig nLineSpace,
-//     GIntBig nBandSpace, size_t nCacheSize, size_t nPageSizeHint,
-//     int bSingleThreadUsage, CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
+func GDALGetCacheMax() (result int) {
+	result = gdalGetCacheMax()
+	return
+}
 
-// CPLVirtualMem CPL_DLL *GDALRasterBandGetVirtualMem(
-//     GDALRasterBandH hBand, GDALRWFlag eRWFlag, int nXOff, int nYOff, int nXSize,
-//     int nYSize, int nBufXSize, int nBufYSize, GDALDataType eBufType,
-//     int nPixelSpace, GIntBig nLineSpace, size_t nCacheSize,
-//     size_t nPageSizeHint, int bSingleThreadUsage,
-//     CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
+func gdalGetCacheUsed() (result int) {
+	result = int(C.GDALGetCacheUsed())
+	return
+}
 
-// CPLVirtualMem CPL_DLL *
-// GDALGetVirtualMemAuto(GDALRasterBandH hBand, GDALRWFlag eRWFlag,
-//                       int *pnPixelSpace, GIntBig *pnLineSpace,
-//                       CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
+func GDALGetCacheUsed() (result int) {
+	result = gdalGetCacheUsed()
+	return
+}
 
-// /**! Enumeration to describe the tile organization */
-// typedef enum
-// {
-//     /*! Tile Interleaved by Pixel: tile (0,0) with internal band interleaved by
-//        pixel organization, tile (1, 0), ...  */
-//     GTO_TIP,
-//     /*! Band Interleaved by Tile : tile (0,0) of first band, tile (0,0) of
-//        second band, ... tile (1,0) of first band, tile (1,0) of second band, ...
-//      */
-//     GTO_BIT,
-//     /*! Band SeQuential : all the tiles of first band, all the tiles of
-//        following band... */
-//     GTO_BSQ
-// } GDALTileOrganization;
+func gdalSetCacheMax64(bytes int64) {
+	C.GDALSetCacheMax64(C.GIntBig(bytes))
+}
 
-// CPLVirtualMem CPL_DLL *GDALDatasetGetTiledVirtualMem(
-//     GDALDatasetH hDS, GDALRWFlag eRWFlag, int nXOff, int nYOff, int nXSize,
-//     int nYSize, int nTileXSize, int nTileYSize, GDALDataType eBufType,
-//     int nBandCount, int *panBandMap, GDALTileOrganization eTileOrganization,
-//     size_t nCacheSize, int bSingleThreadUsage,
-//     CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
+func GDALSetCacheMax64(bytes int64) {
+	gdalSetCacheMax64(bytes)
+}
 
-// CPLVirtualMem CPL_DLL *GDALRasterBandGetTiledVirtualMem(
-//     GDALRasterBandH hBand, GDALRWFlag eRWFlag, int nXOff, int nYOff, int nXSize,
-//     int nYSize, int nTileXSize, int nTileYSize, GDALDataType eBufType,
-//     size_t nCacheSize, int bSingleThreadUsage,
-//     CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
+func gdalGetCacheMax64() (result int64) {
+	result = int64(C.GDALGetCacheMax64())
+	return
+}
 
-// /* ==================================================================== */
-// /*      VRTPansharpenedDataset class.                                   */
-// /* ==================================================================== */
+func GDALGetCacheMax64() (result int64) {
+	result = gdalGetCacheMax64()
+	return
+}
 
-// GDALDatasetH CPL_DLL GDALCreatePansharpenedVRT(
-//     const char *pszXML, GDALRasterBandH hPanchroBand, int nInputSpectralBands,
-//     GDALRasterBandH *pahInputSpectralBands) CPL_WARN_UNUSED_RESULT;
+func gdalGetCacheUsed64() (result int64) {
+	result = int64(C.GDALGetCacheUsed64())
+	return
+}
 
-// /* =================================================================== */
-// /*      Misc API                                                        */
-// /* ==================================================================== */
+func GDALGetCacheUsed64() (result int64) {
+	result = gdalGetCacheUsed64()
+	return
+}
 
-// CPLXMLNode CPL_DLL *
-// GDALGetJPEG2000Structure(const char *pszFilename,
-//                          CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
+func gdalFlushCacheBlock() (result bool) {
+	result = C.GDALFlushCacheBlock() != 0
+	return
+}
+
+func GDALFlushCacheBlock() (result bool) {
+	result = gdalFlushCacheBlock()
+	return
+}
+
+// The GDAL virtual memory API (GDALDatasetGetVirtualMem,
+// GDALRasterBandGetVirtualMem, GDALGetVirtualMemAuto,
+// GDALDatasetGetTiledVirtualMem, GDALRasterBandGetTiledVirtualMem) is deferred:
+// it returns CPLVirtualMem*, which needs cpl_virtualmem.go.
+
+// Enumeration to describe the tile organization.
+type GDALTileOrganization C.GDALTileOrganization
+
+const (
+	GTOTIP GDALTileOrganization = C.GTO_TIP
+	GTOBIT GDALTileOrganization = C.GTO_BIT
+	GTOBSQ GDALTileOrganization = C.GTO_BSQ
+)
+
+func gdalCreatePansharpenedVRT(xml string, panchroBand GDALRasterBand, inputSpectralBandCount int, inputSpectralBands GDALRasterBands) (result GDALDataset) {
+	cXML := C.CString(xml)
+	defer C.free(unsafe.Pointer(cXML))
+	result = GDALDataset{cValue: C.GDALCreatePansharpenedVRT(cXML, panchroBand.cValue, C.int(inputSpectralBandCount), inputSpectralBands.cPtr())}
+	return
+}
+
+func GDALCreatePansharpenedVRT(xml string, panchroBand GDALRasterBand, inputSpectralBands GDALRasterBands) (result GDALDataset, err error) {
+	result = gdalCreatePansharpenedVRT(xml, panchroBand, len(inputSpectralBands), inputSpectralBands)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGetJPEG2000Structure(filename string, options []string) (result CPLXMLNode) {
+	cName := C.CString(filename)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	result = CPLXMLNode{cValue: C.GDALGetJPEG2000Structure(cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func GDALGetJPEG2000Structure(filename string, options []string) (result CPLXMLNode, err error) {
+	result = gdalGetJPEG2000Structure(filename, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
 
 // /* ==================================================================== */
 // /*      Multidimensional API_api                                       */
 // /* ==================================================================== */
 
-// GDALDatasetH CPL_DLL
-// GDALCreateMultiDimensional(GDALDriverH hDriver, const char *pszName,
-//                            CSLConstList papszRootGroupOptions,
-//                            CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
+func gdalCreateMultiDimensional(driver GDALDriver, name string, rootGroupOptions, options []string) (result GDALDataset) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	rootOpts, freeRoot := cStrings(rootGroupOptions)
+	defer freeRoot()
+	opts, free := cStrings(options)
+	defer free()
+	result = GDALDataset{cValue: C.GDALCreateMultiDimensional(driver.cValue, cName, C.CSLConstList(unsafe.Pointer(rootOpts)), C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
 
-// GDALExtendedDataTypeH CPL_DLL GDALExtendedDataTypeCreate(GDALDataType eType)
-//     CPL_WARN_UNUSED_RESULT;
-// GDALExtendedDataTypeH CPL_DLL GDALExtendedDataTypeCreateString(
-//     size_t nMaxStringLength) CPL_WARN_UNUSED_RESULT;
-// GDALExtendedDataTypeH CPL_DLL GDALExtendedDataTypeCreateStringEx(
-//     size_t nMaxStringLength,
-//     GDALExtendedDataTypeSubType eSubType) CPL_WARN_UNUSED_RESULT;
-// GDALExtendedDataTypeH CPL_DLL GDALExtendedDataTypeCreateCompound(
-//     const char *pszName, size_t nTotalSize, size_t nComponents,
-//     const GDALEDTComponentH *comps) CPL_WARN_UNUSED_RESULT;
-// void CPL_DLL GDALExtendedDataTypeRelease(GDALExtendedDataTypeH hEDT);
-// const char CPL_DLL *GDALExtendedDataTypeGetName(GDALExtendedDataTypeH hEDT);
-// GDALExtendedDataTypeClass CPL_DLL
-// GDALExtendedDataTypeGetClass(GDALExtendedDataTypeH hEDT);
-// GDALDataType CPL_DLL
-// GDALExtendedDataTypeGetNumericDataType(GDALExtendedDataTypeH hEDT);
-// size_t CPL_DLL GDALExtendedDataTypeGetSize(GDALExtendedDataTypeH hEDT);
-// size_t CPL_DLL
-// GDALExtendedDataTypeGetMaxStringLength(GDALExtendedDataTypeH hEDT);
-// GDALEDTComponentH CPL_DLL *
-// GDALExtendedDataTypeGetComponents(GDALExtendedDataTypeH hEDT,
-//                                   size_t *pnCount) CPL_WARN_UNUSED_RESULT;
-// void CPL_DLL GDALExtendedDataTypeFreeComponents(GDALEDTComponentH *components,
-//                                                 size_t nCount);
-// int CPL_DLL GDALExtendedDataTypeCanConvertTo(GDALExtendedDataTypeH hSourceEDT,
-//                                              GDALExtendedDataTypeH hTargetEDT);
-// int CPL_DLL GDALExtendedDataTypeEquals(GDALExtendedDataTypeH hFirstEDT,
-//                                        GDALExtendedDataTypeH hSecondEDT);
-// GDALExtendedDataTypeSubType CPL_DLL
-// GDALExtendedDataTypeGetSubType(GDALExtendedDataTypeH hEDT);
-// GDALRasterAttributeTableH CPL_DLL
-// GDALExtendedDataTypeGetRAT(GDALExtendedDataTypeH hEDT) CPL_WARN_UNUSED_RESULT;
+func (d GDALDriver) CreateMultiDimensional(name string, rootGroupOptions, options []string) (result GDALDataset, err error) {
+	result = gdalCreateMultiDimensional(d, name, rootGroupOptions, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
 
-// GDALEDTComponentH CPL_DLL
-// GDALEDTComponentCreate(const char *pszName, size_t nOffset,
-//                        GDALExtendedDataTypeH hType) CPL_WARN_UNUSED_RESULT;
-// void CPL_DLL GDALEDTComponentRelease(GDALEDTComponentH hComp);
-// const char CPL_DLL *GDALEDTComponentGetName(GDALEDTComponentH hComp);
-// size_t CPL_DLL GDALEDTComponentGetOffset(GDALEDTComponentH hComp);
-// GDALExtendedDataTypeH CPL_DLL GDALEDTComponentGetType(GDALEDTComponentH hComp)
-//     CPL_WARN_UNUSED_RESULT;
+func gdalExtendedDataTypeCreate(dataType GDALDataType) (result GDALExtendedDataType) {
+	result = GDALExtendedDataType{cValue: C.GDALExtendedDataTypeCreate(C.GDALDataType(dataType))}
+	return
+}
 
-// GDALGroupH CPL_DLL GDALDatasetGetRootGroup(GDALDatasetH hDS)
-//     CPL_WARN_UNUSED_RESULT;
-// void CPL_DLL GDALGroupRelease(GDALGroupH hGroup);
-// const char CPL_DLL *GDALGroupGetName(GDALGroupH hGroup);
-// const char CPL_DLL *GDALGroupGetFullName(GDALGroupH hGroup);
-// char CPL_DLL **
-// GDALGroupGetMDArrayNames(GDALGroupH hGroup,
-//                          CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// char CPL_DLL **GDALGroupGetMDArrayFullNamesRecursive(
-//     GDALGroupH hGroup, CSLConstList papszGroupOptions,
-//     CSLConstList papszArrayOptions) CPL_WARN_UNUSED_RESULT;
-// GDALMDArrayH CPL_DLL
-// GDALGroupOpenMDArray(GDALGroupH hGroup, const char *pszMDArrayName,
-//                      CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// GDALMDArrayH CPL_DLL GDALGroupOpenMDArrayFromFullname(
-//     GDALGroupH hGroup, const char *pszMDArrayName,
-//     CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// GDALMDArrayH CPL_DLL GDALGroupResolveMDArray(
-//     GDALGroupH hGroup, const char *pszName, const char *pszStartingPoint,
-//     CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// char CPL_DLL **
-// GDALGroupGetGroupNames(GDALGroupH hGroup,
-//                        CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// GDALGroupH CPL_DLL
-// GDALGroupOpenGroup(GDALGroupH hGroup, const char *pszSubGroupName,
-//                    CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// GDALGroupH CPL_DLL GDALGroupOpenGroupFromFullname(
-//     GDALGroupH hGroup, const char *pszMDArrayName,
-//     CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// char CPL_DLL **
-// GDALGroupGetVectorLayerNames(GDALGroupH hGroup,
-//                              CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// OGRLayerH CPL_DLL
-// GDALGroupOpenVectorLayer(GDALGroupH hGroup, const char *pszVectorLayerName,
-//                          CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// GDALDimensionH CPL_DLL *
-// GDALGroupGetDimensions(GDALGroupH hGroup, size_t *pnCount,
-//                        CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// GDALAttributeH CPL_DLL GDALGroupGetAttribute(
-//     GDALGroupH hGroup, const char *pszName) CPL_WARN_UNUSED_RESULT;
-// GDALAttributeH CPL_DLL *
-// GDALGroupGetAttributes(GDALGroupH hGroup, size_t *pnCount,
-//                        CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// CSLConstList CPL_DLL GDALGroupGetStructuralInfo(GDALGroupH hGroup);
-// GDALGroupH CPL_DLL
-// GDALGroupCreateGroup(GDALGroupH hGroup, const char *pszSubGroupName,
-//                      CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// bool CPL_DLL GDALGroupDeleteGroup(GDALGroupH hGroup, const char *pszName,
-//                                   CSLConstList papszOptions);
-// GDALDimensionH CPL_DLL GDALGroupCreateDimension(
-//     GDALGroupH hGroup, const char *pszName, const char *pszType,
-//     const char *pszDirection, GUInt64 nSize,
-//     CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// GDALMDArrayH CPL_DLL GDALGroupCreateMDArray(
-//     GDALGroupH hGroup, const char *pszName, size_t nDimensions,
-//     GDALDimensionH *pahDimensions, GDALExtendedDataTypeH hEDT,
-//     CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// bool CPL_DLL GDALGroupDeleteMDArray(GDALGroupH hGroup, const char *pszName,
-//                                     CSLConstList papszOptions);
-// GDALAttributeH CPL_DLL GDALGroupCreateAttribute(
-//     GDALGroupH hGroup, const char *pszName, size_t nDimensions,
-//     const GUInt64 *panDimensions, GDALExtendedDataTypeH hEDT,
-//     CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// bool CPL_DLL GDALGroupDeleteAttribute(GDALGroupH hGroup, const char *pszName,
-//                                       CSLConstList papszOptions);
-// bool CPL_DLL GDALGroupRename(GDALGroupH hGroup, const char *pszNewName);
-// GDALGroupH CPL_DLL GDALGroupSubsetDimensionFromSelection(
-//     GDALGroupH hGroup, const char *pszSelection, CSLConstList papszOptions);
-// size_t CPL_DLL GDALGroupGetDataTypeCount(GDALGroupH hGroup);
-// GDALExtendedDataTypeH CPL_DLL GDALGroupGetDataType(GDALGroupH hGroup,
-//                                                    size_t nIdx);
+func GDALExtendedDataTypeCreate(dataType GDALDataType) (result GDALExtendedDataType, err error) {
+	result = gdalExtendedDataTypeCreate(dataType)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
 
-// void CPL_DLL GDALMDArrayRelease(GDALMDArrayH hMDArray);
-// const char CPL_DLL *GDALMDArrayGetName(GDALMDArrayH hArray);
-// const char CPL_DLL *GDALMDArrayGetFullName(GDALMDArrayH hArray);
-// GUInt64 CPL_DLL GDALMDArrayGetTotalElementsCount(GDALMDArrayH hArray);
-// size_t CPL_DLL GDALMDArrayGetDimensionCount(GDALMDArrayH hArray);
-// GDALDimensionH CPL_DLL *
-// GDALMDArrayGetDimensions(GDALMDArrayH hArray,
-//                          size_t *pnCount) CPL_WARN_UNUSED_RESULT;
-// GDALExtendedDataTypeH CPL_DLL GDALMDArrayGetDataType(GDALMDArrayH hArray)
-//     CPL_WARN_UNUSED_RESULT;
-// int CPL_DLL GDALMDArrayRead(GDALMDArrayH hArray, const GUInt64 *arrayStartIdx,
-//                             const size_t *count, const GInt64 *arrayStep,
-//                             const GPtrDiff_t *bufferStride,
-//                             GDALExtendedDataTypeH bufferDatatype,
-//                             void *pDstBuffer, const void *pDstBufferAllocStart,
-//                             size_t nDstBufferllocSize);
-// int CPL_DLL GDALMDArrayWrite(GDALMDArrayH hArray, const GUInt64 *arrayStartIdx,
-//                              const size_t *count, const GInt64 *arrayStep,
-//                              const GPtrDiff_t *bufferStride,
-//                              GDALExtendedDataTypeH bufferDatatype,
-//                              const void *pSrcBuffer,
-//                              const void *psrcBufferAllocStart,
-//                              size_t nSrcBufferllocSize);
-// int CPL_DLL GDALMDArrayAdviseRead(GDALMDArrayH hArray,
-//                                   const GUInt64 *arrayStartIdx,
-//                                   const size_t *count);
-// int CPL_DLL GDALMDArrayAdviseReadEx(GDALMDArrayH hArray,
-//                                     const GUInt64 *arrayStartIdx,
-//                                     const size_t *count,
-//                                     CSLConstList papszOptions);
-// GDALAttributeH CPL_DLL GDALMDArrayGetAttribute(
-//     GDALMDArrayH hArray, const char *pszName) CPL_WARN_UNUSED_RESULT;
-// GDALAttributeH CPL_DLL *
-// GDALMDArrayGetAttributes(GDALMDArrayH hArray, size_t *pnCount,
-//                          CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// GDALAttributeH CPL_DLL GDALMDArrayCreateAttribute(
-//     GDALMDArrayH hArray, const char *pszName, size_t nDimensions,
-//     const GUInt64 *panDimensions, GDALExtendedDataTypeH hEDT,
-//     CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
-// bool CPL_DLL GDALMDArrayDeleteAttribute(GDALMDArrayH hArray,
-//                                         const char *pszName,
-//                                         CSLConstList papszOptions);
-// bool CPL_DLL GDALMDArrayResize(GDALMDArrayH hArray,
-//                                const GUInt64 *panNewDimSizes,
-//                                CSLConstList papszOptions);
-// const void CPL_DLL *GDALMDArrayGetRawNoDataValue(GDALMDArrayH hArray);
-// double CPL_DLL GDALMDArrayGetNoDataValueAsDouble(GDALMDArrayH hArray,
-//                                                  int *pbHasNoDataValue);
-// int64_t CPL_DLL GDALMDArrayGetNoDataValueAsInt64(GDALMDArrayH hArray,
-//                                                  int *pbHasNoDataValue);
-// uint64_t CPL_DLL GDALMDArrayGetNoDataValueAsUInt64(GDALMDArrayH hArray,
-//                                                    int *pbHasNoDataValue);
-// int CPL_DLL GDALMDArraySetRawNoDataValue(GDALMDArrayH hArray, const void *);
-// int CPL_DLL GDALMDArraySetNoDataValueAsDouble(GDALMDArrayH hArray,
-//                                               double dfNoDataValue);
-// int CPL_DLL GDALMDArraySetNoDataValueAsInt64(GDALMDArrayH hArray,
-//                                              int64_t nNoDataValue);
-// int CPL_DLL GDALMDArraySetNoDataValueAsUInt64(GDALMDArrayH hArray,
-//                                               uint64_t nNoDataValue);
-// int CPL_DLL GDALMDArraySetScale(GDALMDArrayH hArray, double dfScale);
-// int CPL_DLL GDALMDArraySetScaleEx(GDALMDArrayH hArray, double dfScale,
-//                                   GDALDataType eStorageType);
-// double CPL_DLL GDALMDArrayGetScale(GDALMDArrayH hArray, int *pbHasValue);
-// double CPL_DLL GDALMDArrayGetScaleEx(GDALMDArrayH hArray, int *pbHasValue,
-//                                      GDALDataType *peStorageType);
-// int CPL_DLL GDALMDArraySetOffset(GDALMDArrayH hArray, double dfOffset);
-// int CPL_DLL GDALMDArraySetOffsetEx(GDALMDArrayH hArray, double dfOffset,
-//                                    GDALDataType eStorageType);
-// double CPL_DLL GDALMDArrayGetOffset(GDALMDArrayH hArray, int *pbHasValue);
-// double CPL_DLL GDALMDArrayGetOffsetEx(GDALMDArrayH hArray, int *pbHasValue,
-//                                       GDALDataType *peStorageType);
-// GUInt64 CPL_DLL *GDALMDArrayGetBlockSize(GDALMDArrayH hArray, size_t *pnCount);
-// int CPL_DLL GDALMDArraySetUnit(GDALMDArrayH hArray, const char *);
-// const char CPL_DLL *GDALMDArrayGetUnit(GDALMDArrayH hArray);
-// int CPL_DLL GDALMDArraySetSpatialRef(GDALMDArrayH, OGRSpatialReferenceH);
-// OGRSpatialReferenceH CPL_DLL GDALMDArrayGetSpatialRef(GDALMDArrayH hArray);
-// size_t CPL_DLL *GDALMDArrayGetProcessingChunkSize(GDALMDArrayH hArray,
-//                                                   size_t *pnCount,
-//                                                   size_t nMaxChunkMemory);
-// CSLConstList CPL_DLL GDALMDArrayGetStructuralInfo(GDALMDArrayH hArray);
-// GDALMDArrayH CPL_DLL GDALMDArrayGetView(GDALMDArrayH hArray,
-//                                         const char *pszViewExpr);
-// GDALMDArrayH CPL_DLL GDALMDArrayTranspose(GDALMDArrayH hArray,
-//                                           size_t nNewAxisCount,
-//                                           const int *panMapNewAxisToOldAxis);
-// GDALMDArrayH CPL_DLL GDALMDArrayGetUnscaled(GDALMDArrayH hArray);
-// GDALMDArrayH CPL_DLL GDALMDArrayGetMask(GDALMDArrayH hArray,
-//                                         CSLConstList papszOptions);
-// GDALDatasetH CPL_DLL GDALMDArrayAsClassicDataset(GDALMDArrayH hArray,
-//                                                  size_t iXDim, size_t iYDim);
-// GDALDatasetH CPL_DLL GDALMDArrayAsClassicDatasetEx(GDALMDArrayH hArray,
-//                                                    size_t iXDim, size_t iYDim,
-//                                                    GDALGroupH hRootGroup,
-//                                                    CSLConstList papszOptions);
-// CPLErr CPL_DLL GDALMDArrayGetStatistics(
-//     GDALMDArrayH hArray, GDALDatasetH, int bApproxOK, int bForce,
-//     double *pdfMin, double *pdfMax, double *pdfMean, double *pdfStdDev,
-//     GUInt64 *pnValidCount, GDALProgressFunc pfnProgress, void *pProgressData);
-// int CPL_DLL GDALMDArrayComputeStatistics(GDALMDArrayH hArray, GDALDatasetH,
-//                                          int bApproxOK, double *pdfMin,
-//                                          double *pdfMax, double *pdfMean,
-//                                          double *pdfStdDev,
-//                                          GUInt64 *pnValidCount,
-//                                          GDALProgressFunc, void *pProgressData);
-// int CPL_DLL GDALMDArrayComputeStatisticsEx(
-//     GDALMDArrayH hArray, GDALDatasetH, int bApproxOK, double *pdfMin,
-//     double *pdfMax, double *pdfMean, double *pdfStdDev, GUInt64 *pnValidCount,
-//     GDALProgressFunc, void *pProgressData, CSLConstList papszOptions);
-// GDALMDArrayH CPL_DLL GDALMDArrayGetResampled(GDALMDArrayH hArray,
-//                                              size_t nNewDimCount,
-//                                              const GDALDimensionH *pahNewDims,
-//                                              GDALRIOResampleAlg resampleAlg,
-//                                              OGRSpatialReferenceH hTargetSRS,
-//                                              CSLConstList papszOptions);
-// GDALMDArrayH CPL_DLL GDALMDArrayGetGridded(
-//     GDALMDArrayH hArray, const char *pszGridOptions, GDALMDArrayH hXArray,
-//     GDALMDArrayH hYArray, CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
+func gdalExtendedDataTypeCreateString(maxStringLength int) (result GDALExtendedDataType) {
+	result = GDALExtendedDataType{cValue: C.GDALExtendedDataTypeCreateString(C.size_t(maxStringLength))}
+	return
+}
 
-// GDALMDArrayH CPL_DLL *
-// GDALMDArrayGetCoordinateVariables(GDALMDArrayH hArray,
-//                                   size_t *pnCount) CPL_WARN_UNUSED_RESULT;
+func GDALExtendedDataTypeCreateString(maxStringLength int) (result GDALExtendedDataType, err error) {
+	result = gdalExtendedDataTypeCreateString(maxStringLength)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
 
-// GDALMDArrayH CPL_DLL *
-// GDALMDArrayGetMeshGrid(const GDALMDArrayH *pahInputArrays,
-//                        size_t nCountInputArrays, size_t *pnCountOutputArrays,
-//                        CSLConstList papszOptions) CPL_WARN_UNUSED_RESULT;
+func gdalExtendedDataTypeCreateStringEx(maxStringLength int, subType GDALExtendedDataTypeSubType) (result GDALExtendedDataType) {
+	result = GDALExtendedDataType{cValue: C.GDALExtendedDataTypeCreateStringEx(C.size_t(maxStringLength), C.GDALExtendedDataTypeSubType(subType))}
+	return
+}
 
-// #ifdef __cplusplus
-// extern "C++"
-// {
-// #endif
+func GDALExtendedDataTypeCreateStringEx(maxStringLength int, subType GDALExtendedDataTypeSubType) (result GDALExtendedDataType, err error) {
+	result = gdalExtendedDataTypeCreateStringEx(maxStringLength, subType)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
 
-//     /** Information on a raw block of a GDALMDArray
-//      *
-//      * @since 3.12
-//      */
-//     struct
-// #ifdef __cplusplus
-//         CPL_DLL
-// #endif
-//             GDALMDArrayRawBlockInfo
-//     {
-//         /** Filename into which the raw block is found */
-//         char *pszFilename;
-//         /** File offset within pszFilename of the start of the raw block */
-//         uint64_t nOffset;
-//         /** Size in bytes of the raw block */
-//         uint64_t nSize;
-//         /** NULL or Null-terminated list of driver specific information on the
-//          * raw block */
-//         char **papszInfo;
-//         /** In-memory buffer of nSize bytes. When this is set, pszFilename and
-//          * nOffset are set to NULL.
-//          *
-//          * When using C++ copy constructor or copy-assignment operator, if
-//          * a memory allocation fails, a CPLError() will be emitted and this
-//          * field will be NULL, but nSize not zero.
-//          */
-//         GByte *pabyInlineData;
+func gdalExtendedDataTypeCreateCompound(name string, totalSize, nComponents int, comps []GDALEDTComponent) (result GDALExtendedDataType) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	var ptr *C.GDALEDTComponentH
+	if len(comps) > 0 {
+		ptr = (*C.GDALEDTComponentH)(unsafe.Pointer(&comps[0]))
+	}
+	result = GDALExtendedDataType{cValue: C.GDALExtendedDataTypeCreateCompound(cName, C.size_t(totalSize), C.size_t(nComponents), ptr)}
+	return
+}
 
-// #ifdef __cplusplus
-//         /*! @cond Doxygen_Suppress */
-//         inline GDALMDArrayRawBlockInfo()
-//             : pszFilename(nullptr), nOffset(0), nSize(0), papszInfo(nullptr),
-//               pabyInlineData(nullptr)
-//         {
-//         }
+func GDALExtendedDataTypeCreateCompound(name string, totalSize int, comps []GDALEDTComponent) (result GDALExtendedDataType, err error) {
+	result = gdalExtendedDataTypeCreateCompound(name, totalSize, len(comps), comps)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
 
-//         ~GDALMDArrayRawBlockInfo();
+func gdalExtendedDataTypeRelease(edt GDALExtendedDataType) {
+	C.GDALExtendedDataTypeRelease(edt.cValue)
+}
 
-//         void clear();
+func (edt GDALExtendedDataType) Release() {
+	gdalExtendedDataTypeRelease(edt)
+}
 
-//         GDALMDArrayRawBlockInfo(const GDALMDArrayRawBlockInfo &);
-//         GDALMDArrayRawBlockInfo &operator=(const GDALMDArrayRawBlockInfo &);
-//         GDALMDArrayRawBlockInfo(GDALMDArrayRawBlockInfo &&);
-//         GDALMDArrayRawBlockInfo &operator=(GDALMDArrayRawBlockInfo &&);
-//         /*! @endcond */
-// #endif
-//     };
+func gdalExtendedDataTypeGetName(edt GDALExtendedDataType) (result string) {
+	result = C.GoString(C.GDALExtendedDataTypeGetName(edt.cValue))
+	return
+}
 
-// #ifdef __cplusplus
-// }
-// #endif
+func (edt GDALExtendedDataType) GetName() (result string) {
+	result = gdalExtendedDataTypeGetName(edt)
+	return
+}
 
-// /*! @cond Doxygen_Suppress */
-// typedef struct GDALMDArrayRawBlockInfo GDALMDArrayRawBlockInfo;
-// /*! @endcond */
+func gdalExtendedDataTypeGetClass(edt GDALExtendedDataType) (result GDALExtendedDataTypeClass) {
+	result = GDALExtendedDataTypeClass(C.GDALExtendedDataTypeGetClass(edt.cValue))
+	return
+}
 
-// GDALMDArrayRawBlockInfo CPL_DLL *GDALMDArrayRawBlockInfoCreate(void);
-// void CPL_DLL
-// GDALMDArrayRawBlockInfoRelease(GDALMDArrayRawBlockInfo *psBlockInfo);
-// bool CPL_DLL GDALMDArrayGetRawBlockInfo(GDALMDArrayH hArray,
-//                                         const uint64_t *panBlockCoordinates,
-//                                         GDALMDArrayRawBlockInfo *psBlockInfo);
+func (edt GDALExtendedDataType) GetClass() (result GDALExtendedDataTypeClass) {
+	result = gdalExtendedDataTypeGetClass(edt)
+	return
+}
 
-// void CPL_DLL GDALReleaseArrays(GDALMDArrayH *arrays, size_t nCount);
-// int CPL_DLL GDALMDArrayCache(GDALMDArrayH hArray, CSLConstList papszOptions);
-// bool CPL_DLL GDALMDArrayRename(GDALMDArrayH hArray, const char *pszNewName);
+func gdalExtendedDataTypeGetNumericDataType(edt GDALExtendedDataType) (result GDALDataType) {
+	result = GDALDataType(C.GDALExtendedDataTypeGetNumericDataType(edt.cValue))
+	return
+}
 
-// GDALRasterAttributeTableH CPL_DLL GDALCreateRasterAttributeTableFromMDArrays(
-//     GDALRATTableType eTableType, int nArrays, const GDALMDArrayH *ahArrays,
-//     const GDALRATFieldUsage *paeUsages);
+func (edt GDALExtendedDataType) GetNumericDataType() (result GDALDataType) {
+	result = gdalExtendedDataTypeGetNumericDataType(edt)
+	return
+}
 
-// void CPL_DLL GDALAttributeRelease(GDALAttributeH hAttr);
-// void CPL_DLL GDALReleaseAttributes(GDALAttributeH *attributes, size_t nCount);
-// const char CPL_DLL *GDALAttributeGetName(GDALAttributeH hAttr);
-// const char CPL_DLL *GDALAttributeGetFullName(GDALAttributeH hAttr);
-// GUInt64 CPL_DLL GDALAttributeGetTotalElementsCount(GDALAttributeH hAttr);
-// size_t CPL_DLL GDALAttributeGetDimensionCount(GDALAttributeH hAttr);
-// GUInt64 CPL_DLL *
-// GDALAttributeGetDimensionsSize(GDALAttributeH hAttr,
-//                                size_t *pnCount) CPL_WARN_UNUSED_RESULT;
-// GDALExtendedDataTypeH CPL_DLL GDALAttributeGetDataType(GDALAttributeH hAttr)
-//     CPL_WARN_UNUSED_RESULT;
-// GByte CPL_DLL *GDALAttributeReadAsRaw(GDALAttributeH hAttr,
-//                                       size_t *pnSize) CPL_WARN_UNUSED_RESULT;
-// void CPL_DLL GDALAttributeFreeRawResult(GDALAttributeH hAttr, GByte *raw,
-//                                         size_t nSize);
-// const char CPL_DLL *GDALAttributeReadAsString(GDALAttributeH hAttr);
-// int CPL_DLL GDALAttributeReadAsInt(GDALAttributeH hAttr);
-// int64_t CPL_DLL GDALAttributeReadAsInt64(GDALAttributeH hAttr);
-// double CPL_DLL GDALAttributeReadAsDouble(GDALAttributeH hAttr);
-// char CPL_DLL **
-// GDALAttributeReadAsStringArray(GDALAttributeH hAttr) CPL_WARN_UNUSED_RESULT;
-// int CPL_DLL *GDALAttributeReadAsIntArray(GDALAttributeH hAttr, size_t *pnCount)
-//     CPL_WARN_UNUSED_RESULT;
-// int64_t CPL_DLL *
-// GDALAttributeReadAsInt64Array(GDALAttributeH hAttr,
-//                               size_t *pnCount) CPL_WARN_UNUSED_RESULT;
-// double CPL_DLL *
-// GDALAttributeReadAsDoubleArray(GDALAttributeH hAttr,
-//                                size_t *pnCount) CPL_WARN_UNUSED_RESULT;
-// int CPL_DLL GDALAttributeWriteRaw(GDALAttributeH hAttr, const void *, size_t);
-// int CPL_DLL GDALAttributeWriteString(GDALAttributeH hAttr, const char *);
-// int CPL_DLL GDALAttributeWriteStringArray(GDALAttributeH hAttr, CSLConstList);
-// int CPL_DLL GDALAttributeWriteInt(GDALAttributeH hAttr, int);
-// int CPL_DLL GDALAttributeWriteIntArray(GDALAttributeH hAttr, const int *,
-//                                        size_t);
-// int CPL_DLL GDALAttributeWriteInt64(GDALAttributeH hAttr, int64_t);
-// int CPL_DLL GDALAttributeWriteInt64Array(GDALAttributeH hAttr, const int64_t *,
-//                                          size_t);
-// int CPL_DLL GDALAttributeWriteDouble(GDALAttributeH hAttr, double);
-// int CPL_DLL GDALAttributeWriteDoubleArray(GDALAttributeH hAttr, const double *,
-//                                           size_t);
-// bool CPL_DLL GDALAttributeRename(GDALAttributeH hAttr, const char *pszNewName);
+func gdalExtendedDataTypeGetSize(edt GDALExtendedDataType) (result int) {
+	result = int(C.GDALExtendedDataTypeGetSize(edt.cValue))
+	return
+}
 
-// void CPL_DLL GDALDimensionRelease(GDALDimensionH hDim);
-// void CPL_DLL GDALReleaseDimensions(GDALDimensionH *dims, size_t nCount);
-// const char CPL_DLL *GDALDimensionGetName(GDALDimensionH hDim);
-// const char CPL_DLL *GDALDimensionGetFullName(GDALDimensionH hDim);
-// const char CPL_DLL *GDALDimensionGetType(GDALDimensionH hDim);
-// const char CPL_DLL *GDALDimensionGetDirection(GDALDimensionH hDim);
-// GUInt64 CPL_DLL GDALDimensionGetSize(GDALDimensionH hDim);
-// GDALMDArrayH CPL_DLL GDALDimensionGetIndexingVariable(GDALDimensionH hDim)
-//     CPL_WARN_UNUSED_RESULT;
-// int CPL_DLL GDALDimensionSetIndexingVariable(GDALDimensionH hDim,
-//                                              GDALMDArrayH hArray);
-// bool CPL_DLL GDALDimensionRename(GDALDimensionH hDim, const char *pszNewName);
+func (edt GDALExtendedDataType) GetSize() (result int) {
+	result = gdalExtendedDataTypeGetSize(edt)
+	return
+}
+
+func gdalExtendedDataTypeGetMaxStringLength(edt GDALExtendedDataType) (result int) {
+	result = int(C.GDALExtendedDataTypeGetMaxStringLength(edt.cValue))
+	return
+}
+
+func (edt GDALExtendedDataType) GetMaxStringLength() (result int) {
+	result = gdalExtendedDataTypeGetMaxStringLength(edt)
+	return
+}
+
+// GDALExtendedDataTypeGetComponents and GDALExtendedDataTypeFreeComponents are
+// deferred: the returned GDALEDTComponentH* array has release/free ownership
+// semantics that need a dedicated design.
+
+func gdalExtendedDataTypeCanConvertTo(sourceEDT, targetEDT GDALExtendedDataType) (result bool) {
+	result = C.GDALExtendedDataTypeCanConvertTo(sourceEDT.cValue, targetEDT.cValue) != 0
+	return
+}
+
+func (edt GDALExtendedDataType) CanConvertTo(targetEDT GDALExtendedDataType) (result bool) {
+	result = gdalExtendedDataTypeCanConvertTo(edt, targetEDT)
+	return
+}
+
+func gdalExtendedDataTypeEquals(firstEDT, secondEDT GDALExtendedDataType) (result bool) {
+	result = C.GDALExtendedDataTypeEquals(firstEDT.cValue, secondEDT.cValue) != 0
+	return
+}
+
+func (edt GDALExtendedDataType) Equals(other GDALExtendedDataType) (result bool) {
+	result = gdalExtendedDataTypeEquals(edt, other)
+	return
+}
+
+func gdalExtendedDataTypeGetSubType(edt GDALExtendedDataType) (result GDALExtendedDataTypeSubType) {
+	result = GDALExtendedDataTypeSubType(C.GDALExtendedDataTypeGetSubType(edt.cValue))
+	return
+}
+
+func (edt GDALExtendedDataType) GetSubType() (result GDALExtendedDataTypeSubType) {
+	result = gdalExtendedDataTypeGetSubType(edt)
+	return
+}
+
+func gdalExtendedDataTypeGetRAT(edt GDALExtendedDataType) (result GDALRasterAttributeTable) {
+	result = GDALRasterAttributeTable{cValue: C.GDALExtendedDataTypeGetRAT(edt.cValue)}
+	return
+}
+
+func (edt GDALExtendedDataType) GetRAT() (result GDALRasterAttributeTable, err error) {
+	result = gdalExtendedDataTypeGetRAT(edt)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalEDTComponentCreate(name string, offset int, dataType GDALExtendedDataType) (result GDALEDTComponent) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	result = GDALEDTComponent{cValue: C.GDALEDTComponentCreate(cName, C.size_t(offset), dataType.cValue)}
+	return
+}
+
+func GDALEDTComponentCreate(name string, offset int, dataType GDALExtendedDataType) (result GDALEDTComponent, err error) {
+	result = gdalEDTComponentCreate(name, offset, dataType)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalEDTComponentRelease(comp GDALEDTComponent) {
+	C.GDALEDTComponentRelease(comp.cValue)
+}
+
+func (comp GDALEDTComponent) Release() {
+	gdalEDTComponentRelease(comp)
+}
+
+func gdalEDTComponentGetName(comp GDALEDTComponent) (result string) {
+	result = C.GoString(C.GDALEDTComponentGetName(comp.cValue))
+	return
+}
+
+func (comp GDALEDTComponent) GetName() (result string) {
+	result = gdalEDTComponentGetName(comp)
+	return
+}
+
+func gdalEDTComponentGetOffset(comp GDALEDTComponent) (result int) {
+	result = int(C.GDALEDTComponentGetOffset(comp.cValue))
+	return
+}
+
+func (comp GDALEDTComponent) GetOffset() (result int) {
+	result = gdalEDTComponentGetOffset(comp)
+	return
+}
+
+func gdalEDTComponentGetType(comp GDALEDTComponent) (result GDALExtendedDataType) {
+	result = GDALExtendedDataType{cValue: C.GDALEDTComponentGetType(comp.cValue)}
+	return
+}
+
+func (comp GDALEDTComponent) GetType() (result GDALExtendedDataType, err error) {
+	result = gdalEDTComponentGetType(comp)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalDatasetGetRootGroup(dataset GDALDataset) (result GDALGroup) {
+	result = GDALGroup{cValue: C.GDALDatasetGetRootGroup(dataset.cValue)}
+	return
+}
+
+func (ds GDALDataset) GetRootGroup() (result GDALGroup, err error) {
+	result = gdalDatasetGetRootGroup(ds)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGroupRelease(group GDALGroup) {
+	C.GDALGroupRelease(group.cValue)
+}
+
+func (g GDALGroup) Release() {
+	gdalGroupRelease(g)
+}
+
+func gdalGroupGetName(group GDALGroup) (result string) {
+	result = C.GoString(C.GDALGroupGetName(group.cValue))
+	return
+}
+
+func (g GDALGroup) GetName() (result string) {
+	result = gdalGroupGetName(g)
+	return
+}
+
+func gdalGroupGetFullName(group GDALGroup) (result string) {
+	result = C.GoString(C.GDALGroupGetFullName(group.cValue))
+	return
+}
+
+func (g GDALGroup) GetFullName() (result string) {
+	result = gdalGroupGetFullName(g)
+	return
+}
+
+func gdalGroupGetMDArrayNames(group GDALGroup, options []string) (result []string) {
+	opts, free := cStrings(options)
+	defer free()
+	raw := C.GDALGroupGetMDArrayNames(group.cValue, C.CSLConstList(unsafe.Pointer(opts)))
+	if raw == nil {
+		return
+	}
+	defer C.CSLDestroy(raw)
+	result = goStrings(raw)
+	return
+}
+
+func (g GDALGroup) GetMDArrayNames(options []string) (result []string) {
+	result = gdalGroupGetMDArrayNames(g, options)
+	return
+}
+
+func gdalGroupGetMDArrayFullNamesRecursive(group GDALGroup, groupOptions, arrayOptions []string) (result []string) {
+	gOpts, freeG := cStrings(groupOptions)
+	defer freeG()
+	aOpts, freeA := cStrings(arrayOptions)
+	defer freeA()
+	raw := C.GDALGroupGetMDArrayFullNamesRecursive(group.cValue, C.CSLConstList(unsafe.Pointer(gOpts)), C.CSLConstList(unsafe.Pointer(aOpts)))
+	if raw == nil {
+		return
+	}
+	defer C.CSLDestroy(raw)
+	result = goStrings(raw)
+	return
+}
+
+func (g GDALGroup) GetMDArrayFullNamesRecursive(groupOptions, arrayOptions []string) (result []string) {
+	result = gdalGroupGetMDArrayFullNamesRecursive(g, groupOptions, arrayOptions)
+	return
+}
+
+func gdalGroupOpenMDArray(group GDALGroup, name string, options []string) (result GDALMDArray) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	result = GDALMDArray{cValue: C.GDALGroupOpenMDArray(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (g GDALGroup) OpenMDArray(name string, options []string) (result GDALMDArray, err error) {
+	result = gdalGroupOpenMDArray(g, name, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGroupOpenMDArrayFromFullname(group GDALGroup, name string, options []string) (result GDALMDArray) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	result = GDALMDArray{cValue: C.GDALGroupOpenMDArrayFromFullname(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (g GDALGroup) OpenMDArrayFromFullname(name string, options []string) (result GDALMDArray, err error) {
+	result = gdalGroupOpenMDArrayFromFullname(g, name, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGroupResolveMDArray(group GDALGroup, name, startingPoint string, options []string) (result GDALMDArray) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	cStart := C.CString(startingPoint)
+	defer C.free(unsafe.Pointer(cStart))
+	opts, free := cStrings(options)
+	defer free()
+	result = GDALMDArray{cValue: C.GDALGroupResolveMDArray(group.cValue, cName, cStart, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (g GDALGroup) ResolveMDArray(name, startingPoint string, options []string) (result GDALMDArray, err error) {
+	result = gdalGroupResolveMDArray(g, name, startingPoint, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGroupGetGroupNames(group GDALGroup, options []string) (result []string) {
+	opts, free := cStrings(options)
+	defer free()
+	raw := C.GDALGroupGetGroupNames(group.cValue, C.CSLConstList(unsafe.Pointer(opts)))
+	if raw == nil {
+		return
+	}
+	defer C.CSLDestroy(raw)
+	result = goStrings(raw)
+	return
+}
+
+func (g GDALGroup) GetGroupNames(options []string) (result []string) {
+	result = gdalGroupGetGroupNames(g, options)
+	return
+}
+
+func gdalGroupOpenGroup(group GDALGroup, name string, options []string) (result GDALGroup) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	result = GDALGroup{cValue: C.GDALGroupOpenGroup(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (g GDALGroup) OpenGroup(name string, options []string) (result GDALGroup, err error) {
+	result = gdalGroupOpenGroup(g, name, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGroupOpenGroupFromFullname(group GDALGroup, name string, options []string) (result GDALGroup) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	result = GDALGroup{cValue: C.GDALGroupOpenGroupFromFullname(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (g GDALGroup) OpenGroupFromFullname(name string, options []string) (result GDALGroup, err error) {
+	result = gdalGroupOpenGroupFromFullname(g, name, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGroupGetVectorLayerNames(group GDALGroup, options []string) (result []string) {
+	opts, free := cStrings(options)
+	defer free()
+	raw := C.GDALGroupGetVectorLayerNames(group.cValue, C.CSLConstList(unsafe.Pointer(opts)))
+	if raw == nil {
+		return
+	}
+	defer C.CSLDestroy(raw)
+	result = goStrings(raw)
+	return
+}
+
+func (g GDALGroup) GetVectorLayerNames(options []string) (result []string) {
+	result = gdalGroupGetVectorLayerNames(g, options)
+	return
+}
+
+func gdalGroupOpenVectorLayer(group GDALGroup, name string, options []string) (result OGRLayer) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	result = OGRLayer{cValue: C.GDALGroupOpenVectorLayer(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (g GDALGroup) OpenVectorLayer(name string, options []string) (result OGRLayer, err error) {
+	result = gdalGroupOpenVectorLayer(g, name, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGroupGetDimensions(group GDALGroup, options []string) (result []GDALDimension) {
+	opts, free := cStrings(options)
+	defer free()
+	var count C.size_t
+	arr := C.GDALGroupGetDimensions(group.cValue, &count, C.CSLConstList(unsafe.Pointer(opts)))
+	if arr == nil || count == 0 {
+		return
+	}
+	src := unsafe.Slice(arr, int(count))
+	result = make([]GDALDimension, int(count))
+	for i := range result {
+		result[i] = GDALDimension{cValue: src[i]}
+	}
+	C.VSIFree(unsafe.Pointer(arr))
+	return
+}
+
+func (g GDALGroup) GetDimensions(options []string) (result []GDALDimension) {
+	result = gdalGroupGetDimensions(g, options)
+	return
+}
+
+func gdalGroupGetAttribute(group GDALGroup, name string) (result GDALAttribute) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	result = GDALAttribute{cValue: C.GDALGroupGetAttribute(group.cValue, cName)}
+	return
+}
+
+func (g GDALGroup) GetAttribute(name string) (result GDALAttribute, err error) {
+	result = gdalGroupGetAttribute(g, name)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGroupGetAttributes(group GDALGroup, options []string) (result []GDALAttribute) {
+	opts, free := cStrings(options)
+	defer free()
+	var count C.size_t
+	arr := C.GDALGroupGetAttributes(group.cValue, &count, C.CSLConstList(unsafe.Pointer(opts)))
+	if arr == nil || count == 0 {
+		return
+	}
+	src := unsafe.Slice(arr, int(count))
+	result = make([]GDALAttribute, int(count))
+	for i := range result {
+		result[i] = GDALAttribute{cValue: src[i]}
+	}
+	C.VSIFree(unsafe.Pointer(arr))
+	return
+}
+
+func (g GDALGroup) GetAttributes(options []string) (result []GDALAttribute) {
+	result = gdalGroupGetAttributes(g, options)
+	return
+}
+
+func gdalGroupGetStructuralInfo(group GDALGroup) (result []string) {
+	result = goStrings(C.GDALGroupGetStructuralInfo(group.cValue))
+	return
+}
+
+func (g GDALGroup) GetStructuralInfo() (result []string) {
+	result = gdalGroupGetStructuralInfo(g)
+	return
+}
+
+func gdalGroupCreateGroup(group GDALGroup, name string, options []string) (result GDALGroup) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	result = GDALGroup{cValue: C.GDALGroupCreateGroup(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (g GDALGroup) CreateGroup(name string, options []string) (result GDALGroup, err error) {
+	result = gdalGroupCreateGroup(g, name, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGroupDeleteGroup(group GDALGroup, name string, options []string) (result bool) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	result = bool(C.GDALGroupDeleteGroup(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts))))
+	return
+}
+
+func (g GDALGroup) DeleteGroup(name string, options []string) (result bool) {
+	result = gdalGroupDeleteGroup(g, name, options)
+	return
+}
+
+func gdalGroupCreateDimension(group GDALGroup, name, dimType, direction string, size uint64, options []string) (result GDALDimension) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	cType := C.CString(dimType)
+	defer C.free(unsafe.Pointer(cType))
+	cDir := C.CString(direction)
+	defer C.free(unsafe.Pointer(cDir))
+	opts, free := cStrings(options)
+	defer free()
+	result = GDALDimension{cValue: C.GDALGroupCreateDimension(group.cValue, cName, cType, cDir, C.GUInt64(size), C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (g GDALGroup) CreateDimension(name, dimType, direction string, size uint64, options []string) (result GDALDimension, err error) {
+	result = gdalGroupCreateDimension(g, name, dimType, direction, size, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGroupCreateMDArray(group GDALGroup, name string, nDimensions int, dimensions []GDALDimension, dataType GDALExtendedDataType, options []string) (result GDALMDArray) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	var dimsPtr *C.GDALDimensionH
+	if len(dimensions) > 0 {
+		dimsPtr = (*C.GDALDimensionH)(unsafe.Pointer(&dimensions[0]))
+	}
+	result = GDALMDArray{cValue: C.GDALGroupCreateMDArray(group.cValue, cName, C.size_t(nDimensions), dimsPtr, dataType.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (g GDALGroup) CreateMDArray(name string, dimensions []GDALDimension, dataType GDALExtendedDataType, options []string) (result GDALMDArray, err error) {
+	result = gdalGroupCreateMDArray(g, name, len(dimensions), dimensions, dataType, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGroupDeleteMDArray(group GDALGroup, name string, options []string) (result bool) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	result = bool(C.GDALGroupDeleteMDArray(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts))))
+	return
+}
+
+func (g GDALGroup) DeleteMDArray(name string, options []string) (result bool) {
+	result = gdalGroupDeleteMDArray(g, name, options)
+	return
+}
+
+func gdalGroupCreateAttribute(group GDALGroup, name string, nDimensions int, dimensions []uint64, dataType GDALExtendedDataType, options []string) (result GDALAttribute) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	cDims := make([]C.GUInt64, len(dimensions))
+	for i, v := range dimensions {
+		cDims[i] = C.GUInt64(v)
+	}
+	var dimsPtr *C.GUInt64
+	if len(dimensions) > 0 {
+		dimsPtr = &cDims[0]
+	}
+	result = GDALAttribute{cValue: C.GDALGroupCreateAttribute(group.cValue, cName, C.size_t(nDimensions), dimsPtr, dataType.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (g GDALGroup) CreateAttribute(name string, dimensions []uint64, dataType GDALExtendedDataType, options []string) (result GDALAttribute, err error) {
+	result = gdalGroupCreateAttribute(g, name, len(dimensions), dimensions, dataType, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGroupDeleteAttribute(group GDALGroup, name string, options []string) (result bool) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	result = bool(C.GDALGroupDeleteAttribute(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts))))
+	return
+}
+
+func (g GDALGroup) DeleteAttribute(name string, options []string) (result bool) {
+	result = gdalGroupDeleteAttribute(g, name, options)
+	return
+}
+
+func gdalGroupRename(group GDALGroup, newName string) (result bool) {
+	cName := C.CString(newName)
+	defer C.free(unsafe.Pointer(cName))
+	result = bool(C.GDALGroupRename(group.cValue, cName))
+	return
+}
+
+func (g GDALGroup) Rename(newName string) (result bool) {
+	result = gdalGroupRename(g, newName)
+	return
+}
+
+func gdalGroupSubsetDimensionFromSelection(group GDALGroup, selection string, options []string) (result GDALGroup) {
+	cSelection := C.CString(selection)
+	defer C.free(unsafe.Pointer(cSelection))
+	opts, free := cStrings(options)
+	defer free()
+	result = GDALGroup{cValue: C.GDALGroupSubsetDimensionFromSelection(group.cValue, cSelection, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (g GDALGroup) SubsetDimensionFromSelection(selection string, options []string) (result GDALGroup, err error) {
+	result = gdalGroupSubsetDimensionFromSelection(g, selection, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalGroupGetDataTypeCount(group GDALGroup) (result int) {
+	result = int(C.GDALGroupGetDataTypeCount(group.cValue))
+	return
+}
+
+func (g GDALGroup) GetDataTypeCount() (result int) {
+	result = gdalGroupGetDataTypeCount(g)
+	return
+}
+
+func gdalGroupGetDataType(group GDALGroup, index int) (result GDALExtendedDataType) {
+	result = GDALExtendedDataType{cValue: C.GDALGroupGetDataType(group.cValue, C.size_t(index))}
+	return
+}
+
+func (g GDALGroup) GetDataType(index int) (result GDALExtendedDataType, err error) {
+	result = gdalGroupGetDataType(g, index)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalMDArrayRelease(array GDALMDArray) {
+	C.GDALMDArrayRelease(array.cValue)
+}
+
+func (a GDALMDArray) Release() {
+	gdalMDArrayRelease(a)
+}
+
+func gdalMDArrayGetName(array GDALMDArray) (result string) {
+	result = C.GoString(C.GDALMDArrayGetName(array.cValue))
+	return
+}
+
+func (a GDALMDArray) GetName() (result string) {
+	result = gdalMDArrayGetName(a)
+	return
+}
+
+func gdalMDArrayGetFullName(array GDALMDArray) (result string) {
+	result = C.GoString(C.GDALMDArrayGetFullName(array.cValue))
+	return
+}
+
+func (a GDALMDArray) GetFullName() (result string) {
+	result = gdalMDArrayGetFullName(a)
+	return
+}
+
+func gdalMDArrayGetTotalElementsCount(array GDALMDArray) (result uint64) {
+	result = uint64(C.GDALMDArrayGetTotalElementsCount(array.cValue))
+	return
+}
+
+func (a GDALMDArray) GetTotalElementsCount() (result uint64) {
+	result = gdalMDArrayGetTotalElementsCount(a)
+	return
+}
+
+func gdalMDArrayGetDimensionCount(array GDALMDArray) (result int) {
+	result = int(C.GDALMDArrayGetDimensionCount(array.cValue))
+	return
+}
+
+func (a GDALMDArray) GetDimensionCount() (result int) {
+	result = gdalMDArrayGetDimensionCount(a)
+	return
+}
+
+func gdalMDArrayGetDimensions(array GDALMDArray) (result []GDALDimension) {
+	var count C.size_t
+	arr := C.GDALMDArrayGetDimensions(array.cValue, &count)
+	if arr == nil || count == 0 {
+		return
+	}
+	src := unsafe.Slice(arr, int(count))
+	result = make([]GDALDimension, int(count))
+	for i := range result {
+		result[i] = GDALDimension{cValue: src[i]}
+	}
+	C.VSIFree(unsafe.Pointer(arr))
+	return
+}
+
+func (a GDALMDArray) GetDimensions() (result []GDALDimension) {
+	result = gdalMDArrayGetDimensions(a)
+	return
+}
+
+func gdalMDArrayGetDataType(array GDALMDArray) (result GDALExtendedDataType) {
+	result = GDALExtendedDataType{cValue: C.GDALMDArrayGetDataType(array.cValue)}
+	return
+}
+
+func (a GDALMDArray) GetDataType() (result GDALExtendedDataType, err error) {
+	result = gdalMDArrayGetDataType(a)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+// GDALMDArrayRead, GDALMDArrayWrite, GDALMDArrayAdviseRead and
+// GDALMDArrayAdviseReadEx are deferred: their typed index/step/stride arrays
+// plus void* buffer need a dedicated design.
+
+func gdalMDArrayGetAttribute(array GDALMDArray, name string) (result GDALAttribute) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	result = GDALAttribute{cValue: C.GDALMDArrayGetAttribute(array.cValue, cName)}
+	return
+}
+
+func (a GDALMDArray) GetAttribute(name string) (result GDALAttribute, err error) {
+	result = gdalMDArrayGetAttribute(a, name)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalMDArrayGetAttributes(array GDALMDArray, options []string) (result []GDALAttribute) {
+	opts, free := cStrings(options)
+	defer free()
+	var count C.size_t
+	arr := C.GDALMDArrayGetAttributes(array.cValue, &count, C.CSLConstList(unsafe.Pointer(opts)))
+	if arr == nil || count == 0 {
+		return
+	}
+	src := unsafe.Slice(arr, int(count))
+	result = make([]GDALAttribute, int(count))
+	for i := range result {
+		result[i] = GDALAttribute{cValue: src[i]}
+	}
+	C.VSIFree(unsafe.Pointer(arr))
+	return
+}
+
+func (a GDALMDArray) GetAttributes(options []string) (result []GDALAttribute) {
+	result = gdalMDArrayGetAttributes(a, options)
+	return
+}
+
+func gdalMDArrayCreateAttribute(array GDALMDArray, name string, nDimensions int, dimensions []uint64, dataType GDALExtendedDataType, options []string) (result GDALAttribute) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	cDims := make([]C.GUInt64, len(dimensions))
+	for i, v := range dimensions {
+		cDims[i] = C.GUInt64(v)
+	}
+	var dimsPtr *C.GUInt64
+	if len(dimensions) > 0 {
+		dimsPtr = &cDims[0]
+	}
+	result = GDALAttribute{cValue: C.GDALMDArrayCreateAttribute(array.cValue, cName, C.size_t(nDimensions), dimsPtr, dataType.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (a GDALMDArray) CreateAttribute(name string, dimensions []uint64, dataType GDALExtendedDataType, options []string) (result GDALAttribute, err error) {
+	result = gdalMDArrayCreateAttribute(a, name, len(dimensions), dimensions, dataType, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalMDArrayDeleteAttribute(array GDALMDArray, name string, options []string) (result bool) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	opts, free := cStrings(options)
+	defer free()
+	result = bool(C.GDALMDArrayDeleteAttribute(array.cValue, cName, C.CSLConstList(unsafe.Pointer(opts))))
+	return
+}
+
+func (a GDALMDArray) DeleteAttribute(name string, options []string) (result bool) {
+	result = gdalMDArrayDeleteAttribute(a, name, options)
+	return
+}
+
+func gdalMDArrayResize(array GDALMDArray, newDimSizes []uint64, options []string) (result bool) {
+	opts, free := cStrings(options)
+	defer free()
+	cSizes := make([]C.GUInt64, len(newDimSizes))
+	for i, v := range newDimSizes {
+		cSizes[i] = C.GUInt64(v)
+	}
+	var sizesPtr *C.GUInt64
+	if len(newDimSizes) > 0 {
+		sizesPtr = &cSizes[0]
+	}
+	result = bool(C.GDALMDArrayResize(array.cValue, sizesPtr, C.CSLConstList(unsafe.Pointer(opts))))
+	return
+}
+
+func (a GDALMDArray) Resize(newDimSizes []uint64, options []string) (result bool) {
+	result = gdalMDArrayResize(a, newDimSizes, options)
+	return
+}
+
+// GDALMDArrayGetRawNoDataValue and GDALMDArraySetRawNoDataValue are deferred:
+// the raw void* nodata value needs a dedicated design.
+
+func gdalMDArrayGetNoDataValueAsDouble(array GDALMDArray, hasNoData *int) (result float64) {
+	var cHas C.int
+	result = float64(C.GDALMDArrayGetNoDataValueAsDouble(array.cValue, &cHas))
+	*hasNoData = int(cHas)
+	return
+}
+
+func (a GDALMDArray) GetNoDataValueAsDouble() (value float64, ok bool) {
+	var has int
+	value = gdalMDArrayGetNoDataValueAsDouble(a, &has)
+	ok = has != 0
+	return
+}
+
+func gdalMDArrayGetNoDataValueAsInt64(array GDALMDArray, hasNoData *int) (result int64) {
+	var cHas C.int
+	result = int64(C.GDALMDArrayGetNoDataValueAsInt64(array.cValue, &cHas))
+	*hasNoData = int(cHas)
+	return
+}
+
+func (a GDALMDArray) GetNoDataValueAsInt64() (value int64, ok bool) {
+	var has int
+	value = gdalMDArrayGetNoDataValueAsInt64(a, &has)
+	ok = has != 0
+	return
+}
+
+func gdalMDArrayGetNoDataValueAsUInt64(array GDALMDArray, hasNoData *int) (result uint64) {
+	var cHas C.int
+	result = uint64(C.GDALMDArrayGetNoDataValueAsUInt64(array.cValue, &cHas))
+	*hasNoData = int(cHas)
+	return
+}
+
+func (a GDALMDArray) GetNoDataValueAsUInt64() (value uint64, ok bool) {
+	var has int
+	value = gdalMDArrayGetNoDataValueAsUInt64(a, &has)
+	ok = has != 0
+	return
+}
+
+func gdalMDArraySetNoDataValueAsDouble(array GDALMDArray, value float64) (result bool) {
+	result = C.GDALMDArraySetNoDataValueAsDouble(array.cValue, C.double(value)) != 0
+	return
+}
+
+func (a GDALMDArray) SetNoDataValueAsDouble(value float64) (result bool) {
+	result = gdalMDArraySetNoDataValueAsDouble(a, value)
+	return
+}
+
+func gdalMDArraySetNoDataValueAsInt64(array GDALMDArray, value int64) (result bool) {
+	result = C.GDALMDArraySetNoDataValueAsInt64(array.cValue, C.int64_t(value)) != 0
+	return
+}
+
+func (a GDALMDArray) SetNoDataValueAsInt64(value int64) (result bool) {
+	result = gdalMDArraySetNoDataValueAsInt64(a, value)
+	return
+}
+
+func gdalMDArraySetNoDataValueAsUInt64(array GDALMDArray, value uint64) (result bool) {
+	result = C.GDALMDArraySetNoDataValueAsUInt64(array.cValue, C.uint64_t(value)) != 0
+	return
+}
+
+func (a GDALMDArray) SetNoDataValueAsUInt64(value uint64) (result bool) {
+	result = gdalMDArraySetNoDataValueAsUInt64(a, value)
+	return
+}
+
+func gdalMDArraySetScale(array GDALMDArray, scale float64) (result bool) {
+	result = C.GDALMDArraySetScale(array.cValue, C.double(scale)) != 0
+	return
+}
+
+func (a GDALMDArray) SetScale(scale float64) (result bool) {
+	result = gdalMDArraySetScale(a, scale)
+	return
+}
+
+func gdalMDArraySetScaleEx(array GDALMDArray, scale float64, storageType GDALDataType) (result bool) {
+	result = C.GDALMDArraySetScaleEx(array.cValue, C.double(scale), C.GDALDataType(storageType)) != 0
+	return
+}
+
+func (a GDALMDArray) SetScaleEx(scale float64, storageType GDALDataType) (result bool) {
+	result = gdalMDArraySetScaleEx(a, scale, storageType)
+	return
+}
+
+func gdalMDArrayGetScale(array GDALMDArray, hasValue *int) (result float64) {
+	var cHas C.int
+	result = float64(C.GDALMDArrayGetScale(array.cValue, &cHas))
+	*hasValue = int(cHas)
+	return
+}
+
+func (a GDALMDArray) GetScale() (value float64, ok bool) {
+	var has int
+	value = gdalMDArrayGetScale(a, &has)
+	ok = has != 0
+	return
+}
+
+func gdalMDArraySetOffset(array GDALMDArray, offset float64) (result bool) {
+	result = C.GDALMDArraySetOffset(array.cValue, C.double(offset)) != 0
+	return
+}
+
+func (a GDALMDArray) SetOffset(offset float64) (result bool) {
+	result = gdalMDArraySetOffset(a, offset)
+	return
+}
+
+func gdalMDArraySetOffsetEx(array GDALMDArray, offset float64, storageType GDALDataType) (result bool) {
+	result = C.GDALMDArraySetOffsetEx(array.cValue, C.double(offset), C.GDALDataType(storageType)) != 0
+	return
+}
+
+func (a GDALMDArray) SetOffsetEx(offset float64, storageType GDALDataType) (result bool) {
+	result = gdalMDArraySetOffsetEx(a, offset, storageType)
+	return
+}
+
+func gdalMDArrayGetOffset(array GDALMDArray, hasValue *int) (result float64) {
+	var cHas C.int
+	result = float64(C.GDALMDArrayGetOffset(array.cValue, &cHas))
+	*hasValue = int(cHas)
+	return
+}
+
+func (a GDALMDArray) GetOffset() (value float64, ok bool) {
+	var has int
+	value = gdalMDArrayGetOffset(a, &has)
+	ok = has != 0
+	return
+}
+
+// GDALMDArrayGetScaleEx, GDALMDArrayGetOffsetEx (with storage-type out-param),
+// GDALMDArrayGetBlockSize and GDALMDArrayGetProcessingChunkSize (GUInt64*/size_t*
+// array returns) are deferred.
+
+func gdalMDArraySetUnit(array GDALMDArray, unit string) (result bool) {
+	cUnit := C.CString(unit)
+	defer C.free(unsafe.Pointer(cUnit))
+	result = C.GDALMDArraySetUnit(array.cValue, cUnit) != 0
+	return
+}
+
+func (a GDALMDArray) SetUnit(unit string) (result bool) {
+	result = gdalMDArraySetUnit(a, unit)
+	return
+}
+
+func gdalMDArrayGetUnit(array GDALMDArray) (result string) {
+	result = C.GoString(C.GDALMDArrayGetUnit(array.cValue))
+	return
+}
+
+func (a GDALMDArray) GetUnit() (result string) {
+	result = gdalMDArrayGetUnit(a)
+	return
+}
+
+func gdalMDArraySetSpatialRef(array GDALMDArray, srs OGRSpatialReference) (result bool) {
+	result = C.GDALMDArraySetSpatialRef(array.cValue, srs.cValue) != 0
+	return
+}
+
+func (a GDALMDArray) SetSpatialRef(srs OGRSpatialReference) (result bool) {
+	result = gdalMDArraySetSpatialRef(a, srs)
+	return
+}
+
+func gdalMDArrayGetSpatialRef(array GDALMDArray) (result OGRSpatialReference) {
+	result = OGRSpatialReference{cValue: C.GDALMDArrayGetSpatialRef(array.cValue)}
+	return
+}
+
+func (a GDALMDArray) GetSpatialRef() (result OGRSpatialReference) {
+	result = gdalMDArrayGetSpatialRef(a)
+	return
+}
+
+func gdalMDArrayGetStructuralInfo(array GDALMDArray) (result []string) {
+	result = goStrings(C.GDALMDArrayGetStructuralInfo(array.cValue))
+	return
+}
+
+func (a GDALMDArray) GetStructuralInfo() (result []string) {
+	result = gdalMDArrayGetStructuralInfo(a)
+	return
+}
+
+func gdalMDArrayGetView(array GDALMDArray, viewExpr string) (result GDALMDArray) {
+	cExpr := C.CString(viewExpr)
+	defer C.free(unsafe.Pointer(cExpr))
+	result = GDALMDArray{cValue: C.GDALMDArrayGetView(array.cValue, cExpr)}
+	return
+}
+
+func (a GDALMDArray) GetView(viewExpr string) (result GDALMDArray, err error) {
+	result = gdalMDArrayGetView(a, viewExpr)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalMDArrayTranspose(array GDALMDArray, newAxisCount int, mapNewAxisToOldAxis []int) (result GDALMDArray) {
+	result = GDALMDArray{cValue: C.GDALMDArrayTranspose(array.cValue, C.size_t(newAxisCount), cInts(mapNewAxisToOldAxis))}
+	return
+}
+
+func (a GDALMDArray) Transpose(mapNewAxisToOldAxis []int) (result GDALMDArray, err error) {
+	result = gdalMDArrayTranspose(a, len(mapNewAxisToOldAxis), mapNewAxisToOldAxis)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalMDArrayGetUnscaled(array GDALMDArray) (result GDALMDArray) {
+	result = GDALMDArray{cValue: C.GDALMDArrayGetUnscaled(array.cValue)}
+	return
+}
+
+func (a GDALMDArray) GetUnscaled() (result GDALMDArray, err error) {
+	result = gdalMDArrayGetUnscaled(a)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalMDArrayGetMask(array GDALMDArray, options []string) (result GDALMDArray) {
+	opts, free := cStrings(options)
+	defer free()
+	result = GDALMDArray{cValue: C.GDALMDArrayGetMask(array.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (a GDALMDArray) GetMask(options []string) (result GDALMDArray, err error) {
+	result = gdalMDArrayGetMask(a, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalMDArrayAsClassicDataset(array GDALMDArray, xDim, yDim int) (result GDALDataset) {
+	result = GDALDataset{cValue: C.GDALMDArrayAsClassicDataset(array.cValue, C.size_t(xDim), C.size_t(yDim))}
+	return
+}
+
+func (a GDALMDArray) AsClassicDataset(xDim, yDim int) (result GDALDataset, err error) {
+	result = gdalMDArrayAsClassicDataset(a, xDim, yDim)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalMDArrayAsClassicDatasetEx(array GDALMDArray, xDim, yDim int, rootGroup GDALGroup, options []string) (result GDALDataset) {
+	opts, free := cStrings(options)
+	defer free()
+	result = GDALDataset{cValue: C.GDALMDArrayAsClassicDatasetEx(array.cValue, C.size_t(xDim), C.size_t(yDim), rootGroup.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (a GDALMDArray) AsClassicDatasetEx(xDim, yDim int, rootGroup GDALGroup, options []string) (result GDALDataset, err error) {
+	result = gdalMDArrayAsClassicDatasetEx(a, xDim, yDim, rootGroup, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalMDArrayGetStatistics(array GDALMDArray, dataset GDALDataset, approxOK, force int, min, max, mean, stdDev *float64, validCount *uint64, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
+	var cMin, cMax, cMean, cStdDev C.double
+	var cValidCount C.GUInt64
+	result = CPLErr(C.GDALMDArrayGetStatistics(array.cValue, dataset.cValue, C.int(approxOK), C.int(force), &cMin, &cMax, &cMean, &cStdDev, &cValidCount, progress.cValue, progressData))
+	*min = float64(cMin)
+	*max = float64(cMax)
+	*mean = float64(cMean)
+	*stdDev = float64(cStdDev)
+	*validCount = uint64(cValidCount)
+	return
+}
+
+func (a GDALMDArray) GetStatistics(dataset GDALDataset, approxOK, force int, progress GDALProgressFunc, progressData unsafe.Pointer) (min, max, mean, stdDev float64, validCount uint64, err error) {
+	err = cplErr(gdalMDArrayGetStatistics(a, dataset, approxOK, force, &min, &max, &mean, &stdDev, &validCount, progress, progressData))
+	return
+}
+
+func gdalMDArrayComputeStatistics(array GDALMDArray, dataset GDALDataset, approxOK int, min, max, mean, stdDev *float64, validCount *uint64, progress GDALProgressFunc, progressData unsafe.Pointer) (result bool) {
+	var cMin, cMax, cMean, cStdDev C.double
+	var cValidCount C.GUInt64
+	result = C.GDALMDArrayComputeStatistics(array.cValue, dataset.cValue, C.int(approxOK), &cMin, &cMax, &cMean, &cStdDev, &cValidCount, progress.cValue, progressData) != 0
+	*min = float64(cMin)
+	*max = float64(cMax)
+	*mean = float64(cMean)
+	*stdDev = float64(cStdDev)
+	*validCount = uint64(cValidCount)
+	return
+}
+
+func (a GDALMDArray) ComputeStatistics(dataset GDALDataset, approxOK int, progress GDALProgressFunc, progressData unsafe.Pointer) (min, max, mean, stdDev float64, validCount uint64, ok bool) {
+	ok = gdalMDArrayComputeStatistics(a, dataset, approxOK, &min, &max, &mean, &stdDev, &validCount, progress, progressData)
+	return
+}
+
+func gdalMDArrayGetResampled(array GDALMDArray, newDimCount int, newDims []GDALDimension, resampleAlg GDALRIOResampleAlg, targetSRS OGRSpatialReference, options []string) (result GDALMDArray) {
+	opts, free := cStrings(options)
+	defer free()
+	var dimsPtr *C.GDALDimensionH
+	if len(newDims) > 0 {
+		dimsPtr = (*C.GDALDimensionH)(unsafe.Pointer(&newDims[0]))
+	}
+	result = GDALMDArray{cValue: C.GDALMDArrayGetResampled(array.cValue, C.size_t(newDimCount), dimsPtr, C.GDALRIOResampleAlg(resampleAlg), targetSRS.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (a GDALMDArray) GetResampled(newDims []GDALDimension, resampleAlg GDALRIOResampleAlg, targetSRS OGRSpatialReference, options []string) (result GDALMDArray, err error) {
+	result = gdalMDArrayGetResampled(a, len(newDims), newDims, resampleAlg, targetSRS, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalMDArrayGetGridded(array GDALMDArray, gridOptions string, xArray, yArray GDALMDArray, options []string) (result GDALMDArray) {
+	cGridOptions := C.CString(gridOptions)
+	defer C.free(unsafe.Pointer(cGridOptions))
+	opts, free := cStrings(options)
+	defer free()
+	result = GDALMDArray{cValue: C.GDALMDArrayGetGridded(array.cValue, cGridOptions, xArray.cValue, yArray.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+	return
+}
+
+func (a GDALMDArray) GetGridded(gridOptions string, xArray, yArray GDALMDArray, options []string) (result GDALMDArray, err error) {
+	result = gdalMDArrayGetGridded(a, gridOptions, xArray, yArray, options)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalMDArrayGetCoordinateVariables(array GDALMDArray) (result []GDALMDArray) {
+	var count C.size_t
+	arr := C.GDALMDArrayGetCoordinateVariables(array.cValue, &count)
+	if arr == nil || count == 0 {
+		return
+	}
+	src := unsafe.Slice(arr, int(count))
+	result = make([]GDALMDArray, int(count))
+	for i := range result {
+		result[i] = GDALMDArray{cValue: src[i]}
+	}
+	C.VSIFree(unsafe.Pointer(arr))
+	return
+}
+
+func (a GDALMDArray) GetCoordinateVariables() (result []GDALMDArray) {
+	result = gdalMDArrayGetCoordinateVariables(a)
+	return
+}
+
+// GDALMDArrayGetMeshGrid (array-in/array-out), the GDALMDArrayRawBlockInfo
+// struct + GDALMDArrayRawBlockInfoCreate/Release/GDALMDArrayGetRawBlockInfo, and
+// GDALReleaseArrays are deferred.
+
+func gdalMDArrayCache(array GDALMDArray, options []string) (result bool) {
+	opts, free := cStrings(options)
+	defer free()
+	result = C.GDALMDArrayCache(array.cValue, C.CSLConstList(unsafe.Pointer(opts))) != 0
+	return
+}
+
+func (a GDALMDArray) Cache(options []string) (result bool) {
+	result = gdalMDArrayCache(a, options)
+	return
+}
+
+func gdalMDArrayRename(array GDALMDArray, newName string) (result bool) {
+	cName := C.CString(newName)
+	defer C.free(unsafe.Pointer(cName))
+	result = bool(C.GDALMDArrayRename(array.cValue, cName))
+	return
+}
+
+func (a GDALMDArray) Rename(newName string) (result bool) {
+	result = gdalMDArrayRename(a, newName)
+	return
+}
+
+func gdalCreateRasterAttributeTableFromMDArrays(tableType GDALRATTableType, nArrays int, arrays []GDALMDArray, usages []GDALRATFieldUsage) (result GDALRasterAttributeTable) {
+	var arraysPtr *C.GDALMDArrayH
+	if len(arrays) > 0 {
+		arraysPtr = (*C.GDALMDArrayH)(unsafe.Pointer(&arrays[0]))
+	}
+	var usagesPtr *C.GDALRATFieldUsage
+	if len(usages) > 0 {
+		usagesPtr = (*C.GDALRATFieldUsage)(unsafe.Pointer(&usages[0]))
+	}
+	result = GDALRasterAttributeTable{cValue: C.GDALCreateRasterAttributeTableFromMDArrays(C.GDALRATTableType(tableType), C.int(nArrays), arraysPtr, usagesPtr)}
+	return
+}
+
+func GDALCreateRasterAttributeTableFromMDArrays(tableType GDALRATTableType, arrays []GDALMDArray, usages []GDALRATFieldUsage) (result GDALRasterAttributeTable, err error) {
+	result = gdalCreateRasterAttributeTableFromMDArrays(tableType, len(arrays), arrays, usages)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalAttributeRelease(attr GDALAttribute) {
+	C.GDALAttributeRelease(attr.cValue)
+}
+
+func (attr GDALAttribute) Release() {
+	gdalAttributeRelease(attr)
+}
+
+func gdalAttributeGetName(attr GDALAttribute) (result string) {
+	result = C.GoString(C.GDALAttributeGetName(attr.cValue))
+	return
+}
+
+func (attr GDALAttribute) GetName() (result string) {
+	result = gdalAttributeGetName(attr)
+	return
+}
+
+func gdalAttributeGetFullName(attr GDALAttribute) (result string) {
+	result = C.GoString(C.GDALAttributeGetFullName(attr.cValue))
+	return
+}
+
+func (attr GDALAttribute) GetFullName() (result string) {
+	result = gdalAttributeGetFullName(attr)
+	return
+}
+
+func gdalAttributeGetTotalElementsCount(attr GDALAttribute) (result uint64) {
+	result = uint64(C.GDALAttributeGetTotalElementsCount(attr.cValue))
+	return
+}
+
+func (attr GDALAttribute) GetTotalElementsCount() (result uint64) {
+	result = gdalAttributeGetTotalElementsCount(attr)
+	return
+}
+
+func gdalAttributeGetDimensionCount(attr GDALAttribute) (result int) {
+	result = int(C.GDALAttributeGetDimensionCount(attr.cValue))
+	return
+}
+
+func (attr GDALAttribute) GetDimensionCount() (result int) {
+	result = gdalAttributeGetDimensionCount(attr)
+	return
+}
+
+func gdalAttributeGetDimensionsSize(attr GDALAttribute) (result []uint64) {
+	var count C.size_t
+	arr := C.GDALAttributeGetDimensionsSize(attr.cValue, &count)
+	if arr == nil || count == 0 {
+		return
+	}
+	src := unsafe.Slice(arr, int(count))
+	result = make([]uint64, int(count))
+	for i := range result {
+		result[i] = uint64(src[i])
+	}
+	C.VSIFree(unsafe.Pointer(arr))
+	return
+}
+
+func (attr GDALAttribute) GetDimensionsSize() (result []uint64) {
+	result = gdalAttributeGetDimensionsSize(attr)
+	return
+}
+
+func gdalAttributeGetDataType(attr GDALAttribute) (result GDALExtendedDataType) {
+	result = GDALExtendedDataType{cValue: C.GDALAttributeGetDataType(attr.cValue)}
+	return
+}
+
+func (attr GDALAttribute) GetDataType() (result GDALExtendedDataType, err error) {
+	result = gdalAttributeGetDataType(attr)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalAttributeReadAsRaw(attr GDALAttribute) (result []byte) {
+	var size C.size_t
+	raw := C.GDALAttributeReadAsRaw(attr.cValue, &size)
+	if raw != nil {
+		result = C.GoBytes(unsafe.Pointer(raw), C.int(size))
+		C.GDALAttributeFreeRawResult(attr.cValue, raw, size)
+	}
+	return
+}
+
+func (attr GDALAttribute) ReadAsRaw() (result []byte) {
+	result = gdalAttributeReadAsRaw(attr)
+	return
+}
+
+func gdalAttributeReadAsString(attr GDALAttribute) (result string) {
+	result = C.GoString(C.GDALAttributeReadAsString(attr.cValue))
+	return
+}
+
+func (attr GDALAttribute) ReadAsString() (result string) {
+	result = gdalAttributeReadAsString(attr)
+	return
+}
+
+func gdalAttributeReadAsInt(attr GDALAttribute) (result int) {
+	result = int(C.GDALAttributeReadAsInt(attr.cValue))
+	return
+}
+
+func (attr GDALAttribute) ReadAsInt() (result int) {
+	result = gdalAttributeReadAsInt(attr)
+	return
+}
+
+func gdalAttributeReadAsInt64(attr GDALAttribute) (result int64) {
+	result = int64(C.GDALAttributeReadAsInt64(attr.cValue))
+	return
+}
+
+func (attr GDALAttribute) ReadAsInt64() (result int64) {
+	result = gdalAttributeReadAsInt64(attr)
+	return
+}
+
+func gdalAttributeReadAsDouble(attr GDALAttribute) (result float64) {
+	result = float64(C.GDALAttributeReadAsDouble(attr.cValue))
+	return
+}
+
+func (attr GDALAttribute) ReadAsDouble() (result float64) {
+	result = gdalAttributeReadAsDouble(attr)
+	return
+}
+
+func gdalAttributeReadAsStringArray(attr GDALAttribute) (result []string) {
+	raw := C.GDALAttributeReadAsStringArray(attr.cValue)
+	if raw == nil {
+		return
+	}
+	defer C.CSLDestroy(raw)
+	result = goStrings(raw)
+	return
+}
+
+func (attr GDALAttribute) ReadAsStringArray() (result []string) {
+	result = gdalAttributeReadAsStringArray(attr)
+	return
+}
+
+func gdalAttributeReadAsIntArray(attr GDALAttribute) (result []int) {
+	var count C.size_t
+	arr := C.GDALAttributeReadAsIntArray(attr.cValue, &count)
+	if arr == nil || count == 0 {
+		return
+	}
+	src := unsafe.Slice(arr, int(count))
+	result = make([]int, int(count))
+	for i := range result {
+		result[i] = int(src[i])
+	}
+	C.VSIFree(unsafe.Pointer(arr))
+	return
+}
+
+func (attr GDALAttribute) ReadAsIntArray() (result []int) {
+	result = gdalAttributeReadAsIntArray(attr)
+	return
+}
+
+func gdalAttributeReadAsInt64Array(attr GDALAttribute) (result []int64) {
+	var count C.size_t
+	arr := C.GDALAttributeReadAsInt64Array(attr.cValue, &count)
+	if arr == nil || count == 0 {
+		return
+	}
+	src := unsafe.Slice(arr, int(count))
+	result = make([]int64, int(count))
+	for i := range result {
+		result[i] = int64(src[i])
+	}
+	C.VSIFree(unsafe.Pointer(arr))
+	return
+}
+
+func (attr GDALAttribute) ReadAsInt64Array() (result []int64) {
+	result = gdalAttributeReadAsInt64Array(attr)
+	return
+}
+
+func gdalAttributeReadAsDoubleArray(attr GDALAttribute) (result []float64) {
+	var count C.size_t
+	arr := C.GDALAttributeReadAsDoubleArray(attr.cValue, &count)
+	if arr == nil || count == 0 {
+		return
+	}
+	src := unsafe.Slice(arr, int(count))
+	result = make([]float64, int(count))
+	for i := range result {
+		result[i] = float64(src[i])
+	}
+	C.VSIFree(unsafe.Pointer(arr))
+	return
+}
+
+func (attr GDALAttribute) ReadAsDoubleArray() (result []float64) {
+	result = gdalAttributeReadAsDoubleArray(attr)
+	return
+}
+
+func gdalAttributeWriteRaw(attr GDALAttribute, data unsafe.Pointer, size int) (result bool) {
+	result = C.GDALAttributeWriteRaw(attr.cValue, data, C.size_t(size)) != 0
+	return
+}
+
+func (attr GDALAttribute) WriteRaw(data []byte) (result bool) {
+	result = gdalAttributeWriteRaw(attr, cBytes(data), len(data))
+	return
+}
+
+func gdalAttributeWriteString(attr GDALAttribute, value string) (result bool) {
+	cValue := C.CString(value)
+	defer C.free(unsafe.Pointer(cValue))
+	result = C.GDALAttributeWriteString(attr.cValue, cValue) != 0
+	return
+}
+
+func (attr GDALAttribute) WriteString(value string) (result bool) {
+	result = gdalAttributeWriteString(attr, value)
+	return
+}
+
+func gdalAttributeWriteStringArray(attr GDALAttribute, values []string) (result bool) {
+	v, free := cStrings(values)
+	defer free()
+	result = C.GDALAttributeWriteStringArray(attr.cValue, C.CSLConstList(unsafe.Pointer(v))) != 0
+	return
+}
+
+func (attr GDALAttribute) WriteStringArray(values []string) (result bool) {
+	result = gdalAttributeWriteStringArray(attr, values)
+	return
+}
+
+func gdalAttributeWriteInt(attr GDALAttribute, value int) (result bool) {
+	result = C.GDALAttributeWriteInt(attr.cValue, C.int(value)) != 0
+	return
+}
+
+func (attr GDALAttribute) WriteInt(value int) (result bool) {
+	result = gdalAttributeWriteInt(attr, value)
+	return
+}
+
+func gdalAttributeWriteIntArray(attr GDALAttribute, values []int, count int) (result bool) {
+	result = C.GDALAttributeWriteIntArray(attr.cValue, cInts(values), C.size_t(count)) != 0
+	return
+}
+
+func (attr GDALAttribute) WriteIntArray(values []int) (result bool) {
+	result = gdalAttributeWriteIntArray(attr, values, len(values))
+	return
+}
+
+func gdalAttributeWriteInt64(attr GDALAttribute, value int64) (result bool) {
+	result = C.GDALAttributeWriteInt64(attr.cValue, C.int64_t(value)) != 0
+	return
+}
+
+func (attr GDALAttribute) WriteInt64(value int64) (result bool) {
+	result = gdalAttributeWriteInt64(attr, value)
+	return
+}
+
+func gdalAttributeWriteInt64Array(attr GDALAttribute, values []int64, count int) (result bool) {
+	cValues := make([]C.int64_t, len(values))
+	for i, v := range values {
+		cValues[i] = C.int64_t(v)
+	}
+	var ptr *C.int64_t
+	if len(values) > 0 {
+		ptr = &cValues[0]
+	}
+	result = C.GDALAttributeWriteInt64Array(attr.cValue, ptr, C.size_t(count)) != 0
+	return
+}
+
+func (attr GDALAttribute) WriteInt64Array(values []int64) (result bool) {
+	result = gdalAttributeWriteInt64Array(attr, values, len(values))
+	return
+}
+
+func gdalAttributeWriteDouble(attr GDALAttribute, value float64) (result bool) {
+	result = C.GDALAttributeWriteDouble(attr.cValue, C.double(value)) != 0
+	return
+}
+
+func (attr GDALAttribute) WriteDouble(value float64) (result bool) {
+	result = gdalAttributeWriteDouble(attr, value)
+	return
+}
+
+func gdalAttributeWriteDoubleArray(attr GDALAttribute, values []float64, count int) (result bool) {
+	cValues := make([]C.double, len(values))
+	for i, v := range values {
+		cValues[i] = C.double(v)
+	}
+	var ptr *C.double
+	if len(values) > 0 {
+		ptr = &cValues[0]
+	}
+	result = C.GDALAttributeWriteDoubleArray(attr.cValue, ptr, C.size_t(count)) != 0
+	return
+}
+
+func (attr GDALAttribute) WriteDoubleArray(values []float64) (result bool) {
+	result = gdalAttributeWriteDoubleArray(attr, values, len(values))
+	return
+}
+
+func gdalAttributeRename(attr GDALAttribute, newName string) (result bool) {
+	cName := C.CString(newName)
+	defer C.free(unsafe.Pointer(cName))
+	result = bool(C.GDALAttributeRename(attr.cValue, cName))
+	return
+}
+
+func (attr GDALAttribute) Rename(newName string) (result bool) {
+	result = gdalAttributeRename(attr, newName)
+	return
+}
+
+func gdalDimensionRelease(dim GDALDimension) {
+	C.GDALDimensionRelease(dim.cValue)
+}
+
+func (dim GDALDimension) Release() {
+	gdalDimensionRelease(dim)
+}
+
+func gdalDimensionGetName(dim GDALDimension) (result string) {
+	result = C.GoString(C.GDALDimensionGetName(dim.cValue))
+	return
+}
+
+func (dim GDALDimension) GetName() (result string) {
+	result = gdalDimensionGetName(dim)
+	return
+}
+
+func gdalDimensionGetFullName(dim GDALDimension) (result string) {
+	result = C.GoString(C.GDALDimensionGetFullName(dim.cValue))
+	return
+}
+
+func (dim GDALDimension) GetFullName() (result string) {
+	result = gdalDimensionGetFullName(dim)
+	return
+}
+
+func gdalDimensionGetType(dim GDALDimension) (result string) {
+	result = C.GoString(C.GDALDimensionGetType(dim.cValue))
+	return
+}
+
+func (dim GDALDimension) GetType() (result string) {
+	result = gdalDimensionGetType(dim)
+	return
+}
+
+func gdalDimensionGetDirection(dim GDALDimension) (result string) {
+	result = C.GoString(C.GDALDimensionGetDirection(dim.cValue))
+	return
+}
+
+func (dim GDALDimension) GetDirection() (result string) {
+	result = gdalDimensionGetDirection(dim)
+	return
+}
+
+func gdalDimensionGetSize(dim GDALDimension) (result uint64) {
+	result = uint64(C.GDALDimensionGetSize(dim.cValue))
+	return
+}
+
+func (dim GDALDimension) GetSize() (result uint64) {
+	result = gdalDimensionGetSize(dim)
+	return
+}
+
+func gdalDimensionGetIndexingVariable(dim GDALDimension) (result GDALMDArray) {
+	result = GDALMDArray{cValue: C.GDALDimensionGetIndexingVariable(dim.cValue)}
+	return
+}
+
+func (dim GDALDimension) GetIndexingVariable() (result GDALMDArray, err error) {
+	result = gdalDimensionGetIndexingVariable(dim)
+	if result.cValue == nil {
+		err = lastError()
+	}
+	return
+}
+
+func gdalDimensionSetIndexingVariable(dim GDALDimension, array GDALMDArray) (result bool) {
+	result = C.GDALDimensionSetIndexingVariable(dim.cValue, array.cValue) != 0
+	return
+}
+
+func (dim GDALDimension) SetIndexingVariable(array GDALMDArray) (result bool) {
+	result = gdalDimensionSetIndexingVariable(dim, array)
+	return
+}
+
+func gdalDimensionRename(dim GDALDimension, newName string) (result bool) {
+	cName := C.CString(newName)
+	defer C.free(unsafe.Pointer(cName))
+	result = bool(C.GDALDimensionRename(dim.cValue, cName))
+	return
+}
+
+func (dim GDALDimension) Rename(newName string) (result bool) {
+	result = gdalDimensionRename(dim, newName)
+	return
+}
 
 // CPL_C_END

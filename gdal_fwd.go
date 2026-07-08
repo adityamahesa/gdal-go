@@ -41,6 +41,34 @@ type GDALRelationship struct {
 	cValue C.GDALRelationshipH
 }
 
+type GDALExtendedDataType struct {
+	cValue C.GDALExtendedDataTypeH
+}
+
+type GDALEDTComponent struct {
+	cValue C.GDALEDTComponentH
+}
+
+type GDALGroup struct {
+	cValue C.GDALGroupH
+}
+
+type GDALMDArray struct {
+	cValue C.GDALMDArrayH
+}
+
+type GDALAttribute struct {
+	cValue C.GDALAttributeH
+}
+
+type GDALDimension struct {
+	cValue C.GDALDimensionH
+}
+
+type GDALSubdatasetInfo struct {
+	cValue C.GDALSubdatasetInfoH
+}
+
 type OGRGeometry struct {
 	cValue C.OGRGeometryH
 }

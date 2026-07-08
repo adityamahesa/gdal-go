@@ -154,68 +154,76 @@ func (p OGRGeomCoordinatePrecision) SetFormatSpecificOptions(formatName string, 
 
 // /* From base OGRGeometry class */
 
-func ogrGCreateFromWkb(data []byte, sr OGRSpatialReference) (result OGRGeometry, err error) {
+func ogrGCreateFromWkb(data []byte, sr OGRSpatialReference) (result OGRGeometry, status OGRErr) {
 	var hGeom C.OGRGeometryH
 	var p unsafe.Pointer
 	if len(data) > 0 {
 		p = unsafe.Pointer(&data[0])
 	}
-	err = ogrError(OGRErr(C.OGR_G_CreateFromWkb(p, sr.cValue, &hGeom, C.int(len(data)))))
+	status = OGRErr(C.OGR_G_CreateFromWkb(p, sr.cValue, &hGeom, C.int(len(data))))
 	result = OGRGeometry{cValue: hGeom}
 	return
 }
 
 func OGRGCreateFromWkb(data []byte, sr OGRSpatialReference) (result OGRGeometry, err error) {
-	result, err = ogrGCreateFromWkb(data, sr)
+	var status OGRErr
+	result, status = ogrGCreateFromWkb(data, sr)
+	err = ogrError(status)
 	return
 }
 
-func ogrGCreateFromWkbEx(data []byte, sr OGRSpatialReference) (result OGRGeometry, err error) {
+func ogrGCreateFromWkbEx(data []byte, sr OGRSpatialReference) (result OGRGeometry, status OGRErr) {
 	var hGeom C.OGRGeometryH
 	var p unsafe.Pointer
 	if len(data) > 0 {
 		p = unsafe.Pointer(&data[0])
 	}
-	err = ogrError(OGRErr(C.OGR_G_CreateFromWkbEx(p, sr.cValue, &hGeom, C.size_t(len(data)))))
+	status = OGRErr(C.OGR_G_CreateFromWkbEx(p, sr.cValue, &hGeom, C.size_t(len(data))))
 	result = OGRGeometry{cValue: hGeom}
 	return
 }
 
 func OGRGCreateFromWkbEx(data []byte, sr OGRSpatialReference) (result OGRGeometry, err error) {
-	result, err = ogrGCreateFromWkbEx(data, sr)
+	var status OGRErr
+	result, status = ogrGCreateFromWkbEx(data, sr)
+	err = ogrError(status)
 	return
 }
 
-func ogrGCreateFromWkt(wkt string, sr OGRSpatialReference) (result OGRGeometry, err error) {
+func ogrGCreateFromWkt(wkt string, sr OGRSpatialReference) (result OGRGeometry, status OGRErr) {
 	cs := C.CString(wkt)
 	defer C.free(unsafe.Pointer(cs))
 	pcs := cs
 	var hGeom C.OGRGeometryH
-	err = ogrError(OGRErr(C.OGR_G_CreateFromWkt(&pcs, sr.cValue, &hGeom)))
+	status = OGRErr(C.OGR_G_CreateFromWkt(&pcs, sr.cValue, &hGeom))
 	result = OGRGeometry{cValue: hGeom}
 	return
 }
 
 func OGRGCreateFromWkt(wkt string, sr OGRSpatialReference) (result OGRGeometry, err error) {
-	result, err = ogrGCreateFromWkt(wkt, sr)
+	var status OGRErr
+	result, status = ogrGCreateFromWkt(wkt, sr)
+	err = ogrError(status)
 	return
 }
 
-func ogrGCreateFromFgf(data []byte, sr OGRSpatialReference) (result OGRGeometry, bytesConsumed int, err error) {
+func ogrGCreateFromFgf(data []byte, sr OGRSpatialReference) (result OGRGeometry, bytesConsumed int, status OGRErr) {
 	var hGeom C.OGRGeometryH
 	var consumed C.int
 	var p unsafe.Pointer
 	if len(data) > 0 {
 		p = unsafe.Pointer(&data[0])
 	}
-	err = ogrError(OGRErr(C.OGR_G_CreateFromFgf(p, sr.cValue, &hGeom, C.int(len(data)), &consumed)))
+	status = OGRErr(C.OGR_G_CreateFromFgf(p, sr.cValue, &hGeom, C.int(len(data)), &consumed))
 	result = OGRGeometry{cValue: hGeom}
 	bytesConsumed = int(consumed)
 	return
 }
 
 func OGRGCreateFromFgf(data []byte, sr OGRSpatialReference) (result OGRGeometry, bytesConsumed int, err error) {
-	result, bytesConsumed, err = ogrGCreateFromFgf(data, sr)
+	var status OGRErr
+	result, bytesConsumed, status = ogrGCreateFromFgf(data, sr)
+	err = ogrError(status)
 	return
 }
 
@@ -472,53 +480,57 @@ func (g OGRGeometry) GetEnvelope3D() (result OGREnvelope3D) {
 	return
 }
 
-func ogrGImportFromWkb(g OGRGeometry, data []byte) (err error) {
+func ogrGImportFromWkb(g OGRGeometry, data []byte) (result OGRErr) {
 	var p unsafe.Pointer
 	if len(data) > 0 {
 		p = unsafe.Pointer(&data[0])
 	}
-	err = ogrError(OGRErr(C.OGR_G_ImportFromWkb(g.cValue, p, C.int(len(data)))))
+	result = OGRErr(C.OGR_G_ImportFromWkb(g.cValue, p, C.int(len(data))))
 	return
 }
 
 func (g OGRGeometry) ImportFromWkb(data []byte) (err error) {
-	err = ogrGImportFromWkb(g, data)
+	err = ogrError(ogrGImportFromWkb(g, data))
 	return
 }
 
-func ogrGExportToWkb(g OGRGeometry, order OGRwkbByteOrder) (result []byte, err error) {
+func ogrGExportToWkb(g OGRGeometry, order OGRwkbByteOrder) (result []byte, status OGRErr) {
 	n := int(C.OGR_G_WkbSize(g.cValue))
 	if n <= 0 {
 		return
 	}
 	buf := make([]byte, n)
-	err = ogrError(OGRErr(C.OGR_G_ExportToWkb(g.cValue, C.OGRwkbByteOrder(order), (*C.uchar)(unsafe.Pointer(&buf[0])))))
-	if err == nil {
+	status = OGRErr(C.OGR_G_ExportToWkb(g.cValue, C.OGRwkbByteOrder(order), (*C.uchar)(unsafe.Pointer(&buf[0]))))
+	if status == OGRErrNone {
 		result = buf
 	}
 	return
 }
 
 func (g OGRGeometry) ExportToWkb(order OGRwkbByteOrder) (result []byte, err error) {
-	result, err = ogrGExportToWkb(g, order)
+	var status OGRErr
+	result, status = ogrGExportToWkb(g, order)
+	err = ogrError(status)
 	return
 }
 
-func ogrGExportToIsoWkb(g OGRGeometry, order OGRwkbByteOrder) (result []byte, err error) {
+func ogrGExportToIsoWkb(g OGRGeometry, order OGRwkbByteOrder) (result []byte, status OGRErr) {
 	n := int(C.OGR_G_WkbSize(g.cValue))
 	if n <= 0 {
 		return
 	}
 	buf := make([]byte, n)
-	err = ogrError(OGRErr(C.OGR_G_ExportToIsoWkb(g.cValue, C.OGRwkbByteOrder(order), (*C.uchar)(unsafe.Pointer(&buf[0])))))
-	if err == nil {
+	status = OGRErr(C.OGR_G_ExportToIsoWkb(g.cValue, C.OGRwkbByteOrder(order), (*C.uchar)(unsafe.Pointer(&buf[0]))))
+	if status == OGRErrNone {
 		result = buf
 	}
 	return
 }
 
 func (g OGRGeometry) ExportToIsoWkb(order OGRwkbByteOrder) (result []byte, err error) {
-	result, err = ogrGExportToIsoWkb(g, order)
+	var status OGRErr
+	result, status = ogrGExportToIsoWkb(g, order)
+	err = ogrError(status)
 	return
 }
 
@@ -567,21 +579,23 @@ func (o OGRwkbExportOptions) SetPrecision(precision OGRGeomCoordinatePrecision) 
 	ogrwkbExportOptionsSetPrecision(o, precision)
 }
 
-func ogrGExportToWkbEx(g OGRGeometry, opts OGRwkbExportOptions) (result []byte, err error) {
+func ogrGExportToWkbEx(g OGRGeometry, opts OGRwkbExportOptions) (result []byte, status OGRErr) {
 	n := int(C.OGR_G_WkbSizeEx(g.cValue))
 	if n <= 0 {
 		return
 	}
 	buf := make([]byte, n)
-	err = ogrError(OGRErr(C.OGR_G_ExportToWkbEx(g.cValue, (*C.uchar)(unsafe.Pointer(&buf[0])), opts.cValue)))
-	if err == nil {
+	status = OGRErr(C.OGR_G_ExportToWkbEx(g.cValue, (*C.uchar)(unsafe.Pointer(&buf[0])), opts.cValue))
+	if status == OGRErrNone {
 		result = buf
 	}
 	return
 }
 
 func (g OGRGeometry) ExportToWkbEx(opts OGRwkbExportOptions) (result []byte, err error) {
-	result, err = ogrGExportToWkbEx(g, opts)
+	var status OGRErr
+	result, status = ogrGExportToWkbEx(g, opts)
+	err = ogrError(status)
 	return
 }
 
@@ -605,22 +619,22 @@ func (g OGRGeometry) WkbSizeEx() (result int) {
 	return
 }
 
-func ogrGImportFromWkt(g OGRGeometry, wkt string) (err error) {
+func ogrGImportFromWkt(g OGRGeometry, wkt string) (result OGRErr) {
 	cs := C.CString(wkt)
 	defer C.free(unsafe.Pointer(cs))
 	pcs := cs
-	err = ogrError(OGRErr(C.OGR_G_ImportFromWkt(g.cValue, &pcs)))
+	result = OGRErr(C.OGR_G_ImportFromWkt(g.cValue, &pcs))
 	return
 }
 
 func (g OGRGeometry) ImportFromWkt(wkt string) (err error) {
-	err = ogrGImportFromWkt(g, wkt)
+	err = ogrError(ogrGImportFromWkt(g, wkt))
 	return
 }
 
-func ogrGExportToWkt(g OGRGeometry) (result string, err error) {
+func ogrGExportToWkt(g OGRGeometry) (result string, status OGRErr) {
 	var cs *C.char
-	err = ogrError(OGRErr(C.OGR_G_ExportToWkt(g.cValue, &cs)))
+	status = OGRErr(C.OGR_G_ExportToWkt(g.cValue, &cs))
 	if cs != nil {
 		result = C.GoString(cs)
 		C.CPLFree(unsafe.Pointer(cs))
@@ -629,13 +643,15 @@ func ogrGExportToWkt(g OGRGeometry) (result string, err error) {
 }
 
 func (g OGRGeometry) ExportToWkt() (result string, err error) {
-	result, err = ogrGExportToWkt(g)
+	var status OGRErr
+	result, status = ogrGExportToWkt(g)
+	err = ogrError(status)
 	return
 }
 
-func ogrGExportToIsoWkt(g OGRGeometry) (result string, err error) {
+func ogrGExportToIsoWkt(g OGRGeometry) (result string, status OGRErr) {
 	var cs *C.char
-	err = ogrError(OGRErr(C.OGR_G_ExportToIsoWkt(g.cValue, &cs)))
+	status = OGRErr(C.OGR_G_ExportToIsoWkt(g.cValue, &cs))
 	if cs != nil {
 		result = C.GoString(cs)
 		C.CPLFree(unsafe.Pointer(cs))
@@ -644,7 +660,9 @@ func ogrGExportToIsoWkt(g OGRGeometry) (result string, err error) {
 }
 
 func (g OGRGeometry) ExportToIsoWkt() (result string, err error) {
-	result, err = ogrGExportToIsoWkt(g)
+	var status OGRErr
+	result, status = ogrGExportToIsoWkt(g)
+	err = ogrError(status)
 	return
 }
 
@@ -879,23 +897,23 @@ func (g OGRGeometry) GetSpatialReference() (result OGRSpatialReference) {
 	return
 }
 
-func ogrGTransform(g OGRGeometry, ct OGRCoordinateTransformation) (err error) {
-	err = ogrError(OGRErr(C.OGR_G_Transform(g.cValue, ct.cValue)))
+func ogrGTransform(g OGRGeometry, ct OGRCoordinateTransformation) (result OGRErr) {
+	result = OGRErr(C.OGR_G_Transform(g.cValue, ct.cValue))
 	return
 }
 
 func (g OGRGeometry) Transform(ct OGRCoordinateTransformation) (err error) {
-	err = ogrGTransform(g, ct)
+	err = ogrError(ogrGTransform(g, ct))
 	return
 }
 
-func ogrGTransformTo(g OGRGeometry, sr OGRSpatialReference) (err error) {
-	err = ogrError(OGRErr(C.OGR_G_TransformTo(g.cValue, sr.cValue)))
+func ogrGTransformTo(g OGRGeometry, sr OGRSpatialReference) (result OGRErr) {
+	result = OGRErr(C.OGR_G_TransformTo(g.cValue, sr.cValue))
 	return
 }
 
 func (g OGRGeometry) TransformTo(sr OGRSpatialReference) (err error) {
-	err = ogrGTransformTo(g, sr)
+	err = ogrError(ogrGTransformTo(g, sr))
 	return
 }
 
@@ -1742,33 +1760,33 @@ func (g OGRGeometry) GetGeometryRef(subGeom int) (result OGRGeometry) {
 	return
 }
 
-func ogrGAddGeometry(g, subGeom OGRGeometry) (err error) {
-	err = ogrError(OGRErr(C.OGR_G_AddGeometry(g.cValue, subGeom.cValue)))
+func ogrGAddGeometry(g, subGeom OGRGeometry) (result OGRErr) {
+	result = OGRErr(C.OGR_G_AddGeometry(g.cValue, subGeom.cValue))
 	return
 }
 
 func (g OGRGeometry) AddGeometry(subGeom OGRGeometry) (err error) {
-	err = ogrGAddGeometry(g, subGeom)
+	err = ogrError(ogrGAddGeometry(g, subGeom))
 	return
 }
 
-func ogrGAddGeometryDirectly(g, subGeom OGRGeometry) (err error) {
-	err = ogrError(OGRErr(C.OGR_G_AddGeometryDirectly(g.cValue, subGeom.cValue)))
+func ogrGAddGeometryDirectly(g, subGeom OGRGeometry) (result OGRErr) {
+	result = OGRErr(C.OGR_G_AddGeometryDirectly(g.cValue, subGeom.cValue))
 	return
 }
 
 func (g OGRGeometry) AddGeometryDirectly(subGeom OGRGeometry) (err error) {
-	err = ogrGAddGeometryDirectly(g, subGeom)
+	err = ogrError(ogrGAddGeometryDirectly(g, subGeom))
 	return
 }
 
-func ogrGRemoveGeometry(g OGRGeometry, subGeom, delete int) (err error) {
-	err = ogrError(OGRErr(C.OGR_G_RemoveGeometry(g.cValue, C.int(subGeom), C.int(delete))))
+func ogrGRemoveGeometry(g OGRGeometry, subGeom, delete int) (result OGRErr) {
+	result = OGRErr(C.OGR_G_RemoveGeometry(g.cValue, C.int(subGeom), C.int(delete)))
 	return
 }
 
 func (g OGRGeometry) RemoveGeometry(subGeom, delete int) (err error) {
-	err = ogrGRemoveGeometry(g, subGeom, delete)
+	err = ogrError(ogrGRemoveGeometry(g, subGeom, delete))
 	return
 }
 
@@ -1820,27 +1838,29 @@ func (g OGRGeometry) GetCurveGeometry(options []string) (result OGRGeometry, err
 	return
 }
 
-func ogrBuildPolygonFromEdges(lines OGRGeometry, bestEffort, autoClose int, tolerance float64) (result OGRGeometry, err error) {
+func ogrBuildPolygonFromEdges(lines OGRGeometry, bestEffort, autoClose int, tolerance float64) (result OGRGeometry, status OGRErr) {
 	var e C.OGRErr
 	result = OGRGeometry{cValue: C.OGRBuildPolygonFromEdges(lines.cValue, C.int(bestEffort), C.int(autoClose), C.double(tolerance), &e)}
-	err = ogrError(OGRErr(e))
+	status = OGRErr(e)
 	return
 }
 
 func OGRBuildPolygonFromEdges(lines OGRGeometry, bestEffort, autoClose int, tolerance float64) (result OGRGeometry, err error) {
-	result, err = ogrBuildPolygonFromEdges(lines, bestEffort, autoClose, tolerance)
+	var status OGRErr
+	result, status = ogrBuildPolygonFromEdges(lines, bestEffort, autoClose, tolerance)
+	err = ogrError(status)
 	return
 }
 
 // /*! @cond Doxygen_Suppress */
 
-func ogrSetGenerateDB2V72ByteOrder(generate int) (err error) {
-	err = ogrError(OGRErr(C.OGRSetGenerate_DB2_V72_BYTE_ORDER(C.int(generate))))
+func ogrSetGenerateDB2V72ByteOrder(generate int) (result OGRErr) {
+	result = OGRErr(C.OGRSetGenerate_DB2_V72_BYTE_ORDER(C.int(generate)))
 	return
 }
 
 func OGRSetGenerateDB2V72ByteOrder(generate int) (err error) {
-	err = ogrSetGenerateDB2V72ByteOrder(generate)
+	err = ogrError(ogrSetGenerateDB2V72ByteOrder(generate))
 	return
 }
 
@@ -2526,17 +2546,17 @@ func (fd OGRFeatureDefn) AddFieldDefn(fld OGRFieldDefn) {
 	ogrFDAddFieldDefn(fd, fld)
 }
 
-func ogrFDDeleteFieldDefn(fd OGRFeatureDefn, field int) (err error) {
-	err = ogrError(OGRErr(C.OGR_FD_DeleteFieldDefn(fd.cValue, C.int(field))))
+func ogrFDDeleteFieldDefn(fd OGRFeatureDefn, field int) (result OGRErr) {
+	result = OGRErr(C.OGR_FD_DeleteFieldDefn(fd.cValue, C.int(field)))
 	return
 }
 
 func (fd OGRFeatureDefn) DeleteFieldDefn(field int) (err error) {
-	err = ogrFDDeleteFieldDefn(fd, field)
+	err = ogrError(ogrFDDeleteFieldDefn(fd, field))
 	return
 }
 
-func ogrFDReorderFieldDefns(fd OGRFeatureDefn, panMap []int) (err error) {
+func ogrFDReorderFieldDefns(fd OGRFeatureDefn, panMap []int) (result OGRErr) {
 	cMap := make([]C.int, len(panMap))
 	for i, v := range panMap {
 		cMap[i] = C.int(v)
@@ -2545,12 +2565,12 @@ func ogrFDReorderFieldDefns(fd OGRFeatureDefn, panMap []int) (err error) {
 	if len(cMap) > 0 {
 		p = &cMap[0]
 	}
-	err = ogrError(OGRErr(C.OGR_FD_ReorderFieldDefns(fd.cValue, p)))
+	result = OGRErr(C.OGR_FD_ReorderFieldDefns(fd.cValue, p))
 	return
 }
 
 func (fd OGRFeatureDefn) ReorderFieldDefns(panMap []int) (err error) {
-	err = ogrFDReorderFieldDefns(fd, panMap)
+	err = ogrError(ogrFDReorderFieldDefns(fd, panMap))
 	return
 }
 
@@ -2678,13 +2698,13 @@ func (fd OGRFeatureDefn) AddGeomFieldDefn(gfld OGRGeomFieldDefn) {
 	ogrFDAddGeomFieldDefn(fd, gfld)
 }
 
-func ogrFDDeleteGeomFieldDefn(fd OGRFeatureDefn, geomField int) (err error) {
-	err = ogrError(OGRErr(C.OGR_FD_DeleteGeomFieldDefn(fd.cValue, C.int(geomField))))
+func ogrFDDeleteGeomFieldDefn(fd OGRFeatureDefn, geomField int) (result OGRErr) {
+	result = OGRErr(C.OGR_FD_DeleteGeomFieldDefn(fd.cValue, C.int(geomField)))
 	return
 }
 
 func (fd OGRFeatureDefn) DeleteGeomFieldDefn(geomField int) (err error) {
-	err = ogrFDDeleteGeomFieldDefn(fd, geomField)
+	err = ogrError(ogrFDDeleteGeomFieldDefn(fd, geomField))
 	return
 }
 
@@ -2731,23 +2751,23 @@ func (feat OGRFeature) GetDefnRef() (result OGRFeatureDefn) {
 	return
 }
 
-func ogrFSetGeometryDirectly(feat OGRFeature, geom OGRGeometry) (err error) {
-	err = ogrError(OGRErr(C.OGR_F_SetGeometryDirectly(feat.cValue, geom.cValue)))
+func ogrFSetGeometryDirectly(feat OGRFeature, geom OGRGeometry) (result OGRErr) {
+	result = OGRErr(C.OGR_F_SetGeometryDirectly(feat.cValue, geom.cValue))
 	return
 }
 
 func (feat OGRFeature) SetGeometryDirectly(geom OGRGeometry) (err error) {
-	err = ogrFSetGeometryDirectly(feat, geom)
+	err = ogrError(ogrFSetGeometryDirectly(feat, geom))
 	return
 }
 
-func ogrFSetGeometry(feat OGRFeature, geom OGRGeometry) (err error) {
-	err = ogrError(OGRErr(C.OGR_F_SetGeometry(feat.cValue, geom.cValue)))
+func ogrFSetGeometry(feat OGRFeature, geom OGRGeometry) (result OGRErr) {
+	result = OGRErr(C.OGR_F_SetGeometry(feat.cValue, geom.cValue))
 	return
 }
 
 func (feat OGRFeature) SetGeometry(geom OGRGeometry) (err error) {
-	err = ogrFSetGeometry(feat, geom)
+	err = ogrError(ogrFSetGeometry(feat, geom))
 	return
 }
 
@@ -3267,23 +3287,23 @@ func (feat OGRFeature) GetGeomFieldRef(field int) (result OGRGeometry) {
 	return
 }
 
-func ogrFSetGeomFieldDirectly(feat OGRFeature, field int, geom OGRGeometry) (err error) {
-	err = ogrError(OGRErr(C.OGR_F_SetGeomFieldDirectly(feat.cValue, C.int(field), geom.cValue)))
+func ogrFSetGeomFieldDirectly(feat OGRFeature, field int, geom OGRGeometry) (result OGRErr) {
+	result = OGRErr(C.OGR_F_SetGeomFieldDirectly(feat.cValue, C.int(field), geom.cValue))
 	return
 }
 
 func (feat OGRFeature) SetGeomFieldDirectly(field int, geom OGRGeometry) (err error) {
-	err = ogrFSetGeomFieldDirectly(feat, field, geom)
+	err = ogrError(ogrFSetGeomFieldDirectly(feat, field, geom))
 	return
 }
 
-func ogrFSetGeomField(feat OGRFeature, field int, geom OGRGeometry) (err error) {
-	err = ogrError(OGRErr(C.OGR_F_SetGeomField(feat.cValue, C.int(field), geom.cValue)))
+func ogrFSetGeomField(feat OGRFeature, field int, geom OGRGeometry) (result OGRErr) {
+	result = OGRErr(C.OGR_F_SetGeomField(feat.cValue, C.int(field), geom.cValue))
 	return
 }
 
 func (feat OGRFeature) SetGeomField(field int, geom OGRGeometry) (err error) {
-	err = ogrFSetGeomField(feat, field, geom)
+	err = ogrError(ogrFSetGeomField(feat, field, geom))
 	return
 }
 
@@ -3297,13 +3317,13 @@ func (feat OGRFeature) GetFID() (result int64) {
 	return
 }
 
-func ogrFSetFID(feat OGRFeature, fid int64) (err error) {
-	err = ogrError(OGRErr(C.OGR_F_SetFID(feat.cValue, C.GIntBig(fid))))
+func ogrFSetFID(feat OGRFeature, fid int64) (result OGRErr) {
+	result = OGRErr(C.OGR_F_SetFID(feat.cValue, C.GIntBig(fid)))
 	return
 }
 
 func (feat OGRFeature) SetFID(fid int64) (err error) {
-	err = ogrFSetFID(feat, fid)
+	err = ogrError(ogrFSetFID(feat, fid))
 	return
 }
 
@@ -3329,17 +3349,17 @@ func (feat OGRFeature) DumpReadableAsString(options []string) (result string) {
 	return
 }
 
-func ogrFSetFrom(feat, other OGRFeature, forgiving int) (err error) {
-	err = ogrError(OGRErr(C.OGR_F_SetFrom(feat.cValue, other.cValue, C.int(forgiving))))
+func ogrFSetFrom(feat, other OGRFeature, forgiving int) (result OGRErr) {
+	result = OGRErr(C.OGR_F_SetFrom(feat.cValue, other.cValue, C.int(forgiving)))
 	return
 }
 
 func (feat OGRFeature) SetFrom(other OGRFeature, forgiving int) (err error) {
-	err = ogrFSetFrom(feat, other, forgiving)
+	err = ogrError(ogrFSetFrom(feat, other, forgiving))
 	return
 }
 
-func ogrFSetFromWithMap(feat, other OGRFeature, forgiving int, panMap []int) (err error) {
+func ogrFSetFromWithMap(feat, other OGRFeature, forgiving int, panMap []int) (result OGRErr) {
 	cMap := make([]C.int, len(panMap))
 	for i, v := range panMap {
 		cMap[i] = C.int(v)
@@ -3348,12 +3368,12 @@ func ogrFSetFromWithMap(feat, other OGRFeature, forgiving int, panMap []int) (er
 	if len(cMap) > 0 {
 		p = &cMap[0]
 	}
-	err = ogrError(OGRErr(C.OGR_F_SetFromWithMap(feat.cValue, other.cValue, C.int(forgiving), p)))
+	result = OGRErr(C.OGR_F_SetFromWithMap(feat.cValue, other.cValue, C.int(forgiving), p))
 	return
 }
 
 func (feat OGRFeature) SetFromWithMap(other OGRFeature, forgiving int, panMap []int) (err error) {
-	err = ogrFSetFromWithMap(feat, other, forgiving, panMap)
+	err = ogrError(ogrFSetFromWithMap(feat, other, forgiving, panMap))
 	return
 }
 
@@ -3795,18 +3815,18 @@ func (l OGRLayer) SetSpatialFilterRectEx(iGeomField int, minX, minY, maxX, maxY 
 	ogrLSetSpatialFilterRectEx(l, iGeomField, minX, minY, maxX, maxY)
 }
 
-func ogrLSetAttributeFilter(l OGRLayer, query string) (err error) {
+func ogrLSetAttributeFilter(l OGRLayer, query string) (result OGRErr) {
 	var cs *C.char
 	if query != "" {
 		cs = C.CString(query)
 		defer C.free(unsafe.Pointer(cs))
 	}
-	err = ogrError(OGRErr(C.OGR_L_SetAttributeFilter(l.cValue, cs)))
+	result = OGRErr(C.OGR_L_SetAttributeFilter(l.cValue, cs))
 	return
 }
 
 func (l OGRLayer) SetAttributeFilter(query string) (err error) {
-	err = ogrLSetAttributeFilter(l, query)
+	err = ogrError(ogrLSetAttributeFilter(l, query))
 	return
 }
 
@@ -3844,13 +3864,13 @@ func (l OGRLayer) GetNextFeature() (result OGRFeature) {
 // struct ArrowArray;
 // bool CPL_DLL OGR_L_WriteArrowBatch(OGRLayerH hLayer, const struct ArrowSchema *schema, struct ArrowArray *array, char **papszOptions);
 
-func ogrLSetNextByIndex(l OGRLayer, index int64) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_SetNextByIndex(l.cValue, C.GIntBig(index))))
+func ogrLSetNextByIndex(l OGRLayer, index int64) (result OGRErr) {
+	result = OGRErr(C.OGR_L_SetNextByIndex(l.cValue, C.GIntBig(index)))
 	return
 }
 
 func (l OGRLayer) SetNextByIndex(index int64) (err error) {
-	err = ogrLSetNextByIndex(l, index)
+	err = ogrError(ogrLSetNextByIndex(l, index))
 	return
 }
 
@@ -3859,52 +3879,55 @@ func ogrLGetFeature(l OGRLayer, fid int64) (result OGRFeature) {
 	return
 }
 
-func (l OGRLayer) GetFeature(fid int64) (result OGRFeature) {
+func (l OGRLayer) GetFeature(fid int64) (result OGRFeature, err error) {
 	result = ogrLGetFeature(l, fid)
+	if result.cValue == nil {
+		err = lastError()
+	}
 	return
 }
 
-func ogrLSetFeature(l OGRLayer, feat OGRFeature) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_SetFeature(l.cValue, feat.cValue)))
+func ogrLSetFeature(l OGRLayer, feat OGRFeature) (result OGRErr) {
+	result = OGRErr(C.OGR_L_SetFeature(l.cValue, feat.cValue))
 	return
 }
 
 func (l OGRLayer) SetFeature(feat OGRFeature) (err error) {
-	err = ogrLSetFeature(l, feat)
+	err = ogrError(ogrLSetFeature(l, feat))
 	return
 }
 
-func ogrLCreateFeature(l OGRLayer, feat OGRFeature) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_CreateFeature(l.cValue, feat.cValue)))
+func ogrLCreateFeature(l OGRLayer, feat OGRFeature) (result OGRErr) {
+	result = OGRErr(C.OGR_L_CreateFeature(l.cValue, feat.cValue))
 	return
 }
 
 func (l OGRLayer) CreateFeature(feat OGRFeature) (err error) {
-	err = ogrLCreateFeature(l, feat)
+	err = ogrError(ogrLCreateFeature(l, feat))
 	return
 }
 
-func ogrLDeleteFeature(l OGRLayer, fid int64) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_DeleteFeature(l.cValue, C.GIntBig(fid))))
+func ogrLDeleteFeature(l OGRLayer, fid int64) (result OGRErr) {
+	result = OGRErr(C.OGR_L_DeleteFeature(l.cValue, C.GIntBig(fid)))
 	return
 }
 
 func (l OGRLayer) DeleteFeature(fid int64) (err error) {
-	err = ogrLDeleteFeature(l, fid)
+	err = ogrError(ogrLDeleteFeature(l, fid))
 	return
 }
 
-func ogrLUpsertFeature(l OGRLayer, feat OGRFeature) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_UpsertFeature(l.cValue, feat.cValue)))
+func ogrLUpsertFeature(l OGRLayer, feat OGRFeature) (result OGRErr) {
+	result = OGRErr(C.OGR_L_UpsertFeature(l.cValue, feat.cValue))
 	return
 }
 
 func (l OGRLayer) UpsertFeature(feat OGRFeature) (err error) {
-	err = ogrLUpsertFeature(l, feat)
+	err = ogrError(ogrLUpsertFeature(l, feat))
 	return
 }
 
-func ogrLUpdateFeature(l OGRLayer, feat OGRFeature, updatedFieldsIdx, updatedGeomFieldsIdx []int, updateStyleString bool) (err error) {
+func ogrLUpdateFeature(l OGRLayer, feat OGRFeature, updatedFieldsIdx, updatedGeomFieldsIdx []int, updateStyleString bool) (result OGRErr) {
 	cFields := make([]C.int, len(updatedFieldsIdx))
 	for i, v := range updatedFieldsIdx {
 		cFields[i] = C.int(v)
@@ -3921,12 +3944,12 @@ func ogrLUpdateFeature(l OGRLayer, feat OGRFeature, updatedFieldsIdx, updatedGeo
 	if len(cGeom) > 0 {
 		pGeom = &cGeom[0]
 	}
-	err = ogrError(OGRErr(C.OGR_L_UpdateFeature(l.cValue, feat.cValue, C.int(len(updatedFieldsIdx)), pFields, C.int(len(updatedGeomFieldsIdx)), pGeom, C.bool(updateStyleString))))
+	result = OGRErr(C.OGR_L_UpdateFeature(l.cValue, feat.cValue, C.int(len(updatedFieldsIdx)), pFields, C.int(len(updatedGeomFieldsIdx)), pGeom, C.bool(updateStyleString)))
 	return
 }
 
 func (l OGRLayer) UpdateFeature(feat OGRFeature, updatedFieldsIdx, updatedGeomFieldsIdx []int, updateStyleString bool) (err error) {
-	err = ogrLUpdateFeature(l, feat, updatedFieldsIdx, updatedGeomFieldsIdx, updateStyleString)
+	err = ogrError(ogrLUpdateFeature(l, feat, updatedFieldsIdx, updatedGeomFieldsIdx, updateStyleString))
 	return
 }
 
@@ -3970,13 +3993,13 @@ func (l OGRLayer) GetSupportedSRSList(iGeomField int) (result []OGRSpatialRefere
 	return
 }
 
-func ogrLSetActiveSRS(l OGRLayer, iGeomField int, sr OGRSpatialReference) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_SetActiveSRS(l.cValue, C.int(iGeomField), sr.cValue)))
+func ogrLSetActiveSRS(l OGRLayer, iGeomField int, sr OGRSpatialReference) (result OGRErr) {
+	result = OGRErr(C.OGR_L_SetActiveSRS(l.cValue, C.int(iGeomField), sr.cValue))
 	return
 }
 
 func (l OGRLayer) SetActiveSRS(iGeomField int, sr OGRSpatialReference) (err error) {
-	err = ogrLSetActiveSRS(l, iGeomField, sr)
+	err = ogrError(ogrLSetActiveSRS(l, iGeomField, sr))
 	return
 }
 
@@ -4002,36 +4025,42 @@ func (l OGRLayer) GetFeatureCount(force int) (result int64) {
 	return
 }
 
-func ogrLGetExtent(l OGRLayer, force int) (result OGREnvelope, err error) {
+func ogrLGetExtent(l OGRLayer, force int) (result OGREnvelope, status OGRErr) {
 	result = OGREnvelope{cValue: new(C.OGREnvelope)}
-	err = ogrError(OGRErr(C.OGR_L_GetExtent(l.cValue, result.cValue, C.int(force))))
+	status = OGRErr(C.OGR_L_GetExtent(l.cValue, result.cValue, C.int(force)))
 	return
 }
 
 func (l OGRLayer) GetExtent(force int) (result OGREnvelope, err error) {
-	result, err = ogrLGetExtent(l, force)
+	var status OGRErr
+	result, status = ogrLGetExtent(l, force)
+	err = ogrError(status)
 	return
 }
 
-func ogrLGetExtentEx(l OGRLayer, iGeomField, force int) (result OGREnvelope, err error) {
+func ogrLGetExtentEx(l OGRLayer, iGeomField, force int) (result OGREnvelope, status OGRErr) {
 	result = OGREnvelope{cValue: new(C.OGREnvelope)}
-	err = ogrError(OGRErr(C.OGR_L_GetExtentEx(l.cValue, C.int(iGeomField), result.cValue, C.int(force))))
+	status = OGRErr(C.OGR_L_GetExtentEx(l.cValue, C.int(iGeomField), result.cValue, C.int(force)))
 	return
 }
 
 func (l OGRLayer) GetExtentEx(iGeomField, force int) (result OGREnvelope, err error) {
-	result, err = ogrLGetExtentEx(l, iGeomField, force)
+	var status OGRErr
+	result, status = ogrLGetExtentEx(l, iGeomField, force)
+	err = ogrError(status)
 	return
 }
 
-func ogrLGetExtent3D(l OGRLayer, iGeomField, force int) (result OGREnvelope3D, err error) {
+func ogrLGetExtent3D(l OGRLayer, iGeomField, force int) (result OGREnvelope3D, status OGRErr) {
 	result = OGREnvelope3D{cValue: new(C.OGREnvelope3D)}
-	err = ogrError(OGRErr(C.OGR_L_GetExtent3D(l.cValue, C.int(iGeomField), result.cValue, C.int(force))))
+	status = OGRErr(C.OGR_L_GetExtent3D(l.cValue, C.int(iGeomField), result.cValue, C.int(force)))
 	return
 }
 
 func (l OGRLayer) GetExtent3D(iGeomField, force int) (result OGREnvelope3D, err error) {
-	result, err = ogrLGetExtent3D(l, iGeomField, force)
+	var status OGRErr
+	result, status = ogrLGetExtent3D(l, iGeomField, force)
+	err = ogrError(status)
 	return
 }
 
@@ -4047,37 +4076,37 @@ func (l OGRLayer) TestCapability(capability string) (result bool) {
 	return
 }
 
-func ogrLCreateField(l OGRLayer, fld OGRFieldDefn, approxOK int) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_CreateField(l.cValue, fld.cValue, C.int(approxOK))))
+func ogrLCreateField(l OGRLayer, fld OGRFieldDefn, approxOK int) (result OGRErr) {
+	result = OGRErr(C.OGR_L_CreateField(l.cValue, fld.cValue, C.int(approxOK)))
 	return
 }
 
 func (l OGRLayer) CreateField(fld OGRFieldDefn, approxOK int) (err error) {
-	err = ogrLCreateField(l, fld, approxOK)
+	err = ogrError(ogrLCreateField(l, fld, approxOK))
 	return
 }
 
-func ogrLCreateGeomField(l OGRLayer, gfld OGRGeomFieldDefn, force int) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_CreateGeomField(l.cValue, gfld.cValue, C.int(force))))
+func ogrLCreateGeomField(l OGRLayer, gfld OGRGeomFieldDefn, force int) (result OGRErr) {
+	result = OGRErr(C.OGR_L_CreateGeomField(l.cValue, gfld.cValue, C.int(force)))
 	return
 }
 
 func (l OGRLayer) CreateGeomField(gfld OGRGeomFieldDefn, force int) (err error) {
-	err = ogrLCreateGeomField(l, gfld, force)
+	err = ogrError(ogrLCreateGeomField(l, gfld, force))
 	return
 }
 
-func ogrLDeleteField(l OGRLayer, field int) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_DeleteField(l.cValue, C.int(field))))
+func ogrLDeleteField(l OGRLayer, field int) (result OGRErr) {
+	result = OGRErr(C.OGR_L_DeleteField(l.cValue, C.int(field)))
 	return
 }
 
 func (l OGRLayer) DeleteField(field int) (err error) {
-	err = ogrLDeleteField(l, field)
+	err = ogrError(ogrLDeleteField(l, field))
 	return
 }
 
-func ogrLReorderFields(l OGRLayer, panMap []int) (err error) {
+func ogrLReorderFields(l OGRLayer, panMap []int) (result OGRErr) {
 	cMap := make([]C.int, len(panMap))
 	for i, v := range panMap {
 		cMap[i] = C.int(v)
@@ -4086,84 +4115,84 @@ func ogrLReorderFields(l OGRLayer, panMap []int) (err error) {
 	if len(cMap) > 0 {
 		p = &cMap[0]
 	}
-	err = ogrError(OGRErr(C.OGR_L_ReorderFields(l.cValue, p)))
+	result = OGRErr(C.OGR_L_ReorderFields(l.cValue, p))
 	return
 }
 
 func (l OGRLayer) ReorderFields(panMap []int) (err error) {
-	err = ogrLReorderFields(l, panMap)
+	err = ogrError(ogrLReorderFields(l, panMap))
 	return
 }
 
-func ogrLReorderField(l OGRLayer, oldFieldPos, newFieldPos int) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_ReorderField(l.cValue, C.int(oldFieldPos), C.int(newFieldPos))))
+func ogrLReorderField(l OGRLayer, oldFieldPos, newFieldPos int) (result OGRErr) {
+	result = OGRErr(C.OGR_L_ReorderField(l.cValue, C.int(oldFieldPos), C.int(newFieldPos)))
 	return
 }
 
 func (l OGRLayer) ReorderField(oldFieldPos, newFieldPos int) (err error) {
-	err = ogrLReorderField(l, oldFieldPos, newFieldPos)
+	err = ogrError(ogrLReorderField(l, oldFieldPos, newFieldPos))
 	return
 }
 
-func ogrLAlterFieldDefn(l OGRLayer, field int, newFieldDefn OGRFieldDefn, flags int) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_AlterFieldDefn(l.cValue, C.int(field), newFieldDefn.cValue, C.int(flags))))
+func ogrLAlterFieldDefn(l OGRLayer, field int, newFieldDefn OGRFieldDefn, flags int) (result OGRErr) {
+	result = OGRErr(C.OGR_L_AlterFieldDefn(l.cValue, C.int(field), newFieldDefn.cValue, C.int(flags)))
 	return
 }
 
 func (l OGRLayer) AlterFieldDefn(field int, newFieldDefn OGRFieldDefn, flags int) (err error) {
-	err = ogrLAlterFieldDefn(l, field, newFieldDefn, flags)
+	err = ogrError(ogrLAlterFieldDefn(l, field, newFieldDefn, flags))
 	return
 }
 
-func ogrLAlterGeomFieldDefn(l OGRLayer, field int, newGeomFieldDefn OGRGeomFieldDefn, flags int) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_AlterGeomFieldDefn(l.cValue, C.int(field), newGeomFieldDefn.cValue, C.int(flags))))
+func ogrLAlterGeomFieldDefn(l OGRLayer, field int, newGeomFieldDefn OGRGeomFieldDefn, flags int) (result OGRErr) {
+	result = OGRErr(C.OGR_L_AlterGeomFieldDefn(l.cValue, C.int(field), newGeomFieldDefn.cValue, C.int(flags)))
 	return
 }
 
 func (l OGRLayer) AlterGeomFieldDefn(field int, newGeomFieldDefn OGRGeomFieldDefn, flags int) (err error) {
-	err = ogrLAlterGeomFieldDefn(l, field, newGeomFieldDefn, flags)
+	err = ogrError(ogrLAlterGeomFieldDefn(l, field, newGeomFieldDefn, flags))
 	return
 }
 
-func ogrLStartTransaction(l OGRLayer) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_StartTransaction(l.cValue)))
+func ogrLStartTransaction(l OGRLayer) (result OGRErr) {
+	result = OGRErr(C.OGR_L_StartTransaction(l.cValue))
 	return
 }
 
 func (l OGRLayer) StartTransaction() (err error) {
-	err = ogrLStartTransaction(l)
+	err = ogrError(ogrLStartTransaction(l))
 	return
 }
 
-func ogrLCommitTransaction(l OGRLayer) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_CommitTransaction(l.cValue)))
+func ogrLCommitTransaction(l OGRLayer) (result OGRErr) {
+	result = OGRErr(C.OGR_L_CommitTransaction(l.cValue))
 	return
 }
 
 func (l OGRLayer) CommitTransaction() (err error) {
-	err = ogrLCommitTransaction(l)
+	err = ogrError(ogrLCommitTransaction(l))
 	return
 }
 
-func ogrLRollbackTransaction(l OGRLayer) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_RollbackTransaction(l.cValue)))
+func ogrLRollbackTransaction(l OGRLayer) (result OGRErr) {
+	result = OGRErr(C.OGR_L_RollbackTransaction(l.cValue))
 	return
 }
 
 func (l OGRLayer) RollbackTransaction() (err error) {
-	err = ogrLRollbackTransaction(l)
+	err = ogrError(ogrLRollbackTransaction(l))
 	return
 }
 
-func ogrLRename(l OGRLayer, newName string) (err error) {
+func ogrLRename(l OGRLayer, newName string) (result OGRErr) {
 	cs := C.CString(newName)
 	defer C.free(unsafe.Pointer(cs))
-	err = ogrError(OGRErr(C.OGR_L_Rename(l.cValue, cs)))
+	result = OGRErr(C.OGR_L_Rename(l.cValue, cs))
 	return
 }
 
 func (l OGRLayer) Rename(newName string) (err error) {
-	err = ogrLRename(l, newName)
+	err = ogrError(ogrLRename(l, newName))
 	return
 }
 
@@ -4201,13 +4230,13 @@ func (l OGRLayer) GetRefCount() (result int) {
 
 // /*! @endcond */
 
-func ogrLSyncToDisk(l OGRLayer) (err error) {
-	err = ogrError(OGRErr(C.OGR_L_SyncToDisk(l.cValue)))
+func ogrLSyncToDisk(l OGRLayer) (result OGRErr) {
+	result = OGRErr(C.OGR_L_SyncToDisk(l.cValue))
 	return
 }
 
 func (l OGRLayer) SyncToDisk() (err error) {
-	err = ogrLSyncToDisk(l)
+	err = ogrError(ogrLSyncToDisk(l))
 	return
 }
 
@@ -4277,131 +4306,131 @@ func (l OGRLayer) SetStyleTable(styleTable OGRStyleTable) {
 	ogrLSetStyleTable(l, styleTable)
 }
 
-func ogrLSetIgnoredFields(l OGRLayer, fields []string) (err error) {
+func ogrLSetIgnoredFields(l OGRLayer, fields []string) (result OGRErr) {
 	cFields := make([]*C.char, len(fields)+1)
 	for i, f := range fields {
 		cFields[i] = C.CString(f)
 		defer C.free(unsafe.Pointer(cFields[i]))
 	}
 	cFields[len(fields)] = nil
-	err = ogrError(OGRErr(C.OGR_L_SetIgnoredFields(l.cValue, &cFields[0])))
+	result = OGRErr(C.OGR_L_SetIgnoredFields(l.cValue, &cFields[0]))
 	return
 }
 
 func (l OGRLayer) SetIgnoredFields(fields []string) (err error) {
-	err = ogrLSetIgnoredFields(l, fields)
+	err = ogrError(ogrLSetIgnoredFields(l, fields))
 	return
 }
 
-func ogrLIntersection(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func ogrLIntersection(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
 	cOptions := make([]*C.char, len(options)+1)
 	for i, o := range options {
 		cOptions[i] = C.CString(o)
 		defer C.free(unsafe.Pointer(cOptions[i]))
 	}
 	cOptions[len(options)] = nil
-	err = ogrError(OGRErr(C.OGR_L_Intersection(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData)))
+	status = OGRErr(C.OGR_L_Intersection(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData))
 	return
 }
 
 func OGRLIntersection(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
-	err = ogrLIntersection(input, method, result, options, progress, progressData)
+	err = ogrError(ogrLIntersection(input, method, result, options, progress, progressData))
 	return
 }
 
-func ogrLUnion(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func ogrLUnion(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
 	cOptions := make([]*C.char, len(options)+1)
 	for i, o := range options {
 		cOptions[i] = C.CString(o)
 		defer C.free(unsafe.Pointer(cOptions[i]))
 	}
 	cOptions[len(options)] = nil
-	err = ogrError(OGRErr(C.OGR_L_Union(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData)))
+	status = OGRErr(C.OGR_L_Union(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData))
 	return
 }
 
 func OGRLUnion(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
-	err = ogrLUnion(input, method, result, options, progress, progressData)
+	err = ogrError(ogrLUnion(input, method, result, options, progress, progressData))
 	return
 }
 
-func ogrLSymDifference(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func ogrLSymDifference(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
 	cOptions := make([]*C.char, len(options)+1)
 	for i, o := range options {
 		cOptions[i] = C.CString(o)
 		defer C.free(unsafe.Pointer(cOptions[i]))
 	}
 	cOptions[len(options)] = nil
-	err = ogrError(OGRErr(C.OGR_L_SymDifference(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData)))
+	status = OGRErr(C.OGR_L_SymDifference(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData))
 	return
 }
 
 func OGRLSymDifference(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
-	err = ogrLSymDifference(input, method, result, options, progress, progressData)
+	err = ogrError(ogrLSymDifference(input, method, result, options, progress, progressData))
 	return
 }
 
-func ogrLIdentity(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func ogrLIdentity(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
 	cOptions := make([]*C.char, len(options)+1)
 	for i, o := range options {
 		cOptions[i] = C.CString(o)
 		defer C.free(unsafe.Pointer(cOptions[i]))
 	}
 	cOptions[len(options)] = nil
-	err = ogrError(OGRErr(C.OGR_L_Identity(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData)))
+	status = OGRErr(C.OGR_L_Identity(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData))
 	return
 }
 
 func OGRLIdentity(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
-	err = ogrLIdentity(input, method, result, options, progress, progressData)
+	err = ogrError(ogrLIdentity(input, method, result, options, progress, progressData))
 	return
 }
 
-func ogrLUpdate(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func ogrLUpdate(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
 	cOptions := make([]*C.char, len(options)+1)
 	for i, o := range options {
 		cOptions[i] = C.CString(o)
 		defer C.free(unsafe.Pointer(cOptions[i]))
 	}
 	cOptions[len(options)] = nil
-	err = ogrError(OGRErr(C.OGR_L_Update(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData)))
+	status = OGRErr(C.OGR_L_Update(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData))
 	return
 }
 
 func OGRLUpdate(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
-	err = ogrLUpdate(input, method, result, options, progress, progressData)
+	err = ogrError(ogrLUpdate(input, method, result, options, progress, progressData))
 	return
 }
 
-func ogrLClip(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func ogrLClip(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
 	cOptions := make([]*C.char, len(options)+1)
 	for i, o := range options {
 		cOptions[i] = C.CString(o)
 		defer C.free(unsafe.Pointer(cOptions[i]))
 	}
 	cOptions[len(options)] = nil
-	err = ogrError(OGRErr(C.OGR_L_Clip(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData)))
+	status = OGRErr(C.OGR_L_Clip(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData))
 	return
 }
 
 func OGRLClip(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
-	err = ogrLClip(input, method, result, options, progress, progressData)
+	err = ogrError(ogrLClip(input, method, result, options, progress, progressData))
 	return
 }
 
-func ogrLErase(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func ogrLErase(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
 	cOptions := make([]*C.char, len(options)+1)
 	for i, o := range options {
 		cOptions[i] = C.CString(o)
 		defer C.free(unsafe.Pointer(cOptions[i]))
 	}
 	cOptions[len(options)] = nil
-	err = ogrError(OGRErr(C.OGR_L_Erase(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData)))
+	status = OGRErr(C.OGR_L_Erase(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData))
 	return
 }
 
 func OGRLErase(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
-	err = ogrLErase(input, method, result, options, progress, progressData)
+	err = ogrError(ogrLErase(input, method, result, options, progress, progressData))
 	return
 }
 
@@ -4440,8 +4469,11 @@ func ogrDSGetLayer(ds OGRDataSource, layer int) (result OGRLayer) {
 	return
 }
 
-func (ds OGRDataSource) GetLayer(layer int) (result OGRLayer) {
+func (ds OGRDataSource) GetLayer(layer int) (result OGRLayer, err error) {
 	result = ogrDSGetLayer(ds, layer)
+	if result.cValue == nil {
+		err = lastError()
+	}
 	return
 }
 
@@ -4452,18 +4484,21 @@ func ogrDSGetLayerByName(ds OGRDataSource, name string) (result OGRLayer) {
 	return
 }
 
-func (ds OGRDataSource) GetLayerByName(name string) (result OGRLayer) {
+func (ds OGRDataSource) GetLayerByName(name string) (result OGRLayer, err error) {
 	result = ogrDSGetLayerByName(ds, name)
+	if result.cValue == nil {
+		err = lastError()
+	}
 	return
 }
 
-func ogrDSDeleteLayer(ds OGRDataSource, layer int) (err error) {
-	err = ogrError(OGRErr(C.OGR_DS_DeleteLayer(ds.cValue, C.int(layer))))
+func ogrDSDeleteLayer(ds OGRDataSource, layer int) (result OGRErr) {
+	result = OGRErr(C.OGR_DS_DeleteLayer(ds.cValue, C.int(layer)))
 	return
 }
 
 func (ds OGRDataSource) DeleteLayer(layer int) (err error) {
-	err = ogrDSDeleteLayer(ds, layer)
+	err = ogrError(ogrDSDeleteLayer(ds, layer))
 	return
 }
 
@@ -4472,8 +4507,11 @@ func ogrDSGetDriver(ds OGRDataSource) (result OGRSFDriver) {
 	return
 }
 
-func (ds OGRDataSource) GetDriver() (result OGRSFDriver) {
+func (ds OGRDataSource) GetDriver() (result OGRSFDriver, err error) {
 	result = ogrDSGetDriver(ds)
+	if result.cValue == nil {
+		err = lastError()
+	}
 	return
 }
 
@@ -4543,8 +4581,11 @@ func ogrDSExecuteSQL(ds OGRDataSource, statement string, spatialFilter OGRGeomet
 	return
 }
 
-func (ds OGRDataSource) ExecuteSQL(statement string, spatialFilter OGRGeometry, dialect string) (result OGRLayer) {
+func (ds OGRDataSource) ExecuteSQL(statement string, spatialFilter OGRGeometry, dialect string) (result OGRLayer, err error) {
 	result = ogrDSExecuteSQL(ds, statement, spatialFilter, dialect)
+	if result.cValue == nil {
+		err = lastError()
+	}
 	return
 }
 
@@ -4601,14 +4642,14 @@ func (ds OGRDataSource) GetSummaryRefCount() (result int) {
 // /*! @endcond */
 
 // /** Flush pending changes to disk. See GDALDataset::FlushCache() */
-func ogrDSSyncToDisk(ds OGRDataSource) (err error) {
-	err = ogrError(OGRErr(C.OGR_DS_SyncToDisk(ds.cValue)))
+func ogrDSSyncToDisk(ds OGRDataSource) (result OGRErr) {
+	result = OGRErr(C.OGR_DS_SyncToDisk(ds.cValue))
 	return
 }
 
 // /** Flush pending changes to disk. See GDALDataset::FlushCache() */
 func (ds OGRDataSource) SyncToDisk() (err error) {
-	err = ogrDSSyncToDisk(ds)
+	err = ogrError(ogrDSSyncToDisk(ds))
 	return
 }
 
@@ -4725,15 +4766,15 @@ func (dr OGRSFDriver) CopyDataSource(srcDS OGRDataSource, newName string, option
 	return
 }
 
-func ogrDrDeleteDataSource(dr OGRSFDriver, name string) (err error) {
+func ogrDrDeleteDataSource(dr OGRSFDriver, name string) (result OGRErr) {
 	cs := C.CString(name)
 	defer C.free(unsafe.Pointer(cs))
-	err = ogrError(OGRErr(C.OGR_Dr_DeleteDataSource(dr.cValue, cs)))
+	result = OGRErr(C.OGR_Dr_DeleteDataSource(dr.cValue, cs))
 	return
 }
 
 func (dr OGRSFDriver) DeleteDataSource(name string) (err error) {
-	err = ogrDrDeleteDataSource(dr, name)
+	err = ogrError(ogrDrDeleteDataSource(dr, name))
 	return
 }
 
@@ -4773,13 +4814,13 @@ func OGROpenShared(name string, update int) (result OGRDataSource, driver OGRSFD
 	return
 }
 
-func ogrReleaseDataSource(ds OGRDataSource) (err error) {
-	err = ogrError(OGRErr(C.OGRReleaseDataSource(ds.cValue)))
+func ogrReleaseDataSource(ds OGRDataSource) (result OGRErr) {
+	result = OGRErr(C.OGRReleaseDataSource(ds.cValue))
 	return
 }
 
 func (ds OGRDataSource) Release() (err error) {
-	err = ogrReleaseDataSource(ds)
+	err = ogrError(ogrReleaseDataSource(ds))
 	return
 }
 
@@ -4818,8 +4859,11 @@ func ogrGetDriver(driver int) (result OGRSFDriver) {
 	return
 }
 
-func OGRGetDriver(driver int) (result OGRSFDriver) {
+func OGRGetDriver(driver int) (result OGRSFDriver, err error) {
 	result = ogrGetDriver(driver)
+	if result.cValue == nil {
+		err = lastError()
+	}
 	return
 }
 
@@ -4830,8 +4874,11 @@ func ogrGetDriverByName(name string) (result OGRSFDriver) {
 	return
 }
 
-func OGRGetDriverByName(name string) (result OGRSFDriver) {
+func OGRGetDriverByName(name string) (result OGRSFDriver, err error) {
 	result = ogrGetDriverByName(name)
+	if result.cValue == nil {
+		err = lastError()
+	}
 	return
 }
 
@@ -4852,8 +4899,11 @@ func ogrGetOpenDS(ds int) (result OGRDataSource) {
 	return
 }
 
-func OGRGetOpenDS(ds int) (result OGRDataSource) {
+func OGRGetOpenDS(ds int) (result OGRDataSource, err error) {
 	result = ogrGetOpenDS(ds)
+	if result.cValue == nil {
+		err = lastError()
+	}
 	return
 }
 

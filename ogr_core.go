@@ -930,29 +930,7 @@ const (
 
 // /* Note to developers : please keep this section in sync with gdal.h */
 
-func gdalVersionInfo(pszRequest string) (result string) {
-	cs := C.CString(pszRequest)
-	defer C.free(unsafe.Pointer(cs))
-	result = C.GoString(C.GDALVersionInfo(cs))
-	return
-}
-
-func GDALVersionInfo(request string) (result string) {
-	result = gdalVersionInfo(request)
-	return
-}
-
-func gdalCheckVersion(nVersionMajor, nVersionMinor int, pszCallingComponentName string) (result int) {
-	cs := C.CString(pszCallingComponentName)
-	defer C.free(unsafe.Pointer(cs))
-	result = int(C.GDALCheckVersion(C.int(nVersionMajor), C.int(nVersionMinor), cs))
-	return
-}
-
-func GDALCheckVersion(versionMajor, versionMinor int, callingComponentName string) (result int) {
-	result = gdalCheckVersion(versionMajor, versionMinor, callingComponentName)
-	return
-}
+// GDALVersionInfo and GDALCheckVersion are wrapped in gdal.go.
 
 // CPL_C_END
 

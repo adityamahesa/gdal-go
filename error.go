@@ -17,12 +17,16 @@ func ogrError(e OGRErr) error {
 
 func lastError() error {
 	defer CPLErrorReset()
-	msg := CPLGetLastErrorMsg()
-	if msg != "" {
-		msg = " " + msg
+	errType := CPLGetLastErrorType()
+	if !(errType == CEFailure || errType == CEFatal) {
+		return nil
 	}
-	return fmt.Errorf("[%s][%s]%s", CPLGetLastErrorType().String(),
-		CPLGetLastErrorNo().String(), msg)
+	errMsg := CPLGetLastErrorMsg()
+	if errMsg != "" {
+		errMsg = " " + errMsg
+	}
+	return fmt.Errorf("[%s][%s]%s", errType.String(),
+		CPLGetLastErrorNo().String(), errMsg)
 }
 
 func cplErr(e CPLErr) error {
