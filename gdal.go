@@ -1,104 +1,7 @@
 package gdal
 
 /*
-#include "gdal.h"
-#include "cpl_string.h" // TODO: implement cpl_string.go
-#include "cpl_vsi.h" // TODO: implement cpl_vsi.go
-
-const char* const _GDALMD_AREA_OR_POINT = GDALMD_AREA_OR_POINT;
-const char* const _GDALMD_AOP_AREA      = GDALMD_AOP_AREA;
-const char* const _GDALMD_AOP_POINT     = GDALMD_AOP_POINT;
-
-const char* const _GDAL_DS_LAYER_CREATIONOPTIONLIST = GDAL_DS_LAYER_CREATIONOPTIONLIST;
-
-const char* const _GDAL_DMD_LONGNAME                                       = GDAL_DMD_LONGNAME;
-const char* const _GDAL_DMD_HELPTOPIC                                      = GDAL_DMD_HELPTOPIC;
-const char* const _GDAL_DMD_MIMETYPE                                       = GDAL_DMD_MIMETYPE;
-const char* const _GDAL_DMD_EXTENSION                                      = GDAL_DMD_EXTENSION;
-const char* const _GDAL_DMD_CONNECTION_PREFIX                              = GDAL_DMD_CONNECTION_PREFIX;
-const char* const _GDAL_DMD_EXTENSIONS                                     = GDAL_DMD_EXTENSIONS;
-const char* const _GDAL_DMD_CREATIONOPTIONLIST                             = GDAL_DMD_CREATIONOPTIONLIST;
-const char* const _GDAL_DMD_OVERVIEW_CREATIONOPTIONLIST                    = GDAL_DMD_OVERVIEW_CREATIONOPTIONLIST;
-const char* const _GDAL_DMD_MULTIDIM_DATASET_CREATIONOPTIONLIST            = GDAL_DMD_MULTIDIM_DATASET_CREATIONOPTIONLIST;
-const char* const _GDAL_DMD_MULTIDIM_GROUP_CREATIONOPTIONLIST              = GDAL_DMD_MULTIDIM_GROUP_CREATIONOPTIONLIST;
-const char* const _GDAL_DMD_MULTIDIM_DIMENSION_CREATIONOPTIONLIST          = GDAL_DMD_MULTIDIM_DIMENSION_CREATIONOPTIONLIST;
-const char* const _GDAL_DMD_MULTIDIM_ARRAY_CREATIONOPTIONLIST              = GDAL_DMD_MULTIDIM_ARRAY_CREATIONOPTIONLIST;
-const char* const _GDAL_DMD_MULTIDIM_ARRAY_OPENOPTIONLIST                  = GDAL_DMD_MULTIDIM_ARRAY_OPENOPTIONLIST;
-const char* const _GDAL_DMD_MULTIDIM_ATTRIBUTE_CREATIONOPTIONLIST          = GDAL_DMD_MULTIDIM_ATTRIBUTE_CREATIONOPTIONLIST;
-const char* const _GDAL_DMD_OPENOPTIONLIST                                 = GDAL_DMD_OPENOPTIONLIST;
-const char* const _GDAL_DMD_CREATIONDATATYPES                              = GDAL_DMD_CREATIONDATATYPES;
-const char* const _GDAL_DMD_CREATIONFIELDDATATYPES                         = GDAL_DMD_CREATIONFIELDDATATYPES;
-const char* const _GDAL_DMD_CREATIONFIELDDATASUBTYPES                      = GDAL_DMD_CREATIONFIELDDATASUBTYPES;
-const char* const _GDAL_DMD_MAX_STRING_LENGTH                              = GDAL_DMD_MAX_STRING_LENGTH;
-const char* const _GDAL_DMD_CREATION_FIELD_DEFN_FLAGS                      = GDAL_DMD_CREATION_FIELD_DEFN_FLAGS;
-const char* const _GDAL_DMD_SUBDATASETS                                    = GDAL_DMD_SUBDATASETS;
-const char* const _GDAL_DCAP_CREATE_SUBDATASETS                            = GDAL_DCAP_CREATE_SUBDATASETS;
-const char* const _GDAL_DMD_NUMERIC_FIELD_WIDTH_INCLUDES_DECIMAL_SEPARATOR = GDAL_DMD_NUMERIC_FIELD_WIDTH_INCLUDES_DECIMAL_SEPARATOR;
-const char* const _GDAL_DMD_NUMERIC_FIELD_WIDTH_INCLUDES_SIGN              = GDAL_DMD_NUMERIC_FIELD_WIDTH_INCLUDES_SIGN;
-const char* const _GDAL_DCAP_OPEN                                          = GDAL_DCAP_OPEN;
-const char* const _GDAL_DCAP_CREATE                                        = GDAL_DCAP_CREATE;
-const char* const _GDAL_DCAP_CREATE_MULTIDIMENSIONAL                       = GDAL_DCAP_CREATE_MULTIDIMENSIONAL;
-const char* const _GDAL_DCAP_CREATECOPY                                    = GDAL_DCAP_CREATECOPY;
-const char* const _GDAL_DCAP_CREATE_ONLY_VISIBLE_AT_CLOSE_TIME             = GDAL_DCAP_CREATE_ONLY_VISIBLE_AT_CLOSE_TIME;
-const char* const _GDAL_DCAP_VECTOR_TRANSLATE_FROM                         = GDAL_DCAP_VECTOR_TRANSLATE_FROM;
-const char* const _GDAL_DCAP_CREATECOPY_MULTIDIMENSIONAL                   = GDAL_DCAP_CREATECOPY_MULTIDIMENSIONAL;
-const char* const _GDAL_DCAP_MULTIDIM_RASTER                               = GDAL_DCAP_MULTIDIM_RASTER;
-const char* const _GDAL_DCAP_SUBCREATECOPY                                 = GDAL_DCAP_SUBCREATECOPY;
-const char* const _GDAL_DCAP_APPEND                                        = GDAL_DCAP_APPEND;
-const char* const _GDAL_DCAP_UPDATE                                        = GDAL_DCAP_UPDATE;
-const char* const _GDAL_DCAP_VIRTUALIO                                     = GDAL_DCAP_VIRTUALIO;
-const char* const _GDAL_DCAP_RASTER                                        = GDAL_DCAP_RASTER;
-const char* const _GDAL_DCAP_VECTOR                                        = GDAL_DCAP_VECTOR;
-const char* const _GDAL_DCAP_GNM                                           = GDAL_DCAP_GNM;
-const char* const _GDAL_DCAP_CREATE_LAYER                                  = GDAL_DCAP_CREATE_LAYER;
-const char* const _GDAL_DCAP_DELETE_LAYER                                  = GDAL_DCAP_DELETE_LAYER;
-const char* const _GDAL_DCAP_CREATE_FIELD                                  = GDAL_DCAP_CREATE_FIELD;
-const char* const _GDAL_DCAP_DELETE_FIELD                                  = GDAL_DCAP_DELETE_FIELD;
-const char* const _GDAL_DCAP_REORDER_FIELDS                                = GDAL_DCAP_REORDER_FIELDS;
-const char* const _GDAL_DMD_ALTER_FIELD_DEFN_FLAGS                         = GDAL_DMD_ALTER_FIELD_DEFN_FLAGS;
-const char* const _GDAL_DMD_ILLEGAL_FIELD_NAMES                            = GDAL_DMD_ILLEGAL_FIELD_NAMES;
-const char* const _GDAL_DCAP_NOTNULL_FIELDS                                = GDAL_DCAP_NOTNULL_FIELDS;
-const char* const _GDAL_DCAP_UNIQUE_FIELDS                                 = GDAL_DCAP_UNIQUE_FIELDS;
-const char* const _GDAL_DCAP_DEFAULT_FIELDS                                = GDAL_DCAP_DEFAULT_FIELDS;
-const char* const _GDAL_DCAP_NOTNULL_GEOMFIELDS                            = GDAL_DCAP_NOTNULL_GEOMFIELDS;
-const char* const _GDAL_DCAP_NONSPATIAL                                    = GDAL_DCAP_NONSPATIAL;
-const char* const _GDAL_DCAP_CURVE_GEOMETRIES                              = GDAL_DCAP_CURVE_GEOMETRIES;
-const char* const _GDAL_DCAP_MEASURED_GEOMETRIES                           = GDAL_DCAP_MEASURED_GEOMETRIES;
-const char* const _GDAL_DCAP_Z_GEOMETRIES                                  = GDAL_DCAP_Z_GEOMETRIES;
-const char* const _GDAL_DMD_GEOMETRY_FLAGS                                 = GDAL_DMD_GEOMETRY_FLAGS;
-const char* const _GDAL_DCAP_FEATURE_STYLES                                = GDAL_DCAP_FEATURE_STYLES;
-const char* const _GDAL_DCAP_FEATURE_STYLES_READ                           = GDAL_DCAP_FEATURE_STYLES_READ;
-const char* const _GDAL_DCAP_FEATURE_STYLES_WRITE                          = GDAL_DCAP_FEATURE_STYLES_WRITE;
-const char* const _GDAL_DCAP_COORDINATE_EPOCH                              = GDAL_DCAP_COORDINATE_EPOCH;
-const char* const _GDAL_DCAP_MULTIPLE_VECTOR_LAYERS                        = GDAL_DCAP_MULTIPLE_VECTOR_LAYERS;
-const char* const _GDAL_DCAP_FIELD_DOMAINS                                 = GDAL_DCAP_FIELD_DOMAINS;
-const char* const _GDAL_DCAP_RELATIONSHIPS                                 = GDAL_DCAP_RELATIONSHIPS;
-const char* const _GDAL_DCAP_CREATE_RELATIONSHIP                           = GDAL_DCAP_CREATE_RELATIONSHIP;
-const char* const _GDAL_DCAP_DELETE_RELATIONSHIP                           = GDAL_DCAP_DELETE_RELATIONSHIP;
-const char* const _GDAL_DCAP_UPDATE_RELATIONSHIP                           = GDAL_DCAP_UPDATE_RELATIONSHIP;
-const char* const _GDAL_DCAP_FLUSHCACHE_CONSISTENT_STATE                   = GDAL_DCAP_FLUSHCACHE_CONSISTENT_STATE;
-const char* const _GDAL_DCAP_HONOR_GEOM_COORDINATE_PRECISION               = GDAL_DCAP_HONOR_GEOM_COORDINATE_PRECISION;
-const char* const _GDAL_DCAP_UPSERT                                        = GDAL_DCAP_UPSERT;
-const char* const _GDAL_DMD_RELATIONSHIP_FLAGS                             = GDAL_DMD_RELATIONSHIP_FLAGS;
-const char* const _GDAL_DMD_RELATIONSHIP_RELATED_TABLE_TYPES               = GDAL_DMD_RELATIONSHIP_RELATED_TABLE_TYPES;
-const char* const _GDAL_DCAP_RENAME_LAYERS                                 = GDAL_DCAP_RENAME_LAYERS;
-const char* const _GDAL_DMD_CREATION_FIELD_DOMAIN_TYPES                    = GDAL_DMD_CREATION_FIELD_DOMAIN_TYPES;
-const char* const _GDAL_DMD_ALTER_GEOM_FIELD_DEFN_FLAGS                    = GDAL_DMD_ALTER_GEOM_FIELD_DEFN_FLAGS;
-const char* const _GDAL_DMD_SUPPORTED_SQL_DIALECTS                         = GDAL_DMD_SUPPORTED_SQL_DIALECTS;
-const char* const _GDAL_DMD_PLUGIN_INSTALLATION_MESSAGE                    = GDAL_DMD_PLUGIN_INSTALLATION_MESSAGE;
-const char* const _GDAL_DMD_UPDATE_ITEMS                                   = GDAL_DMD_UPDATE_ITEMS;
-const char* const _GDAL_DIM_TYPE_HORIZONTAL_X                              = GDAL_DIM_TYPE_HORIZONTAL_X;
-const char* const _GDAL_DIM_TYPE_HORIZONTAL_Y                              = GDAL_DIM_TYPE_HORIZONTAL_Y;
-const char* const _GDAL_DIM_TYPE_VERTICAL                                  = GDAL_DIM_TYPE_VERTICAL;
-const char* const _GDAL_DIM_TYPE_TEMPORAL                                  = GDAL_DIM_TYPE_TEMPORAL;
-const char* const _GDAL_DIM_TYPE_PARAMETRIC                                = GDAL_DIM_TYPE_PARAMETRIC;
-const char* const _GDAL_DCAP_REOPEN_AFTER_WRITE_REQUIRED                   = GDAL_DCAP_REOPEN_AFTER_WRITE_REQUIRED;
-const char* const _GDAL_DCAP_CAN_READ_AFTER_DELETE                         = GDAL_DCAP_CAN_READ_AFTER_DELETE;
-const char* const _GDsCAddRelationship                                     = GDsCAddRelationship;
-const char* const _GDsCDeleteRelationship                                  = GDsCDeleteRelationship;
-const char* const _GDsCUpdateRelationship                                  = GDsCUpdateRelationship;
-const char* const _GDsCFastGetExtent                                       = GDsCFastGetExtent;
-const char* const _GDsCFastGetExtentWGS84LongLat                           = GDsCFastGetExtentWGS84LongLat;
+#include "gdal_preamble.h"
 */
 import "C"
 import "unsafe"
@@ -636,16 +539,15 @@ func GDALRegisterPlugin(name string) (err error) {
 	return
 }
 
-func gdalCreate(driver GDALDriver, name string, xSize, ySize, bands int, dataType GDALDataType, options []string) (result GDALDataset) {
+func gdalCreate(driver GDALDriver, name string, xSize, ySize, bands int, dataType GDALDataType, options CSLConstList) (result GDALDataset) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALDataset{cValue: C.GDALCreate(driver.cValue, cName, C.int(xSize), C.int(ySize), C.int(bands), C.GDALDataType(dataType), C.CSLConstList(unsafe.Pointer(opts)))}
+	opts := options.cValue
+	result = GDALDataset{cValue: C.GDALCreate(driver.cValue, cName, C.int(xSize), C.int(ySize), C.int(bands), C.GDALDataType(dataType), opts)}
 	return
 }
 
-func (d GDALDriver) Create(name string, xSize, ySize, bands int, dataType GDALDataType, options []string) (result GDALDataset, err error) {
+func (d GDALDriver) Create(name string, xSize, ySize, bands int, dataType GDALDataType, options CSLConstList) (result GDALDataset, err error) {
 	result = gdalCreate(d, name, xSize, ySize, bands, dataType, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -653,16 +555,15 @@ func (d GDALDriver) Create(name string, xSize, ySize, bands int, dataType GDALDa
 	return
 }
 
-func gdalCreateCopy(driver GDALDriver, name string, src GDALDataset, strict int, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (result GDALDataset) {
+func gdalCreateCopy(driver GDALDriver, name string, src GDALDataset, strict int, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (result GDALDataset) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALDataset{cValue: C.GDALCreateCopy(driver.cValue, cName, src.cValue, C.int(strict), C.CSLConstList(unsafe.Pointer(opts)), progress.cValue, progressData)}
+	opts := options.cValue
+	result = GDALDataset{cValue: C.GDALCreateCopy(driver.cValue, cName, src.cValue, C.int(strict), opts, progress.cValue, progressData)}
 	return
 }
 
-func (d GDALDriver) CreateCopy(name string, src GDALDataset, strict int, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (result GDALDataset, err error) {
+func (d GDALDriver) CreateCopy(name string, src GDALDataset, strict int, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (result GDALDataset, err error) {
 	result = gdalCreateCopy(d, name, src, strict, options, progress, progressData)
 	if result.cValue == nil {
 		err = lastError()
@@ -670,16 +571,15 @@ func (d GDALDriver) CreateCopy(name string, src GDALDataset, strict int, options
 	return
 }
 
-func gdalIdentifyDriver(filename string, fileList []string) (result GDALDriver) {
+func gdalIdentifyDriver(filename string, fileList CSLConstList) (result GDALDriver) {
 	cName := C.CString(filename)
 	defer C.free(unsafe.Pointer(cName))
-	files, free := cStrings(fileList)
-	defer free()
-	result = GDALDriver{cValue: C.GDALIdentifyDriver(cName, C.CSLConstList(unsafe.Pointer(files)))}
+	files := fileList.cValue
+	result = GDALDriver{cValue: C.GDALIdentifyDriver(cName, files)}
 	return
 }
 
-func GDALIdentifyDriver(filename string, fileList []string) (result GDALDriver, err error) {
+func GDALIdentifyDriver(filename string, fileList CSLConstList) (result GDALDriver, err error) {
 	result = gdalIdentifyDriver(filename, fileList)
 	if result.cValue == nil {
 		err = lastError()
@@ -687,18 +587,16 @@ func GDALIdentifyDriver(filename string, fileList []string) (result GDALDriver, 
 	return
 }
 
-func gdalIdentifyDriverEx(filename string, identifyFlags uint, allowedDrivers, fileList []string) (result GDALDriver) {
+func gdalIdentifyDriverEx(filename string, identifyFlags uint, allowedDrivers, fileList CSLConstList) (result GDALDriver) {
 	cName := C.CString(filename)
 	defer C.free(unsafe.Pointer(cName))
-	allowed, freeA := cStrings(allowedDrivers)
-	defer freeA()
-	files, freeF := cStrings(fileList)
-	defer freeF()
+	allowed := allowedDrivers.cValue
+	files := fileList.cValue
 	result = GDALDriver{cValue: C.GDALIdentifyDriverEx(cName, C.uint(identifyFlags), allowed, files)}
 	return
 }
 
-func GDALIdentifyDriverEx(filename string, identifyFlags uint, allowedDrivers, fileList []string) (result GDALDriver, err error) {
+func GDALIdentifyDriverEx(filename string, identifyFlags uint, allowedDrivers, fileList CSLConstList) (result GDALDriver, err error) {
 	result = gdalIdentifyDriverEx(filename, identifyFlags, allowedDrivers, fileList)
 	if result.cValue == nil {
 		err = lastError()
@@ -760,20 +658,17 @@ const (
 	GDALOfThreadSafe         GDALOpenFlag = C.GDAL_OF_THREAD_SAFE
 )
 
-func gdalOpenEx(filename string, openFlags GDALOpenFlag, allowedDrivers, openOptions, siblingFiles []string) (result GDALDataset) {
+func gdalOpenEx(filename string, openFlags GDALOpenFlag, allowedDrivers, openOptions, siblingFiles CSLConstList) (result GDALDataset) {
 	cName := C.CString(filename)
 	defer C.free(unsafe.Pointer(cName))
-	allowed, freeA := cStrings(allowedDrivers)
-	defer freeA()
-	options, freeO := cStrings(openOptions)
-	defer freeO()
-	siblings, freeS := cStrings(siblingFiles)
-	defer freeS()
+	allowed := allowedDrivers.cValue
+	options := openOptions.cValue
+	siblings := siblingFiles.cValue
 	result = GDALDataset{cValue: C.GDALOpenEx(cName, C.uint(openFlags), allowed, options, siblings)}
 	return
 }
 
-func GDALOpenEx(filename string, openFlags GDALOpenFlag, allowedDrivers, openOptions, siblingFiles []string) (result GDALDataset, err error) {
+func GDALOpenEx(filename string, openFlags GDALOpenFlag, allowedDrivers, openOptions, siblingFiles CSLConstList) (result GDALDataset, err error) {
 	result = gdalOpenEx(filename, openFlags, allowedDrivers, openOptions, siblingFiles)
 	if result.cValue == nil {
 		err = lastError()
@@ -782,7 +677,7 @@ func GDALOpenEx(filename string, openFlags GDALOpenFlag, allowedDrivers, openOpt
 }
 
 func gdalDumpOpenDatasets(filename string) (result int, err error) {
-	fp, closeFn, err := cFile(filename, "w")
+	fp, closeFn, err := cFOpen(filename, "w")
 	if err != nil {
 		return
 	}
@@ -928,31 +823,29 @@ func (d GDALDriver) CopyDatasetFiles(newName, oldName string) (err error) {
 	return
 }
 
-func gdalValidateCreationOptions(driver GDALDriver, options []string) (result bool) {
-	opts, free := cStrings(options)
-	defer free()
-	result = C.GDALValidateCreationOptions(driver.cValue, C.CSLConstList(unsafe.Pointer(opts))) != 0
+func gdalValidateCreationOptions(driver GDALDriver, options CSLConstList) (result bool) {
+	opts := options.cValue
+	result = C.GDALValidateCreationOptions(driver.cValue, opts) != 0
 	return
 }
 
-func (d GDALDriver) ValidateCreationOptions(options []string) (result bool) {
+func (d GDALDriver) ValidateCreationOptions(options CSLConstList) (result bool) {
 	result = gdalValidateCreationOptions(d, options)
 	return
 }
 
-func gdalGetOutputDriversForDatasetName(destFilename string, flagRasterVector int, singleMatch, emitWarning bool) (result []string) {
+func gdalGetOutputDriversForDatasetName(destFilename string, flagRasterVector int, singleMatch, emitWarning bool) (result CSLConstList) {
 	cName := C.CString(destFilename)
 	defer C.free(unsafe.Pointer(cName))
 	raw := C.GDALGetOutputDriversForDatasetName(cName, C.int(flagRasterVector), C.bool(singleMatch), C.bool(emitWarning))
 	if raw == nil {
 		return
 	}
-	defer C.CSLDestroy(raw)
-	result = goStrings(raw)
+	result = cslConstList(raw)
 	return
 }
 
-func GDALGetOutputDriversForDatasetName(destFilename string, flagRasterVector int, singleMatch, emitWarning bool) (result []string) {
+func GDALGetOutputDriversForDatasetName(destFilename string, flagRasterVector int, singleMatch, emitWarning bool) (result CSLConstList) {
 	result = gdalGetOutputDriversForDatasetName(destFilename, flagRasterVector, singleMatch, emitWarning)
 	return
 }
@@ -1199,43 +1092,41 @@ func GDALComposeHomographies(a, b [9]float64) (result [9]float64) {
 // /*      major objects (dataset, and, driver, drivermanager).            */
 // /* ==================================================================== */
 
-func gdalGetMetadataDomainList(object GDALMajorObject) (result []string) {
+func gdalGetMetadataDomainList(object GDALMajorObject) (result CSLConstList) {
 	raw := C.GDALGetMetadataDomainList(object.cValue)
 	if raw == nil {
 		return
 	}
-	defer C.CSLDestroy(raw)
-	result = goStrings(raw)
+	result = cslConstList(raw)
 	return
 }
 
-func (o GDALMajorObject) GetMetadataDomainList() (result []string) {
+func (o GDALMajorObject) GetMetadataDomainList() (result CSLConstList) {
 	result = gdalGetMetadataDomainList(o)
 	return
 }
 
-func gdalGetMetadata(object GDALMajorObject, domain string) (result []string) {
+func gdalGetMetadata(object GDALMajorObject, domain string) (result CSLConstList) {
 	cDomain := C.CString(domain)
 	defer C.free(unsafe.Pointer(cDomain))
-	result = goStrings(C.GDALGetMetadata(object.cValue, cDomain))
+	result = cslConstList(C.GDALGetMetadata(object.cValue, cDomain))
 	return
 }
 
-func (o GDALMajorObject) GetMetadata(domain string) (result []string) {
+func (o GDALMajorObject) GetMetadata(domain string) (result CSLConstList) {
 	result = gdalGetMetadata(o, domain)
 	return
 }
 
-func gdalSetMetadata(object GDALMajorObject, metadata []string, domain string) (result CPLErr) {
-	md, free := cStrings(metadata)
-	defer free()
+func gdalSetMetadata(object GDALMajorObject, metadata CSLConstList, domain string) (result CPLErr) {
+	md := metadata.cValue
 	cDomain := C.CString(domain)
 	defer C.free(unsafe.Pointer(cDomain))
-	result = CPLErr(C.GDALSetMetadata(object.cValue, C.CSLConstList(unsafe.Pointer(md)), cDomain))
+	result = CPLErr(C.GDALSetMetadata(object.cValue, md, cDomain))
 	return
 }
 
-func (o GDALMajorObject) SetMetadata(metadata []string, domain string) (err error) {
+func (o GDALMajorObject) SetMetadata(metadata CSLConstList, domain string) (err error) {
 	err = cplErr(gdalSetMetadata(o, metadata, domain))
 	return
 }
@@ -1307,17 +1198,16 @@ func (ds GDALDataset) GetDriver() (result GDALDriver) {
 	return
 }
 
-func gdalGetFileList(dataset GDALDataset) (result []string) {
+func gdalGetFileList(dataset GDALDataset) (result CSLConstList) {
 	raw := C.GDALGetFileList(dataset.cValue)
 	if raw == nil {
 		return
 	}
-	defer C.CSLDestroy(raw)
-	result = goStrings(raw)
+	result = cslConstList(raw)
 	return
 }
 
-func (ds GDALDataset) GetFileList() (result []string) {
+func (ds GDALDataset) GetFileList() (result CSLConstList) {
 	result = gdalGetFileList(ds)
 	return
 }
@@ -1393,26 +1283,24 @@ func (ds GDALDataset) GetRasterBand(band int) (result GDALRasterBand, err error)
 	return
 }
 
-func gdalDatasetIsThreadSafe(dataset GDALDataset, scopeFlags int, options []string) (result bool) {
-	opts, free := cStrings(options)
-	defer free()
-	result = bool(C.GDALDatasetIsThreadSafe(dataset.cValue, C.int(scopeFlags), C.CSLConstList(unsafe.Pointer(opts))))
+func gdalDatasetIsThreadSafe(dataset GDALDataset, scopeFlags int, options CSLConstList) (result bool) {
+	opts := options.cValue
+	result = bool(C.GDALDatasetIsThreadSafe(dataset.cValue, C.int(scopeFlags), opts))
 	return
 }
 
-func (ds GDALDataset) IsThreadSafe(scopeFlags int, options []string) (result bool) {
+func (ds GDALDataset) IsThreadSafe(scopeFlags int, options CSLConstList) (result bool) {
 	result = gdalDatasetIsThreadSafe(ds, scopeFlags, options)
 	return
 }
 
-func gdalGetThreadSafeDataset(dataset GDALDataset, scopeFlags int, options []string) (result GDALDataset) {
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALDataset{cValue: C.GDALGetThreadSafeDataset(dataset.cValue, C.int(scopeFlags), C.CSLConstList(unsafe.Pointer(opts)))}
+func gdalGetThreadSafeDataset(dataset GDALDataset, scopeFlags int, options CSLConstList) (result GDALDataset) {
+	opts := options.cValue
+	result = GDALDataset{cValue: C.GDALGetThreadSafeDataset(dataset.cValue, C.int(scopeFlags), opts)}
 	return
 }
 
-func (ds GDALDataset) GetThreadSafeDataset(scopeFlags int, options []string) (result GDALDataset, err error) {
+func (ds GDALDataset) GetThreadSafeDataset(scopeFlags int, options CSLConstList) (result GDALDataset, err error) {
 	result = gdalGetThreadSafeDataset(ds, scopeFlags, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -1420,26 +1308,24 @@ func (ds GDALDataset) GetThreadSafeDataset(scopeFlags int, options []string) (re
 	return
 }
 
-func gdalAddBand(dataset GDALDataset, dataType GDALDataType, options []string) (result CPLErr) {
-	opts, free := cStrings(options)
-	defer free()
-	result = CPLErr(C.GDALAddBand(dataset.cValue, C.GDALDataType(dataType), C.CSLConstList(unsafe.Pointer(opts))))
+func gdalAddBand(dataset GDALDataset, dataType GDALDataType, options CSLConstList) (result CPLErr) {
+	opts := options.cValue
+	result = CPLErr(C.GDALAddBand(dataset.cValue, C.GDALDataType(dataType), opts))
 	return
 }
 
-func (ds GDALDataset) AddBand(dataType GDALDataType, options []string) (err error) {
+func (ds GDALDataset) AddBand(dataType GDALDataType, options CSLConstList) (err error) {
 	err = cplErr(gdalAddBand(ds, dataType, options))
 	return
 }
 
-func gdalBeginAsyncReader(dataset GDALDataset, xOff, yOff, xSize, ySize int, buf unsafe.Pointer, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandMap []int, pixelSpace, lineSpace, bandSpace int, options []string) (result GDALAsyncReader) {
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALAsyncReader{cValue: C.GDALBeginAsyncReader(dataset.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), buf, C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(bandCount), cInts(bandMap), C.int(pixelSpace), C.int(lineSpace), C.int(bandSpace), C.CSLConstList(unsafe.Pointer(opts)))}
+func gdalBeginAsyncReader(dataset GDALDataset, xOff, yOff, xSize, ySize int, buf unsafe.Pointer, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandMap []int, pixelSpace, lineSpace, bandSpace int, options CSLConstList) (result GDALAsyncReader) {
+	opts := options.cValue
+	result = GDALAsyncReader{cValue: C.GDALBeginAsyncReader(dataset.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), buf, C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(bandCount), cInts(bandMap), C.int(pixelSpace), C.int(lineSpace), C.int(bandSpace), opts)}
 	return
 }
 
-func (ds GDALDataset) BeginAsyncReader(xOff, yOff, xSize, ySize int, buf []byte, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandMap []int, pixelSpace, lineSpace, bandSpace int, options []string) (result GDALAsyncReader, err error) {
+func (ds GDALDataset) BeginAsyncReader(xOff, yOff, xSize, ySize int, buf []byte, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandMap []int, pixelSpace, lineSpace, bandSpace int, options CSLConstList) (result GDALAsyncReader, err error) {
 	result = gdalBeginAsyncReader(ds, xOff, yOff, xSize, ySize, cBytes(buf), bufXSize, bufYSize, bufType, bandCount, bandMap, pixelSpace, lineSpace, bandSpace, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -1475,29 +1361,27 @@ func (ds GDALDataset) RasterIOEx(rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int
 	return
 }
 
-func gdalDatasetAdviseRead(dataset GDALDataset, xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList []int, options []string) (result CPLErr) {
-	opts, free := cStrings(options)
-	defer free()
-	result = CPLErr(C.GDALDatasetAdviseRead(dataset.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(bandCount), cInts(bandList), C.CSLConstList(unsafe.Pointer(opts))))
+func gdalDatasetAdviseRead(dataset GDALDataset, xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList []int, options CSLConstList) (result CPLErr) {
+	opts := options.cValue
+	result = CPLErr(C.GDALDatasetAdviseRead(dataset.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(bandCount), cInts(bandList), opts))
 	return
 }
 
-func (ds GDALDataset) AdviseRead(xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList []int, options []string) (err error) {
+func (ds GDALDataset) AdviseRead(xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList []int, options CSLConstList) (err error) {
 	err = cplErr(gdalDatasetAdviseRead(ds, xOff, yOff, xSize, ySize, bufXSize, bufYSize, bufType, bandCount, bandList, options))
 	return
 }
 
-func gdalDatasetGetCompressionFormats(dataset GDALDataset, xOff, yOff, xSize, ySize, bandCount int, bandList []int) (result []string) {
+func gdalDatasetGetCompressionFormats(dataset GDALDataset, xOff, yOff, xSize, ySize, bandCount int, bandList []int) (result CSLConstList) {
 	raw := C.GDALDatasetGetCompressionFormats(dataset.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), C.int(bandCount), cInts(bandList))
 	if raw == nil {
 		return
 	}
-	defer C.CSLDestroy(raw)
-	result = goStrings(raw)
+	result = cslConstList(raw)
 	return
 }
 
-func (ds GDALDataset) GetCompressionFormats(xOff, yOff, xSize, ySize, bandCount int, bandList []int) (result []string) {
+func (ds GDALDataset) GetCompressionFormats(xOff, yOff, xSize, ySize, bandCount int, bandList []int) (result CSLConstList) {
 	result = gdalDatasetGetCompressionFormats(ds, xOff, yOff, xSize, ySize, bandCount, bandList)
 	return
 }
@@ -1519,7 +1403,7 @@ func gdalDatasetReadCompressedData(dataset GDALDataset, format string, xOff, yOf
 		if detailedFormat != nil {
 			*detailedFormat = C.GoString(cDetailed)
 		}
-		C.VSIFree(unsafe.Pointer(cDetailed))
+		vsiFree(unsafe.Pointer(cDetailed))
 	}
 	return
 }
@@ -1533,7 +1417,7 @@ func (ds GDALDataset) ReadCompressedData(format string, xOff, yOff, xSize, ySize
 	}
 	if cBuffer != nil {
 		buffer = C.GoBytes(cBuffer, C.int(size))
-		C.VSIFree(cBuffer)
+		vsiFree(cBuffer)
 	}
 	return
 }
@@ -1630,17 +1514,16 @@ func (ds GDALDataset) GetExtentWGS84LongLat() (envelope OGREnvelope, err error) 
 	return
 }
 
-func gdalDatasetGeolocationToPixelLine(dataset GDALDataset, geolocX, geolocY float64, srs OGRSpatialReference, pixel, line *float64, transformerOptions []string) (result CPLErr) {
-	opts, free := cStrings(transformerOptions)
-	defer free()
+func gdalDatasetGeolocationToPixelLine(dataset GDALDataset, geolocX, geolocY float64, srs OGRSpatialReference, pixel, line *float64, transformerOptions CSLConstList) (result CPLErr) {
+	opts := transformerOptions.cValue
 	var cPixel, cLine C.double
-	result = CPLErr(C.GDALDatasetGeolocationToPixelLine(dataset.cValue, C.double(geolocX), C.double(geolocY), srs.cValue, &cPixel, &cLine, C.CSLConstList(unsafe.Pointer(opts))))
+	result = CPLErr(C.GDALDatasetGeolocationToPixelLine(dataset.cValue, C.double(geolocX), C.double(geolocY), srs.cValue, &cPixel, &cLine, opts))
 	*pixel = float64(cPixel)
 	*line = float64(cLine)
 	return
 }
 
-func (ds GDALDataset) GeolocationToPixelLine(geolocX, geolocY float64, srs OGRSpatialReference, transformerOptions []string) (pixel, line float64, err error) {
+func (ds GDALDataset) GeolocationToPixelLine(geolocX, geolocY float64, srs OGRSpatialReference, transformerOptions CSLConstList) (pixel, line float64, err error) {
 	err = cplErr(gdalDatasetGeolocationToPixelLine(ds, geolocX, geolocY, srs, &pixel, &line, transformerOptions))
 	return
 }
@@ -1764,16 +1647,15 @@ func (ds GDALDataset) BuildOverviews(resampling string, overviewList, bandList [
 	return
 }
 
-func gdalBuildOverviewsEx(dataset GDALDataset, resampling string, nOverviews int, overviewList []int, bandCount int, bandList []int, progress GDALProgressFunc, progressData unsafe.Pointer, options []string) (result CPLErr) {
+func gdalBuildOverviewsEx(dataset GDALDataset, resampling string, nOverviews int, overviewList []int, bandCount int, bandList []int, progress GDALProgressFunc, progressData unsafe.Pointer, options CSLConstList) (result CPLErr) {
 	cResampling := C.CString(resampling)
 	defer C.free(unsafe.Pointer(cResampling))
-	opts, free := cStrings(options)
-	defer free()
-	result = CPLErr(C.GDALBuildOverviewsEx(dataset.cValue, cResampling, C.int(nOverviews), cInts(overviewList), C.int(bandCount), cInts(bandList), progress.cValue, progressData, C.CSLConstList(unsafe.Pointer(opts))))
+	opts := options.cValue
+	result = CPLErr(C.GDALBuildOverviewsEx(dataset.cValue, cResampling, C.int(nOverviews), cInts(overviewList), C.int(bandCount), cInts(bandList), progress.cValue, progressData, opts))
 	return
 }
 
-func (ds GDALDataset) BuildOverviewsEx(resampling string, overviewList, bandList []int, progress GDALProgressFunc, progressData unsafe.Pointer, options []string) (err error) {
+func (ds GDALDataset) BuildOverviewsEx(resampling string, overviewList, bandList []int, progress GDALProgressFunc, progressData unsafe.Pointer, options CSLConstList) (err error) {
 	err = cplErr(gdalBuildOverviewsEx(ds, resampling, len(overviewList), overviewList, len(bandList), bandList, progress, progressData, options))
 	return
 }
@@ -1845,26 +1727,24 @@ func (ds GDALDataset) CreateMaskBand(flags int) (err error) {
 	return
 }
 
-func gdalDatasetCopyWholeRaster(srcDataset, dstDataset GDALDataset, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
-	opts, free := cStrings(options)
-	defer free()
-	result = CPLErr(C.GDALDatasetCopyWholeRaster(srcDataset.cValue, dstDataset.cValue, C.CSLConstList(unsafe.Pointer(opts)), progress.cValue, progressData))
+func gdalDatasetCopyWholeRaster(srcDataset, dstDataset GDALDataset, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
+	opts := options.cValue
+	result = CPLErr(C.GDALDatasetCopyWholeRaster(srcDataset.cValue, dstDataset.cValue, opts, progress.cValue, progressData))
 	return
 }
 
-func (src GDALDataset) CopyWholeRaster(dst GDALDataset, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func (src GDALDataset) CopyWholeRaster(dst GDALDataset, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
 	err = cplErr(gdalDatasetCopyWholeRaster(src, dst, options, progress, progressData))
 	return
 }
 
-func gdalRasterBandCopyWholeRaster(srcBand, dstBand GDALRasterBand, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
-	opts, free := cStrings(options)
-	defer free()
+func gdalRasterBandCopyWholeRaster(srcBand, dstBand GDALRasterBand, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
+	opts := options.cValue
 	result = CPLErr(C.GDALRasterBandCopyWholeRaster(srcBand.cValue, dstBand.cValue, opts, progress.cValue, progressData))
 	return
 }
 
-func (src GDALRasterBand) CopyWholeRaster(dst GDALRasterBand, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func (src GDALRasterBand) CopyWholeRaster(dst GDALRasterBand, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
 	err = cplErr(gdalRasterBandCopyWholeRaster(src, dst, options, progress, progressData))
 	return
 }
@@ -1881,16 +1761,15 @@ func (src GDALRasterBand) RegenerateOverviews(overviewBands GDALRasterBands, res
 	return
 }
 
-func gdalRegenerateOverviewsEx(srcBand GDALRasterBand, overviewCount int, overviewBands GDALRasterBands, resampling string, progress GDALProgressFunc, progressData unsafe.Pointer, options []string) (result CPLErr) {
+func gdalRegenerateOverviewsEx(srcBand GDALRasterBand, overviewCount int, overviewBands GDALRasterBands, resampling string, progress GDALProgressFunc, progressData unsafe.Pointer, options CSLConstList) (result CPLErr) {
 	cResampling := C.CString(resampling)
 	defer C.free(unsafe.Pointer(cResampling))
-	opts, free := cStrings(options)
-	defer free()
-	result = CPLErr(C.GDALRegenerateOverviewsEx(srcBand.cValue, C.int(overviewCount), overviewBands.cPtr(), cResampling, progress.cValue, progressData, C.CSLConstList(unsafe.Pointer(opts))))
+	opts := options.cValue
+	result = CPLErr(C.GDALRegenerateOverviewsEx(srcBand.cValue, C.int(overviewCount), overviewBands.cPtr(), cResampling, progress.cValue, progressData, opts))
 	return
 }
 
-func (src GDALRasterBand) RegenerateOverviewsEx(overviewBands GDALRasterBands, resampling string, progress GDALProgressFunc, progressData unsafe.Pointer, options []string) (err error) {
+func (src GDALRasterBand) RegenerateOverviewsEx(overviewBands GDALRasterBands, resampling string, progress GDALProgressFunc, progressData unsafe.Pointer, options CSLConstList) (err error) {
 	err = cplErr(gdalRegenerateOverviewsEx(src, len(overviewBands), overviewBands, resampling, progress, progressData, options))
 	return
 }
@@ -1967,16 +1846,15 @@ func (ds GDALDataset) DeleteLayer(index int) (err error) {
 	return
 }
 
-func gdalDatasetCreateLayer(dataset GDALDataset, name string, srs OGRSpatialReference, geomType OGRwkbGeometryType, options []string) (result OGRLayer) {
+func gdalDatasetCreateLayer(dataset GDALDataset, name string, srs OGRSpatialReference, geomType OGRwkbGeometryType, options CSLConstList) (result OGRLayer) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = OGRLayer{cValue: C.GDALDatasetCreateLayer(dataset.cValue, cName, srs.cValue, C.OGRwkbGeometryType(geomType), C.CSLConstList(unsafe.Pointer(opts)))}
+	opts := options.cValue
+	result = OGRLayer{cValue: C.GDALDatasetCreateLayer(dataset.cValue, cName, srs.cValue, C.OGRwkbGeometryType(geomType), opts)}
 	return
 }
 
-func (ds GDALDataset) CreateLayer(name string, srs OGRSpatialReference, geomType OGRwkbGeometryType, options []string) (result OGRLayer, err error) {
+func (ds GDALDataset) CreateLayer(name string, srs OGRSpatialReference, geomType OGRwkbGeometryType, options CSLConstList) (result OGRLayer, err error) {
 	result = gdalDatasetCreateLayer(ds, name, srs, geomType, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -1984,16 +1862,15 @@ func (ds GDALDataset) CreateLayer(name string, srs OGRSpatialReference, geomType
 	return
 }
 
-func gdalDatasetCreateLayerFromGeomFieldDefn(dataset GDALDataset, name string, geomFieldDefn OGRGeomFieldDefn, options []string) (result OGRLayer) {
+func gdalDatasetCreateLayerFromGeomFieldDefn(dataset GDALDataset, name string, geomFieldDefn OGRGeomFieldDefn, options CSLConstList) (result OGRLayer) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = OGRLayer{cValue: C.GDALDatasetCreateLayerFromGeomFieldDefn(dataset.cValue, cName, geomFieldDefn.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+	opts := options.cValue
+	result = OGRLayer{cValue: C.GDALDatasetCreateLayerFromGeomFieldDefn(dataset.cValue, cName, geomFieldDefn.cValue, opts)}
 	return
 }
 
-func (ds GDALDataset) CreateLayerFromGeomFieldDefn(name string, geomFieldDefn OGRGeomFieldDefn, options []string) (result OGRLayer, err error) {
+func (ds GDALDataset) CreateLayerFromGeomFieldDefn(name string, geomFieldDefn OGRGeomFieldDefn, options CSLConstList) (result OGRLayer, err error) {
 	result = gdalDatasetCreateLayerFromGeomFieldDefn(ds, name, geomFieldDefn, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -2001,16 +1878,15 @@ func (ds GDALDataset) CreateLayerFromGeomFieldDefn(name string, geomFieldDefn OG
 	return
 }
 
-func gdalDatasetCopyLayer(dataset GDALDataset, srcLayer OGRLayer, newName string, options []string) (result OGRLayer) {
+func gdalDatasetCopyLayer(dataset GDALDataset, srcLayer OGRLayer, newName string, options CSLConstList) (result OGRLayer) {
 	cName := C.CString(newName)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = OGRLayer{cValue: C.GDALDatasetCopyLayer(dataset.cValue, srcLayer.cValue, cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	opts := options.cValue
+	result = OGRLayer{cValue: C.GDALDatasetCopyLayer(dataset.cValue, srcLayer.cValue, cName, opts)}
 	return
 }
 
-func (ds GDALDataset) CopyLayer(srcLayer OGRLayer, newName string, options []string) (result OGRLayer, err error) {
+func (ds GDALDataset) CopyLayer(srcLayer OGRLayer, newName string, options CSLConstList) (result OGRLayer, err error) {
 	result = gdalDatasetCopyLayer(ds, srcLayer, newName, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -2161,14 +2037,13 @@ func (ds GDALDataset) ClearStatistics() {
 	gdalDatasetClearStatistics(ds)
 }
 
-func gdalDatasetAsMDArray(dataset GDALDataset, options []string) (result GDALMDArray) {
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALMDArray{cValue: C.GDALDatasetAsMDArray(dataset.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+func gdalDatasetAsMDArray(dataset GDALDataset, options CSLConstList) (result GDALMDArray) {
+	opts := options.cValue
+	result = GDALMDArray{cValue: C.GDALDatasetAsMDArray(dataset.cValue, opts)}
 	return
 }
 
-func (ds GDALDataset) AsMDArray(options []string) (result GDALMDArray, err error) {
+func (ds GDALDataset) AsMDArray(options CSLConstList) (result GDALMDArray, err error) {
 	result = gdalDatasetAsMDArray(ds, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -2176,19 +2051,17 @@ func (ds GDALDataset) AsMDArray(options []string) (result GDALMDArray, err error
 	return
 }
 
-func gdalDatasetGetFieldDomainNames(dataset GDALDataset, options []string) (result []string) {
-	opts, free := cStrings(options)
-	defer free()
-	raw := C.GDALDatasetGetFieldDomainNames(dataset.cValue, C.CSLConstList(unsafe.Pointer(opts)))
+func gdalDatasetGetFieldDomainNames(dataset GDALDataset, options CSLConstList) (result CSLConstList) {
+	opts := options.cValue
+	raw := C.GDALDatasetGetFieldDomainNames(dataset.cValue, opts)
 	if raw == nil {
 		return
 	}
-	defer C.CSLDestroy(raw)
-	result = goStrings(raw)
+	result = cslConstList(raw)
 	return
 }
 
-func (ds GDALDataset) GetFieldDomainNames(options []string) (result []string) {
+func (ds GDALDataset) GetFieldDomainNames(options CSLConstList) (result CSLConstList) {
 	result = gdalDatasetGetFieldDomainNames(ds, options)
 	return
 }
@@ -2215,7 +2088,7 @@ func gdalDatasetAddFieldDomain(dataset GDALDataset, fieldDomain OGRFieldDomain, 
 		if failureReason != nil {
 			*failureReason = C.GoString(cReason)
 		}
-		C.VSIFree(unsafe.Pointer(cReason))
+		vsiFree(unsafe.Pointer(cReason))
 	}
 	return
 }
@@ -2234,7 +2107,7 @@ func gdalDatasetDeleteFieldDomain(dataset GDALDataset, name string, failureReaso
 		if failureReason != nil {
 			*failureReason = C.GoString(cReason)
 		}
-		C.VSIFree(unsafe.Pointer(cReason))
+		vsiFree(unsafe.Pointer(cReason))
 	}
 	return
 }
@@ -2251,7 +2124,7 @@ func gdalDatasetUpdateFieldDomain(dataset GDALDataset, fieldDomain OGRFieldDomai
 		if failureReason != nil {
 			*failureReason = C.GoString(cReason)
 		}
-		C.VSIFree(unsafe.Pointer(cReason))
+		vsiFree(unsafe.Pointer(cReason))
 	}
 	return
 }
@@ -2261,19 +2134,17 @@ func (ds GDALDataset) UpdateFieldDomain(fieldDomain OGRFieldDomain) (ok bool, fa
 	return
 }
 
-func gdalDatasetGetRelationshipNames(dataset GDALDataset, options []string) (result []string) {
-	opts, free := cStrings(options)
-	defer free()
-	raw := C.GDALDatasetGetRelationshipNames(dataset.cValue, C.CSLConstList(unsafe.Pointer(opts)))
+func gdalDatasetGetRelationshipNames(dataset GDALDataset, options CSLConstList) (result CSLConstList) {
+	opts := options.cValue
+	raw := C.GDALDatasetGetRelationshipNames(dataset.cValue, opts)
 	if raw == nil {
 		return
 	}
-	defer C.CSLDestroy(raw)
-	result = goStrings(raw)
+	result = cslConstList(raw)
 	return
 }
 
-func (ds GDALDataset) GetRelationshipNames(options []string) (result []string) {
+func (ds GDALDataset) GetRelationshipNames(options CSLConstList) (result CSLConstList) {
 	result = gdalDatasetGetRelationshipNames(ds, options)
 	return
 }
@@ -2300,7 +2171,7 @@ func gdalDatasetAddRelationship(dataset GDALDataset, relationship GDALRelationsh
 		if failureReason != nil {
 			*failureReason = C.GoString(cReason)
 		}
-		C.VSIFree(unsafe.Pointer(cReason))
+		vsiFree(unsafe.Pointer(cReason))
 	}
 	return
 }
@@ -2319,7 +2190,7 @@ func gdalDatasetDeleteRelationship(dataset GDALDataset, name string, failureReas
 		if failureReason != nil {
 			*failureReason = C.GoString(cReason)
 		}
-		C.VSIFree(unsafe.Pointer(cReason))
+		vsiFree(unsafe.Pointer(cReason))
 	}
 	return
 }
@@ -2336,7 +2207,7 @@ func gdalDatasetUpdateRelationship(dataset GDALDataset, relationship GDALRelatio
 		if failureReason != nil {
 			*failureReason = C.GoString(cReason)
 		}
-		C.VSIFree(unsafe.Pointer(cReason))
+		vsiFree(unsafe.Pointer(cReason))
 	}
 	return
 }
@@ -2396,7 +2267,7 @@ func gdalSubdatasetInfoGetPathComponent(info GDALSubdatasetInfo) (result string)
 	cResult := C.GDALSubdatasetInfoGetPathComponent(info.cValue)
 	if cResult != nil {
 		result = C.GoString(cResult)
-		C.VSIFree(unsafe.Pointer(cResult))
+		vsiFree(unsafe.Pointer(cResult))
 	}
 	return
 }
@@ -2418,7 +2289,7 @@ func gdalSubdatasetInfoGetSubdatasetComponent(info GDALSubdatasetInfo) (result s
 	cResult := C.GDALSubdatasetInfoGetSubdatasetComponent(info.cValue)
 	if cResult != nil {
 		result = C.GoString(cResult)
-		C.VSIFree(unsafe.Pointer(cResult))
+		vsiFree(unsafe.Pointer(cResult))
 	}
 	return
 }
@@ -2443,7 +2314,7 @@ func gdalSubdatasetInfoModifyPathComponent(info GDALSubdatasetInfo, newPath stri
 	cResult := C.GDALSubdatasetInfoModifyPathComponent(info.cValue, cNewPath)
 	if cResult != nil {
 		result = C.GoString(cResult)
-		C.VSIFree(unsafe.Pointer(cResult))
+		vsiFree(unsafe.Pointer(cResult))
 	}
 	return
 }
@@ -2509,14 +2380,13 @@ func (b GDALRasterBand) GetActualBlockSize(xBlockOff, yBlockOff int) (xValid, yV
 	return
 }
 
-func gdalRasterAdviseRead(band GDALRasterBand, xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, options []string) (result CPLErr) {
-	opts, free := cStrings(options)
-	defer free()
-	result = CPLErr(C.GDALRasterAdviseRead(band.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.CSLConstList(unsafe.Pointer(opts))))
+func gdalRasterAdviseRead(band GDALRasterBand, xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, options CSLConstList) (result CPLErr) {
+	opts := options.cValue
+	result = CPLErr(C.GDALRasterAdviseRead(band.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), opts))
 	return
 }
 
-func (b GDALRasterBand) AdviseRead(xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, options []string) (err error) {
+func (b GDALRasterBand) AdviseRead(xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, options CSLConstList) (err error) {
 	err = cplErr(gdalRasterAdviseRead(b, xOff, yOff, xSize, ySize, bufXSize, bufYSize, bufType, options))
 	return
 }
@@ -2772,24 +2642,23 @@ func (b GDALRasterBand) DeleteNoDataValue() (err error) {
 	return
 }
 
-func gdalGetRasterCategoryNames(band GDALRasterBand) (result []string) {
-	result = goStrings(C.GDALGetRasterCategoryNames(band.cValue))
+func gdalGetRasterCategoryNames(band GDALRasterBand) (result CSLConstList) {
+	result = cslConstList(C.GDALGetRasterCategoryNames(band.cValue))
 	return
 }
 
-func (b GDALRasterBand) GetCategoryNames() (result []string) {
+func (b GDALRasterBand) GetCategoryNames() (result CSLConstList) {
 	result = gdalGetRasterCategoryNames(b)
 	return
 }
 
-func gdalSetRasterCategoryNames(band GDALRasterBand, names []string) (result CPLErr) {
-	n, free := cStrings(names)
-	defer free()
-	result = CPLErr(C.GDALSetRasterCategoryNames(band.cValue, C.CSLConstList(unsafe.Pointer(n))))
+func gdalSetRasterCategoryNames(band GDALRasterBand, names CSLConstList) (result CPLErr) {
+	n := names.cValue
+	result = CPLErr(C.GDALSetRasterCategoryNames(band.cValue, n))
 	return
 }
 
-func (b GDALRasterBand) SetCategoryNames(names []string) (err error) {
+func (b GDALRasterBand) SetCategoryNames(names CSLConstList) (err error) {
 	err = cplErr(gdalSetRasterCategoryNames(b, names))
 	return
 }
@@ -3051,7 +2920,7 @@ func gdalGetDefaultHistogramEx(band GDALRasterBand, min, max *float64, buckets *
 			h[i] = uint64(src[i])
 		}
 		*histogram = h
-		C.VSIFree(unsafe.Pointer(cHist))
+		vsiFree(unsafe.Pointer(cHist))
 	}
 	return
 }
@@ -3193,17 +3062,16 @@ func (b GDALRasterBand) InterpolateAtPoint(pixel, line float64, interpolation GD
 	return
 }
 
-func gdalRasterInterpolateAtGeolocation(band GDALRasterBand, geolocX, geolocY float64, srs OGRSpatialReference, interpolation GDALRIOResampleAlg, realValue, imagValue *float64, transformerOptions []string) (result CPLErr) {
-	opts, free := cStrings(transformerOptions)
-	defer free()
+func gdalRasterInterpolateAtGeolocation(band GDALRasterBand, geolocX, geolocY float64, srs OGRSpatialReference, interpolation GDALRIOResampleAlg, realValue, imagValue *float64, transformerOptions CSLConstList) (result CPLErr) {
+	opts := transformerOptions.cValue
 	var cReal, cImag C.double
-	result = CPLErr(C.GDALRasterInterpolateAtGeolocation(band.cValue, C.double(geolocX), C.double(geolocY), srs.cValue, C.GDALRIOResampleAlg(interpolation), &cReal, &cImag, C.CSLConstList(unsafe.Pointer(opts))))
+	result = CPLErr(C.GDALRasterInterpolateAtGeolocation(band.cValue, C.double(geolocX), C.double(geolocY), srs.cValue, C.GDALRIOResampleAlg(interpolation), &cReal, &cImag, opts))
 	*realValue = float64(cReal)
 	*imagValue = float64(cImag)
 	return
 }
 
-func (b GDALRasterBand) InterpolateAtGeolocation(geolocX, geolocY float64, srs OGRSpatialReference, interpolation GDALRIOResampleAlg, transformerOptions []string) (realValue, imagValue float64, err error) {
+func (b GDALRasterBand) InterpolateAtGeolocation(geolocX, geolocY float64, srs OGRSpatialReference, interpolation GDALRIOResampleAlg, transformerOptions CSLConstList) (realValue, imagValue float64, err error) {
 	err = cplErr(gdalRasterInterpolateAtGeolocation(b, geolocX, geolocY, srs, interpolation, &realValue, &imagValue, transformerOptions))
 	return
 }
@@ -3690,14 +3558,13 @@ type GDALRPCInfoV2 struct {
 // bare, macro-remapped GDALExtractRPCInfo name. Wrapping it would produce an
 // undefined-symbol link error, so it is intentionally omitted; use V2.
 
-func gdalExtractRPCInfoV2(metadata []string, rpcInfo *GDALRPCInfoV2) (result int) {
-	md, free := cStrings(metadata)
-	defer free()
-	result = int(C.GDALExtractRPCInfoV2(C.CSLConstList(unsafe.Pointer(md)), &rpcInfo.cValue))
+func gdalExtractRPCInfoV2(metadata CSLConstList, rpcInfo *GDALRPCInfoV2) (result int) {
+	md := metadata.cValue
+	result = int(C.GDALExtractRPCInfoV2(md, &rpcInfo.cValue))
 	return
 }
 
-func GDALExtractRPCInfoV2(metadata []string) (rpcInfo GDALRPCInfoV2, ok bool) {
+func GDALExtractRPCInfoV2(metadata CSLConstList) (rpcInfo GDALRPCInfoV2, ok bool) {
 	ok = gdalExtractRPCInfoV2(metadata, &rpcInfo) != 0
 	return
 }
@@ -4224,7 +4091,7 @@ func (rat GDALRasterAttributeTable) TranslateToColorTable(entryCount int) (resul
 }
 
 func gdalRATDumpReadable(rat GDALRasterAttributeTable, filename string) (err error) {
-	fp, closeFn, err := cFile(filename, "w")
+	fp, closeFn, err := cFOpen(filename, "w")
 	if err != nil {
 		return
 	}
@@ -4381,103 +4248,95 @@ func (r GDALRelationship) SetMappingTableName(name string) {
 	gdalRelationshipSetMappingTableName(r, name)
 }
 
-func gdalRelationshipGetLeftTableFields(relationship GDALRelationship) (result []string) {
+func gdalRelationshipGetLeftTableFields(relationship GDALRelationship) (result CSLConstList) {
 	raw := C.GDALRelationshipGetLeftTableFields(relationship.cValue)
 	if raw == nil {
 		return
 	}
-	defer C.CSLDestroy(raw)
-	result = goStrings(raw)
+	result = cslConstList(raw)
 	return
 }
 
-func (r GDALRelationship) GetLeftTableFields() (result []string) {
+func (r GDALRelationship) GetLeftTableFields() (result CSLConstList) {
 	result = gdalRelationshipGetLeftTableFields(r)
 	return
 }
 
-func gdalRelationshipGetRightTableFields(relationship GDALRelationship) (result []string) {
+func gdalRelationshipGetRightTableFields(relationship GDALRelationship) (result CSLConstList) {
 	raw := C.GDALRelationshipGetRightTableFields(relationship.cValue)
 	if raw == nil {
 		return
 	}
-	defer C.CSLDestroy(raw)
-	result = goStrings(raw)
+	result = cslConstList(raw)
 	return
 }
 
-func (r GDALRelationship) GetRightTableFields() (result []string) {
+func (r GDALRelationship) GetRightTableFields() (result CSLConstList) {
 	result = gdalRelationshipGetRightTableFields(r)
 	return
 }
 
-func gdalRelationshipSetLeftTableFields(relationship GDALRelationship, fields []string) {
-	f, free := cStrings(fields)
-	defer free()
-	C.GDALRelationshipSetLeftTableFields(relationship.cValue, C.CSLConstList(unsafe.Pointer(f)))
+func gdalRelationshipSetLeftTableFields(relationship GDALRelationship, fields CSLConstList) {
+	f := fields.cValue
+	C.GDALRelationshipSetLeftTableFields(relationship.cValue, f)
 }
 
-func (r GDALRelationship) SetLeftTableFields(fields []string) {
+func (r GDALRelationship) SetLeftTableFields(fields CSLConstList) {
 	gdalRelationshipSetLeftTableFields(r, fields)
 }
 
-func gdalRelationshipSetRightTableFields(relationship GDALRelationship, fields []string) {
-	f, free := cStrings(fields)
-	defer free()
-	C.GDALRelationshipSetRightTableFields(relationship.cValue, C.CSLConstList(unsafe.Pointer(f)))
+func gdalRelationshipSetRightTableFields(relationship GDALRelationship, fields CSLConstList) {
+	f := fields.cValue
+	C.GDALRelationshipSetRightTableFields(relationship.cValue, f)
 }
 
-func (r GDALRelationship) SetRightTableFields(fields []string) {
+func (r GDALRelationship) SetRightTableFields(fields CSLConstList) {
 	gdalRelationshipSetRightTableFields(r, fields)
 }
 
-func gdalRelationshipGetLeftMappingTableFields(relationship GDALRelationship) (result []string) {
+func gdalRelationshipGetLeftMappingTableFields(relationship GDALRelationship) (result CSLConstList) {
 	raw := C.GDALRelationshipGetLeftMappingTableFields(relationship.cValue)
 	if raw == nil {
 		return
 	}
-	defer C.CSLDestroy(raw)
-	result = goStrings(raw)
+	result = cslConstList(raw)
 	return
 }
 
-func (r GDALRelationship) GetLeftMappingTableFields() (result []string) {
+func (r GDALRelationship) GetLeftMappingTableFields() (result CSLConstList) {
 	result = gdalRelationshipGetLeftMappingTableFields(r)
 	return
 }
 
-func gdalRelationshipGetRightMappingTableFields(relationship GDALRelationship) (result []string) {
+func gdalRelationshipGetRightMappingTableFields(relationship GDALRelationship) (result CSLConstList) {
 	raw := C.GDALRelationshipGetRightMappingTableFields(relationship.cValue)
 	if raw == nil {
 		return
 	}
-	defer C.CSLDestroy(raw)
-	result = goStrings(raw)
+	result = cslConstList(raw)
 	return
 }
 
-func (r GDALRelationship) GetRightMappingTableFields() (result []string) {
+func (r GDALRelationship) GetRightMappingTableFields() (result CSLConstList) {
 	result = gdalRelationshipGetRightMappingTableFields(r)
 	return
 }
 
-func gdalRelationshipSetLeftMappingTableFields(relationship GDALRelationship, fields []string) {
-	f, free := cStrings(fields)
-	defer free()
-	C.GDALRelationshipSetLeftMappingTableFields(relationship.cValue, C.CSLConstList(unsafe.Pointer(f)))
+func gdalRelationshipSetLeftMappingTableFields(relationship GDALRelationship, fields CSLConstList) {
+	f := fields.cValue
+	C.GDALRelationshipSetLeftMappingTableFields(relationship.cValue, f)
 }
 
-func (r GDALRelationship) SetLeftMappingTableFields(fields []string) {
+func (r GDALRelationship) SetLeftMappingTableFields(fields CSLConstList) {
 	gdalRelationshipSetLeftMappingTableFields(r, fields)
 }
 
-func gdalRelationshipSetRightMappingTableFields(relationship GDALRelationship, fields []string) {
-	f, free := cStrings(fields)
-	defer free()
-	C.GDALRelationshipSetRightMappingTableFields(relationship.cValue, C.CSLConstList(unsafe.Pointer(f)))
+func gdalRelationshipSetRightMappingTableFields(relationship GDALRelationship, fields CSLConstList) {
+	f := fields.cValue
+	C.GDALRelationshipSetRightMappingTableFields(relationship.cValue, f)
 }
 
-func (r GDALRelationship) SetRightMappingTableFields(fields []string) {
+func (r GDALRelationship) SetRightMappingTableFields(fields CSLConstList) {
 	gdalRelationshipSetRightMappingTableFields(r, fields)
 }
 
@@ -4658,16 +4517,15 @@ func GDALCreatePansharpenedVRT(xml string, panchroBand GDALRasterBand, inputSpec
 	return
 }
 
-func gdalGetJPEG2000Structure(filename string, options []string) (result CPLXMLNode) {
+func gdalGetJPEG2000Structure(filename string, options CSLConstList) (result CPLXMLNode) {
 	cName := C.CString(filename)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = CPLXMLNode{cValue: C.GDALGetJPEG2000Structure(cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	opts := options.cValue
+	result = CPLXMLNode{cValue: C.GDALGetJPEG2000Structure(cName, opts)}
 	return
 }
 
-func GDALGetJPEG2000Structure(filename string, options []string) (result CPLXMLNode, err error) {
+func GDALGetJPEG2000Structure(filename string, options CSLConstList) (result CPLXMLNode, err error) {
 	result = gdalGetJPEG2000Structure(filename, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -4679,18 +4537,16 @@ func GDALGetJPEG2000Structure(filename string, options []string) (result CPLXMLN
 // /*      Multidimensional API_api                                       */
 // /* ==================================================================== */
 
-func gdalCreateMultiDimensional(driver GDALDriver, name string, rootGroupOptions, options []string) (result GDALDataset) {
+func gdalCreateMultiDimensional(driver GDALDriver, name string, rootGroupOptions, options CSLConstList) (result GDALDataset) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	rootOpts, freeRoot := cStrings(rootGroupOptions)
-	defer freeRoot()
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALDataset{cValue: C.GDALCreateMultiDimensional(driver.cValue, cName, C.CSLConstList(unsafe.Pointer(rootOpts)), C.CSLConstList(unsafe.Pointer(opts)))}
+	rootOpts := rootGroupOptions.cValue
+	opts := options.cValue
+	result = GDALDataset{cValue: C.GDALCreateMultiDimensional(driver.cValue, cName, rootOpts, opts)}
 	return
 }
 
-func (d GDALDriver) CreateMultiDimensional(name string, rootGroupOptions, options []string) (result GDALDataset, err error) {
+func (d GDALDriver) CreateMultiDimensional(name string, rootGroupOptions, options CSLConstList) (result GDALDataset, err error) {
 	result = gdalCreateMultiDimensional(d, name, rootGroupOptions, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -4958,52 +4814,46 @@ func (g GDALGroup) GetFullName() (result string) {
 	return
 }
 
-func gdalGroupGetMDArrayNames(group GDALGroup, options []string) (result []string) {
-	opts, free := cStrings(options)
-	defer free()
-	raw := C.GDALGroupGetMDArrayNames(group.cValue, C.CSLConstList(unsafe.Pointer(opts)))
+func gdalGroupGetMDArrayNames(group GDALGroup, options CSLConstList) (result CSLConstList) {
+	opts := options.cValue
+	raw := C.GDALGroupGetMDArrayNames(group.cValue, opts)
 	if raw == nil {
 		return
 	}
-	defer C.CSLDestroy(raw)
-	result = goStrings(raw)
+	result = cslConstList(raw)
 	return
 }
 
-func (g GDALGroup) GetMDArrayNames(options []string) (result []string) {
+func (g GDALGroup) GetMDArrayNames(options CSLConstList) (result CSLConstList) {
 	result = gdalGroupGetMDArrayNames(g, options)
 	return
 }
 
-func gdalGroupGetMDArrayFullNamesRecursive(group GDALGroup, groupOptions, arrayOptions []string) (result []string) {
-	gOpts, freeG := cStrings(groupOptions)
-	defer freeG()
-	aOpts, freeA := cStrings(arrayOptions)
-	defer freeA()
-	raw := C.GDALGroupGetMDArrayFullNamesRecursive(group.cValue, C.CSLConstList(unsafe.Pointer(gOpts)), C.CSLConstList(unsafe.Pointer(aOpts)))
+func gdalGroupGetMDArrayFullNamesRecursive(group GDALGroup, groupOptions, arrayOptions CSLConstList) (result CSLConstList) {
+	gOpts := groupOptions.cValue
+	aOpts := arrayOptions.cValue
+	raw := C.GDALGroupGetMDArrayFullNamesRecursive(group.cValue, gOpts, aOpts)
 	if raw == nil {
 		return
 	}
-	defer C.CSLDestroy(raw)
-	result = goStrings(raw)
+	result = cslConstList(raw)
 	return
 }
 
-func (g GDALGroup) GetMDArrayFullNamesRecursive(groupOptions, arrayOptions []string) (result []string) {
+func (g GDALGroup) GetMDArrayFullNamesRecursive(groupOptions, arrayOptions CSLConstList) (result CSLConstList) {
 	result = gdalGroupGetMDArrayFullNamesRecursive(g, groupOptions, arrayOptions)
 	return
 }
 
-func gdalGroupOpenMDArray(group GDALGroup, name string, options []string) (result GDALMDArray) {
+func gdalGroupOpenMDArray(group GDALGroup, name string, options CSLConstList) (result GDALMDArray) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALMDArray{cValue: C.GDALGroupOpenMDArray(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	opts := options.cValue
+	result = GDALMDArray{cValue: C.GDALGroupOpenMDArray(group.cValue, cName, opts)}
 	return
 }
 
-func (g GDALGroup) OpenMDArray(name string, options []string) (result GDALMDArray, err error) {
+func (g GDALGroup) OpenMDArray(name string, options CSLConstList) (result GDALMDArray, err error) {
 	result = gdalGroupOpenMDArray(g, name, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5011,16 +4861,15 @@ func (g GDALGroup) OpenMDArray(name string, options []string) (result GDALMDArra
 	return
 }
 
-func gdalGroupOpenMDArrayFromFullname(group GDALGroup, name string, options []string) (result GDALMDArray) {
+func gdalGroupOpenMDArrayFromFullname(group GDALGroup, name string, options CSLConstList) (result GDALMDArray) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALMDArray{cValue: C.GDALGroupOpenMDArrayFromFullname(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	opts := options.cValue
+	result = GDALMDArray{cValue: C.GDALGroupOpenMDArrayFromFullname(group.cValue, cName, opts)}
 	return
 }
 
-func (g GDALGroup) OpenMDArrayFromFullname(name string, options []string) (result GDALMDArray, err error) {
+func (g GDALGroup) OpenMDArrayFromFullname(name string, options CSLConstList) (result GDALMDArray, err error) {
 	result = gdalGroupOpenMDArrayFromFullname(g, name, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5028,18 +4877,17 @@ func (g GDALGroup) OpenMDArrayFromFullname(name string, options []string) (resul
 	return
 }
 
-func gdalGroupResolveMDArray(group GDALGroup, name, startingPoint string, options []string) (result GDALMDArray) {
+func gdalGroupResolveMDArray(group GDALGroup, name, startingPoint string, options CSLConstList) (result GDALMDArray) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	cStart := C.CString(startingPoint)
 	defer C.free(unsafe.Pointer(cStart))
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALMDArray{cValue: C.GDALGroupResolveMDArray(group.cValue, cName, cStart, C.CSLConstList(unsafe.Pointer(opts)))}
+	opts := options.cValue
+	result = GDALMDArray{cValue: C.GDALGroupResolveMDArray(group.cValue, cName, cStart, opts)}
 	return
 }
 
-func (g GDALGroup) ResolveMDArray(name, startingPoint string, options []string) (result GDALMDArray, err error) {
+func (g GDALGroup) ResolveMDArray(name, startingPoint string, options CSLConstList) (result GDALMDArray, err error) {
 	result = gdalGroupResolveMDArray(g, name, startingPoint, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5047,33 +4895,30 @@ func (g GDALGroup) ResolveMDArray(name, startingPoint string, options []string) 
 	return
 }
 
-func gdalGroupGetGroupNames(group GDALGroup, options []string) (result []string) {
-	opts, free := cStrings(options)
-	defer free()
-	raw := C.GDALGroupGetGroupNames(group.cValue, C.CSLConstList(unsafe.Pointer(opts)))
+func gdalGroupGetGroupNames(group GDALGroup, options CSLConstList) (result CSLConstList) {
+	opts := options.cValue
+	raw := C.GDALGroupGetGroupNames(group.cValue, opts)
 	if raw == nil {
 		return
 	}
-	defer C.CSLDestroy(raw)
-	result = goStrings(raw)
+	result = cslConstList(raw)
 	return
 }
 
-func (g GDALGroup) GetGroupNames(options []string) (result []string) {
+func (g GDALGroup) GetGroupNames(options CSLConstList) (result CSLConstList) {
 	result = gdalGroupGetGroupNames(g, options)
 	return
 }
 
-func gdalGroupOpenGroup(group GDALGroup, name string, options []string) (result GDALGroup) {
+func gdalGroupOpenGroup(group GDALGroup, name string, options CSLConstList) (result GDALGroup) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALGroup{cValue: C.GDALGroupOpenGroup(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	opts := options.cValue
+	result = GDALGroup{cValue: C.GDALGroupOpenGroup(group.cValue, cName, opts)}
 	return
 }
 
-func (g GDALGroup) OpenGroup(name string, options []string) (result GDALGroup, err error) {
+func (g GDALGroup) OpenGroup(name string, options CSLConstList) (result GDALGroup, err error) {
 	result = gdalGroupOpenGroup(g, name, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5081,16 +4926,15 @@ func (g GDALGroup) OpenGroup(name string, options []string) (result GDALGroup, e
 	return
 }
 
-func gdalGroupOpenGroupFromFullname(group GDALGroup, name string, options []string) (result GDALGroup) {
+func gdalGroupOpenGroupFromFullname(group GDALGroup, name string, options CSLConstList) (result GDALGroup) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALGroup{cValue: C.GDALGroupOpenGroupFromFullname(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	opts := options.cValue
+	result = GDALGroup{cValue: C.GDALGroupOpenGroupFromFullname(group.cValue, cName, opts)}
 	return
 }
 
-func (g GDALGroup) OpenGroupFromFullname(name string, options []string) (result GDALGroup, err error) {
+func (g GDALGroup) OpenGroupFromFullname(name string, options CSLConstList) (result GDALGroup, err error) {
 	result = gdalGroupOpenGroupFromFullname(g, name, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5098,33 +4942,30 @@ func (g GDALGroup) OpenGroupFromFullname(name string, options []string) (result 
 	return
 }
 
-func gdalGroupGetVectorLayerNames(group GDALGroup, options []string) (result []string) {
-	opts, free := cStrings(options)
-	defer free()
-	raw := C.GDALGroupGetVectorLayerNames(group.cValue, C.CSLConstList(unsafe.Pointer(opts)))
+func gdalGroupGetVectorLayerNames(group GDALGroup, options CSLConstList) (result CSLConstList) {
+	opts := options.cValue
+	raw := C.GDALGroupGetVectorLayerNames(group.cValue, opts)
 	if raw == nil {
 		return
 	}
-	defer C.CSLDestroy(raw)
-	result = goStrings(raw)
+	result = cslConstList(raw)
 	return
 }
 
-func (g GDALGroup) GetVectorLayerNames(options []string) (result []string) {
+func (g GDALGroup) GetVectorLayerNames(options CSLConstList) (result CSLConstList) {
 	result = gdalGroupGetVectorLayerNames(g, options)
 	return
 }
 
-func gdalGroupOpenVectorLayer(group GDALGroup, name string, options []string) (result OGRLayer) {
+func gdalGroupOpenVectorLayer(group GDALGroup, name string, options CSLConstList) (result OGRLayer) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = OGRLayer{cValue: C.GDALGroupOpenVectorLayer(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	opts := options.cValue
+	result = OGRLayer{cValue: C.GDALGroupOpenVectorLayer(group.cValue, cName, opts)}
 	return
 }
 
-func (g GDALGroup) OpenVectorLayer(name string, options []string) (result OGRLayer, err error) {
+func (g GDALGroup) OpenVectorLayer(name string, options CSLConstList) (result OGRLayer, err error) {
 	result = gdalGroupOpenVectorLayer(g, name, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5132,11 +4973,10 @@ func (g GDALGroup) OpenVectorLayer(name string, options []string) (result OGRLay
 	return
 }
 
-func gdalGroupGetDimensions(group GDALGroup, options []string) (result []GDALDimension) {
-	opts, free := cStrings(options)
-	defer free()
+func gdalGroupGetDimensions(group GDALGroup, options CSLConstList) (result []GDALDimension) {
+	opts := options.cValue
 	var count C.size_t
-	arr := C.GDALGroupGetDimensions(group.cValue, &count, C.CSLConstList(unsafe.Pointer(opts)))
+	arr := C.GDALGroupGetDimensions(group.cValue, &count, opts)
 	if arr == nil || count == 0 {
 		return
 	}
@@ -5145,11 +4985,11 @@ func gdalGroupGetDimensions(group GDALGroup, options []string) (result []GDALDim
 	for i := range result {
 		result[i] = GDALDimension{cValue: src[i]}
 	}
-	C.VSIFree(unsafe.Pointer(arr))
+	vsiFree(unsafe.Pointer(arr))
 	return
 }
 
-func (g GDALGroup) GetDimensions(options []string) (result []GDALDimension) {
+func (g GDALGroup) GetDimensions(options CSLConstList) (result []GDALDimension) {
 	result = gdalGroupGetDimensions(g, options)
 	return
 }
@@ -5169,11 +5009,10 @@ func (g GDALGroup) GetAttribute(name string) (result GDALAttribute, err error) {
 	return
 }
 
-func gdalGroupGetAttributes(group GDALGroup, options []string) (result []GDALAttribute) {
-	opts, free := cStrings(options)
-	defer free()
+func gdalGroupGetAttributes(group GDALGroup, options CSLConstList) (result []GDALAttribute) {
+	opts := options.cValue
 	var count C.size_t
-	arr := C.GDALGroupGetAttributes(group.cValue, &count, C.CSLConstList(unsafe.Pointer(opts)))
+	arr := C.GDALGroupGetAttributes(group.cValue, &count, opts)
 	if arr == nil || count == 0 {
 		return
 	}
@@ -5182,35 +5021,34 @@ func gdalGroupGetAttributes(group GDALGroup, options []string) (result []GDALAtt
 	for i := range result {
 		result[i] = GDALAttribute{cValue: src[i]}
 	}
-	C.VSIFree(unsafe.Pointer(arr))
+	vsiFree(unsafe.Pointer(arr))
 	return
 }
 
-func (g GDALGroup) GetAttributes(options []string) (result []GDALAttribute) {
+func (g GDALGroup) GetAttributes(options CSLConstList) (result []GDALAttribute) {
 	result = gdalGroupGetAttributes(g, options)
 	return
 }
 
-func gdalGroupGetStructuralInfo(group GDALGroup) (result []string) {
-	result = goStrings(C.GDALGroupGetStructuralInfo(group.cValue))
+func gdalGroupGetStructuralInfo(group GDALGroup) (result CSLConstList) {
+	result = cslConstList(C.GDALGroupGetStructuralInfo(group.cValue))
 	return
 }
 
-func (g GDALGroup) GetStructuralInfo() (result []string) {
+func (g GDALGroup) GetStructuralInfo() (result CSLConstList) {
 	result = gdalGroupGetStructuralInfo(g)
 	return
 }
 
-func gdalGroupCreateGroup(group GDALGroup, name string, options []string) (result GDALGroup) {
+func gdalGroupCreateGroup(group GDALGroup, name string, options CSLConstList) (result GDALGroup) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALGroup{cValue: C.GDALGroupCreateGroup(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts)))}
+	opts := options.cValue
+	result = GDALGroup{cValue: C.GDALGroupCreateGroup(group.cValue, cName, opts)}
 	return
 }
 
-func (g GDALGroup) CreateGroup(name string, options []string) (result GDALGroup, err error) {
+func (g GDALGroup) CreateGroup(name string, options CSLConstList) (result GDALGroup, err error) {
 	result = gdalGroupCreateGroup(g, name, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5218,34 +5056,32 @@ func (g GDALGroup) CreateGroup(name string, options []string) (result GDALGroup,
 	return
 }
 
-func gdalGroupDeleteGroup(group GDALGroup, name string, options []string) (result bool) {
+func gdalGroupDeleteGroup(group GDALGroup, name string, options CSLConstList) (result bool) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = bool(C.GDALGroupDeleteGroup(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts))))
+	opts := options.cValue
+	result = bool(C.GDALGroupDeleteGroup(group.cValue, cName, opts))
 	return
 }
 
-func (g GDALGroup) DeleteGroup(name string, options []string) (result bool) {
+func (g GDALGroup) DeleteGroup(name string, options CSLConstList) (result bool) {
 	result = gdalGroupDeleteGroup(g, name, options)
 	return
 }
 
-func gdalGroupCreateDimension(group GDALGroup, name, dimType, direction string, size uint64, options []string) (result GDALDimension) {
+func gdalGroupCreateDimension(group GDALGroup, name, dimType, direction string, size uint64, options CSLConstList) (result GDALDimension) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	cType := C.CString(dimType)
 	defer C.free(unsafe.Pointer(cType))
 	cDir := C.CString(direction)
 	defer C.free(unsafe.Pointer(cDir))
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALDimension{cValue: C.GDALGroupCreateDimension(group.cValue, cName, cType, cDir, C.GUInt64(size), C.CSLConstList(unsafe.Pointer(opts)))}
+	opts := options.cValue
+	result = GDALDimension{cValue: C.GDALGroupCreateDimension(group.cValue, cName, cType, cDir, C.GUInt64(size), opts)}
 	return
 }
 
-func (g GDALGroup) CreateDimension(name, dimType, direction string, size uint64, options []string) (result GDALDimension, err error) {
+func (g GDALGroup) CreateDimension(name, dimType, direction string, size uint64, options CSLConstList) (result GDALDimension, err error) {
 	result = gdalGroupCreateDimension(g, name, dimType, direction, size, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5253,20 +5089,19 @@ func (g GDALGroup) CreateDimension(name, dimType, direction string, size uint64,
 	return
 }
 
-func gdalGroupCreateMDArray(group GDALGroup, name string, nDimensions int, dimensions []GDALDimension, dataType GDALExtendedDataType, options []string) (result GDALMDArray) {
+func gdalGroupCreateMDArray(group GDALGroup, name string, nDimensions int, dimensions []GDALDimension, dataType GDALExtendedDataType, options CSLConstList) (result GDALMDArray) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
+	opts := options.cValue
 	var dimsPtr *C.GDALDimensionH
 	if len(dimensions) > 0 {
 		dimsPtr = (*C.GDALDimensionH)(unsafe.Pointer(&dimensions[0]))
 	}
-	result = GDALMDArray{cValue: C.GDALGroupCreateMDArray(group.cValue, cName, C.size_t(nDimensions), dimsPtr, dataType.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+	result = GDALMDArray{cValue: C.GDALGroupCreateMDArray(group.cValue, cName, C.size_t(nDimensions), dimsPtr, dataType.cValue, opts)}
 	return
 }
 
-func (g GDALGroup) CreateMDArray(name string, dimensions []GDALDimension, dataType GDALExtendedDataType, options []string) (result GDALMDArray, err error) {
+func (g GDALGroup) CreateMDArray(name string, dimensions []GDALDimension, dataType GDALExtendedDataType, options CSLConstList) (result GDALMDArray, err error) {
 	result = gdalGroupCreateMDArray(g, name, len(dimensions), dimensions, dataType, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5274,25 +5109,23 @@ func (g GDALGroup) CreateMDArray(name string, dimensions []GDALDimension, dataTy
 	return
 }
 
-func gdalGroupDeleteMDArray(group GDALGroup, name string, options []string) (result bool) {
+func gdalGroupDeleteMDArray(group GDALGroup, name string, options CSLConstList) (result bool) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = bool(C.GDALGroupDeleteMDArray(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts))))
+	opts := options.cValue
+	result = bool(C.GDALGroupDeleteMDArray(group.cValue, cName, opts))
 	return
 }
 
-func (g GDALGroup) DeleteMDArray(name string, options []string) (result bool) {
+func (g GDALGroup) DeleteMDArray(name string, options CSLConstList) (result bool) {
 	result = gdalGroupDeleteMDArray(g, name, options)
 	return
 }
 
-func gdalGroupCreateAttribute(group GDALGroup, name string, nDimensions int, dimensions []uint64, dataType GDALExtendedDataType, options []string) (result GDALAttribute) {
+func gdalGroupCreateAttribute(group GDALGroup, name string, nDimensions int, dimensions []uint64, dataType GDALExtendedDataType, options CSLConstList) (result GDALAttribute) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
+	opts := options.cValue
 	cDims := make([]C.GUInt64, len(dimensions))
 	for i, v := range dimensions {
 		cDims[i] = C.GUInt64(v)
@@ -5301,11 +5134,11 @@ func gdalGroupCreateAttribute(group GDALGroup, name string, nDimensions int, dim
 	if len(dimensions) > 0 {
 		dimsPtr = &cDims[0]
 	}
-	result = GDALAttribute{cValue: C.GDALGroupCreateAttribute(group.cValue, cName, C.size_t(nDimensions), dimsPtr, dataType.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+	result = GDALAttribute{cValue: C.GDALGroupCreateAttribute(group.cValue, cName, C.size_t(nDimensions), dimsPtr, dataType.cValue, opts)}
 	return
 }
 
-func (g GDALGroup) CreateAttribute(name string, dimensions []uint64, dataType GDALExtendedDataType, options []string) (result GDALAttribute, err error) {
+func (g GDALGroup) CreateAttribute(name string, dimensions []uint64, dataType GDALExtendedDataType, options CSLConstList) (result GDALAttribute, err error) {
 	result = gdalGroupCreateAttribute(g, name, len(dimensions), dimensions, dataType, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5313,16 +5146,15 @@ func (g GDALGroup) CreateAttribute(name string, dimensions []uint64, dataType GD
 	return
 }
 
-func gdalGroupDeleteAttribute(group GDALGroup, name string, options []string) (result bool) {
+func gdalGroupDeleteAttribute(group GDALGroup, name string, options CSLConstList) (result bool) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = bool(C.GDALGroupDeleteAttribute(group.cValue, cName, C.CSLConstList(unsafe.Pointer(opts))))
+	opts := options.cValue
+	result = bool(C.GDALGroupDeleteAttribute(group.cValue, cName, opts))
 	return
 }
 
-func (g GDALGroup) DeleteAttribute(name string, options []string) (result bool) {
+func (g GDALGroup) DeleteAttribute(name string, options CSLConstList) (result bool) {
 	result = gdalGroupDeleteAttribute(g, name, options)
 	return
 }
@@ -5339,16 +5171,15 @@ func (g GDALGroup) Rename(newName string) (result bool) {
 	return
 }
 
-func gdalGroupSubsetDimensionFromSelection(group GDALGroup, selection string, options []string) (result GDALGroup) {
+func gdalGroupSubsetDimensionFromSelection(group GDALGroup, selection string, options CSLConstList) (result GDALGroup) {
 	cSelection := C.CString(selection)
 	defer C.free(unsafe.Pointer(cSelection))
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALGroup{cValue: C.GDALGroupSubsetDimensionFromSelection(group.cValue, cSelection, C.CSLConstList(unsafe.Pointer(opts)))}
+	opts := options.cValue
+	result = GDALGroup{cValue: C.GDALGroupSubsetDimensionFromSelection(group.cValue, cSelection, opts)}
 	return
 }
 
-func (g GDALGroup) SubsetDimensionFromSelection(selection string, options []string) (result GDALGroup, err error) {
+func (g GDALGroup) SubsetDimensionFromSelection(selection string, options CSLConstList) (result GDALGroup, err error) {
 	result = gdalGroupSubsetDimensionFromSelection(g, selection, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5438,7 +5269,7 @@ func gdalMDArrayGetDimensions(array GDALMDArray) (result []GDALDimension) {
 	for i := range result {
 		result[i] = GDALDimension{cValue: src[i]}
 	}
-	C.VSIFree(unsafe.Pointer(arr))
+	vsiFree(unsafe.Pointer(arr))
 	return
 }
 
@@ -5479,11 +5310,10 @@ func (a GDALMDArray) GetAttribute(name string) (result GDALAttribute, err error)
 	return
 }
 
-func gdalMDArrayGetAttributes(array GDALMDArray, options []string) (result []GDALAttribute) {
-	opts, free := cStrings(options)
-	defer free()
+func gdalMDArrayGetAttributes(array GDALMDArray, options CSLConstList) (result []GDALAttribute) {
+	opts := options.cValue
 	var count C.size_t
-	arr := C.GDALMDArrayGetAttributes(array.cValue, &count, C.CSLConstList(unsafe.Pointer(opts)))
+	arr := C.GDALMDArrayGetAttributes(array.cValue, &count, opts)
 	if arr == nil || count == 0 {
 		return
 	}
@@ -5492,20 +5322,19 @@ func gdalMDArrayGetAttributes(array GDALMDArray, options []string) (result []GDA
 	for i := range result {
 		result[i] = GDALAttribute{cValue: src[i]}
 	}
-	C.VSIFree(unsafe.Pointer(arr))
+	vsiFree(unsafe.Pointer(arr))
 	return
 }
 
-func (a GDALMDArray) GetAttributes(options []string) (result []GDALAttribute) {
+func (a GDALMDArray) GetAttributes(options CSLConstList) (result []GDALAttribute) {
 	result = gdalMDArrayGetAttributes(a, options)
 	return
 }
 
-func gdalMDArrayCreateAttribute(array GDALMDArray, name string, nDimensions int, dimensions []uint64, dataType GDALExtendedDataType, options []string) (result GDALAttribute) {
+func gdalMDArrayCreateAttribute(array GDALMDArray, name string, nDimensions int, dimensions []uint64, dataType GDALExtendedDataType, options CSLConstList) (result GDALAttribute) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
+	opts := options.cValue
 	cDims := make([]C.GUInt64, len(dimensions))
 	for i, v := range dimensions {
 		cDims[i] = C.GUInt64(v)
@@ -5514,11 +5343,11 @@ func gdalMDArrayCreateAttribute(array GDALMDArray, name string, nDimensions int,
 	if len(dimensions) > 0 {
 		dimsPtr = &cDims[0]
 	}
-	result = GDALAttribute{cValue: C.GDALMDArrayCreateAttribute(array.cValue, cName, C.size_t(nDimensions), dimsPtr, dataType.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+	result = GDALAttribute{cValue: C.GDALMDArrayCreateAttribute(array.cValue, cName, C.size_t(nDimensions), dimsPtr, dataType.cValue, opts)}
 	return
 }
 
-func (a GDALMDArray) CreateAttribute(name string, dimensions []uint64, dataType GDALExtendedDataType, options []string) (result GDALAttribute, err error) {
+func (a GDALMDArray) CreateAttribute(name string, dimensions []uint64, dataType GDALExtendedDataType, options CSLConstList) (result GDALAttribute, err error) {
 	result = gdalMDArrayCreateAttribute(a, name, len(dimensions), dimensions, dataType, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5526,23 +5355,21 @@ func (a GDALMDArray) CreateAttribute(name string, dimensions []uint64, dataType 
 	return
 }
 
-func gdalMDArrayDeleteAttribute(array GDALMDArray, name string, options []string) (result bool) {
+func gdalMDArrayDeleteAttribute(array GDALMDArray, name string, options CSLConstList) (result bool) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	opts, free := cStrings(options)
-	defer free()
-	result = bool(C.GDALMDArrayDeleteAttribute(array.cValue, cName, C.CSLConstList(unsafe.Pointer(opts))))
+	opts := options.cValue
+	result = bool(C.GDALMDArrayDeleteAttribute(array.cValue, cName, opts))
 	return
 }
 
-func (a GDALMDArray) DeleteAttribute(name string, options []string) (result bool) {
+func (a GDALMDArray) DeleteAttribute(name string, options CSLConstList) (result bool) {
 	result = gdalMDArrayDeleteAttribute(a, name, options)
 	return
 }
 
-func gdalMDArrayResize(array GDALMDArray, newDimSizes []uint64, options []string) (result bool) {
-	opts, free := cStrings(options)
-	defer free()
+func gdalMDArrayResize(array GDALMDArray, newDimSizes []uint64, options CSLConstList) (result bool) {
+	opts := options.cValue
 	cSizes := make([]C.GUInt64, len(newDimSizes))
 	for i, v := range newDimSizes {
 		cSizes[i] = C.GUInt64(v)
@@ -5551,11 +5378,11 @@ func gdalMDArrayResize(array GDALMDArray, newDimSizes []uint64, options []string
 	if len(newDimSizes) > 0 {
 		sizesPtr = &cSizes[0]
 	}
-	result = bool(C.GDALMDArrayResize(array.cValue, sizesPtr, C.CSLConstList(unsafe.Pointer(opts))))
+	result = bool(C.GDALMDArrayResize(array.cValue, sizesPtr, opts))
 	return
 }
 
-func (a GDALMDArray) Resize(newDimSizes []uint64, options []string) (result bool) {
+func (a GDALMDArray) Resize(newDimSizes []uint64, options CSLConstList) (result bool) {
 	result = gdalMDArrayResize(a, newDimSizes, options)
 	return
 }
@@ -5749,12 +5576,12 @@ func (a GDALMDArray) GetSpatialRef() (result OGRSpatialReference) {
 	return
 }
 
-func gdalMDArrayGetStructuralInfo(array GDALMDArray) (result []string) {
-	result = goStrings(C.GDALMDArrayGetStructuralInfo(array.cValue))
+func gdalMDArrayGetStructuralInfo(array GDALMDArray) (result CSLConstList) {
+	result = cslConstList(C.GDALMDArrayGetStructuralInfo(array.cValue))
 	return
 }
 
-func (a GDALMDArray) GetStructuralInfo() (result []string) {
+func (a GDALMDArray) GetStructuralInfo() (result CSLConstList) {
 	result = gdalMDArrayGetStructuralInfo(a)
 	return
 }
@@ -5800,14 +5627,13 @@ func (a GDALMDArray) GetUnscaled() (result GDALMDArray, err error) {
 	return
 }
 
-func gdalMDArrayGetMask(array GDALMDArray, options []string) (result GDALMDArray) {
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALMDArray{cValue: C.GDALMDArrayGetMask(array.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+func gdalMDArrayGetMask(array GDALMDArray, options CSLConstList) (result GDALMDArray) {
+	opts := options.cValue
+	result = GDALMDArray{cValue: C.GDALMDArrayGetMask(array.cValue, opts)}
 	return
 }
 
-func (a GDALMDArray) GetMask(options []string) (result GDALMDArray, err error) {
+func (a GDALMDArray) GetMask(options CSLConstList) (result GDALMDArray, err error) {
 	result = gdalMDArrayGetMask(a, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5828,14 +5654,13 @@ func (a GDALMDArray) AsClassicDataset(xDim, yDim int) (result GDALDataset, err e
 	return
 }
 
-func gdalMDArrayAsClassicDatasetEx(array GDALMDArray, xDim, yDim int, rootGroup GDALGroup, options []string) (result GDALDataset) {
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALDataset{cValue: C.GDALMDArrayAsClassicDatasetEx(array.cValue, C.size_t(xDim), C.size_t(yDim), rootGroup.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+func gdalMDArrayAsClassicDatasetEx(array GDALMDArray, xDim, yDim int, rootGroup GDALGroup, options CSLConstList) (result GDALDataset) {
+	opts := options.cValue
+	result = GDALDataset{cValue: C.GDALMDArrayAsClassicDatasetEx(array.cValue, C.size_t(xDim), C.size_t(yDim), rootGroup.cValue, opts)}
 	return
 }
 
-func (a GDALMDArray) AsClassicDatasetEx(xDim, yDim int, rootGroup GDALGroup, options []string) (result GDALDataset, err error) {
+func (a GDALMDArray) AsClassicDatasetEx(xDim, yDim int, rootGroup GDALGroup, options CSLConstList) (result GDALDataset, err error) {
 	result = gdalMDArrayAsClassicDatasetEx(a, xDim, yDim, rootGroup, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5877,18 +5702,17 @@ func (a GDALMDArray) ComputeStatistics(dataset GDALDataset, approxOK int, progre
 	return
 }
 
-func gdalMDArrayGetResampled(array GDALMDArray, newDimCount int, newDims []GDALDimension, resampleAlg GDALRIOResampleAlg, targetSRS OGRSpatialReference, options []string) (result GDALMDArray) {
-	opts, free := cStrings(options)
-	defer free()
+func gdalMDArrayGetResampled(array GDALMDArray, newDimCount int, newDims []GDALDimension, resampleAlg GDALRIOResampleAlg, targetSRS OGRSpatialReference, options CSLConstList) (result GDALMDArray) {
+	opts := options.cValue
 	var dimsPtr *C.GDALDimensionH
 	if len(newDims) > 0 {
 		dimsPtr = (*C.GDALDimensionH)(unsafe.Pointer(&newDims[0]))
 	}
-	result = GDALMDArray{cValue: C.GDALMDArrayGetResampled(array.cValue, C.size_t(newDimCount), dimsPtr, C.GDALRIOResampleAlg(resampleAlg), targetSRS.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+	result = GDALMDArray{cValue: C.GDALMDArrayGetResampled(array.cValue, C.size_t(newDimCount), dimsPtr, C.GDALRIOResampleAlg(resampleAlg), targetSRS.cValue, opts)}
 	return
 }
 
-func (a GDALMDArray) GetResampled(newDims []GDALDimension, resampleAlg GDALRIOResampleAlg, targetSRS OGRSpatialReference, options []string) (result GDALMDArray, err error) {
+func (a GDALMDArray) GetResampled(newDims []GDALDimension, resampleAlg GDALRIOResampleAlg, targetSRS OGRSpatialReference, options CSLConstList) (result GDALMDArray, err error) {
 	result = gdalMDArrayGetResampled(a, len(newDims), newDims, resampleAlg, targetSRS, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5896,16 +5720,15 @@ func (a GDALMDArray) GetResampled(newDims []GDALDimension, resampleAlg GDALRIORe
 	return
 }
 
-func gdalMDArrayGetGridded(array GDALMDArray, gridOptions string, xArray, yArray GDALMDArray, options []string) (result GDALMDArray) {
+func gdalMDArrayGetGridded(array GDALMDArray, gridOptions string, xArray, yArray GDALMDArray, options CSLConstList) (result GDALMDArray) {
 	cGridOptions := C.CString(gridOptions)
 	defer C.free(unsafe.Pointer(cGridOptions))
-	opts, free := cStrings(options)
-	defer free()
-	result = GDALMDArray{cValue: C.GDALMDArrayGetGridded(array.cValue, cGridOptions, xArray.cValue, yArray.cValue, C.CSLConstList(unsafe.Pointer(opts)))}
+	opts := options.cValue
+	result = GDALMDArray{cValue: C.GDALMDArrayGetGridded(array.cValue, cGridOptions, xArray.cValue, yArray.cValue, opts)}
 	return
 }
 
-func (a GDALMDArray) GetGridded(gridOptions string, xArray, yArray GDALMDArray, options []string) (result GDALMDArray, err error) {
+func (a GDALMDArray) GetGridded(gridOptions string, xArray, yArray GDALMDArray, options CSLConstList) (result GDALMDArray, err error) {
 	result = gdalMDArrayGetGridded(a, gridOptions, xArray, yArray, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -5924,7 +5747,7 @@ func gdalMDArrayGetCoordinateVariables(array GDALMDArray) (result []GDALMDArray)
 	for i := range result {
 		result[i] = GDALMDArray{cValue: src[i]}
 	}
-	C.VSIFree(unsafe.Pointer(arr))
+	vsiFree(unsafe.Pointer(arr))
 	return
 }
 
@@ -5937,14 +5760,13 @@ func (a GDALMDArray) GetCoordinateVariables() (result []GDALMDArray) {
 // struct + GDALMDArrayRawBlockInfoCreate/Release/GDALMDArrayGetRawBlockInfo, and
 // GDALReleaseArrays are deferred.
 
-func gdalMDArrayCache(array GDALMDArray, options []string) (result bool) {
-	opts, free := cStrings(options)
-	defer free()
-	result = C.GDALMDArrayCache(array.cValue, C.CSLConstList(unsafe.Pointer(opts))) != 0
+func gdalMDArrayCache(array GDALMDArray, options CSLConstList) (result bool) {
+	opts := options.cValue
+	result = C.GDALMDArrayCache(array.cValue, opts) != 0
 	return
 }
 
-func (a GDALMDArray) Cache(options []string) (result bool) {
+func (a GDALMDArray) Cache(options CSLConstList) (result bool) {
 	result = gdalMDArrayCache(a, options)
 	return
 }
@@ -6041,7 +5863,7 @@ func gdalAttributeGetDimensionsSize(attr GDALAttribute) (result []uint64) {
 	for i := range result {
 		result[i] = uint64(src[i])
 	}
-	C.VSIFree(unsafe.Pointer(arr))
+	vsiFree(unsafe.Pointer(arr))
 	return
 }
 
@@ -6118,17 +5940,16 @@ func (attr GDALAttribute) ReadAsDouble() (result float64) {
 	return
 }
 
-func gdalAttributeReadAsStringArray(attr GDALAttribute) (result []string) {
+func gdalAttributeReadAsStringArray(attr GDALAttribute) (result CSLConstList) {
 	raw := C.GDALAttributeReadAsStringArray(attr.cValue)
 	if raw == nil {
 		return
 	}
-	defer C.CSLDestroy(raw)
-	result = goStrings(raw)
+	result = cslConstList(raw)
 	return
 }
 
-func (attr GDALAttribute) ReadAsStringArray() (result []string) {
+func (attr GDALAttribute) ReadAsStringArray() (result CSLConstList) {
 	result = gdalAttributeReadAsStringArray(attr)
 	return
 }
@@ -6144,7 +5965,7 @@ func gdalAttributeReadAsIntArray(attr GDALAttribute) (result []int) {
 	for i := range result {
 		result[i] = int(src[i])
 	}
-	C.VSIFree(unsafe.Pointer(arr))
+	vsiFree(unsafe.Pointer(arr))
 	return
 }
 
@@ -6164,7 +5985,7 @@ func gdalAttributeReadAsInt64Array(attr GDALAttribute) (result []int64) {
 	for i := range result {
 		result[i] = int64(src[i])
 	}
-	C.VSIFree(unsafe.Pointer(arr))
+	vsiFree(unsafe.Pointer(arr))
 	return
 }
 
@@ -6184,7 +6005,7 @@ func gdalAttributeReadAsDoubleArray(attr GDALAttribute) (result []float64) {
 	for i := range result {
 		result[i] = float64(src[i])
 	}
-	C.VSIFree(unsafe.Pointer(arr))
+	vsiFree(unsafe.Pointer(arr))
 	return
 }
 
@@ -6215,14 +6036,13 @@ func (attr GDALAttribute) WriteString(value string) (result bool) {
 	return
 }
 
-func gdalAttributeWriteStringArray(attr GDALAttribute, values []string) (result bool) {
-	v, free := cStrings(values)
-	defer free()
-	result = C.GDALAttributeWriteStringArray(attr.cValue, C.CSLConstList(unsafe.Pointer(v))) != 0
+func gdalAttributeWriteStringArray(attr GDALAttribute, values CSLConstList) (result bool) {
+	v := values.cValue
+	result = C.GDALAttributeWriteStringArray(attr.cValue, v) != 0
 	return
 }
 
-func (attr GDALAttribute) WriteStringArray(values []string) (result bool) {
+func (attr GDALAttribute) WriteStringArray(values CSLConstList) (result bool) {
 	result = gdalAttributeWriteStringArray(attr, values)
 	return
 }

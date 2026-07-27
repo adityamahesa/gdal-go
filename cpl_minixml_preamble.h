@@ -1,0 +1,6 @@
+#ifndef GDAL_GO_CPL_MINIXML_PREAMBLE_H
+#define GDAL_GO_CPL_MINIXML_PREAMBLE_H
+
+#include "cpl_minixml.h"
+
+#endif /* GDAL_GO_CPL_MINIXML_PREAMBLE_H */

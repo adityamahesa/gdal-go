@@ -1,8 +1,7 @@
 package gdal
 
 /*
-#include <stdio.h>
-#include "cpl_string.h" // TODO: implement cpl_string.go
+#include "util_preamble.h"
 */
 import "C"
 import (
@@ -10,9 +9,14 @@ import (
 	"unsafe"
 )
 
-// cFile opens filename with the given mode (e.g. "w") and returns the C FILE*
-// together with a close func. The caller must call close when done.
-func cFile(filename, mode string) (fp *C.FILE, closeFn func(), err error) {
+// cFile aliases a C FILE pointer. cFOpen produces one and the FILE*-based C
+// covers accept it directly; aliasing just keeps those signatures reading as
+// cFile rather than *C.FILE.
+type cFile = *C.FILE
+
+// cFOpen opens filename with the given mode (e.g. "w") and returns a cFile
+// handle together with a close func. The caller must call close when done.
+func cFOpen(filename, mode string) (fp cFile, closeFn func(), err error) {
 	cName := C.CString(filename)
 	defer C.free(unsafe.Pointer(cName))
 	cMode := C.CString(mode)
@@ -22,26 +26,6 @@ func cFile(filename, mode string) (fp *C.FILE, closeFn func(), err error) {
 		return nil, func() {}, fmt.Errorf("gdal: could not open %q with mode %q", filename, mode)
 	}
 	return fp, func() { C.fclose(fp) }, nil
-}
-
-// cStrings converts a Go string slice to a NULL-terminated C string array
-// (CSLConstList). The returned free func releases the allocated C strings.
-func cStrings(list []string) (arr **C.char, free func()) {
-	if len(list) == 0 {
-		return nil, func() {}
-	}
-	raw := make([]*C.char, len(list)+1)
-	for i, s := range list {
-		raw[i] = C.CString(s)
-	}
-	free = func() {
-		for _, p := range raw {
-			if p != nil {
-				C.free(unsafe.Pointer(p))
-			}
-		}
-	}
-	return &raw[0], free
 }
 
 // cBytes returns a C void* pointing at the start of a byte slice, or nil for an
@@ -66,15 +50,4 @@ func cInts(list []int) *C.int {
 		arr[i] = C.int(v)
 	}
 	return &arr[0]
-}
-
-// goStrings converts a C string list (CSLConstList) to a Go slice without
-// freeing the C list.
-func goStrings(list **C.char) (result []string) {
-	csl := C.CSLConstList(unsafe.Pointer(list))
-	n := int(C.CSLCount(csl))
-	for i := 0; i < n; i++ {
-		result = append(result, C.GoString(C.CSLGetField(csl, C.int(i))))
-	}
-	return
 }

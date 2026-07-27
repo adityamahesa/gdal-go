@@ -1,0 +1,101 @@
+#ifndef GDAL_GO_GDAL_PREAMBLE_H
+#define GDAL_GO_GDAL_PREAMBLE_H
+
+#include "gdal.h"
+
+const char* const _GDALMD_AREA_OR_POINT = GDALMD_AREA_OR_POINT;
+const char* const _GDALMD_AOP_AREA      = GDALMD_AOP_AREA;
+const char* const _GDALMD_AOP_POINT     = GDALMD_AOP_POINT;
+
+const char* const _GDAL_DS_LAYER_CREATIONOPTIONLIST = GDAL_DS_LAYER_CREATIONOPTIONLIST;
+
+const char* const _GDAL_DMD_LONGNAME                                       = GDAL_DMD_LONGNAME;
+const char* const _GDAL_DMD_HELPTOPIC                                      = GDAL_DMD_HELPTOPIC;
+const char* const _GDAL_DMD_MIMETYPE                                       = GDAL_DMD_MIMETYPE;
+const char* const _GDAL_DMD_EXTENSION                                      = GDAL_DMD_EXTENSION;
+const char* const _GDAL_DMD_CONNECTION_PREFIX                              = GDAL_DMD_CONNECTION_PREFIX;
+const char* const _GDAL_DMD_EXTENSIONS                                     = GDAL_DMD_EXTENSIONS;
+const char* const _GDAL_DMD_CREATIONOPTIONLIST                             = GDAL_DMD_CREATIONOPTIONLIST;
+const char* const _GDAL_DMD_OVERVIEW_CREATIONOPTIONLIST                    = GDAL_DMD_OVERVIEW_CREATIONOPTIONLIST;
+const char* const _GDAL_DMD_MULTIDIM_DATASET_CREATIONOPTIONLIST            = GDAL_DMD_MULTIDIM_DATASET_CREATIONOPTIONLIST;
+const char* const _GDAL_DMD_MULTIDIM_GROUP_CREATIONOPTIONLIST              = GDAL_DMD_MULTIDIM_GROUP_CREATIONOPTIONLIST;
+const char* const _GDAL_DMD_MULTIDIM_DIMENSION_CREATIONOPTIONLIST          = GDAL_DMD_MULTIDIM_DIMENSION_CREATIONOPTIONLIST;
+const char* const _GDAL_DMD_MULTIDIM_ARRAY_CREATIONOPTIONLIST              = GDAL_DMD_MULTIDIM_ARRAY_CREATIONOPTIONLIST;
+const char* const _GDAL_DMD_MULTIDIM_ARRAY_OPENOPTIONLIST                  = GDAL_DMD_MULTIDIM_ARRAY_OPENOPTIONLIST;
+const char* const _GDAL_DMD_MULTIDIM_ATTRIBUTE_CREATIONOPTIONLIST          = GDAL_DMD_MULTIDIM_ATTRIBUTE_CREATIONOPTIONLIST;
+const char* const _GDAL_DMD_OPENOPTIONLIST                                 = GDAL_DMD_OPENOPTIONLIST;
+const char* const _GDAL_DMD_CREATIONDATATYPES                              = GDAL_DMD_CREATIONDATATYPES;
+const char* const _GDAL_DMD_CREATIONFIELDDATATYPES                         = GDAL_DMD_CREATIONFIELDDATATYPES;
+const char* const _GDAL_DMD_CREATIONFIELDDATASUBTYPES                      = GDAL_DMD_CREATIONFIELDDATASUBTYPES;
+const char* const _GDAL_DMD_MAX_STRING_LENGTH                              = GDAL_DMD_MAX_STRING_LENGTH;
+const char* const _GDAL_DMD_CREATION_FIELD_DEFN_FLAGS                      = GDAL_DMD_CREATION_FIELD_DEFN_FLAGS;
+const char* const _GDAL_DMD_SUBDATASETS                                    = GDAL_DMD_SUBDATASETS;
+const char* const _GDAL_DCAP_CREATE_SUBDATASETS                            = GDAL_DCAP_CREATE_SUBDATASETS;
+const char* const _GDAL_DMD_NUMERIC_FIELD_WIDTH_INCLUDES_DECIMAL_SEPARATOR = GDAL_DMD_NUMERIC_FIELD_WIDTH_INCLUDES_DECIMAL_SEPARATOR;
+const char* const _GDAL_DMD_NUMERIC_FIELD_WIDTH_INCLUDES_SIGN              = GDAL_DMD_NUMERIC_FIELD_WIDTH_INCLUDES_SIGN;
+const char* const _GDAL_DCAP_OPEN                                          = GDAL_DCAP_OPEN;
+const char* const _GDAL_DCAP_CREATE                                        = GDAL_DCAP_CREATE;
+const char* const _GDAL_DCAP_CREATE_MULTIDIMENSIONAL                       = GDAL_DCAP_CREATE_MULTIDIMENSIONAL;
+const char* const _GDAL_DCAP_CREATECOPY                                    = GDAL_DCAP_CREATECOPY;
+const char* const _GDAL_DCAP_CREATE_ONLY_VISIBLE_AT_CLOSE_TIME             = GDAL_DCAP_CREATE_ONLY_VISIBLE_AT_CLOSE_TIME;
+const char* const _GDAL_DCAP_VECTOR_TRANSLATE_FROM                         = GDAL_DCAP_VECTOR_TRANSLATE_FROM;
+const char* const _GDAL_DCAP_CREATECOPY_MULTIDIMENSIONAL                   = GDAL_DCAP_CREATECOPY_MULTIDIMENSIONAL;
+const char* const _GDAL_DCAP_MULTIDIM_RASTER                               = GDAL_DCAP_MULTIDIM_RASTER;
+const char* const _GDAL_DCAP_SUBCREATECOPY                                 = GDAL_DCAP_SUBCREATECOPY;
+const char* const _GDAL_DCAP_APPEND                                        = GDAL_DCAP_APPEND;
+const char* const _GDAL_DCAP_UPDATE                                        = GDAL_DCAP_UPDATE;
+const char* const _GDAL_DCAP_VIRTUALIO                                     = GDAL_DCAP_VIRTUALIO;
+const char* const _GDAL_DCAP_RASTER                                        = GDAL_DCAP_RASTER;
+const char* const _GDAL_DCAP_VECTOR                                        = GDAL_DCAP_VECTOR;
+const char* const _GDAL_DCAP_GNM                                           = GDAL_DCAP_GNM;
+const char* const _GDAL_DCAP_CREATE_LAYER                                  = GDAL_DCAP_CREATE_LAYER;
+const char* const _GDAL_DCAP_DELETE_LAYER                                  = GDAL_DCAP_DELETE_LAYER;
+const char* const _GDAL_DCAP_CREATE_FIELD                                  = GDAL_DCAP_CREATE_FIELD;
+const char* const _GDAL_DCAP_DELETE_FIELD                                  = GDAL_DCAP_DELETE_FIELD;
+const char* const _GDAL_DCAP_REORDER_FIELDS                                = GDAL_DCAP_REORDER_FIELDS;
+const char* const _GDAL_DMD_ALTER_FIELD_DEFN_FLAGS                         = GDAL_DMD_ALTER_FIELD_DEFN_FLAGS;
+const char* const _GDAL_DMD_ILLEGAL_FIELD_NAMES                            = GDAL_DMD_ILLEGAL_FIELD_NAMES;
+const char* const _GDAL_DCAP_NOTNULL_FIELDS                                = GDAL_DCAP_NOTNULL_FIELDS;
+const char* const _GDAL_DCAP_UNIQUE_FIELDS                                 = GDAL_DCAP_UNIQUE_FIELDS;
+const char* const _GDAL_DCAP_DEFAULT_FIELDS                                = GDAL_DCAP_DEFAULT_FIELDS;
+const char* const _GDAL_DCAP_NOTNULL_GEOMFIELDS                            = GDAL_DCAP_NOTNULL_GEOMFIELDS;
+const char* const _GDAL_DCAP_NONSPATIAL                                    = GDAL_DCAP_NONSPATIAL;
+const char* const _GDAL_DCAP_CURVE_GEOMETRIES                              = GDAL_DCAP_CURVE_GEOMETRIES;
+const char* const _GDAL_DCAP_MEASURED_GEOMETRIES                           = GDAL_DCAP_MEASURED_GEOMETRIES;
+const char* const _GDAL_DCAP_Z_GEOMETRIES                                  = GDAL_DCAP_Z_GEOMETRIES;
+const char* const _GDAL_DMD_GEOMETRY_FLAGS                                 = GDAL_DMD_GEOMETRY_FLAGS;
+const char* const _GDAL_DCAP_FEATURE_STYLES                                = GDAL_DCAP_FEATURE_STYLES;
+const char* const _GDAL_DCAP_FEATURE_STYLES_READ                           = GDAL_DCAP_FEATURE_STYLES_READ;
+const char* const _GDAL_DCAP_FEATURE_STYLES_WRITE                          = GDAL_DCAP_FEATURE_STYLES_WRITE;
+const char* const _GDAL_DCAP_COORDINATE_EPOCH                              = GDAL_DCAP_COORDINATE_EPOCH;
+const char* const _GDAL_DCAP_MULTIPLE_VECTOR_LAYERS                        = GDAL_DCAP_MULTIPLE_VECTOR_LAYERS;
+const char* const _GDAL_DCAP_FIELD_DOMAINS                                 = GDAL_DCAP_FIELD_DOMAINS;
+const char* const _GDAL_DCAP_RELATIONSHIPS                                 = GDAL_DCAP_RELATIONSHIPS;
+const char* const _GDAL_DCAP_CREATE_RELATIONSHIP                           = GDAL_DCAP_CREATE_RELATIONSHIP;
+const char* const _GDAL_DCAP_DELETE_RELATIONSHIP                           = GDAL_DCAP_DELETE_RELATIONSHIP;
+const char* const _GDAL_DCAP_UPDATE_RELATIONSHIP                           = GDAL_DCAP_UPDATE_RELATIONSHIP;
+const char* const _GDAL_DCAP_FLUSHCACHE_CONSISTENT_STATE                   = GDAL_DCAP_FLUSHCACHE_CONSISTENT_STATE;
+const char* const _GDAL_DCAP_HONOR_GEOM_COORDINATE_PRECISION               = GDAL_DCAP_HONOR_GEOM_COORDINATE_PRECISION;
+const char* const _GDAL_DCAP_UPSERT                                        = GDAL_DCAP_UPSERT;
+const char* const _GDAL_DMD_RELATIONSHIP_FLAGS                             = GDAL_DMD_RELATIONSHIP_FLAGS;
+const char* const _GDAL_DMD_RELATIONSHIP_RELATED_TABLE_TYPES               = GDAL_DMD_RELATIONSHIP_RELATED_TABLE_TYPES;
+const char* const _GDAL_DCAP_RENAME_LAYERS                                 = GDAL_DCAP_RENAME_LAYERS;
+const char* const _GDAL_DMD_CREATION_FIELD_DOMAIN_TYPES                    = GDAL_DMD_CREATION_FIELD_DOMAIN_TYPES;
+const char* const _GDAL_DMD_ALTER_GEOM_FIELD_DEFN_FLAGS                    = GDAL_DMD_ALTER_GEOM_FIELD_DEFN_FLAGS;
+const char* const _GDAL_DMD_SUPPORTED_SQL_DIALECTS                         = GDAL_DMD_SUPPORTED_SQL_DIALECTS;
+const char* const _GDAL_DMD_PLUGIN_INSTALLATION_MESSAGE                    = GDAL_DMD_PLUGIN_INSTALLATION_MESSAGE;
+const char* const _GDAL_DMD_UPDATE_ITEMS                                   = GDAL_DMD_UPDATE_ITEMS;
+const char* const _GDAL_DIM_TYPE_HORIZONTAL_X                              = GDAL_DIM_TYPE_HORIZONTAL_X;
+const char* const _GDAL_DIM_TYPE_HORIZONTAL_Y                              = GDAL_DIM_TYPE_HORIZONTAL_Y;
+const char* const _GDAL_DIM_TYPE_VERTICAL                                  = GDAL_DIM_TYPE_VERTICAL;
+const char* const _GDAL_DIM_TYPE_TEMPORAL                                  = GDAL_DIM_TYPE_TEMPORAL;
+const char* const _GDAL_DIM_TYPE_PARAMETRIC                                = GDAL_DIM_TYPE_PARAMETRIC;
+const char* const _GDAL_DCAP_REOPEN_AFTER_WRITE_REQUIRED                   = GDAL_DCAP_REOPEN_AFTER_WRITE_REQUIRED;
+const char* const _GDAL_DCAP_CAN_READ_AFTER_DELETE                         = GDAL_DCAP_CAN_READ_AFTER_DELETE;
+const char* const _GDsCAddRelationship                                     = GDsCAddRelationship;
+const char* const _GDsCDeleteRelationship                                  = GDsCDeleteRelationship;
+const char* const _GDsCUpdateRelationship                                  = GDsCUpdateRelationship;
+const char* const _GDsCFastGetExtent                                       = GDsCFastGetExtent;
+const char* const _GDsCFastGetExtentWGS84LongLat                           = GDsCFastGetExtentWGS84LongLat;
+
+#endif /* GDAL_GO_GDAL_PREAMBLE_H */

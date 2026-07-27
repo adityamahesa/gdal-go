@@ -1,9 +1,7 @@
 package gdal
 
 /*
-#include "ogr_api.h"
-#include "cpl_string.h" // TODO: implement cpl_string.go
-#include "cpl_conv.h" // TODO: implement cpl_conv.go
+#include "ogr_api_preamble.h"
 */
 import "C"
 import "unsafe"
@@ -86,36 +84,26 @@ func (p OGRGeomCoordinatePrecision) GetMResolution() (result float64) {
 	return
 }
 
-func ogrGeomCoordinatePrecisionGetFormats(p OGRGeomCoordinatePrecision) (result []string) {
+func ogrGeomCoordinatePrecisionGetFormats(p OGRGeomCoordinatePrecision) (result CSLConstList) {
 	raw := C.OGRGeomCoordinatePrecisionGetFormats(p.cValue)
-	if raw == nil {
-		return
-	}
-	defer C.CSLDestroy(raw)
-	n := int(C.CSLCount(raw))
-	for i := 0; i < n; i++ {
-		result = append(result, C.GoString(C.CSLGetField(raw, C.int(i))))
-	}
+	result = cslConstList(raw)
 	return
 }
 
-func (p OGRGeomCoordinatePrecision) GetFormats() (result []string) {
+func (p OGRGeomCoordinatePrecision) GetFormats() (result CSLConstList) {
 	result = ogrGeomCoordinatePrecisionGetFormats(p)
 	return
 }
 
-func ogrGeomCoordinatePrecisionGetFormatSpecificOptions(p OGRGeomCoordinatePrecision, formatName string) (result []string) {
+func ogrGeomCoordinatePrecisionGetFormatSpecificOptions(p OGRGeomCoordinatePrecision, formatName string) (result CSLConstList) {
 	cs := C.CString(formatName)
 	defer C.free(unsafe.Pointer(cs))
 	raw := C.OGRGeomCoordinatePrecisionGetFormatSpecificOptions(p.cValue, cs)
-	n := int(C.CSLCount(raw))
-	for i := 0; i < n; i++ {
-		result = append(result, C.GoString(C.CSLGetField(raw, C.int(i))))
-	}
+	result = cslConstList(raw)
 	return
 }
 
-func (p OGRGeomCoordinatePrecision) GetFormatSpecificOptions(formatName string) (result []string) {
+func (p OGRGeomCoordinatePrecision) GetFormatSpecificOptions(formatName string) (result CSLConstList) {
 	result = ogrGeomCoordinatePrecisionGetFormatSpecificOptions(p, formatName)
 	return
 }
@@ -136,19 +124,14 @@ func (p OGRGeomCoordinatePrecision) SetFromMeter(sr OGRSpatialReference, xyMeter
 	ogrGeomCoordinatePrecisionSetFromMeter(p, sr, xyMeterResolution, zMeterResolution, mResolution)
 }
 
-func ogrGeomCoordinatePrecisionSetFormatSpecificOptions(p OGRGeomCoordinatePrecision, formatName string, options []string) {
+func ogrGeomCoordinatePrecisionSetFormatSpecificOptions(p OGRGeomCoordinatePrecision, formatName string, options CSLConstList) {
 	csName := C.CString(formatName)
 	defer C.free(unsafe.Pointer(csName))
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	C.OGRGeomCoordinatePrecisionSetFormatSpecificOptions(p.cValue, csName, &cOptions[0])
+	cOptions := options.cValue
+	C.OGRGeomCoordinatePrecisionSetFormatSpecificOptions(p.cValue, csName, cOptions)
 }
 
-func (p OGRGeomCoordinatePrecision) SetFormatSpecificOptions(formatName string, options []string) {
+func (p OGRGeomCoordinatePrecision) SetFormatSpecificOptions(formatName string, options CSLConstList) {
 	ogrGeomCoordinatePrecisionSetFormatSpecificOptions(p, formatName, options)
 }
 
@@ -339,18 +322,13 @@ func (g OGRGeometry) ForceToMultiLineString() (result OGRGeometry, err error) {
 	return
 }
 
-func ogrGForceTo(g OGRGeometry, eTargetType OGRwkbGeometryType, options []string) (result OGRGeometry) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	result = OGRGeometry{cValue: C.OGR_G_ForceTo(g.cValue, C.OGRwkbGeometryType(eTargetType), &cOptions[0])}
+func ogrGForceTo(g OGRGeometry, eTargetType OGRwkbGeometryType, options CSLConstList) (result OGRGeometry) {
+	cOptions := options.cValue
+	result = OGRGeometry{cValue: C.OGR_G_ForceTo(g.cValue, C.OGRwkbGeometryType(eTargetType), cOptions)}
 	return
 }
 
-func (g OGRGeometry) ForceTo(eTargetType OGRwkbGeometryType, options []string) (result OGRGeometry, err error) {
+func (g OGRGeometry) ForceTo(eTargetType OGRwkbGeometryType, options CSLConstList) (result OGRGeometry, err error) {
 	result = ogrGForceTo(g, eTargetType, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -637,7 +615,7 @@ func ogrGExportToWkt(g OGRGeometry) (result string, status OGRErr) {
 	status = OGRErr(C.OGR_G_ExportToWkt(g.cValue, &cs))
 	if cs != nil {
 		result = C.GoString(cs)
-		C.CPLFree(unsafe.Pointer(cs))
+		vsiFree(unsafe.Pointer(cs))
 	}
 	return
 }
@@ -654,7 +632,7 @@ func ogrGExportToIsoWkt(g OGRGeometry) (result string, status OGRErr) {
 	status = OGRErr(C.OGR_G_ExportToIsoWkt(g.cValue, &cs))
 	if cs != nil {
 		result = C.GoString(cs)
-		C.CPLFree(unsafe.Pointer(cs))
+		vsiFree(unsafe.Pointer(cs))
 	}
 	return
 }
@@ -723,7 +701,7 @@ func ogrGExportToGML(g OGRGeometry) (result string) {
 	cs := C.OGR_G_ExportToGML(g.cValue)
 	if cs != nil {
 		result = C.GoString(cs)
-		C.CPLFree(unsafe.Pointer(cs))
+		vsiFree(unsafe.Pointer(cs))
 	}
 	return
 }
@@ -733,22 +711,17 @@ func (g OGRGeometry) ExportToGML() (result string) {
 	return
 }
 
-func ogrGExportToGMLEx(g OGRGeometry, options []string) (result string) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	cs := C.OGR_G_ExportToGMLEx(g.cValue, &cOptions[0])
+func ogrGExportToGMLEx(g OGRGeometry, options CSLConstList) (result string) {
+	cOptions := options.cValue
+	cs := C.OGR_G_ExportToGMLEx(g.cValue, cOptions)
 	if cs != nil {
 		result = C.GoString(cs)
-		C.CPLFree(unsafe.Pointer(cs))
+		vsiFree(unsafe.Pointer(cs))
 	}
 	return
 }
 
-func (g OGRGeometry) ExportToGMLEx(options []string) (result string) {
+func (g OGRGeometry) ExportToGMLEx(options CSLConstList) (result string) {
 	result = ogrGExportToGMLEx(g, options)
 	return
 }
@@ -801,7 +774,7 @@ func ogrGExportToKML(g OGRGeometry, altitudeMode string) (result string) {
 	raw := C.OGR_G_ExportToKML(g.cValue, cs)
 	if raw != nil {
 		result = C.GoString(raw)
-		C.CPLFree(unsafe.Pointer(raw))
+		vsiFree(unsafe.Pointer(raw))
 	}
 	return
 }
@@ -815,7 +788,7 @@ func ogrGExportToJson(g OGRGeometry) (result string) {
 	cs := C.OGR_G_ExportToJson(g.cValue)
 	if cs != nil {
 		result = C.GoString(cs)
-		C.CPLFree(unsafe.Pointer(cs))
+		vsiFree(unsafe.Pointer(cs))
 	}
 	return
 }
@@ -825,22 +798,17 @@ func (g OGRGeometry) ExportToJson() (result string) {
 	return
 }
 
-func ogrGExportToJsonEx(g OGRGeometry, options []string) (result string) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	cs := C.OGR_G_ExportToJsonEx(g.cValue, &cOptions[0])
+func ogrGExportToJsonEx(g OGRGeometry, options CSLConstList) (result string) {
+	cOptions := options.cValue
+	cs := C.OGR_G_ExportToJsonEx(g.cValue, cOptions)
 	if cs != nil {
 		result = C.GoString(cs)
-		C.CPLFree(unsafe.Pointer(cs))
+		vsiFree(unsafe.Pointer(cs))
 	}
 	return
 }
 
-func (g OGRGeometry) ExportToJsonEx(options []string) (result string) {
+func (g OGRGeometry) ExportToJsonEx(options CSLConstList) (result string) {
 	result = ogrGExportToJsonEx(g, options)
 	return
 }
@@ -917,18 +885,13 @@ func (g OGRGeometry) TransformTo(sr OGRSpatialReference) (err error) {
 	return
 }
 
-func ogrGeomTransformerCreate(ct OGRCoordinateTransformation, options []string) (result OGRGeomTransformer) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	result = OGRGeomTransformer{cValue: C.OGR_GeomTransformer_Create(ct.cValue, &cOptions[0])}
+func ogrGeomTransformerCreate(ct OGRCoordinateTransformation, options CSLConstList) (result OGRGeomTransformer) {
+	cOptions := options.cValue
+	result = OGRGeomTransformer{cValue: C.OGR_GeomTransformer_Create(ct.cValue, cOptions)}
 	return
 }
 
-func OGRGeomTransformerCreate(ct OGRCoordinateTransformation, options []string) (result OGRGeomTransformer, err error) {
+func OGRGeomTransformerCreate(ct OGRCoordinateTransformation, options CSLConstList) (result OGRGeomTransformer, err error) {
 	result = ogrGeomTransformerCreate(ct, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -1149,18 +1112,13 @@ func (g OGRGeometry) Buffer(dist float64, quadSegs int) (result OGRGeometry, err
 	return
 }
 
-func ogrGBufferEx(g OGRGeometry, dist float64, options []string) (result OGRGeometry) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	result = OGRGeometry{cValue: C.OGR_G_BufferEx(g.cValue, C.double(dist), &cOptions[0])}
+func ogrGBufferEx(g OGRGeometry, dist float64, options CSLConstList) (result OGRGeometry) {
+	cOptions := options.cValue
+	result = OGRGeometry{cValue: C.OGR_G_BufferEx(g.cValue, C.double(dist), cOptions)}
 	return
 }
 
-func (g OGRGeometry) BufferEx(dist float64, options []string) (result OGRGeometry, err error) {
+func (g OGRGeometry) BufferEx(dist float64, options CSLConstList) (result OGRGeometry, err error) {
 	result = ogrGBufferEx(g, dist, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -1396,18 +1354,13 @@ func (g OGRGeometry) MakeValid() (result OGRGeometry, err error) {
 	return
 }
 
-func ogrGMakeValidEx(g OGRGeometry, options []string) (result OGRGeometry) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	result = OGRGeometry{cValue: C.OGR_G_MakeValidEx(g.cValue, &cOptions[0])}
+func ogrGMakeValidEx(g OGRGeometry, options CSLConstList) (result OGRGeometry) {
+	cOptions := options.cValue
+	result = OGRGeometry{cValue: C.OGR_G_MakeValidEx(g.cValue, cOptions)}
 	return
 }
 
-func (g OGRGeometry) MakeValidEx(options []string) (result OGRGeometry, err error) {
+func (g OGRGeometry) MakeValidEx(options CSLConstList) (result OGRGeometry, err error) {
 	result = ogrGMakeValidEx(g, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -1800,18 +1753,13 @@ func (g OGRGeometry) HasCurveGeometry(lookForNonLinear int) (result bool) {
 	return
 }
 
-func ogrGGetLinearGeometry(g OGRGeometry, maxAngleStepSizeDegrees float64, options []string) (result OGRGeometry) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	result = OGRGeometry{cValue: C.OGR_G_GetLinearGeometry(g.cValue, C.double(maxAngleStepSizeDegrees), &cOptions[0])}
+func ogrGGetLinearGeometry(g OGRGeometry, maxAngleStepSizeDegrees float64, options CSLConstList) (result OGRGeometry) {
+	cOptions := options.cValue
+	result = OGRGeometry{cValue: C.OGR_G_GetLinearGeometry(g.cValue, C.double(maxAngleStepSizeDegrees), cOptions)}
 	return
 }
 
-func (g OGRGeometry) GetLinearGeometry(maxAngleStepSizeDegrees float64, options []string) (result OGRGeometry, err error) {
+func (g OGRGeometry) GetLinearGeometry(maxAngleStepSizeDegrees float64, options CSLConstList) (result OGRGeometry, err error) {
 	result = ogrGGetLinearGeometry(g, maxAngleStepSizeDegrees, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -1819,18 +1767,13 @@ func (g OGRGeometry) GetLinearGeometry(maxAngleStepSizeDegrees float64, options 
 	return
 }
 
-func ogrGGetCurveGeometry(g OGRGeometry, options []string) (result OGRGeometry) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	result = OGRGeometry{cValue: C.OGR_G_GetCurveGeometry(g.cValue, &cOptions[0])}
+func ogrGGetCurveGeometry(g OGRGeometry, options CSLConstList) (result OGRGeometry) {
+	cOptions := options.cValue
+	result = OGRGeometry{cValue: C.OGR_G_GetCurveGeometry(g.cValue, cOptions)}
 	return
 }
 
-func (g OGRGeometry) GetCurveGeometry(options []string) (result OGRGeometry, err error) {
+func (g OGRGeometry) GetCurveGeometry(options CSLConstList) (result OGRGeometry, err error) {
 	result = ogrGGetCurveGeometry(g, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -2988,18 +2931,13 @@ func (feat OGRFeature) GetFieldAsString(field int) (result string) {
 	return
 }
 
-func ogrFGetFieldAsISO8601DateTime(feat OGRFeature, field int, options []string) (result string) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	result = C.GoString(C.OGR_F_GetFieldAsISO8601DateTime(feat.cValue, C.int(field), &cOptions[0]))
+func ogrFGetFieldAsISO8601DateTime(feat OGRFeature, field int, options CSLConstList) (result string) {
+	cOptions := options.cValue
+	result = C.GoString(C.OGR_F_GetFieldAsISO8601DateTime(feat.cValue, C.int(field), cOptions))
 	return
 }
 
-func (feat OGRFeature) GetFieldAsISO8601DateTime(field int, options []string) (result string) {
+func (feat OGRFeature) GetFieldAsISO8601DateTime(field int, options CSLConstList) (result string) {
 	result = ogrFGetFieldAsISO8601DateTime(feat, field, options)
 	return
 }
@@ -3064,16 +3002,13 @@ func (feat OGRFeature) GetFieldAsDoubleList(field int) (result []float64) {
 	return
 }
 
-func ogrFGetFieldAsStringList(feat OGRFeature, field int) (result []string) {
+func ogrFGetFieldAsStringList(feat OGRFeature, field int) (result CSLConstList) {
 	raw := C.OGR_F_GetFieldAsStringList(feat.cValue, C.int(field))
-	n := int(C.CSLCount(raw))
-	for i := 0; i < n; i++ {
-		result = append(result, C.GoString(C.CSLGetField(raw, C.int(i))))
-	}
+	result = cslConstList(raw)
 	return
 }
 
-func (feat OGRFeature) GetFieldAsStringList(field int) (result []string) {
+func (feat OGRFeature) GetFieldAsStringList(field int) (result CSLConstList) {
 	result = ogrFGetFieldAsStringList(feat, field)
 	return
 }
@@ -3195,17 +3130,11 @@ func (feat OGRFeature) SetFieldDoubleList(field int, values []float64) {
 	ogrFSetFieldDoubleList(feat, field, values)
 }
 
-func ogrFSetFieldStringList(feat OGRFeature, field int, values []string) {
-	cValues := make([]*C.char, len(values)+1)
-	for i, v := range values {
-		cValues[i] = C.CString(v)
-		defer C.free(unsafe.Pointer(cValues[i]))
-	}
-	cValues[len(values)] = nil
-	C.OGR_F_SetFieldStringList(feat.cValue, C.int(field), &cValues[0])
+func ogrFSetFieldStringList(feat OGRFeature, field int, values CSLConstList) {
+	C.OGR_F_SetFieldStringList(feat.cValue, C.int(field), values.cValue)
 }
 
-func (feat OGRFeature) SetFieldStringList(field int, values []string) {
+func (feat OGRFeature) SetFieldStringList(field int, values CSLConstList) {
 	ogrFSetFieldStringList(feat, field, values)
 }
 
@@ -3329,22 +3258,17 @@ func (feat OGRFeature) SetFID(fid int64) (err error) {
 
 // void CPL_DLL OGR_F_DumpReadable(OGRFeatureH, FILE *);
 
-func ogrFDumpReadableAsString(feat OGRFeature, options []string) (result string) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	cs := C.OGR_F_DumpReadableAsString(feat.cValue, &cOptions[0])
+func ogrFDumpReadableAsString(feat OGRFeature, options CSLConstList) (result string) {
+	cOptions := options.cValue
+	cs := C.OGR_F_DumpReadableAsString(feat.cValue, cOptions)
 	if cs != nil {
 		result = C.GoString(cs)
-		C.CPLFree(unsafe.Pointer(cs))
+		vsiFree(unsafe.Pointer(cs))
 	}
 	return
 }
 
-func (feat OGRFeature) DumpReadableAsString(options []string) (result string) {
+func (feat OGRFeature) DumpReadableAsString(options CSLConstList) (result string) {
 	result = ogrFDumpReadableAsString(feat, options)
 	return
 }
@@ -3478,17 +3402,12 @@ func (feat OGRFeature) SetNativeMediaType(mediaType string) {
 	ogrFSetNativeMediaType(feat, mediaType)
 }
 
-func ogrFFillUnsetWithDefault(feat OGRFeature, notNullableOnly int, options []string) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	C.OGR_F_FillUnsetWithDefault(feat.cValue, C.int(notNullableOnly), &cOptions[0])
+func ogrFFillUnsetWithDefault(feat OGRFeature, notNullableOnly int, options CSLConstList) {
+	cOptions := options.cValue
+	C.OGR_F_FillUnsetWithDefault(feat.cValue, C.int(notNullableOnly), cOptions)
 }
 
-func (feat OGRFeature) FillUnsetWithDefault(notNullableOnly int, options []string) {
+func (feat OGRFeature) FillUnsetWithDefault(notNullableOnly int, options CSLConstList) {
 	ogrFFillUnsetWithDefault(feat, notNullableOnly, options)
 }
 
@@ -3764,7 +3683,7 @@ func ogrLGetGeometryTypes(l OGRLayer, iGeomField, flags int, progress GDALProgre
 		*c = slice[i]
 		result[i] = OGRGeometryTypeCounter{cValue: c}
 	}
-	C.CPLFree(unsafe.Pointer(p))
+	vsiFree(unsafe.Pointer(p))
 	return
 }
 
@@ -3984,7 +3903,7 @@ func ogrLGetSupportedSRSList(l OGRLayer, iGeomField int) (result []OGRSpatialRef
 	for i := range slice {
 		result[i] = OGRSpatialReference{cValue: slice[i]}
 	}
-	C.CPLFree(unsafe.Pointer(p))
+	vsiFree(unsafe.Pointer(p))
 	return
 }
 
@@ -4306,130 +4225,89 @@ func (l OGRLayer) SetStyleTable(styleTable OGRStyleTable) {
 	ogrLSetStyleTable(l, styleTable)
 }
 
-func ogrLSetIgnoredFields(l OGRLayer, fields []string) (result OGRErr) {
-	cFields := make([]*C.char, len(fields)+1)
-	for i, f := range fields {
-		cFields[i] = C.CString(f)
-		defer C.free(unsafe.Pointer(cFields[i]))
-	}
-	cFields[len(fields)] = nil
-	result = OGRErr(C.OGR_L_SetIgnoredFields(l.cValue, &cFields[0]))
+func ogrLSetIgnoredFields(l OGRLayer, fields CSLConstList) (result OGRErr) {
+	result = OGRErr(C.OGR_L_SetIgnoredFields(l.cValue, fields.cValue))
 	return
 }
 
-func (l OGRLayer) SetIgnoredFields(fields []string) (err error) {
+func (l OGRLayer) SetIgnoredFields(fields CSLConstList) (err error) {
 	err = ogrError(ogrLSetIgnoredFields(l, fields))
 	return
 }
 
-func ogrLIntersection(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	status = OGRErr(C.OGR_L_Intersection(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData))
+func ogrLIntersection(input, method, result OGRLayer, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
+	cOptions := options.cValue
+	status = OGRErr(C.OGR_L_Intersection(input.cValue, method.cValue, result.cValue, cOptions, progress.cValue, progressData))
 	return
 }
 
-func OGRLIntersection(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func OGRLIntersection(input, method, result OGRLayer, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
 	err = ogrError(ogrLIntersection(input, method, result, options, progress, progressData))
 	return
 }
 
-func ogrLUnion(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	status = OGRErr(C.OGR_L_Union(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData))
+func ogrLUnion(input, method, result OGRLayer, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
+	cOptions := options.cValue
+	status = OGRErr(C.OGR_L_Union(input.cValue, method.cValue, result.cValue, cOptions, progress.cValue, progressData))
 	return
 }
 
-func OGRLUnion(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func OGRLUnion(input, method, result OGRLayer, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
 	err = ogrError(ogrLUnion(input, method, result, options, progress, progressData))
 	return
 }
 
-func ogrLSymDifference(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	status = OGRErr(C.OGR_L_SymDifference(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData))
+func ogrLSymDifference(input, method, result OGRLayer, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
+	cOptions := options.cValue
+	status = OGRErr(C.OGR_L_SymDifference(input.cValue, method.cValue, result.cValue, cOptions, progress.cValue, progressData))
 	return
 }
 
-func OGRLSymDifference(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func OGRLSymDifference(input, method, result OGRLayer, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
 	err = ogrError(ogrLSymDifference(input, method, result, options, progress, progressData))
 	return
 }
 
-func ogrLIdentity(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	status = OGRErr(C.OGR_L_Identity(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData))
+func ogrLIdentity(input, method, result OGRLayer, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
+	cOptions := options.cValue
+	status = OGRErr(C.OGR_L_Identity(input.cValue, method.cValue, result.cValue, cOptions, progress.cValue, progressData))
 	return
 }
 
-func OGRLIdentity(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func OGRLIdentity(input, method, result OGRLayer, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
 	err = ogrError(ogrLIdentity(input, method, result, options, progress, progressData))
 	return
 }
 
-func ogrLUpdate(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	status = OGRErr(C.OGR_L_Update(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData))
+func ogrLUpdate(input, method, result OGRLayer, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
+	cOptions := options.cValue
+	status = OGRErr(C.OGR_L_Update(input.cValue, method.cValue, result.cValue, cOptions, progress.cValue, progressData))
 	return
 }
 
-func OGRLUpdate(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func OGRLUpdate(input, method, result OGRLayer, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
 	err = ogrError(ogrLUpdate(input, method, result, options, progress, progressData))
 	return
 }
 
-func ogrLClip(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	status = OGRErr(C.OGR_L_Clip(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData))
+func ogrLClip(input, method, result OGRLayer, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
+	cOptions := options.cValue
+	status = OGRErr(C.OGR_L_Clip(input.cValue, method.cValue, result.cValue, cOptions, progress.cValue, progressData))
 	return
 }
 
-func OGRLClip(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func OGRLClip(input, method, result OGRLayer, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
 	err = ogrError(ogrLClip(input, method, result, options, progress, progressData))
 	return
 }
 
-func ogrLErase(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	status = OGRErr(C.OGR_L_Erase(input.cValue, method.cValue, result.cValue, &cOptions[0], progress.cValue, progressData))
+func ogrLErase(input, method, result OGRLayer, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (status OGRErr) {
+	cOptions := options.cValue
+	status = OGRErr(C.OGR_L_Erase(input.cValue, method.cValue, result.cValue, cOptions, progress.cValue, progressData))
 	return
 }
 
-func OGRLErase(input, method, result OGRLayer, options []string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+func OGRLErase(input, method, result OGRLayer, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
 	err = ogrError(ogrLErase(input, method, result, options, progress, progressData))
 	return
 }
@@ -4515,20 +4393,15 @@ func (ds OGRDataSource) GetDriver() (result OGRSFDriver, err error) {
 	return
 }
 
-func ogrDSCreateLayer(ds OGRDataSource, name string, sr OGRSpatialReference, geomType OGRwkbGeometryType, options []string) (result OGRLayer) {
+func ogrDSCreateLayer(ds OGRDataSource, name string, sr OGRSpatialReference, geomType OGRwkbGeometryType, options CSLConstList) (result OGRLayer) {
 	cs := C.CString(name)
 	defer C.free(unsafe.Pointer(cs))
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	result = OGRLayer{cValue: C.OGR_DS_CreateLayer(ds.cValue, cs, sr.cValue, C.OGRwkbGeometryType(geomType), &cOptions[0])}
+	cOptions := options.cValue
+	result = OGRLayer{cValue: C.OGR_DS_CreateLayer(ds.cValue, cs, sr.cValue, C.OGRwkbGeometryType(geomType), cOptions)}
 	return
 }
 
-func (ds OGRDataSource) CreateLayer(name string, sr OGRSpatialReference, geomType OGRwkbGeometryType, options []string) (result OGRLayer, err error) {
+func (ds OGRDataSource) CreateLayer(name string, sr OGRSpatialReference, geomType OGRwkbGeometryType, options CSLConstList) (result OGRLayer, err error) {
 	result = ogrDSCreateLayer(ds, name, sr, geomType, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -4536,20 +4409,15 @@ func (ds OGRDataSource) CreateLayer(name string, sr OGRSpatialReference, geomTyp
 	return
 }
 
-func ogrDSCopyLayer(ds OGRDataSource, srcLayer OGRLayer, newName string, options []string) (result OGRLayer) {
+func ogrDSCopyLayer(ds OGRDataSource, srcLayer OGRLayer, newName string, options CSLConstList) (result OGRLayer) {
 	cs := C.CString(newName)
 	defer C.free(unsafe.Pointer(cs))
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	result = OGRLayer{cValue: C.OGR_DS_CopyLayer(ds.cValue, srcLayer.cValue, cs, &cOptions[0])}
+	cOptions := options.cValue
+	result = OGRLayer{cValue: C.OGR_DS_CopyLayer(ds.cValue, srcLayer.cValue, cs, cOptions)}
 	return
 }
 
-func (ds OGRDataSource) CopyLayer(srcLayer OGRLayer, newName string, options []string) (result OGRLayer, err error) {
+func (ds OGRDataSource) CopyLayer(srcLayer OGRLayer, newName string, options CSLConstList) (result OGRLayer, err error) {
 	result = ogrDSCopyLayer(ds, srcLayer, newName, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -4724,20 +4592,15 @@ func (dr OGRSFDriver) TestCapability(capability string) (result bool) {
 	return
 }
 
-func ogrDrCreateDataSource(dr OGRSFDriver, name string, options []string) (result OGRDataSource) {
+func ogrDrCreateDataSource(dr OGRSFDriver, name string, options CSLConstList) (result OGRDataSource) {
 	cs := C.CString(name)
 	defer C.free(unsafe.Pointer(cs))
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	result = OGRDataSource{cValue: C.OGR_Dr_CreateDataSource(dr.cValue, cs, &cOptions[0])}
+	cOptions := options.cValue
+	result = OGRDataSource{cValue: C.OGR_Dr_CreateDataSource(dr.cValue, cs, cOptions)}
 	return
 }
 
-func (dr OGRSFDriver) CreateDataSource(name string, options []string) (result OGRDataSource, err error) {
+func (dr OGRSFDriver) CreateDataSource(name string, options CSLConstList) (result OGRDataSource, err error) {
 	result = ogrDrCreateDataSource(dr, name, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -4745,20 +4608,15 @@ func (dr OGRSFDriver) CreateDataSource(name string, options []string) (result OG
 	return
 }
 
-func ogrDrCopyDataSource(dr OGRSFDriver, srcDS OGRDataSource, newName string, options []string) (result OGRDataSource) {
+func ogrDrCopyDataSource(dr OGRSFDriver, srcDS OGRDataSource, newName string, options CSLConstList) (result OGRDataSource) {
 	cs := C.CString(newName)
 	defer C.free(unsafe.Pointer(cs))
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	result = OGRDataSource{cValue: C.OGR_Dr_CopyDataSource(dr.cValue, srcDS.cValue, cs, &cOptions[0])}
+	cOptions := options.cValue
+	result = OGRDataSource{cValue: C.OGR_Dr_CopyDataSource(dr.cValue, srcDS.cValue, cs, cOptions)}
 	return
 }
 
-func (dr OGRSFDriver) CopyDataSource(srcDS OGRDataSource, newName string, options []string) (result OGRDataSource, err error) {
+func (dr OGRSFDriver) CopyDataSource(srcDS OGRDataSource, newName string, options CSLConstList) (result OGRDataSource, err error) {
 	result = ogrDrCopyDataSource(dr, srcDS, newName, options)
 	if result.cValue == nil {
 		err = lastError()
