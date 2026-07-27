@@ -1,179 +1,7 @@
 package gdal
 
 /*
-#include "ogr_srs_api.h"
-#include "cpl_string.h" // TODO: implement cpl_string.go
-
-const char* const _SRS_WKT_WGS84_LAT_LONG = SRS_WKT_WGS84_LAT_LONG;
-
-const char* const _SRS_PT_ALBERS_CONIC_EQUAL_AREA                       = SRS_PT_ALBERS_CONIC_EQUAL_AREA;
-const char* const _SRS_PT_AZIMUTHAL_EQUIDISTANT                         = SRS_PT_AZIMUTHAL_EQUIDISTANT;
-const char* const _SRS_PT_CASSINI_SOLDNER                               = SRS_PT_CASSINI_SOLDNER;
-const char* const _SRS_PT_CYLINDRICAL_EQUAL_AREA                        = SRS_PT_CYLINDRICAL_EQUAL_AREA;
-const char* const _SRS_PT_BONNE                                         = SRS_PT_BONNE;
-const char* const _SRS_PT_ECKERT_I                                      = SRS_PT_ECKERT_I;
-const char* const _SRS_PT_ECKERT_II                                     = SRS_PT_ECKERT_II;
-const char* const _SRS_PT_ECKERT_III                                    = SRS_PT_ECKERT_III;
-const char* const _SRS_PT_ECKERT_IV                                     = SRS_PT_ECKERT_IV;
-const char* const _SRS_PT_ECKERT_V                                      = SRS_PT_ECKERT_V;
-const char* const _SRS_PT_ECKERT_VI                                     = SRS_PT_ECKERT_VI;
-const char* const _SRS_PT_EQUIDISTANT_CONIC                             = SRS_PT_EQUIDISTANT_CONIC;
-const char* const _SRS_PT_EQUIRECTANGULAR                               = SRS_PT_EQUIRECTANGULAR;
-const char* const _SRS_PT_GALL_STEREOGRAPHIC                            = SRS_PT_GALL_STEREOGRAPHIC;
-const char* const _SRS_PT_GAUSSSCHREIBERTMERCATOR                       = SRS_PT_GAUSSSCHREIBERTMERCATOR;
-const char* const _SRS_PT_GEOSTATIONARY_SATELLITE                       = SRS_PT_GEOSTATIONARY_SATELLITE;
-const char* const _SRS_PT_GOODE_HOMOLOSINE                              = SRS_PT_GOODE_HOMOLOSINE;
-const char* const _SRS_PT_IGH                                           = SRS_PT_IGH;
-const char* const _SRS_PT_GNOMONIC                                      = SRS_PT_GNOMONIC;
-const char* const _SRS_PT_HOTINE_OBLIQUE_MERCATOR_AZIMUTH_CENTER        = SRS_PT_HOTINE_OBLIQUE_MERCATOR_AZIMUTH_CENTER;
-const char* const _SRS_PT_HOTINE_OBLIQUE_MERCATOR                       = SRS_PT_HOTINE_OBLIQUE_MERCATOR;
-const char* const _SRS_PT_HOTINE_OBLIQUE_MERCATOR_TWO_POINT_NATURAL_ORIGIN = SRS_PT_HOTINE_OBLIQUE_MERCATOR_TWO_POINT_NATURAL_ORIGIN;
-const char* const _SRS_PT_LABORDE_OBLIQUE_MERCATOR                      = SRS_PT_LABORDE_OBLIQUE_MERCATOR;
-const char* const _SRS_PT_LAMBERT_CONFORMAL_CONIC_1SP                   = SRS_PT_LAMBERT_CONFORMAL_CONIC_1SP;
-const char* const _SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP                   = SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP;
-const char* const _SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP_BELGIUM           = SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP_BELGIUM;
-const char* const _SRS_PT_LAMBERT_AZIMUTHAL_EQUAL_AREA                  = SRS_PT_LAMBERT_AZIMUTHAL_EQUAL_AREA;
-const char* const _SRS_PT_MERCATOR_1SP                                  = SRS_PT_MERCATOR_1SP;
-const char* const _SRS_PT_MERCATOR_2SP                                  = SRS_PT_MERCATOR_2SP;
-const char* const _SRS_PT_MERCATOR_AUXILIARY_SPHERE                     = SRS_PT_MERCATOR_AUXILIARY_SPHERE;
-const char* const _SRS_PT_MILLER_CYLINDRICAL                            = SRS_PT_MILLER_CYLINDRICAL;
-const char* const _SRS_PT_MOLLWEIDE                                     = SRS_PT_MOLLWEIDE;
-const char* const _SRS_PT_NEW_ZEALAND_MAP_GRID                          = SRS_PT_NEW_ZEALAND_MAP_GRID;
-const char* const _SRS_PT_OBLIQUE_STEREOGRAPHIC                         = SRS_PT_OBLIQUE_STEREOGRAPHIC;
-const char* const _SRS_PT_ORTHOGRAPHIC                                  = SRS_PT_ORTHOGRAPHIC;
-const char* const _SRS_PT_POLAR_STEREOGRAPHIC                           = SRS_PT_POLAR_STEREOGRAPHIC;
-const char* const _SRS_PT_POLYCONIC                                     = SRS_PT_POLYCONIC;
-const char* const _SRS_PT_ROBINSON                                      = SRS_PT_ROBINSON;
-const char* const _SRS_PT_SINUSOIDAL                                    = SRS_PT_SINUSOIDAL;
-const char* const _SRS_PT_STEREOGRAPHIC                                 = SRS_PT_STEREOGRAPHIC;
-const char* const _SRS_PT_SWISS_OBLIQUE_CYLINDRICAL                     = SRS_PT_SWISS_OBLIQUE_CYLINDRICAL;
-const char* const _SRS_PT_TRANSVERSE_MERCATOR                           = SRS_PT_TRANSVERSE_MERCATOR;
-const char* const _SRS_PT_TRANSVERSE_MERCATOR_SOUTH_ORIENTED            = SRS_PT_TRANSVERSE_MERCATOR_SOUTH_ORIENTED;
-const char* const _SRS_PT_TRANSVERSE_MERCATOR_MI_21                     = SRS_PT_TRANSVERSE_MERCATOR_MI_21;
-const char* const _SRS_PT_TRANSVERSE_MERCATOR_MI_22                     = SRS_PT_TRANSVERSE_MERCATOR_MI_22;
-const char* const _SRS_PT_TRANSVERSE_MERCATOR_MI_23                     = SRS_PT_TRANSVERSE_MERCATOR_MI_23;
-const char* const _SRS_PT_TRANSVERSE_MERCATOR_MI_24                     = SRS_PT_TRANSVERSE_MERCATOR_MI_24;
-const char* const _SRS_PT_TRANSVERSE_MERCATOR_MI_25                     = SRS_PT_TRANSVERSE_MERCATOR_MI_25;
-const char* const _SRS_PT_TUNISIA_MINING_GRID                           = SRS_PT_TUNISIA_MINING_GRID;
-const char* const _SRS_PT_TWO_POINT_EQUIDISTANT                         = SRS_PT_TWO_POINT_EQUIDISTANT;
-const char* const _SRS_PT_VANDERGRINTEN                                 = SRS_PT_VANDERGRINTEN;
-const char* const _SRS_PT_KROVAK                                        = SRS_PT_KROVAK;
-const char* const _SRS_PT_IMW_POLYCONIC                                 = SRS_PT_IMW_POLYCONIC;
-const char* const _SRS_PT_WAGNER_I                                      = SRS_PT_WAGNER_I;
-const char* const _SRS_PT_WAGNER_II                                     = SRS_PT_WAGNER_II;
-const char* const _SRS_PT_WAGNER_III                                    = SRS_PT_WAGNER_III;
-const char* const _SRS_PT_WAGNER_IV                                     = SRS_PT_WAGNER_IV;
-const char* const _SRS_PT_WAGNER_V                                      = SRS_PT_WAGNER_V;
-const char* const _SRS_PT_WAGNER_VI                                     = SRS_PT_WAGNER_VI;
-const char* const _SRS_PT_WAGNER_VII                                    = SRS_PT_WAGNER_VII;
-const char* const _SRS_PT_QSC                                           = SRS_PT_QSC;
-const char* const _SRS_PT_AITOFF                                        = SRS_PT_AITOFF;
-const char* const _SRS_PT_WINKEL_I                                      = SRS_PT_WINKEL_I;
-const char* const _SRS_PT_WINKEL_II                                     = SRS_PT_WINKEL_II;
-const char* const _SRS_PT_WINKEL_TRIPEL                                 = SRS_PT_WINKEL_TRIPEL;
-const char* const _SRS_PT_CRASTER_PARABOLIC                             = SRS_PT_CRASTER_PARABOLIC;
-const char* const _SRS_PT_LOXIMUTHAL                                    = SRS_PT_LOXIMUTHAL;
-const char* const _SRS_PT_QUARTIC_AUTHALIC                              = SRS_PT_QUARTIC_AUTHALIC;
-const char* const _SRS_PT_SCH                                           = SRS_PT_SCH;
-
-const char* const _SRS_PP_CENTRAL_MERIDIAN        = SRS_PP_CENTRAL_MERIDIAN;
-const char* const _SRS_PP_SCALE_FACTOR            = SRS_PP_SCALE_FACTOR;
-const char* const _SRS_PP_STANDARD_PARALLEL_1     = SRS_PP_STANDARD_PARALLEL_1;
-const char* const _SRS_PP_STANDARD_PARALLEL_2     = SRS_PP_STANDARD_PARALLEL_2;
-const char* const _SRS_PP_PSEUDO_STD_PARALLEL_1   = SRS_PP_PSEUDO_STD_PARALLEL_1;
-const char* const _SRS_PP_LONGITUDE_OF_CENTER     = SRS_PP_LONGITUDE_OF_CENTER;
-const char* const _SRS_PP_LATITUDE_OF_CENTER      = SRS_PP_LATITUDE_OF_CENTER;
-const char* const _SRS_PP_LONGITUDE_OF_ORIGIN     = SRS_PP_LONGITUDE_OF_ORIGIN;
-const char* const _SRS_PP_LATITUDE_OF_ORIGIN      = SRS_PP_LATITUDE_OF_ORIGIN;
-const char* const _SRS_PP_FALSE_EASTING           = SRS_PP_FALSE_EASTING;
-const char* const _SRS_PP_FALSE_NORTHING          = SRS_PP_FALSE_NORTHING;
-const char* const _SRS_PP_AZIMUTH                 = SRS_PP_AZIMUTH;
-const char* const _SRS_PP_LONGITUDE_OF_POINT_1    = SRS_PP_LONGITUDE_OF_POINT_1;
-const char* const _SRS_PP_LATITUDE_OF_POINT_1     = SRS_PP_LATITUDE_OF_POINT_1;
-const char* const _SRS_PP_LONGITUDE_OF_POINT_2    = SRS_PP_LONGITUDE_OF_POINT_2;
-const char* const _SRS_PP_LATITUDE_OF_POINT_2     = SRS_PP_LATITUDE_OF_POINT_2;
-const char* const _SRS_PP_LONGITUDE_OF_POINT_3    = SRS_PP_LONGITUDE_OF_POINT_3;
-const char* const _SRS_PP_LATITUDE_OF_POINT_3     = SRS_PP_LATITUDE_OF_POINT_3;
-const char* const _SRS_PP_RECTIFIED_GRID_ANGLE    = SRS_PP_RECTIFIED_GRID_ANGLE;
-const char* const _SRS_PP_LANDSAT_NUMBER          = SRS_PP_LANDSAT_NUMBER;
-const char* const _SRS_PP_PATH_NUMBER             = SRS_PP_PATH_NUMBER;
-const char* const _SRS_PP_PERSPECTIVE_POINT_HEIGHT = SRS_PP_PERSPECTIVE_POINT_HEIGHT;
-const char* const _SRS_PP_SATELLITE_HEIGHT        = SRS_PP_SATELLITE_HEIGHT;
-const char* const _SRS_PP_FIPSZONE                = SRS_PP_FIPSZONE;
-const char* const _SRS_PP_ZONE                    = SRS_PP_ZONE;
-const char* const _SRS_PP_LATITUDE_OF_1ST_POINT   = SRS_PP_LATITUDE_OF_1ST_POINT;
-const char* const _SRS_PP_LONGITUDE_OF_1ST_POINT  = SRS_PP_LONGITUDE_OF_1ST_POINT;
-const char* const _SRS_PP_LATITUDE_OF_2ND_POINT   = SRS_PP_LATITUDE_OF_2ND_POINT;
-const char* const _SRS_PP_LONGITUDE_OF_2ND_POINT  = SRS_PP_LONGITUDE_OF_2ND_POINT;
-const char* const _SRS_PP_PEG_POINT_LATITUDE      = SRS_PP_PEG_POINT_LATITUDE;
-const char* const _SRS_PP_PEG_POINT_LONGITUDE     = SRS_PP_PEG_POINT_LONGITUDE;
-const char* const _SRS_PP_PEG_POINT_HEADING       = SRS_PP_PEG_POINT_HEADING;
-const char* const _SRS_PP_PEG_POINT_HEIGHT        = SRS_PP_PEG_POINT_HEIGHT;
-
-const char* const _SRS_UL_METER              = SRS_UL_METER;
-const char* const _SRS_UL_FOOT              = SRS_UL_FOOT;
-const char* const _SRS_UL_FOOT_CONV         = SRS_UL_FOOT_CONV;
-const char* const _SRS_UL_US_FOOT           = SRS_UL_US_FOOT;
-const char* const _SRS_UL_US_FOOT_CONV      = SRS_UL_US_FOOT_CONV;
-const char* const _SRS_UL_NAUTICAL_MILE     = SRS_UL_NAUTICAL_MILE;
-const char* const _SRS_UL_NAUTICAL_MILE_CONV = SRS_UL_NAUTICAL_MILE_CONV;
-const char* const _SRS_UL_LINK              = SRS_UL_LINK;
-const char* const _SRS_UL_LINK_CONV         = SRS_UL_LINK_CONV;
-const char* const _SRS_UL_CHAIN             = SRS_UL_CHAIN;
-const char* const _SRS_UL_CHAIN_CONV        = SRS_UL_CHAIN_CONV;
-const char* const _SRS_UL_ROD               = SRS_UL_ROD;
-const char* const _SRS_UL_ROD_CONV          = SRS_UL_ROD_CONV;
-const char* const _SRS_UL_LINK_Clarke       = SRS_UL_LINK_Clarke;
-const char* const _SRS_UL_LINK_Clarke_CONV  = SRS_UL_LINK_Clarke_CONV;
-const char* const _SRS_UL_KILOMETER         = SRS_UL_KILOMETER;
-const char* const _SRS_UL_KILOMETER_CONV    = SRS_UL_KILOMETER_CONV;
-const char* const _SRS_UL_DECIMETER         = SRS_UL_DECIMETER;
-const char* const _SRS_UL_DECIMETER_CONV    = SRS_UL_DECIMETER_CONV;
-const char* const _SRS_UL_CENTIMETER        = SRS_UL_CENTIMETER;
-const char* const _SRS_UL_CENTIMETER_CONV   = SRS_UL_CENTIMETER_CONV;
-const char* const _SRS_UL_MILLIMETER        = SRS_UL_MILLIMETER;
-const char* const _SRS_UL_MILLIMETER_CONV   = SRS_UL_MILLIMETER_CONV;
-const char* const _SRS_UL_INTL_NAUT_MILE    = SRS_UL_INTL_NAUT_MILE;
-const char* const _SRS_UL_INTL_NAUT_MILE_CONV = SRS_UL_INTL_NAUT_MILE_CONV;
-const char* const _SRS_UL_INTL_INCH         = SRS_UL_INTL_INCH;
-const char* const _SRS_UL_INTL_INCH_CONV    = SRS_UL_INTL_INCH_CONV;
-const char* const _SRS_UL_INTL_FOOT         = SRS_UL_INTL_FOOT;
-const char* const _SRS_UL_INTL_FOOT_CONV    = SRS_UL_INTL_FOOT_CONV;
-const char* const _SRS_UL_INTL_YARD         = SRS_UL_INTL_YARD;
-const char* const _SRS_UL_INTL_YARD_CONV    = SRS_UL_INTL_YARD_CONV;
-const char* const _SRS_UL_INTL_STAT_MILE    = SRS_UL_INTL_STAT_MILE;
-const char* const _SRS_UL_INTL_STAT_MILE_CONV = SRS_UL_INTL_STAT_MILE_CONV;
-const char* const _SRS_UL_INTL_FATHOM       = SRS_UL_INTL_FATHOM;
-const char* const _SRS_UL_INTL_FATHOM_CONV  = SRS_UL_INTL_FATHOM_CONV;
-const char* const _SRS_UL_INTL_CHAIN        = SRS_UL_INTL_CHAIN;
-const char* const _SRS_UL_INTL_CHAIN_CONV   = SRS_UL_INTL_CHAIN_CONV;
-const char* const _SRS_UL_INTL_LINK         = SRS_UL_INTL_LINK;
-const char* const _SRS_UL_INTL_LINK_CONV    = SRS_UL_INTL_LINK_CONV;
-const char* const _SRS_UL_US_INCH           = SRS_UL_US_INCH;
-const char* const _SRS_UL_US_INCH_CONV      = SRS_UL_US_INCH_CONV;
-const char* const _SRS_UL_US_YARD           = SRS_UL_US_YARD;
-const char* const _SRS_UL_US_YARD_CONV      = SRS_UL_US_YARD_CONV;
-const char* const _SRS_UL_US_CHAIN          = SRS_UL_US_CHAIN;
-const char* const _SRS_UL_US_CHAIN_CONV     = SRS_UL_US_CHAIN_CONV;
-const char* const _SRS_UL_US_STAT_MILE      = SRS_UL_US_STAT_MILE;
-const char* const _SRS_UL_US_STAT_MILE_CONV = SRS_UL_US_STAT_MILE_CONV;
-const char* const _SRS_UL_INDIAN_YARD       = SRS_UL_INDIAN_YARD;
-const char* const _SRS_UL_INDIAN_YARD_CONV  = SRS_UL_INDIAN_YARD_CONV;
-const char* const _SRS_UL_INDIAN_FOOT       = SRS_UL_INDIAN_FOOT;
-const char* const _SRS_UL_INDIAN_FOOT_CONV  = SRS_UL_INDIAN_FOOT_CONV;
-const char* const _SRS_UL_INDIAN_CHAIN      = SRS_UL_INDIAN_CHAIN;
-const char* const _SRS_UL_INDIAN_CHAIN_CONV = SRS_UL_INDIAN_CHAIN_CONV;
-
-const char* const _SRS_UA_DEGREE      = SRS_UA_DEGREE;
-const char* const _SRS_UA_DEGREE_CONV = SRS_UA_DEGREE_CONV;
-const char* const _SRS_UA_RADIAN      = SRS_UA_RADIAN;
-
-const char* const _SRS_PM_GREENWICH = SRS_PM_GREENWICH;
-
-const char* const _SRS_DN_NAD27 = SRS_DN_NAD27;
-const char* const _SRS_DN_NAD83 = SRS_DN_NAD83;
-const char* const _SRS_DN_WGS72 = SRS_DN_WGS72;
-const char* const _SRS_DN_WGS84 = SRS_DN_WGS84;
+#include "ogr_srs_api_preamble.h"
 */
 import "C"
 import "unsafe"
@@ -723,72 +551,42 @@ const SRSWgs84InvFlattening = C.SRS_WGS84_INVFLATTENING
 // /*      C Wrappers for C++ objects and methods.                         */
 // /* -------------------------------------------------------------------- */
 
-func osrSetPROJSearchPaths(paths []string) {
-	cPaths := make([]*C.char, len(paths)+1)
-	for i, p := range paths {
-		cPaths[i] = C.CString(p)
-		defer C.free(unsafe.Pointer(cPaths[i]))
-	}
-	cPaths[len(paths)] = nil
-	C.OSRSetPROJSearchPaths(&cPaths[0])
+func osrSetPROJSearchPaths(paths CSLConstList) {
+	cPaths := paths.cValue
+	C.OSRSetPROJSearchPaths(cPaths)
 }
 
-func OSRSetPROJSearchPaths(paths []string) {
+func OSRSetPROJSearchPaths(paths CSLConstList) {
 	osrSetPROJSearchPaths(paths)
 }
 
-func osrGetPROJSearchPaths() (result []string) {
+func osrGetPROJSearchPaths() (result CSLConstList) {
 	raw := C.OSRGetPROJSearchPaths()
-	if raw == nil {
-		return
-	}
-	defer C.CSLDestroy(raw)
-	for i := 0; ; i++ {
-		p := C.CSLGetField(raw, C.int(i))
-		if p == nil {
-			break
-		}
-		result = append(result, C.GoString(p))
-	}
+	result = cslConstList(raw)
 	return
 }
 
-func OSRGetPROJSearchPaths() (result []string) {
+func OSRGetPROJSearchPaths() (result CSLConstList) {
 	result = osrGetPROJSearchPaths()
 	return
 }
 
-func osrSetPROJAuxDbPaths(paths []string) {
-	cPaths := make([]*C.char, len(paths)+1)
-	for i, p := range paths {
-		cPaths[i] = C.CString(p)
-		defer C.free(unsafe.Pointer(cPaths[i]))
-	}
-	cPaths[len(paths)] = nil
-	C.OSRSetPROJAuxDbPaths(&cPaths[0])
+func osrSetPROJAuxDbPaths(paths CSLConstList) {
+	cPaths := paths.cValue
+	C.OSRSetPROJAuxDbPaths(cPaths)
 }
 
-func OSRSetPROJAuxDbPaths(paths []string) {
+func OSRSetPROJAuxDbPaths(paths CSLConstList) {
 	osrSetPROJAuxDbPaths(paths)
 }
 
-func osrGetPROJAuxDbPaths() (result []string) {
+func osrGetPROJAuxDbPaths() (result CSLConstList) {
 	raw := C.OSRGetPROJAuxDbPaths()
-	if raw == nil {
-		return
-	}
-	defer C.CSLDestroy(raw)
-	for i := 0; ; i++ {
-		p := C.CSLGetField(raw, C.int(i))
-		if p == nil {
-			break
-		}
-		result = append(result, C.GoString(p))
-	}
+	result = cslConstList(raw)
 	return
 }
 
-func OSRGetPROJAuxDbPaths() (result []string) {
+func OSRGetPROJAuxDbPaths() (result CSLConstList) {
 	result = osrGetPROJAuxDbPaths()
 	return
 }
@@ -951,18 +749,13 @@ func (sr OGRSpatialReference) ImportFromProj4(proj4 string) (err error) {
 	return
 }
 
-func osrImportFromESRI(sr OGRSpatialReference, lines []string) (result OGRErr) {
-	cLines := make([]*C.char, len(lines)+1)
-	for i, l := range lines {
-		cLines[i] = C.CString(l)
-		defer C.free(unsafe.Pointer(cLines[i]))
-	}
-	cLines[len(lines)] = nil
-	result = OGRErr(C.OSRImportFromESRI(sr.cValue, &cLines[0]))
+func osrImportFromESRI(sr OGRSpatialReference, lines CSLConstList) (result OGRErr) {
+	cLines := lines.cValue
+	result = OGRErr(C.OSRImportFromESRI(sr.cValue, cLines))
 	return
 }
 
-func (sr OGRSpatialReference) ImportFromESRI(lines []string) (err error) {
+func (sr OGRSpatialReference) ImportFromESRI(lines CSLConstList) (err error) {
 	err = ogrError(osrImportFromESRI(sr, lines))
 	return
 }
@@ -1039,18 +832,13 @@ func (sr OGRSpatialReference) ImportFromPanorama(projSys, datum, ellipsoid int, 
 	return
 }
 
-func osrImportFromOzi(sr OGRSpatialReference, lines []string) (result OGRErr) {
-	cLines := make([]*C.char, len(lines)+1)
-	for i, l := range lines {
-		cLines[i] = C.CString(l)
-		defer C.free(unsafe.Pointer(cLines[i]))
-	}
-	cLines[len(lines)] = nil
-	result = OGRErr(C.OSRImportFromOzi(sr.cValue, &cLines[0]))
+func osrImportFromOzi(sr OGRSpatialReference, lines CSLConstList) (result OGRErr) {
+	cLines := lines.cValue
+	result = OGRErr(C.OSRImportFromOzi(sr.cValue, cLines))
 	return
 }
 
-func (sr OGRSpatialReference) ImportFromOzi(lines []string) (err error) {
+func (sr OGRSpatialReference) ImportFromOzi(lines CSLConstList) (err error) {
 	err = ogrError(osrImportFromOzi(sr, lines))
 	return
 }
@@ -1095,20 +883,15 @@ func (sr OGRSpatialReference) ImportFromUrl(url string) (err error) {
 	return
 }
 
-func osrImportFromCF1(sr OGRSpatialReference, keyValues []string, units string) (result OGRErr) {
-	cKeyValues := make([]*C.char, len(keyValues)+1)
-	for i, kv := range keyValues {
-		cKeyValues[i] = C.CString(kv)
-		defer C.free(unsafe.Pointer(cKeyValues[i]))
-	}
-	cKeyValues[len(keyValues)] = nil
+func osrImportFromCF1(sr OGRSpatialReference, keyValues CSLConstList, units string) (result OGRErr) {
+	cKeyValues := keyValues.cValue
 	csUnits := C.CString(units)
 	defer C.free(unsafe.Pointer(csUnits))
-	result = OGRErr(C.OSRImportFromCF1(sr.cValue, &cKeyValues[0], csUnits))
+	result = OGRErr(C.OSRImportFromCF1(sr.cValue, cKeyValues, csUnits))
 	return
 }
 
-func (sr OGRSpatialReference) ImportFromCF1(keyValues []string, units string) (err error) {
+func (sr OGRSpatialReference) ImportFromCF1(keyValues CSLConstList, units string) (err error) {
 	err = ogrError(osrImportFromCF1(sr, keyValues, units))
 	return
 }
@@ -1116,7 +899,7 @@ func (sr OGRSpatialReference) ImportFromCF1(keyValues []string, units string) (e
 func osrExportToWkt(sr OGRSpatialReference) (result string, status OGRErr) {
 	var p *C.char
 	ogrErr := OGRErr(C.OSRExportToWkt(sr.cValue, &p))
-	defer C.CPLFree(unsafe.Pointer(p))
+	defer CPLFree(unsafe.Pointer(p))
 	result = C.GoString(p)
 	status = ogrErr
 	return
@@ -1129,22 +912,17 @@ func (sr OGRSpatialReference) ExportToWkt() (result string, err error) {
 	return
 }
 
-func osrExportToWktEx(sr OGRSpatialReference, options []string) (result string, status OGRErr) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
+func osrExportToWktEx(sr OGRSpatialReference, options CSLConstList) (result string, status OGRErr) {
+	cOptions := options.cValue
 	var p *C.char
-	ogrErr := OGRErr(C.OSRExportToWktEx(sr.cValue, &p, &cOptions[0]))
-	defer C.CPLFree(unsafe.Pointer(p))
+	ogrErr := OGRErr(C.OSRExportToWktEx(sr.cValue, &p, cOptions))
+	defer CPLFree(unsafe.Pointer(p))
 	result = C.GoString(p)
 	status = ogrErr
 	return
 }
 
-func (sr OGRSpatialReference) ExportToWktEx(options []string) (result string, err error) {
+func (sr OGRSpatialReference) ExportToWktEx(options CSLConstList) (result string, err error) {
 	var status OGRErr
 	result, status = osrExportToWktEx(sr, options)
 	err = ogrError(status)
@@ -1154,7 +932,7 @@ func (sr OGRSpatialReference) ExportToWktEx(options []string) (result string, er
 func osrExportToPrettyWkt(sr OGRSpatialReference, simplify int) (result string, status OGRErr) {
 	var p *C.char
 	ogrErr := OGRErr(C.OSRExportToPrettyWkt(sr.cValue, &p, C.int(simplify)))
-	defer C.CPLFree(unsafe.Pointer(p))
+	defer CPLFree(unsafe.Pointer(p))
 	result = C.GoString(p)
 	status = ogrErr
 	return
@@ -1167,22 +945,17 @@ func (sr OGRSpatialReference) ExportToPrettyWkt(simplify int) (result string, er
 	return
 }
 
-func osrExportToPROJJSON(sr OGRSpatialReference, options []string) (result string, status OGRErr) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
+func osrExportToPROJJSON(sr OGRSpatialReference, options CSLConstList) (result string, status OGRErr) {
+	cOptions := options.cValue
 	var p *C.char
-	ogrErr := OGRErr(C.OSRExportToPROJJSON(sr.cValue, &p, &cOptions[0]))
-	defer C.CPLFree(unsafe.Pointer(p))
+	ogrErr := OGRErr(C.OSRExportToPROJJSON(sr.cValue, &p, cOptions))
+	defer CPLFree(unsafe.Pointer(p))
 	result = C.GoString(p)
 	status = ogrErr
 	return
 }
 
-func (sr OGRSpatialReference) ExportToPROJJSON(options []string) (result string, err error) {
+func (sr OGRSpatialReference) ExportToPROJJSON(options CSLConstList) (result string, err error) {
 	var status OGRErr
 	result, status = osrExportToPROJJSON(sr, options)
 	err = ogrError(status)
@@ -1192,7 +965,7 @@ func (sr OGRSpatialReference) ExportToPROJJSON(options []string) (result string,
 func osrExportToProj4(sr OGRSpatialReference) (result string, status OGRErr) {
 	var p *C.char
 	ogrErr := OGRErr(C.OSRExportToProj4(sr.cValue, &p))
-	defer C.CPLFree(unsafe.Pointer(p))
+	defer CPLFree(unsafe.Pointer(p))
 	result = C.GoString(p)
 	status = ogrErr
 	return
@@ -1209,9 +982,9 @@ func osrExportToPCI(sr OGRSpatialReference) (proj, units string, params []float6
 	var cProj, cUnits *C.char
 	var cParams *C.double
 	ogrErr := OGRErr(C.OSRExportToPCI(sr.cValue, &cProj, &cUnits, &cParams))
-	defer C.CPLFree(unsafe.Pointer(cProj))
-	defer C.CPLFree(unsafe.Pointer(cUnits))
-	defer C.CPLFree(unsafe.Pointer(cParams))
+	defer CPLFree(unsafe.Pointer(cProj))
+	defer CPLFree(unsafe.Pointer(cUnits))
+	defer CPLFree(unsafe.Pointer(cParams))
 	proj = C.GoString(cProj)
 	units = C.GoString(cUnits)
 	const nPCIParams = 17
@@ -1234,7 +1007,7 @@ func osrExportToUSGS(sr OGRSpatialReference) (projSys, zone int, params []float6
 	var cProjSys, cZone, cDatum C.long
 	var cParams *C.double
 	ogrErr := OGRErr(C.OSRExportToUSGS(sr.cValue, &cProjSys, &cZone, &cParams, &cDatum))
-	defer C.CPLFree(unsafe.Pointer(cParams))
+	defer CPLFree(unsafe.Pointer(cParams))
 	projSys = int(cProjSys)
 	zone = int(cZone)
 	datum = int(cDatum)
@@ -1262,7 +1035,7 @@ func osrExportToXML(sr OGRSpatialReference, dialect string) (result string, stat
 	}
 	var p *C.char
 	ogrErr := OGRErr(C.OSRExportToXML(sr.cValue, &p, cs))
-	defer C.CPLFree(unsafe.Pointer(p))
+	defer CPLFree(unsafe.Pointer(p))
 	result = C.GoString(p)
 	status = ogrErr
 	return
@@ -1302,7 +1075,7 @@ func (sr OGRSpatialReference) ExportToPanorama() (projSys, datum, ellipsoid, zon
 func osrExportToMICoordSys(sr OGRSpatialReference) (result string, status OGRErr) {
 	var p *C.char
 	ogrErr := OGRErr(C.OSRExportToMICoordSys(sr.cValue, &p))
-	defer C.CPLFree(unsafe.Pointer(p))
+	defer CPLFree(unsafe.Pointer(p))
 	result = C.GoString(p)
 	status = ogrErr
 	return
@@ -1334,34 +1107,22 @@ func (sr OGRSpatialReference) ExportToERM() (proj, datum, units string, err erro
 	return
 }
 
-func osrExportToCF1(sr OGRSpatialReference, options []string) (gridMappingName string, keyValues []string, units string, status OGRErr) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
+func osrExportToCF1(sr OGRSpatialReference, options CSLConstList) (gridMappingName string, keyValues CSLConstList, units string, status OGRErr) {
+	cOptions := options.cValue
 	var cGridMappingName *C.char
 	var cKeyValues **C.char
 	var cUnits *C.char
-	ogrErr := OGRErr(C.OSRExportToCF1(sr.cValue, &cGridMappingName, &cKeyValues, &cUnits, &cOptions[0]))
-	defer C.CPLFree(unsafe.Pointer(cGridMappingName))
-	defer C.CSLDestroy(cKeyValues)
-	defer C.CPLFree(unsafe.Pointer(cUnits))
+	ogrErr := OGRErr(C.OSRExportToCF1(sr.cValue, &cGridMappingName, &cKeyValues, &cUnits, cOptions))
+	defer CPLFree(unsafe.Pointer(cGridMappingName))
+	defer CPLFree(unsafe.Pointer(cUnits))
 	gridMappingName = C.GoString(cGridMappingName)
 	units = C.GoString(cUnits)
-	for i := 0; ; i++ {
-		p := C.CSLGetField(cKeyValues, C.int(i))
-		if p == nil {
-			break
-		}
-		keyValues = append(keyValues, C.GoString(p))
-	}
+	keyValues = cslConstList(cKeyValues)
 	status = ogrErr
 	return
 }
 
-func (sr OGRSpatialReference) ExportToCF1(options []string) (gridMappingName string, keyValues []string, units string, err error) {
+func (sr OGRSpatialReference) ExportToCF1(options CSLConstList) (gridMappingName string, keyValues CSLConstList, units string, err error) {
 	var status OGRErr
 	gridMappingName, keyValues, units, status = osrExportToCF1(sr, options)
 	err = ogrError(status)
@@ -1398,20 +1159,15 @@ func (sr OGRSpatialReference) StripVertical() (err error) {
 	return
 }
 
-func osrConvertToOtherProjection(sr OGRSpatialReference, targetProjection string, options []string) (result OGRSpatialReference) {
+func osrConvertToOtherProjection(sr OGRSpatialReference, targetProjection string, options CSLConstList) (result OGRSpatialReference) {
 	cs := C.CString(targetProjection)
 	defer C.free(unsafe.Pointer(cs))
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	result = OGRSpatialReference{cValue: C.OSRConvertToOtherProjection(sr.cValue, cs, &cOptions[0])}
+	cOptions := options.cValue
+	result = OGRSpatialReference{cValue: C.OSRConvertToOtherProjection(sr.cValue, cs, cOptions)}
 	return
 }
 
-func (sr OGRSpatialReference) ConvertToOtherProjection(targetProjection string, options []string) (result OGRSpatialReference, err error) {
+func (sr OGRSpatialReference) ConvertToOtherProjection(targetProjection string, options CSLConstList) (result OGRSpatialReference, err error) {
 	result = osrConvertToOtherProjection(sr, targetProjection, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -1695,18 +1451,13 @@ func (sr OGRSpatialReference) IsSame(other OGRSpatialReference) (result bool) {
 	return
 }
 
-func osrIsSameEx(sr, other OGRSpatialReference, options []string) (result bool) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	result = C.OSRIsSameEx(sr.cValue, other.cValue, &cOptions[0]) != 0
+func osrIsSameEx(sr, other OGRSpatialReference, options CSLConstList) (result bool) {
+	cOptions := options.cValue
+	result = C.OSRIsSameEx(sr.cValue, other.cValue, cOptions) != 0
 	return
 }
 
-func (sr OGRSpatialReference) IsSameEx(other OGRSpatialReference, options []string) (result bool) {
+func (sr OGRSpatialReference) IsSameEx(other OGRSpatialReference, options CSLConstList) (result bool) {
 	result = osrIsSameEx(sr, other, options)
 	return
 }
@@ -1789,20 +1540,15 @@ func (sr OGRSpatialReference) SetFromUserInput(definition string) (err error) {
 	return
 }
 
-func osrSetFromUserInputEx(sr OGRSpatialReference, definition string, options []string) (result OGRErr) {
+func osrSetFromUserInputEx(sr OGRSpatialReference, definition string, options CSLConstList) (result OGRErr) {
 	cs := C.CString(definition)
 	defer C.free(unsafe.Pointer(cs))
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
-	result = OGRErr(C.OSRSetFromUserInputEx(sr.cValue, cs, &cOptions[0]))
+	cOptions := options.cValue
+	result = OGRErr(C.OSRSetFromUserInputEx(sr.cValue, cs, cOptions))
 	return
 }
 
-func (sr OGRSpatialReference) SetFromUserInputEx(definition string, options []string) (err error) {
+func (sr OGRSpatialReference) SetFromUserInputEx(definition string, options CSLConstList) (err error) {
 	err = ogrError(osrSetFromUserInputEx(sr, definition, options))
 	return
 }
@@ -2169,16 +1915,11 @@ func (sr OGRSpatialReference) AutoIdentifyEPSG() (err error) {
 	return
 }
 
-func osrFindMatches(sr OGRSpatialReference, options []string, count *int, matchConfidence *[]int) (result OGRSpatialReferences) {
-	cOptions := make([]*C.char, len(options)+1)
-	for i, o := range options {
-		cOptions[i] = C.CString(o)
-		defer C.free(unsafe.Pointer(cOptions[i]))
-	}
-	cOptions[len(options)] = nil
+func osrFindMatches(sr OGRSpatialReference, options CSLConstList, count *int, matchConfidence *[]int) (result OGRSpatialReferences) {
+	cOptions := options.cValue
 	var n C.int
 	var conf *C.int
-	result = OGRSpatialReferences{cValue: C.OSRFindMatches(sr.cValue, &cOptions[0], &n, &conf)}
+	result = OGRSpatialReferences{cValue: C.OSRFindMatches(sr.cValue, cOptions, &n, &conf)}
 	if count != nil {
 		*count = int(n)
 	}
@@ -2191,12 +1932,12 @@ func osrFindMatches(sr OGRSpatialReference, options []string, count *int, matchC
 			}
 			*matchConfidence = mc
 		}
-		C.CPLFree(unsafe.Pointer(conf))
+		CPLFree(unsafe.Pointer(conf))
 	}
 	return
 }
 
-func (sr OGRSpatialReference) FindMatches(options []string) (result []OGRSpatialReference, matchConfidence []int) {
+func (sr OGRSpatialReference) FindMatches(options CSLConstList) (result []OGRSpatialReference, matchConfidence []int) {
 	var count int
 	list := osrFindMatches(sr, options, &count, &matchConfidence)
 	if list.cValue == nil || count == 0 {
@@ -2977,23 +2718,13 @@ func OSRDestroyCRSInfoList(list OSRCRSInfos) {
 	osrDestroyCRSInfoList(list)
 }
 
-func osrGetAuthorityListFromDatabase() (result []string) {
+func osrGetAuthorityListFromDatabase() (result CSLConstList) {
 	raw := C.OSRGetAuthorityListFromDatabase()
-	if raw == nil {
-		return
-	}
-	defer C.CSLDestroy(raw)
-	for i := 0; ; i++ {
-		p := C.CSLGetField(raw, C.int(i))
-		if p == nil {
-			break
-		}
-		result = append(result, C.GoString(p))
-	}
+	result = cslConstList(raw)
 	return
 }
 
-func OSRGetAuthorityListFromDatabase() (result []string) {
+func OSRGetAuthorityListFromDatabase() (result CSLConstList) {
 	result = osrGetAuthorityListFromDatabase()
 	return
 }

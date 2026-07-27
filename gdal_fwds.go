@@ -1,7 +1,7 @@
 package gdal
 
 /*
-#include "gdal_fwd.h"
+#include "gdal_fwd_basic_preamble.h"
 */
 import "C"
 

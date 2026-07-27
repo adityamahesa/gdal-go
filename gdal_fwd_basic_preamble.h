@@ -1,0 +1,6 @@
+#ifndef GDAL_GO_GDAL_FWD_BASIC_PREAMBLE_H
+#define GDAL_GO_GDAL_FWD_BASIC_PREAMBLE_H
+
+#include "gdal_fwd.h"
+
+#endif /* GDAL_GO_GDAL_FWD_BASIC_PREAMBLE_H */

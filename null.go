@@ -5,7 +5,16 @@ import "unsafe"
 // NullPointer is the nil raw pointer sentinel.
 var NullPointer unsafe.Pointer = nil
 
+// NullCSLConstList is the nil (empty) string-list sentinel.
+var NullCSLConstList CSLConstList = CSLConstList{
+	cValue: nil,
+}
+
 var NullCPLErrorHandler CPLErrorHandler = CPLErrorHandler{
+	cValue: nil,
+}
+
+var NullCPLLockFileHandle CPLLockFileHandle = CPLLockFileHandle{
 	cValue: nil,
 }
 
@@ -206,5 +215,21 @@ var NullOSRCRSInfos OSRCRSInfos = OSRCRSInfos{
 }
 
 var NullOSRCRSListParameters OSRCRSListParameters = OSRCRSListParameters{
+	cValue: nil,
+}
+
+var NullVSILFile VSILFile = VSILFile{
+	cValue: nil,
+}
+
+var NullVSIDir VSIDir = VSIDir{
+	cValue: nil,
+}
+
+var NullVSIDirEntry VSIDirEntry = VSIDirEntry{
+	cValue: nil,
+}
+
+var NullVSIFilesystemPluginCallbacksStruct VSIFilesystemPluginCallbacksStruct = VSIFilesystemPluginCallbacksStruct{
 	cValue: nil,
 }

@@ -1,11 +1,7 @@
 package gdal
 
 /*
-#include "cpl_progress.h"
-
-static GDALProgressFunc gdalDummyProgressFn()   { return GDALDummyProgress; }
-static GDALProgressFunc gdalTermProgressFn()    { return GDALTermProgress; }
-static GDALProgressFunc gdalScaledProgressFn()  { return GDALScaledProgress; }
+#include "cpl_progress_preamble.h"
 */
 import "C"
 import "unsafe"

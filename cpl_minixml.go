@@ -1,8 +1,7 @@
 package gdal
 
 /*
-#include "cpl_minixml.h"
-#include "cpl_conv.h" // TODO: implement cpl_conv.go
+#include "cpl_minixml_preamble.h"
 */
 import "C"
 import "unsafe"
@@ -108,7 +107,7 @@ func (n CPLXMLNode) CreateNode(eType CPLXMLNodeType, text string) (result CPLXML
 
 func cplSerializeXMLTree(node CPLXMLNode) (result string) {
 	raw := C.CPLSerializeXMLTree(node.cValue)
-	defer C.CPLFree(unsafe.Pointer(raw))
+	defer vsiFree(unsafe.Pointer(raw))
 	result = C.GoString(raw)
 	return
 }
