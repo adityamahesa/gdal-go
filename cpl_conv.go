@@ -20,17 +20,9 @@ func cplVerifyConfiguration() {
 	C.CPLVerifyConfiguration()
 }
 
-func CPLVerifyConfiguration() {
-	cplVerifyConfiguration()
-}
-
 func cplIsDebugEnabled() (result bool) {
 	result = bool(C.CPLIsDebugEnabled())
 	return
-}
-
-func CPLIsDebugEnabled() (result bool) {
-	return cplIsDebugEnabled()
 }
 
 func cplGetConfigOption(key, dflt string) (result string) {
@@ -42,10 +34,6 @@ func cplGetConfigOption(key, dflt string) (result string) {
 	return
 }
 
-func CPLGetConfigOption(key, dflt string) (result string) {
-	return cplGetConfigOption(key, dflt)
-}
-
 func cplGetThreadLocalConfigOption(key, dflt string) (result string) {
 	cKey := C.CString(key)
 	defer C.free(unsafe.Pointer(cKey))
@@ -53,10 +41,6 @@ func cplGetThreadLocalConfigOption(key, dflt string) (result string) {
 	defer C.free(unsafe.Pointer(cDflt))
 	result = C.GoString(C.CPLGetThreadLocalConfigOption(cKey, cDflt))
 	return
-}
-
-func CPLGetThreadLocalConfigOption(key, dflt string) (result string) {
-	return cplGetThreadLocalConfigOption(key, dflt)
 }
 
 func cplGetGlobalConfigOption(key, dflt string) (result string) {
@@ -68,20 +52,12 @@ func cplGetGlobalConfigOption(key, dflt string) (result string) {
 	return
 }
 
-func CPLGetGlobalConfigOption(key, dflt string) (result string) {
-	return cplGetGlobalConfigOption(key, dflt)
-}
-
 func cplSetConfigOption(key, value string) {
 	cKey := C.CString(key)
 	defer C.free(unsafe.Pointer(cKey))
 	cValue := C.CString(value)
 	defer C.free(unsafe.Pointer(cValue))
 	C.CPLSetConfigOption(cKey, cValue)
-}
-
-func CPLSetConfigOption(key, value string) {
-	cplSetConfigOption(key, value)
 }
 
 func cplSetThreadLocalConfigOption(key, value string) {
@@ -92,10 +68,6 @@ func cplSetThreadLocalConfigOption(key, value string) {
 	C.CPLSetThreadLocalConfigOption(cKey, cValue)
 }
 
-func CPLSetThreadLocalConfigOption(key, value string) {
-	cplSetThreadLocalConfigOption(key, value)
-}
-
 func cplDeclareKnownConfigOption(key, definition string) {
 	cKey := C.CString(key)
 	defer C.free(unsafe.Pointer(cKey))
@@ -104,20 +76,10 @@ func cplDeclareKnownConfigOption(key, definition string) {
 	C.CPLDeclareKnownConfigOption(cKey, cDefinition)
 }
 
-func CPLDeclareKnownConfigOption(key, definition string) {
-	cplDeclareKnownConfigOption(key, definition)
-}
-
 func cplGetKnownConfigOptions() (result CSLConstList) {
 	raw := C.CPLGetKnownConfigOptions()
 	result = cslConstList(raw)
 	return
-}
-
-// CPLGetKnownConfigOptions returns an owned list of known config options; the
-// caller must Destroy it.
-func CPLGetKnownConfigOptions() (result CSLConstList) {
-	return cplGetKnownConfigOptions()
 }
 
 // CPLSetConfigOptionSubscriber (a C function-pointer typedef) and
@@ -127,16 +89,8 @@ func cplUnsubscribeToSetConfigOption(subscriberId int) {
 	C.CPLUnsubscribeToSetConfigOption(C.int(subscriberId))
 }
 
-func CPLUnsubscribeToSetConfigOption(subscriberId int) {
-	cplUnsubscribeToSetConfigOption(subscriberId)
-}
-
 func cplFreeConfig() {
 	C.CPLFreeConfig()
-}
-
-func CPLFreeConfig() {
-	cplFreeConfig()
 }
 
 func cplGetConfigOptions() (result CSLConstList) {
@@ -145,18 +99,8 @@ func cplGetConfigOptions() (result CSLConstList) {
 	return
 }
 
-// CPLGetConfigOptions returns an owned list of the config options; the caller
-// must Destroy it.
-func CPLGetConfigOptions() (result CSLConstList) {
-	return cplGetConfigOptions()
-}
-
 func cplSetConfigOptions(options CSLConstList) {
 	C.CPLSetConfigOptions(options.cValue)
-}
-
-func CPLSetConfigOptions(options CSLConstList) {
-	cplSetConfigOptions(options)
 }
 
 func cplGetThreadLocalConfigOptions() (result CSLConstList) {
@@ -165,18 +109,8 @@ func cplGetThreadLocalConfigOptions() (result CSLConstList) {
 	return
 }
 
-// CPLGetThreadLocalConfigOptions returns an owned list of the thread-local
-// config options; the caller must Destroy it.
-func CPLGetThreadLocalConfigOptions() (result CSLConstList) {
-	return cplGetThreadLocalConfigOptions()
-}
-
 func cplSetThreadLocalConfigOptions(options CSLConstList) {
 	C.CPLSetThreadLocalConfigOptions(options.cValue)
-}
-
-func CPLSetThreadLocalConfigOptions(options CSLConstList) {
-	cplSetThreadLocalConfigOptions(options)
 }
 
 func cplLoadConfigOptionsFromFile(filename string, overrideEnvVars int) {
@@ -185,16 +119,8 @@ func cplLoadConfigOptionsFromFile(filename string, overrideEnvVars int) {
 	C.CPLLoadConfigOptionsFromFile(cFilename, C.int(overrideEnvVars))
 }
 
-func CPLLoadConfigOptionsFromFile(filename string, overrideEnvVars int) {
-	cplLoadConfigOptionsFromFile(filename, overrideEnvVars)
-}
-
 func cplLoadConfigOptionsFromPredefinedFiles() {
 	C.CPLLoadConfigOptionsFromPredefinedFiles()
-}
-
-func CPLLoadConfigOptionsFromPredefinedFiles() {
-	cplLoadConfigOptionsFromPredefinedFiles()
 }
 
 /* -------------------------------------------------------------------- */
@@ -206,26 +132,14 @@ func cplMalloc(size uint64) (result unsafe.Pointer) {
 	return
 }
 
-func CPLMalloc(size uint64) (result unsafe.Pointer) {
-	return cplMalloc(size)
-}
-
 func cplCalloc(count, size uint64) (result unsafe.Pointer) {
 	result = C.CPLCalloc(C.size_t(count), C.size_t(size))
 	return
 }
 
-func CPLCalloc(count, size uint64) (result unsafe.Pointer) {
-	return cplCalloc(count, size)
-}
-
 func cplRealloc(ptr unsafe.Pointer, size uint64) (result unsafe.Pointer) {
 	result = C.CPLRealloc(ptr, C.size_t(size))
 	return
-}
-
-func CPLRealloc(ptr unsafe.Pointer, size uint64) (result unsafe.Pointer) {
-	return cplRealloc(ptr, size)
 }
 
 func cplStrdup(s string) (result string) {
@@ -237,25 +151,12 @@ func cplStrdup(s string) (result string) {
 	return
 }
 
-func CPLStrdup(s string) (result string) {
-	return cplStrdup(s)
-}
-
 func cplStrlwr(s string) (result string) {
 	cs := C.CString(s)
 	defer C.free(unsafe.Pointer(cs))
 	C.CPLStrlwr(cs)
 	result = C.GoString(cs)
 	return
-}
-
-func CPLStrlwr(s string) (result string) {
-	return cplStrlwr(s)
-}
-
-// Alias of VSIFree()
-func CPLFree(ptr unsafe.Pointer) {
-	vsiFree(ptr)
 }
 
 /* -------------------------------------------------------------------- */
@@ -271,17 +172,9 @@ func cplReadLineL(file VSILFile) (result string) {
 	return
 }
 
-func (f VSILFile) ReadLineL() (result string) {
-	return cplReadLineL(f)
-}
-
 func cplReadLine2L(file VSILFile, maxCars int, options CSLConstList) (result string) {
 	result = C.GoString(C.CPLReadLine2L(file.cValue, C.int(maxCars), options.cValue))
 	return
-}
-
-func (f VSILFile) ReadLine2L(maxCars int, options CSLConstList) (result string) {
-	return cplReadLine2L(f, maxCars, options)
 }
 
 func cplReadLine3L(file VSILFile, maxCars int, options CSLConstList) (result string, bufLength int) {
@@ -289,10 +182,6 @@ func cplReadLine3L(file VSILFile, maxCars int, options CSLConstList) (result str
 	result = C.GoString(C.CPLReadLine3L(file.cValue, C.int(maxCars), &cBufLength, options.cValue))
 	bufLength = int(cBufLength)
 	return
-}
-
-func (f VSILFile) ReadLine3L(maxCars int, options CSLConstList) (result string, bufLength int) {
-	return cplReadLine3L(f, maxCars, options)
 }
 
 /* -------------------------------------------------------------------- */
@@ -306,19 +195,11 @@ func cplAtof(s string) (result float64) {
 	return
 }
 
-func CPLAtof(s string) (result float64) {
-	return cplAtof(s)
-}
-
 func cplAtofDelim(s string, point byte) (result float64) {
 	cs := C.CString(s)
 	defer C.free(unsafe.Pointer(cs))
 	result = float64(C.CPLAtofDelim(cs, C.char(point)))
 	return
-}
-
-func CPLAtofDelim(s string, point byte) (result float64) {
-	return cplAtofDelim(s, point)
 }
 
 func cplStrtod(s string) (result float64, rest string) {
@@ -330,10 +211,6 @@ func cplStrtod(s string) (result float64, rest string) {
 	return
 }
 
-func CPLStrtod(s string) (result float64, rest string) {
-	return cplStrtod(s)
-}
-
 func cplStrtodM(s string) (result float64, rest string) {
 	cs := C.CString(s)
 	defer C.free(unsafe.Pointer(cs))
@@ -341,10 +218,6 @@ func cplStrtodM(s string) (result float64, rest string) {
 	result = float64(C.CPLStrtodM(cs, &endptr))
 	rest = C.GoString(endptr)
 	return
-}
-
-func CPLStrtodM(s string) (result float64, rest string) {
-	return cplStrtodM(s)
 }
 
 func cplStrtodDelim(s string, point byte) (result float64, rest string) {
@@ -356,10 +229,6 @@ func cplStrtodDelim(s string, point byte) (result float64, rest string) {
 	return
 }
 
-func CPLStrtodDelim(s string, point byte) (result float64, rest string) {
-	return cplStrtodDelim(s, point)
-}
-
 func cplStrtof(s string) (result float32, rest string) {
 	cs := C.CString(s)
 	defer C.free(unsafe.Pointer(cs))
@@ -367,10 +236,6 @@ func cplStrtof(s string) (result float32, rest string) {
 	result = float32(C.CPLStrtof(cs, &endptr))
 	rest = C.GoString(endptr)
 	return
-}
-
-func CPLStrtof(s string) (result float32, rest string) {
-	return cplStrtof(s)
 }
 
 func cplStrtofDelim(s string, point byte) (result float32, rest string) {
@@ -382,10 +247,6 @@ func cplStrtofDelim(s string, point byte) (result float32, rest string) {
 	return
 }
 
-func CPLStrtofDelim(s string, point byte) (result float32, rest string) {
-	return cplStrtofDelim(s, point)
-}
-
 /* -------------------------------------------------------------------- */
 /*      Convert number to string.                                       */
 /* -------------------------------------------------------------------- */
@@ -395,10 +256,6 @@ func cplAtofM(s string) (result float64) {
 	defer C.free(unsafe.Pointer(cs))
 	result = float64(C.CPLAtofM(cs))
 	return
-}
-
-func CPLAtofM(s string) (result float64) {
-	return cplAtofM(s)
 }
 
 /* -------------------------------------------------------------------- */
@@ -414,19 +271,11 @@ func cplScanString(s string, maxLength, skipLeadingSpaces, stripQuotes int) (res
 	return
 }
 
-func CPLScanString(s string, maxLength, skipLeadingSpaces, stripQuotes int) (result string) {
-	return cplScanString(s, maxLength, skipLeadingSpaces, stripQuotes)
-}
-
 func cplScanDouble(s string, length int) (result float64) {
 	cs := C.CString(s)
 	defer C.free(unsafe.Pointer(cs))
 	result = float64(C.CPLScanDouble(cs, C.int(length)))
 	return
-}
-
-func CPLScanDouble(s string, length int) (result float64) {
-	return cplScanDouble(s, length)
 }
 
 func cplScanLong(s string, length int) (result int64) {
@@ -436,19 +285,11 @@ func cplScanLong(s string, length int) (result int64) {
 	return
 }
 
-func CPLScanLong(s string, length int) (result int64) {
-	return cplScanLong(s, length)
-}
-
 func cplScanULong(s string, length int) (result uint64) {
 	cs := C.CString(s)
 	defer C.free(unsafe.Pointer(cs))
 	result = uint64(C.CPLScanULong(cs, C.int(length)))
 	return
-}
-
-func CPLScanULong(s string, length int) (result uint64) {
-	return cplScanULong(s, length)
 }
 
 func cplScanUIntBig(s string, length int) (result GUIntBig) {
@@ -458,19 +299,11 @@ func cplScanUIntBig(s string, length int) (result GUIntBig) {
 	return
 }
 
-func CPLScanUIntBig(s string, length int) (result GUIntBig) {
-	return cplScanUIntBig(s, length)
-}
-
 func cplAtoGIntBig(s string) (result GIntBig) {
 	cs := C.CString(s)
 	defer C.free(unsafe.Pointer(cs))
 	result = GIntBig(C.CPLAtoGIntBig(cs))
 	return
-}
-
-func CPLAtoGIntBig(s string) (result GIntBig) {
-	return cplAtoGIntBig(s)
 }
 
 func cplAtoGIntBigEx(s string, warn int) (result GIntBig, overflow int) {
@@ -482,19 +315,11 @@ func cplAtoGIntBigEx(s string, warn int) (result GIntBig, overflow int) {
 	return
 }
 
-func CPLAtoGIntBigEx(s string, warn int) (result GIntBig, overflow int) {
-	return cplAtoGIntBigEx(s, warn)
-}
-
 func cplScanPointer(s string, length int) (result unsafe.Pointer) {
 	cs := C.CString(s)
 	defer C.free(unsafe.Pointer(cs))
 	result = C.CPLScanPointer(cs, C.int(length))
 	return
-}
-
-func CPLScanPointer(s string, length int) (result unsafe.Pointer) {
-	return cplScanPointer(s, length)
 }
 
 /* -------------------------------------------------------------------- */
@@ -513,10 +338,6 @@ func cplPrintString(s string, maxLen int) (result string) {
 	return
 }
 
-func CPLPrintString(s string, maxLen int) (result string) {
-	return cplPrintString(s, maxLen)
-}
-
 func cplPrintStringFill(s string, maxLen int) (result string) {
 	if maxLen <= 0 {
 		return
@@ -529,10 +350,6 @@ func cplPrintStringFill(s string, maxLen int) (result string) {
 	return
 }
 
-func CPLPrintStringFill(s string, maxLen int) (result string) {
-	return cplPrintStringFill(s, maxLen)
-}
-
 func cplPrintInt32(value GInt32, maxLen int) (result string) {
 	if maxLen <= 0 {
 		return
@@ -543,10 +360,6 @@ func cplPrintInt32(value GInt32, maxLen int) (result string) {
 	return
 }
 
-func CPLPrintInt32(value GInt32, maxLen int) (result string) {
-	return cplPrintInt32(value, maxLen)
-}
-
 func cplPrintUIntBig(value GUIntBig, maxLen int) (result string) {
 	if maxLen <= 0 {
 		return
@@ -555,10 +368,6 @@ func cplPrintUIntBig(value GUIntBig, maxLen int) (result string) {
 	n := int(C.CPLPrintUIntBig((*C.char)(unsafe.Pointer(&buf[0])), C.GUIntBig(value), C.int(maxLen)))
 	result = string(buf[:n])
 	return
-}
-
-func CPLPrintUIntBig(value GUIntBig, maxLen int) (result string) {
-	return cplPrintUIntBig(value, maxLen)
 }
 
 func cplPrintDouble(format string, value float64, locale string) (result string) {
@@ -573,10 +382,6 @@ func cplPrintDouble(format string, value float64, locale string) (result string)
 	return
 }
 
-func CPLPrintDouble(format string, value float64, locale string) (result string) {
-	return cplPrintDouble(format, value, locale)
-}
-
 // CPLPrintTime operates on a "const struct tm *"; deferred pending a struct tm wrapper.
 
 func cplPrintPointer(ptr unsafe.Pointer, maxLen int) (result string) {
@@ -587,10 +392,6 @@ func cplPrintPointer(ptr unsafe.Pointer, maxLen int) (result string) {
 	n := int(C.CPLPrintPointer((*C.char)(unsafe.Pointer(&buf[0])), ptr, C.int(maxLen)))
 	result = string(buf[:n])
 	return
-}
-
-func CPLPrintPointer(ptr unsafe.Pointer, maxLen int) (result string) {
-	return cplPrintPointer(ptr, maxLen)
 }
 
 // CPLFormatReadableFileSize returns a std::string and is a C++-only cover; it is skipped.
@@ -606,10 +407,6 @@ func cplGetSymbol(library, symbolName string) (result unsafe.Pointer) {
 	defer C.free(unsafe.Pointer(cSymbolName))
 	result = C.CPLGetSymbol(cLibrary, cSymbolName)
 	return
-}
-
-func CPLGetSymbol(library, symbolName string) (result unsafe.Pointer) {
-	return cplGetSymbol(library, symbolName)
 }
 
 /* -------------------------------------------------------------------- */
@@ -630,10 +427,6 @@ func cplGetExecPath(maxLength int) (result string, ok bool) {
 	return
 }
 
-func CPLGetExecPath(maxLength int) (result string, ok bool) {
-	return cplGetExecPath(maxLength)
-}
-
 /* -------------------------------------------------------------------- */
 /*      Filename handling functions.                                    */
 /* -------------------------------------------------------------------- */
@@ -645,19 +438,11 @@ func cplGetPath(path string) (result string) {
 	return
 }
 
-func CPLGetPath(path string) (result string) {
-	return cplGetPath(path)
-}
-
 func cplGetDirname(path string) (result string) {
 	cPath := C.CString(path)
 	defer C.free(unsafe.Pointer(cPath))
 	result = C.GoString(C.CPLGetDirname(cPath))
 	return
-}
-
-func CPLGetDirname(path string) (result string) {
-	return cplGetDirname(path)
 }
 
 func cplGetBasename(path string) (result string) {
@@ -667,19 +452,11 @@ func cplGetBasename(path string) (result string) {
 	return
 }
 
-func CPLGetBasename(path string) (result string) {
-	return cplGetBasename(path)
-}
-
 func cplGetExtension(path string) (result string) {
 	cPath := C.CString(path)
 	defer C.free(unsafe.Pointer(cPath))
 	result = C.GoString(C.CPLGetExtension(cPath))
 	return
-}
-
-func CPLGetExtension(path string) (result string) {
-	return cplGetExtension(path)
 }
 
 func cplFormFilename(path, basename, extension string) (result string) {
@@ -693,10 +470,6 @@ func cplFormFilename(path, basename, extension string) (result string) {
 	return
 }
 
-func CPLFormFilename(path, basename, extension string) (result string) {
-	return cplFormFilename(path, basename, extension)
-}
-
 func cplFormCIFilename(path, basename, extension string) (result string) {
 	cPath := C.CString(path)
 	defer C.free(unsafe.Pointer(cPath))
@@ -708,10 +481,6 @@ func cplFormCIFilename(path, basename, extension string) (result string) {
 	return
 }
 
-func CPLFormCIFilename(path, basename, extension string) (result string) {
-	return cplFormCIFilename(path, basename, extension)
-}
-
 func cplResetExtension(path, extension string) (result string) {
 	cPath := C.CString(path)
 	defer C.free(unsafe.Pointer(cPath))
@@ -719,10 +488,6 @@ func cplResetExtension(path, extension string) (result string) {
 	defer C.free(unsafe.Pointer(cExtension))
 	result = C.GoString(C.CPLResetExtension(cPath, cExtension))
 	return
-}
-
-func CPLResetExtension(path, extension string) (result string) {
-	return cplResetExtension(path, extension)
 }
 
 func cplProjectRelativeFilename(projectDir, secondaryFilename string) (result string) {
@@ -734,19 +499,11 @@ func cplProjectRelativeFilename(projectDir, secondaryFilename string) (result st
 	return
 }
 
-func CPLProjectRelativeFilename(projectDir, secondaryFilename string) (result string) {
-	return cplProjectRelativeFilename(projectDir, secondaryFilename)
-}
-
 func cplCleanTrailingSlash(path string) (result string) {
 	cPath := C.CString(path)
 	defer C.free(unsafe.Pointer(cPath))
 	result = C.GoString(C.CPLCleanTrailingSlash(cPath))
 	return
-}
-
-func CPLCleanTrailingSlash(path string) (result string) {
-	return cplCleanTrailingSlash(path)
 }
 
 func cplGenerateTempFilename(stem string) (result string) {
@@ -756,19 +513,11 @@ func cplGenerateTempFilename(stem string) (result string) {
 	return
 }
 
-func CPLGenerateTempFilename(stem string) (result string) {
-	return cplGenerateTempFilename(stem)
-}
-
 func cplExpandTilde(filename string) (result string) {
 	cFilename := C.CString(filename)
 	defer C.free(unsafe.Pointer(cFilename))
 	result = C.GoString(C.CPLExpandTilde(cFilename))
 	return
-}
-
-func CPLExpandTilde(filename string) (result string) {
-	return cplExpandTilde(filename)
 }
 
 func cplLaunderForFilename(name, outputPath string) (result string) {
@@ -780,19 +529,11 @@ func cplLaunderForFilename(name, outputPath string) (result string) {
 	return
 }
 
-func CPLLaunderForFilename(name, outputPath string) (result string) {
-	return cplLaunderForFilename(name, outputPath)
-}
-
 func cplGetCurrentDir() (result string) {
 	raw := C.CPLGetCurrentDir()
 	defer C.VSIFree(unsafe.Pointer(raw))
 	result = C.GoString(raw)
 	return
-}
-
-func CPLGetCurrentDir() (result string) {
-	return cplGetCurrentDir()
 }
 
 func cplGetFilename(path string) (result string) {
@@ -802,19 +543,11 @@ func cplGetFilename(path string) (result string) {
 	return
 }
 
-func CPLGetFilename(path string) (result string) {
-	return cplGetFilename(path)
-}
-
 func cplIsFilenameRelative(filename string) (result int) {
 	cFilename := C.CString(filename)
 	defer C.free(unsafe.Pointer(cFilename))
 	result = int(C.CPLIsFilenameRelative(cFilename))
 	return
-}
-
-func CPLIsFilenameRelative(filename string) (result int) {
-	return cplIsFilenameRelative(filename)
 }
 
 func cplExtractRelativePath(baseDir, target string) (result string, gotRelative int) {
@@ -828,10 +561,6 @@ func cplExtractRelativePath(baseDir, target string) (result string, gotRelative 
 	return
 }
 
-func CPLExtractRelativePath(baseDir, target string) (result string, gotRelative int) {
-	return cplExtractRelativePath(baseDir, target)
-}
-
 func cplCorrespondingPaths(oldFilename, newFilename string, fileList CSLConstList) (result CSLConstList) {
 	cOld := C.CString(oldFilename)
 	defer C.free(unsafe.Pointer(cOld))
@@ -842,12 +571,6 @@ func cplCorrespondingPaths(oldFilename, newFilename string, fileList CSLConstLis
 	return
 }
 
-// CPLCorrespondingPaths returns an owned list of renamed paths; the caller must
-// Destroy it.
-func CPLCorrespondingPaths(oldFilename, newFilename string, fileList CSLConstList) (result CSLConstList) {
-	return cplCorrespondingPaths(oldFilename, newFilename, fileList)
-}
-
 func cplCheckForFile(filename string, siblings CSLConstList) (result int, corrected string) {
 	cFilename := C.CString(filename)
 	defer C.free(unsafe.Pointer(cFilename))
@@ -856,17 +579,9 @@ func cplCheckForFile(filename string, siblings CSLConstList) (result int, correc
 	return
 }
 
-func CPLCheckForFile(filename string, siblings CSLConstList) (result int, corrected string) {
-	return cplCheckForFile(filename, siblings)
-}
-
 func cplGetHomeDir() (result string) {
 	result = C.GoString(C.CPLGetHomeDir())
 	return
-}
-
-func CPLGetHomeDir() (result string) {
-	return cplGetHomeDir()
 }
 
 // The extern "C++" ...Safe variants (CPLGetPathSafe, CPLGetDirnameSafe, etc.)
@@ -879,19 +594,11 @@ func cplHasPathTraversal(filename string) (result bool) {
 	return
 }
 
-func CPLHasPathTraversal(filename string) (result bool) {
-	return cplHasPathTraversal(filename)
-}
-
 func cplHasUnbalancedPathTraversal(filename string) (result bool) {
 	cFilename := C.CString(filename)
 	defer C.free(unsafe.Pointer(cFilename))
 	result = bool(C.CPLHasUnbalancedPathTraversal(cFilename))
 	return
-}
-
-func CPLHasUnbalancedPathTraversal(filename string) (result bool) {
-	return cplHasUnbalancedPathTraversal(filename)
 }
 
 /* -------------------------------------------------------------------- */
@@ -910,10 +617,6 @@ func cplFindFile(class, basename string) (result string) {
 	return
 }
 
-func CPLFindFile(class, basename string) (result string) {
-	return cplFindFile(class, basename)
-}
-
 func cplDefaultFindFile(class, basename string) (result string) {
 	cClass := C.CString(class)
 	defer C.free(unsafe.Pointer(cClass))
@@ -923,34 +626,18 @@ func cplDefaultFindFile(class, basename string) (result string) {
 	return
 }
 
-func CPLDefaultFindFile(class, basename string) (result string) {
-	return cplDefaultFindFile(class, basename)
-}
-
 func cplPushFinderLocation(location string) {
 	cLocation := C.CString(location)
 	defer C.free(unsafe.Pointer(cLocation))
 	C.CPLPushFinderLocation(cLocation)
 }
 
-func CPLPushFinderLocation(location string) {
-	cplPushFinderLocation(location)
-}
-
 func cplPopFinderLocation() {
 	C.CPLPopFinderLocation()
 }
 
-func CPLPopFinderLocation() {
-	cplPopFinderLocation()
-}
-
 func cplFinderClean() {
 	C.CPLFinderClean()
-}
-
-func CPLFinderClean() {
-	cplFinderClean()
 }
 
 /* -------------------------------------------------------------------- */
@@ -980,10 +667,6 @@ func cplDMSToDec(is string) (result float64) {
 	return
 }
 
-func CPLDMSToDec(is string) (result float64) {
-	return cplDMSToDec(is)
-}
-
 func cplDecToDMS(angle float64, axis string, precision int) (result string) {
 	cAxis := C.CString(axis)
 	defer C.free(unsafe.Pointer(cAxis))
@@ -991,26 +674,14 @@ func cplDecToDMS(angle float64, axis string, precision int) (result string) {
 	return
 }
 
-func CPLDecToDMS(angle float64, axis string, precision int) (result string) {
-	return cplDecToDMS(angle, axis, precision)
-}
-
 func cplPackedDMSToDec(packed float64) (result float64) {
 	result = float64(C.CPLPackedDMSToDec(C.double(packed)))
 	return
 }
 
-func CPLPackedDMSToDec(packed float64) (result float64) {
-	return cplPackedDMSToDec(packed)
-}
-
 func cplDecToPackedDMS(dec float64) (result float64) {
 	result = float64(C.CPLDecToPackedDMS(C.double(dec)))
 	return
-}
-
-func CPLDecToPackedDMS(dec float64) (result float64) {
-	return cplDecToPackedDMS(dec)
 }
 
 func cplStringToComplex(s string) (real, imag float64, ret CPLErr) {
@@ -1020,13 +691,6 @@ func cplStringToComplex(s string) (real, imag float64, ret CPLErr) {
 	ret = CPLErr(C.CPLStringToComplex(cs, &cReal, &cImag))
 	real = float64(cReal)
 	imag = float64(cImag)
-	return
-}
-
-func CPLStringToComplex(s string) (real, imag float64, err error) {
-	var ret CPLErr
-	real, imag, ret = cplStringToComplex(s)
-	err = cplErr(ret)
 	return
 }
 
@@ -1041,10 +705,6 @@ func cplUnlinkTree(path string) (result int) {
 	return
 }
 
-func CPLUnlinkTree(path string) (result int) {
-	return cplUnlinkTree(path)
-}
-
 func cplCopyFile(newPath, oldPath string) (result int) {
 	cNew := C.CString(newPath)
 	defer C.free(unsafe.Pointer(cNew))
@@ -1052,10 +712,6 @@ func cplCopyFile(newPath, oldPath string) (result int) {
 	defer C.free(unsafe.Pointer(cOld))
 	result = int(C.CPLCopyFile(cNew, cOld))
 	return
-}
-
-func CPLCopyFile(newPath, oldPath string) (result int) {
-	return cplCopyFile(newPath, oldPath)
 }
 
 func cplCopyTree(newPath, oldPath string) (result int) {
@@ -1067,10 +723,6 @@ func cplCopyTree(newPath, oldPath string) (result int) {
 	return
 }
 
-func CPLCopyTree(newPath, oldPath string) (result int) {
-	return cplCopyTree(newPath, oldPath)
-}
-
 func cplMoveFile(newPath, oldPath string) (result int) {
 	cNew := C.CString(newPath)
 	defer C.free(unsafe.Pointer(cNew))
@@ -1078,10 +730,6 @@ func cplMoveFile(newPath, oldPath string) (result int) {
 	defer C.free(unsafe.Pointer(cOld))
 	result = int(C.CPLMoveFile(cNew, cOld))
 	return
-}
-
-func CPLMoveFile(newPath, oldPath string) (result int) {
-	return cplMoveFile(newPath, oldPath)
 }
 
 func cplSymlink(oldPath, newPath string, options CSLConstList) (result int) {
@@ -1093,17 +741,9 @@ func cplSymlink(oldPath, newPath string, options CSLConstList) (result int) {
 	return
 }
 
-func CPLSymlink(oldPath, newPath string, options CSLConstList) (result int) {
-	return cplSymlink(oldPath, newPath, options)
-}
-
 func cplGetRemainingFileDescriptorCount() (result int) {
 	result = int(C.CPLGetRemainingFileDescriptorCount())
 	return
-}
-
-func CPLGetRemainingFileDescriptorCount() (result int) {
-	return cplGetRemainingFileDescriptorCount()
 }
 
 /* -------------------------------------------------------------------- */
@@ -1133,16 +773,8 @@ func cplLockFileEx(lockFileName string, options CSLConstList) (handle CPLLockFil
 	return
 }
 
-func CPLLockFileEx(lockFileName string, options CSLConstList) (handle CPLLockFileHandle, status CPLLockFileStatus) {
-	return cplLockFileEx(lockFileName, options)
-}
-
 func cplUnlockFileEx(handle CPLLockFileHandle) {
 	C.CPLUnlockFileEx(handle.cValue)
-}
-
-func (h CPLLockFileHandle) UnlockFileEx() {
-	cplUnlockFileEx(h)
 }
 
 /* -------------------------------------------------------------------- */
@@ -1158,14 +790,6 @@ func cplCreateZip(zipFilename string, options CSLConstList) (result unsafe.Point
 	return
 }
 
-func CPLCreateZip(zipFilename string, options CSLConstList) (result unsafe.Pointer, err error) {
-	result = cplCreateZip(zipFilename, options)
-	if result == nil {
-		err = lastError()
-	}
-	return
-}
-
 func cplCreateFileInZip(zip unsafe.Pointer, filename string, options CSLConstList) (result CPLErr) {
 	cFilename := C.CString(filename)
 	defer C.free(unsafe.Pointer(cFilename))
@@ -1173,26 +797,14 @@ func cplCreateFileInZip(zip unsafe.Pointer, filename string, options CSLConstLis
 	return
 }
 
-func CPLCreateFileInZip(zip unsafe.Pointer, filename string, options CSLConstList) (err error) {
-	return cplErr(cplCreateFileInZip(zip, filename, options))
-}
-
 func cplWriteFileInZip(zip unsafe.Pointer, buffer []byte) (result CPLErr) {
 	result = CPLErr(C.CPLWriteFileInZip(zip, cBytes(buffer), C.int(len(buffer))))
 	return
 }
 
-func CPLWriteFileInZip(zip unsafe.Pointer, buffer []byte) (err error) {
-	return cplErr(cplWriteFileInZip(zip, buffer))
-}
-
 func cplCloseFileInZip(zip unsafe.Pointer) (result CPLErr) {
 	result = CPLErr(C.CPLCloseFileInZip(zip))
 	return
-}
-
-func CPLCloseFileInZip(zip unsafe.Pointer) (err error) {
-	return cplErr(cplCloseFileInZip(zip))
 }
 
 func cplAddFileInZip(zip unsafe.Pointer, archiveFilename, inputFilename string, fpInput VSILFile, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
@@ -1204,17 +816,9 @@ func cplAddFileInZip(zip unsafe.Pointer, archiveFilename, inputFilename string, 
 	return
 }
 
-func CPLAddFileInZip(zip unsafe.Pointer, archiveFilename, inputFilename string, fpInput VSILFile, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
-	return cplErr(cplAddFileInZip(zip, archiveFilename, inputFilename, fpInput, options, progress, progressData))
-}
-
 func cplCloseZip(zip unsafe.Pointer) (result CPLErr) {
 	result = CPLErr(C.CPLCloseZip(zip))
 	return
-}
-
-func CPLCloseZip(zip unsafe.Pointer) (err error) {
-	return cplErr(cplCloseZip(zip))
 }
 
 /* -------------------------------------------------------------------- */
@@ -1232,10 +836,6 @@ func cplZLibDeflate(input []byte, level int) (result []byte) {
 	return
 }
 
-func CPLZLibDeflate(input []byte, level int) (result []byte) {
-	return cplZLibDeflate(input, level)
-}
-
 func cplZLibInflate(input []byte) (result []byte) {
 	var outBytes C.size_t
 	raw := C.CPLZLibInflate(cBytes(input), C.size_t(len(input)), nil, 0, &outBytes)
@@ -1247,10 +847,6 @@ func cplZLibInflate(input []byte) (result []byte) {
 	return
 }
 
-func CPLZLibInflate(input []byte) (result []byte) {
-	return cplZLibInflate(input)
-}
-
 func cplZLibInflateEx(input []byte, allowResizeOutptr bool) (result []byte) {
 	var outBytes C.size_t
 	raw := C.CPLZLibInflateEx(cBytes(input), C.size_t(len(input)), nil, 0, C.bool(allowResizeOutptr), &outBytes)
@@ -1260,10 +856,6 @@ func cplZLibInflateEx(input []byte, allowResizeOutptr bool) (result []byte) {
 	defer C.VSIFree(raw)
 	result = C.GoBytes(raw, C.int(outBytes))
 	return
-}
-
-func CPLZLibInflateEx(input []byte, allowResizeOutptr bool) (result []byte) {
-	return cplZLibInflateEx(input, allowResizeOutptr)
 }
 
 /* -------------------------------------------------------------------- */
@@ -1279,10 +871,6 @@ func cplValidateXML(xmlFilename, xsdFilename string, options CSLConstList) (resu
 	return
 }
 
-func CPLValidateXML(xmlFilename, xsdFilename string, options CSLConstList) (result int) {
-	return cplValidateXML(xmlFilename, xsdFilename, options)
-}
-
 /* -------------------------------------------------------------------- */
 /*      Locale handling.                                                */
 /* -------------------------------------------------------------------- */
@@ -1293,10 +881,6 @@ func CPLValidateXML(xmlFilename, xsdFilename string, options CSLConstList) (resu
 func cplIsPowerOfTwo(i uint) (result int) {
 	result = int(C.CPLIsPowerOfTwo(C.uint(i)))
 	return
-}
-
-func CPLIsPowerOfTwo(i uint) (result int) {
-	return cplIsPowerOfTwo(i)
 }
 
 /* -------------------------------------------------------------------- */

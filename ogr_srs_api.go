@@ -23,11 +23,6 @@ func osrAxisEnumToName(e OGRAxisOrientation) (result string) {
 	return
 }
 
-func (e OGRAxisOrientation) Name() (result string) {
-	result = osrAxisEnumToName(e)
-	return
-}
-
 // #endif  // ndef SWIG
 
 // /* ==================================================================== */
@@ -44,501 +39,501 @@ func (e OGRAxisOrientation) Name() (result string) {
 // #endif
 
 // /** WGS 84 geodetic (lat/long) WKT / EPSG:4326 with lat,long ordering */
-var SRSWKTWgs84LatLong = C.GoString(C._SRS_WKT_WGS84_LAT_LONG)
+var SRSWKTWgs84LatLong = C.GoString(C._SRS_WKT_WGS84_LAT_LONG())
 
 // /* ==================================================================== */
 // /*      Some "standard" strings.                                        */
 // /* ==================================================================== */
 
 // /** Albers_Conic_Equal_Area projection */
-var SRSPTAlbersConicEqualArea = C.GoString(C._SRS_PT_ALBERS_CONIC_EQUAL_AREA)
+var SRSPTAlbersConicEqualArea = C.GoString(C._SRS_PT_ALBERS_CONIC_EQUAL_AREA())
 
 // /** Azimuthal_Equidistant projection */
-var SRSPTAzimuthalEquidistant = C.GoString(C._SRS_PT_AZIMUTHAL_EQUIDISTANT)
+var SRSPTAzimuthalEquidistant = C.GoString(C._SRS_PT_AZIMUTHAL_EQUIDISTANT())
 
 // /** Cassini_Soldner projection */
-var SRSPTCassiniSoldner = C.GoString(C._SRS_PT_CASSINI_SOLDNER)
+var SRSPTCassiniSoldner = C.GoString(C._SRS_PT_CASSINI_SOLDNER())
 
 // /** Cylindrical_Equal_Area projection */
-var SRSPTCylindricalEqualArea = C.GoString(C._SRS_PT_CYLINDRICAL_EQUAL_AREA)
+var SRSPTCylindricalEqualArea = C.GoString(C._SRS_PT_CYLINDRICAL_EQUAL_AREA())
 
 // /** Cylindrical_Equal_Area projection */
-var SRSPTBonne = C.GoString(C._SRS_PT_BONNE)
+var SRSPTBonne = C.GoString(C._SRS_PT_BONNE())
 
 // /** Eckert_I projection */
-var SRSPTEckertI = C.GoString(C._SRS_PT_ECKERT_I)
+var SRSPTEckertI = C.GoString(C._SRS_PT_ECKERT_I())
 
 // /** Eckert_II projection */
-var SRSPTEckertII = C.GoString(C._SRS_PT_ECKERT_II)
+var SRSPTEckertII = C.GoString(C._SRS_PT_ECKERT_II())
 
 // /** Eckert_III projection */
-var SRSPTEckertIII = C.GoString(C._SRS_PT_ECKERT_III)
+var SRSPTEckertIII = C.GoString(C._SRS_PT_ECKERT_III())
 
 // /** Eckert_IV projection */
-var SRSPTEckertIV = C.GoString(C._SRS_PT_ECKERT_IV)
+var SRSPTEckertIV = C.GoString(C._SRS_PT_ECKERT_IV())
 
 // /** Eckert_V projection */
-var SRSPTEckertV = C.GoString(C._SRS_PT_ECKERT_V)
+var SRSPTEckertV = C.GoString(C._SRS_PT_ECKERT_V())
 
 // /** Eckert_VI projection */
-var SRSPTEckertVI = C.GoString(C._SRS_PT_ECKERT_VI)
+var SRSPTEckertVI = C.GoString(C._SRS_PT_ECKERT_VI())
 
 // /** Equidistant_Conic projection */
-var SRSPTEquidistantConic = C.GoString(C._SRS_PT_EQUIDISTANT_CONIC)
+var SRSPTEquidistantConic = C.GoString(C._SRS_PT_EQUIDISTANT_CONIC())
 
 // /** Equirectangular projection */
-var SRSPTEquirectangular = C.GoString(C._SRS_PT_EQUIRECTANGULAR)
+var SRSPTEquirectangular = C.GoString(C._SRS_PT_EQUIRECTANGULAR())
 
 // /** Gall_Stereographic projection */
-var SRSPTGallStereographic = C.GoString(C._SRS_PT_GALL_STEREOGRAPHIC)
+var SRSPTGallStereographic = C.GoString(C._SRS_PT_GALL_STEREOGRAPHIC())
 
 // /** Gauss_Schreiber_Transverse_Mercator projection */
-var SRSPTGaussschreibertmercator = C.GoString(C._SRS_PT_GAUSSSCHREIBERTMERCATOR)
+var SRSPTGaussschreibertmercator = C.GoString(C._SRS_PT_GAUSSSCHREIBERTMERCATOR())
 
 // /** Geostationary_Satellite projection */
-var SRSPTGeostationarySatellite = C.GoString(C._SRS_PT_GEOSTATIONARY_SATELLITE)
+var SRSPTGeostationarySatellite = C.GoString(C._SRS_PT_GEOSTATIONARY_SATELLITE())
 
 // /** Goode_Homolosine projection */
-var SRSPTGoodeHomolosine = C.GoString(C._SRS_PT_GOODE_HOMOLOSINE)
+var SRSPTGoodeHomolosine = C.GoString(C._SRS_PT_GOODE_HOMOLOSINE())
 
 // /** Interrupted_Goode_Homolosine projection */
-var SRSPTIgh = C.GoString(C._SRS_PT_IGH)
+var SRSPTIgh = C.GoString(C._SRS_PT_IGH())
 
 // /** Gnomonic projection */
-var SRSPTGnomonic = C.GoString(C._SRS_PT_GNOMONIC)
+var SRSPTGnomonic = C.GoString(C._SRS_PT_GNOMONIC())
 
 // /** Hotine_Oblique_Mercator_Azimuth_Center projection */
-var SRSPTHotineObliqueMercatorAzimuthCenter = C.GoString(C._SRS_PT_HOTINE_OBLIQUE_MERCATOR_AZIMUTH_CENTER)
+var SRSPTHotineObliqueMercatorAzimuthCenter = C.GoString(C._SRS_PT_HOTINE_OBLIQUE_MERCATOR_AZIMUTH_CENTER())
 
 // /** Hotine_Oblique_Mercator projection */
-var SRSPTHotineObliqueMercator = C.GoString(C._SRS_PT_HOTINE_OBLIQUE_MERCATOR)
+var SRSPTHotineObliqueMercator = C.GoString(C._SRS_PT_HOTINE_OBLIQUE_MERCATOR())
 
 // /** Hotine_Oblique_Mercator_Two_Point_Natural_Origin projection */
-var SRSPTHotineObliqueMercatorTwoPointNaturalOrigin = C.GoString(C._SRS_PT_HOTINE_OBLIQUE_MERCATOR_TWO_POINT_NATURAL_ORIGIN)
+var SRSPTHotineObliqueMercatorTwoPointNaturalOrigin = C.GoString(C._SRS_PT_HOTINE_OBLIQUE_MERCATOR_TWO_POINT_NATURAL_ORIGIN())
 
 // /** Laborde_Oblique_Mercator projection */
-var SRSPTLabardeObliqueMercator = C.GoString(C._SRS_PT_LABORDE_OBLIQUE_MERCATOR)
+var SRSPTLabardeObliqueMercator = C.GoString(C._SRS_PT_LABORDE_OBLIQUE_MERCATOR())
 
 // /** Lambert_Conformal_Conic_1SP projection */
-var SRSPTLambertConformalConic1SP = C.GoString(C._SRS_PT_LAMBERT_CONFORMAL_CONIC_1SP)
+var SRSPTLambertConformalConic1SP = C.GoString(C._SRS_PT_LAMBERT_CONFORMAL_CONIC_1SP())
 
 // /** Lambert_Conformal_Conic_2SP projection */
-var SRSPTLambertConformalConic2SP = C.GoString(C._SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP)
+var SRSPTLambertConformalConic2SP = C.GoString(C._SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP())
 
 // /** Lambert_Conformal_Conic_2SP_Belgium projection */
-var SRSPTLambertConformalConic2SPBelgium = C.GoString(C._SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP_BELGIUM)
+var SRSPTLambertConformalConic2SPBelgium = C.GoString(C._SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP_BELGIUM())
 
 // /** Lambert_Azimuthal_Equal_Area projection */
-var SRSPTLambertAzimuthalEqualArea = C.GoString(C._SRS_PT_LAMBERT_AZIMUTHAL_EQUAL_AREA)
+var SRSPTLambertAzimuthalEqualArea = C.GoString(C._SRS_PT_LAMBERT_AZIMUTHAL_EQUAL_AREA())
 
 // /** Mercator_1SP projection */
-var SRSPTMercator1SP = C.GoString(C._SRS_PT_MERCATOR_1SP)
+var SRSPTMercator1SP = C.GoString(C._SRS_PT_MERCATOR_1SP())
 
 // /** Mercator_2SP projection */
-var SRSPTMercator2SP = C.GoString(C._SRS_PT_MERCATOR_2SP)
+var SRSPTMercator2SP = C.GoString(C._SRS_PT_MERCATOR_2SP())
 
 // /** Mercator_Auxiliary_Sphere is used used by ESRI to mean EPSG:3875 */
-var SRSPTMercatorAuxiliarySphere = C.GoString(C._SRS_PT_MERCATOR_AUXILIARY_SPHERE)
+var SRSPTMercatorAuxiliarySphere = C.GoString(C._SRS_PT_MERCATOR_AUXILIARY_SPHERE())
 
 // /** Miller_Cylindrical projection */
-var SRSPTMillerCylindrical = C.GoString(C._SRS_PT_MILLER_CYLINDRICAL)
+var SRSPTMillerCylindrical = C.GoString(C._SRS_PT_MILLER_CYLINDRICAL())
 
 // /** Mollweide projection */
-var SRSPTMollweide = C.GoString(C._SRS_PT_MOLLWEIDE)
+var SRSPTMollweide = C.GoString(C._SRS_PT_MOLLWEIDE())
 
 // /** New_Zealand_Map_Grid projection */
-var SRSPTNewZealandMapGrid = C.GoString(C._SRS_PT_NEW_ZEALAND_MAP_GRID)
+var SRSPTNewZealandMapGrid = C.GoString(C._SRS_PT_NEW_ZEALAND_MAP_GRID())
 
 // /** Oblique_Stereographic projection */
-var SRSPTObliqueStereographic = C.GoString(C._SRS_PT_OBLIQUE_STEREOGRAPHIC)
+var SRSPTObliqueStereographic = C.GoString(C._SRS_PT_OBLIQUE_STEREOGRAPHIC())
 
 // /** Orthographic projection */
-var SRSPTOrthographic = C.GoString(C._SRS_PT_ORTHOGRAPHIC)
+var SRSPTOrthographic = C.GoString(C._SRS_PT_ORTHOGRAPHIC())
 
 // /** Polar_Stereographic projection */
-var SRSPTPolarStereographic = C.GoString(C._SRS_PT_POLAR_STEREOGRAPHIC)
+var SRSPTPolarStereographic = C.GoString(C._SRS_PT_POLAR_STEREOGRAPHIC())
 
 // /** Polyconic projection */
-var SRSPTPolyconic = C.GoString(C._SRS_PT_POLYCONIC)
+var SRSPTPolyconic = C.GoString(C._SRS_PT_POLYCONIC())
 
 // /** Robinson projection */
-var SRSPTRobinson = C.GoString(C._SRS_PT_ROBINSON)
+var SRSPTRobinson = C.GoString(C._SRS_PT_ROBINSON())
 
 // /** Sinusoidal projection */
-var SRSPTSinusoidal = C.GoString(C._SRS_PT_SINUSOIDAL)
+var SRSPTSinusoidal = C.GoString(C._SRS_PT_SINUSOIDAL())
 
 // /** Stereographic projection */
-var SRSPTStereographic = C.GoString(C._SRS_PT_STEREOGRAPHIC)
+var SRSPTStereographic = C.GoString(C._SRS_PT_STEREOGRAPHIC())
 
 // /** Swiss_Oblique_Cylindrical projection */
-var SRSPTSwissObliqueCylindrical = C.GoString(C._SRS_PT_SWISS_OBLIQUE_CYLINDRICAL)
+var SRSPTSwissObliqueCylindrical = C.GoString(C._SRS_PT_SWISS_OBLIQUE_CYLINDRICAL())
 
 // /** Transverse_Mercator projection */
-var SRSPTTransverseMercator = C.GoString(C._SRS_PT_TRANSVERSE_MERCATOR)
+var SRSPTTransverseMercator = C.GoString(C._SRS_PT_TRANSVERSE_MERCATOR())
 
 // /** Transverse_Mercator_South_Orientated projection */
-var SRSPTTransverseMercatorSouthOriented = C.GoString(C._SRS_PT_TRANSVERSE_MERCATOR_SOUTH_ORIENTED)
+var SRSPTTransverseMercatorSouthOriented = C.GoString(C._SRS_PT_TRANSVERSE_MERCATOR_SOUTH_ORIENTED())
 
 // /* special mapinfo variants on Transverse Mercator */
 // /** Transverse_Mercator_MapInfo_21 projection */
-var SRSPTTransverseMercatorMI21 = C.GoString(C._SRS_PT_TRANSVERSE_MERCATOR_MI_21)
+var SRSPTTransverseMercatorMI21 = C.GoString(C._SRS_PT_TRANSVERSE_MERCATOR_MI_21())
 
 // /** Transverse_Mercator_MapInfo_22 projection */
-var SRSPTTransverseMercatorMI22 = C.GoString(C._SRS_PT_TRANSVERSE_MERCATOR_MI_22)
+var SRSPTTransverseMercatorMI22 = C.GoString(C._SRS_PT_TRANSVERSE_MERCATOR_MI_22())
 
 // /** Transverse_Mercator_MapInfo_23 projection */
-var SRSPTTransverseMercatorMI23 = C.GoString(C._SRS_PT_TRANSVERSE_MERCATOR_MI_23)
+var SRSPTTransverseMercatorMI23 = C.GoString(C._SRS_PT_TRANSVERSE_MERCATOR_MI_23())
 
 // /** Transverse_Mercator_MapInfo_24 projection */
-var SRSPTTransverseMercatorMI24 = C.GoString(C._SRS_PT_TRANSVERSE_MERCATOR_MI_24)
+var SRSPTTransverseMercatorMI24 = C.GoString(C._SRS_PT_TRANSVERSE_MERCATOR_MI_24())
 
 // /** Transverse_Mercator_MapInfo_25 projection */
-var SRSPTTransverseMercatorMI25 = C.GoString(C._SRS_PT_TRANSVERSE_MERCATOR_MI_25)
+var SRSPTTransverseMercatorMI25 = C.GoString(C._SRS_PT_TRANSVERSE_MERCATOR_MI_25())
 
 // /** Tunisia_Mining_Grid projection */
-var SRSPTTunisiaMiningGrid = C.GoString(C._SRS_PT_TUNISIA_MINING_GRID)
+var SRSPTTunisiaMiningGrid = C.GoString(C._SRS_PT_TUNISIA_MINING_GRID())
 
 // /** Two_Point_Equidistant projection */
-var SRSPTTwoPointEquidistant = C.GoString(C._SRS_PT_TWO_POINT_EQUIDISTANT)
+var SRSPTTwoPointEquidistant = C.GoString(C._SRS_PT_TWO_POINT_EQUIDISTANT())
 
 // /** VanDerGrinten projection */
-var SRSPTVandergrinten = C.GoString(C._SRS_PT_VANDERGRINTEN)
+var SRSPTVandergrinten = C.GoString(C._SRS_PT_VANDERGRINTEN())
 
 // /** Krovak projection */
-var SRSPTKrovak = C.GoString(C._SRS_PT_KROVAK)
+var SRSPTKrovak = C.GoString(C._SRS_PT_KROVAK())
 
 // /** International_Map_of_the_World_Polyconic projection */
-var SRSPTIMWPolyconic = C.GoString(C._SRS_PT_IMW_POLYCONIC)
+var SRSPTIMWPolyconic = C.GoString(C._SRS_PT_IMW_POLYCONIC())
 
 // /** Wagner_I projection */
-var SRSPTWagnerI = C.GoString(C._SRS_PT_WAGNER_I)
+var SRSPTWagnerI = C.GoString(C._SRS_PT_WAGNER_I())
 
 // /** Wagner_II projection */
-var SRSPTWagnerII = C.GoString(C._SRS_PT_WAGNER_II)
+var SRSPTWagnerII = C.GoString(C._SRS_PT_WAGNER_II())
 
 // /** Wagner_III projection */
-var SRSPTWagnerIII = C.GoString(C._SRS_PT_WAGNER_III)
+var SRSPTWagnerIII = C.GoString(C._SRS_PT_WAGNER_III())
 
 // /** Wagner_IV projection */
-var SRSPTWagnerIV = C.GoString(C._SRS_PT_WAGNER_IV)
+var SRSPTWagnerIV = C.GoString(C._SRS_PT_WAGNER_IV())
 
 // /** Wagner_V projection */
-var SRSPTWagnerV = C.GoString(C._SRS_PT_WAGNER_V)
+var SRSPTWagnerV = C.GoString(C._SRS_PT_WAGNER_V())
 
 // /** Wagner_VI projection */
-var SRSPTWagnerVI = C.GoString(C._SRS_PT_WAGNER_VI)
+var SRSPTWagnerVI = C.GoString(C._SRS_PT_WAGNER_VI())
 
 // /** Wagner_VII projection */
-var SRSPTWagnerVII = C.GoString(C._SRS_PT_WAGNER_VII)
+var SRSPTWagnerVII = C.GoString(C._SRS_PT_WAGNER_VII())
 
 // /** Quadrilateralized_Spherical_Cube projection */
-var SRSPTQsc = C.GoString(C._SRS_PT_QSC)
+var SRSPTQsc = C.GoString(C._SRS_PT_QSC())
 
 // /** Aitoff projection */
-var SRSPTAitoff = C.GoString(C._SRS_PT_AITOFF)
+var SRSPTAitoff = C.GoString(C._SRS_PT_AITOFF())
 
 // /** Winkel_I projection */
-var SRSPTWinkelI = C.GoString(C._SRS_PT_WINKEL_I)
+var SRSPTWinkelI = C.GoString(C._SRS_PT_WINKEL_I())
 
 // /** Winkel_II projection */
-var SRSPTWinkelII = C.GoString(C._SRS_PT_WINKEL_II)
+var SRSPTWinkelII = C.GoString(C._SRS_PT_WINKEL_II())
 
 // /** Winkel_Tripel projection */
-var SRSPTWinkelTripel = C.GoString(C._SRS_PT_WINKEL_TRIPEL)
+var SRSPTWinkelTripel = C.GoString(C._SRS_PT_WINKEL_TRIPEL())
 
 // /** Craster_Parabolic projection */
-var SRSPTCrasterParabolic = C.GoString(C._SRS_PT_CRASTER_PARABOLIC)
+var SRSPTCrasterParabolic = C.GoString(C._SRS_PT_CRASTER_PARABOLIC())
 
 // /** Loximuthal projection */
-var SRSPTLoximuthal = C.GoString(C._SRS_PT_LOXIMUTHAL)
+var SRSPTLoximuthal = C.GoString(C._SRS_PT_LOXIMUTHAL())
 
 // /** Quartic_Authalic projection */
-var SRSPTQuarticAuthalic = C.GoString(C._SRS_PT_QUARTIC_AUTHALIC)
+var SRSPTQuarticAuthalic = C.GoString(C._SRS_PT_QUARTIC_AUTHALIC())
 
 // /** Spherical_Cross_Track_Height projection */
-var SRSPTSch = C.GoString(C._SRS_PT_SCH)
+var SRSPTSch = C.GoString(C._SRS_PT_SCH())
 
 // /** central_meridian projection parameter */
-var SRSPPCentralMeridian = C.GoString(C._SRS_PP_CENTRAL_MERIDIAN)
+var SRSPPCentralMeridian = C.GoString(C._SRS_PP_CENTRAL_MERIDIAN())
 
 // /** scale_factor projection parameter */
-var SRSPPScaleFactor = C.GoString(C._SRS_PP_SCALE_FACTOR)
+var SRSPPScaleFactor = C.GoString(C._SRS_PP_SCALE_FACTOR())
 
 // /** standard_parallel_1 projection parameter */
-var SRSPPStandardParallel1 = C.GoString(C._SRS_PP_STANDARD_PARALLEL_1)
+var SRSPPStandardParallel1 = C.GoString(C._SRS_PP_STANDARD_PARALLEL_1())
 
 // /** standard_parallel_2 projection parameter */
-var SRSPPStandardParallel2 = C.GoString(C._SRS_PP_STANDARD_PARALLEL_2)
+var SRSPPStandardParallel2 = C.GoString(C._SRS_PP_STANDARD_PARALLEL_2())
 
 // /** pseudo_standard_parallel_1 projection parameter */
-var SRSPPPseudoStdParallel1 = C.GoString(C._SRS_PP_PSEUDO_STD_PARALLEL_1)
+var SRSPPPseudoStdParallel1 = C.GoString(C._SRS_PP_PSEUDO_STD_PARALLEL_1())
 
 // /** longitude_of_center projection parameter */
-var SRSPPLongitudeOfCenter = C.GoString(C._SRS_PP_LONGITUDE_OF_CENTER)
+var SRSPPLongitudeOfCenter = C.GoString(C._SRS_PP_LONGITUDE_OF_CENTER())
 
 // /** latitude_of_center projection parameter */
-var SRSPPLatitudeOfCenter = C.GoString(C._SRS_PP_LATITUDE_OF_CENTER)
+var SRSPPLatitudeOfCenter = C.GoString(C._SRS_PP_LATITUDE_OF_CENTER())
 
 // /** longitude_of_origin projection parameter */
-var SRSPPLongitudeOfOrigin = C.GoString(C._SRS_PP_LONGITUDE_OF_ORIGIN)
+var SRSPPLongitudeOfOrigin = C.GoString(C._SRS_PP_LONGITUDE_OF_ORIGIN())
 
 // /** latitude_of_origin projection parameter */
-var SRSPPLatitudeOfOrigin = C.GoString(C._SRS_PP_LATITUDE_OF_ORIGIN)
+var SRSPPLatitudeOfOrigin = C.GoString(C._SRS_PP_LATITUDE_OF_ORIGIN())
 
 // /** false_easting projection parameter */
-var SRSPPFalseEasting = C.GoString(C._SRS_PP_FALSE_EASTING)
+var SRSPPFalseEasting = C.GoString(C._SRS_PP_FALSE_EASTING())
 
 // /** false_northing projection parameter */
-var SRSPPFalseNorthing = C.GoString(C._SRS_PP_FALSE_NORTHING)
+var SRSPPFalseNorthing = C.GoString(C._SRS_PP_FALSE_NORTHING())
 
 // /** azimuth projection parameter */
-var SRSPPAzimuth = C.GoString(C._SRS_PP_AZIMUTH)
+var SRSPPAzimuth = C.GoString(C._SRS_PP_AZIMUTH())
 
 // /** longitude_of_point_1 projection parameter */
-var SRSPPLongitudeOfPoint1 = C.GoString(C._SRS_PP_LONGITUDE_OF_POINT_1)
+var SRSPPLongitudeOfPoint1 = C.GoString(C._SRS_PP_LONGITUDE_OF_POINT_1())
 
 // /** latitude_of_point_1 projection parameter */
-var SRSPPLatitudeOfPoint1 = C.GoString(C._SRS_PP_LATITUDE_OF_POINT_1)
+var SRSPPLatitudeOfPoint1 = C.GoString(C._SRS_PP_LATITUDE_OF_POINT_1())
 
 // /** longitude_of_point_2 projection parameter */
-var SRSPPLongitudeOfPoint2 = C.GoString(C._SRS_PP_LONGITUDE_OF_POINT_2)
+var SRSPPLongitudeOfPoint2 = C.GoString(C._SRS_PP_LONGITUDE_OF_POINT_2())
 
 // /** latitude_of_point_2 projection parameter */
-var SRSPPLatitudeOfPoint2 = C.GoString(C._SRS_PP_LATITUDE_OF_POINT_2)
+var SRSPPLatitudeOfPoint2 = C.GoString(C._SRS_PP_LATITUDE_OF_POINT_2())
 
 // /** longitude_of_point_3 projection parameter */
-var SRSPPLongitudeOfPoint3 = C.GoString(C._SRS_PP_LONGITUDE_OF_POINT_3)
+var SRSPPLongitudeOfPoint3 = C.GoString(C._SRS_PP_LONGITUDE_OF_POINT_3())
 
 // /** latitude_of_point_3 projection parameter */
-var SRSPPLatitudeOfPoint3 = C.GoString(C._SRS_PP_LATITUDE_OF_POINT_3)
+var SRSPPLatitudeOfPoint3 = C.GoString(C._SRS_PP_LATITUDE_OF_POINT_3())
 
 // /** rectified_grid_angle projection parameter */
-var SRSPPRectifiedGridAngle = C.GoString(C._SRS_PP_RECTIFIED_GRID_ANGLE)
+var SRSPPRectifiedGridAngle = C.GoString(C._SRS_PP_RECTIFIED_GRID_ANGLE())
 
 // /** landsat_number projection parameter */
-var SRSPPLandsatNumber = C.GoString(C._SRS_PP_LANDSAT_NUMBER)
+var SRSPPLandsatNumber = C.GoString(C._SRS_PP_LANDSAT_NUMBER())
 
 // /** path_number projection parameter */
-var SRSPPPathNumber = C.GoString(C._SRS_PP_PATH_NUMBER)
+var SRSPPPathNumber = C.GoString(C._SRS_PP_PATH_NUMBER())
 
 // /** perspective_point_height projection parameter */
-var SRSPPPerspectivePointHeight = C.GoString(C._SRS_PP_PERSPECTIVE_POINT_HEIGHT)
+var SRSPPPerspectivePointHeight = C.GoString(C._SRS_PP_PERSPECTIVE_POINT_HEIGHT())
 
 // /** satellite_height projection parameter */
-var SRSPPSatelliteHeight = C.GoString(C._SRS_PP_SATELLITE_HEIGHT)
+var SRSPPSatelliteHeight = C.GoString(C._SRS_PP_SATELLITE_HEIGHT())
 
 // /** fipszone projection parameter */
-var SRSPPFipszone = C.GoString(C._SRS_PP_FIPSZONE)
+var SRSPPFipszone = C.GoString(C._SRS_PP_FIPSZONE())
 
 // /** zone projection parameter */
-var SRSPPZone = C.GoString(C._SRS_PP_ZONE)
+var SRSPPZone = C.GoString(C._SRS_PP_ZONE())
 
 // /** Latitude_Of_1st_Point projection parameter */
-var SRSPPLatitudeOf1stPoint = C.GoString(C._SRS_PP_LATITUDE_OF_1ST_POINT)
+var SRSPPLatitudeOf1stPoint = C.GoString(C._SRS_PP_LATITUDE_OF_1ST_POINT())
 
 // /** Longitude_Of_1st_Point projection parameter */
-var SRSPPLongitudeOf1stPoint = C.GoString(C._SRS_PP_LONGITUDE_OF_1ST_POINT)
+var SRSPPLongitudeOf1stPoint = C.GoString(C._SRS_PP_LONGITUDE_OF_1ST_POINT())
 
 // /** Latitude_Of_2nd_Point projection parameter */
-var SRSPPLatitudeOf2ndPoint = C.GoString(C._SRS_PP_LATITUDE_OF_2ND_POINT)
+var SRSPPLatitudeOf2ndPoint = C.GoString(C._SRS_PP_LATITUDE_OF_2ND_POINT())
 
 // /** Longitude_Of_2nd_Point projection parameter */
-var SRSPPLongitudeOf2ndPoint = C.GoString(C._SRS_PP_LONGITUDE_OF_2ND_POINT)
+var SRSPPLongitudeOf2ndPoint = C.GoString(C._SRS_PP_LONGITUDE_OF_2ND_POINT())
 
 // /** peg_point_latitude projection parameter */
-var SRSPPPegPointLatitude = C.GoString(C._SRS_PP_PEG_POINT_LATITUDE)
+var SRSPPPegPointLatitude = C.GoString(C._SRS_PP_PEG_POINT_LATITUDE())
 
 // /** peg_point_longitude projection parameter */
-var SRSPPPegPointLongitude = C.GoString(C._SRS_PP_PEG_POINT_LONGITUDE)
+var SRSPPPegPointLongitude = C.GoString(C._SRS_PP_PEG_POINT_LONGITUDE())
 
 // /** peg_point_heading projection parameter */
-var SRSPPPegPointHeading = C.GoString(C._SRS_PP_PEG_POINT_HEADING)
+var SRSPPPegPointHeading = C.GoString(C._SRS_PP_PEG_POINT_HEADING())
 
 // /** peg_point_height projection parameter */
-var SRSPPPegPointHeight = C.GoString(C._SRS_PP_PEG_POINT_HEIGHT)
+var SRSPPPegPointHeight = C.GoString(C._SRS_PP_PEG_POINT_HEIGHT())
 
 // /** Linear unit Meter */
-var SRSULMeter = C.GoString(C._SRS_UL_METER)
+var SRSULMeter = C.GoString(C._SRS_UL_METER())
 
 // /** Linear unit Foot (International) */
-var SRSULFoot = C.GoString(C._SRS_UL_FOOT)
+var SRSULFoot = C.GoString(C._SRS_UL_FOOT())
 
 // /** Linear unit Foot (International) conversion factor to meter*/
-var SRSULFootConv = C.GoString(C._SRS_UL_FOOT_CONV)
+var SRSULFootConv = C.GoString(C._SRS_UL_FOOT_CONV())
 
 // /** Linear unit Foot */
-var SRSULUSFoot = C.GoString(C._SRS_UL_US_FOOT)
+var SRSULUSFoot = C.GoString(C._SRS_UL_US_FOOT())
 
 // /** Linear unit Foot conversion factor to meter */
-var SRSULUSFootConv = C.GoString(C._SRS_UL_US_FOOT_CONV)
+var SRSULUSFootConv = C.GoString(C._SRS_UL_US_FOOT_CONV())
 
 // /** Linear unit Nautical Mile */
-var SRSULNauticalMile = C.GoString(C._SRS_UL_NAUTICAL_MILE)
+var SRSULNauticalMile = C.GoString(C._SRS_UL_NAUTICAL_MILE())
 
 // /** Linear unit Nautical Mile conversion factor to meter */
-var SRSULNauticalMileConv = C.GoString(C._SRS_UL_NAUTICAL_MILE_CONV)
+var SRSULNauticalMileConv = C.GoString(C._SRS_UL_NAUTICAL_MILE_CONV())
 
 // /** Linear unit Link */
-var SRSULLink = C.GoString(C._SRS_UL_LINK)
+var SRSULLink = C.GoString(C._SRS_UL_LINK())
 
 // /** Linear unit Link conversion factor to meter */
-var SRSULLinkConv = C.GoString(C._SRS_UL_LINK_CONV)
+var SRSULLinkConv = C.GoString(C._SRS_UL_LINK_CONV())
 
 // /** Linear unit Chain */
-var SRSULChain = C.GoString(C._SRS_UL_CHAIN)
+var SRSULChain = C.GoString(C._SRS_UL_CHAIN())
 
 // /** Linear unit Chain conversion factor to meter */
-var SRSULChainConv = C.GoString(C._SRS_UL_CHAIN_CONV)
+var SRSULChainConv = C.GoString(C._SRS_UL_CHAIN_CONV())
 
 // /** Linear unit Rod */
-var SRSULRod = C.GoString(C._SRS_UL_ROD)
+var SRSULRod = C.GoString(C._SRS_UL_ROD())
 
 // /** Linear unit Rod conversion factor to meter */
-var SRSULRodConv = C.GoString(C._SRS_UL_ROD_CONV)
+var SRSULRodConv = C.GoString(C._SRS_UL_ROD_CONV())
 
 // /** Linear unit Link_Clarke */
-var SRSULLinkClarke = C.GoString(C._SRS_UL_LINK_Clarke)
+var SRSULLinkClarke = C.GoString(C._SRS_UL_LINK_Clarke())
 
 // /** Linear unit Link_Clarke conversion factor to meter */
-var SRSULLinkClarkeConv = C.GoString(C._SRS_UL_LINK_Clarke_CONV)
+var SRSULLinkClarkeConv = C.GoString(C._SRS_UL_LINK_Clarke_CONV())
 
 // /** Linear unit Kilometer */
-var SRSULKilometer = C.GoString(C._SRS_UL_KILOMETER)
+var SRSULKilometer = C.GoString(C._SRS_UL_KILOMETER())
 
 // /** Linear unit Kilometer conversion factor to meter */
-var SRSULKilometerConv = C.GoString(C._SRS_UL_KILOMETER_CONV)
+var SRSULKilometerConv = C.GoString(C._SRS_UL_KILOMETER_CONV())
 
 // /** Linear unit Decimeter */
-var SRSULDecimeter = C.GoString(C._SRS_UL_DECIMETER)
+var SRSULDecimeter = C.GoString(C._SRS_UL_DECIMETER())
 
 // /** Linear unit Decimeter conversion factor to meter */
-var SRSULDecimeterConv = C.GoString(C._SRS_UL_DECIMETER_CONV)
+var SRSULDecimeterConv = C.GoString(C._SRS_UL_DECIMETER_CONV())
 
 // /** Linear unit Decimeter */
-var SRSULCentimeter = C.GoString(C._SRS_UL_CENTIMETER)
+var SRSULCentimeter = C.GoString(C._SRS_UL_CENTIMETER())
 
 // /** Linear unit Decimeter conversion factor to meter */
-var SRSULCentimeterConv = C.GoString(C._SRS_UL_CENTIMETER_CONV)
+var SRSULCentimeterConv = C.GoString(C._SRS_UL_CENTIMETER_CONV())
 
 // /** Linear unit Millimeter */
-var SRSULMillimeter = C.GoString(C._SRS_UL_MILLIMETER)
+var SRSULMillimeter = C.GoString(C._SRS_UL_MILLIMETER())
 
 // /** Linear unit Millimeter conversion factor to meter */
-var SRSULMillimeterConv = C.GoString(C._SRS_UL_MILLIMETER_CONV)
+var SRSULMillimeterConv = C.GoString(C._SRS_UL_MILLIMETER_CONV())
 
 // /** Linear unit Nautical_Mile_International */
-var SRSULIntlNautMile = C.GoString(C._SRS_UL_INTL_NAUT_MILE)
+var SRSULIntlNautMile = C.GoString(C._SRS_UL_INTL_NAUT_MILE())
 
 // /** Linear unit Nautical_Mile_International conversion factor to meter */
-var SRSULIntlNautMileConv = C.GoString(C._SRS_UL_INTL_NAUT_MILE_CONV)
+var SRSULIntlNautMileConv = C.GoString(C._SRS_UL_INTL_NAUT_MILE_CONV())
 
 // /** Linear unit Inch_International */
-var SRSULIntlInch = C.GoString(C._SRS_UL_INTL_INCH)
+var SRSULIntlInch = C.GoString(C._SRS_UL_INTL_INCH())
 
 // /** Linear unit Inch_International conversion factor to meter */
-var SRSULIntlInchConv = C.GoString(C._SRS_UL_INTL_INCH_CONV)
+var SRSULIntlInchConv = C.GoString(C._SRS_UL_INTL_INCH_CONV())
 
 // /** Linear unit Foot_International */
-var SRSULIntlFoot = C.GoString(C._SRS_UL_INTL_FOOT)
+var SRSULIntlFoot = C.GoString(C._SRS_UL_INTL_FOOT())
 
 // /** Linear unit Foot_International conversion factor to meter */
-var SRSULIntlFootConv = C.GoString(C._SRS_UL_INTL_FOOT_CONV)
+var SRSULIntlFootConv = C.GoString(C._SRS_UL_INTL_FOOT_CONV())
 
 // /** Linear unit Yard_International */
-var SRSULIntlYard = C.GoString(C._SRS_UL_INTL_YARD)
+var SRSULIntlYard = C.GoString(C._SRS_UL_INTL_YARD())
 
 // /** Linear unit Yard_International conversion factor to meter */
-var SRSULIntlYardConv = C.GoString(C._SRS_UL_INTL_YARD_CONV)
+var SRSULIntlYardConv = C.GoString(C._SRS_UL_INTL_YARD_CONV())
 
 // /** Linear unit Statute_Mile_International */
-var SRSULIntlStatMile = C.GoString(C._SRS_UL_INTL_STAT_MILE)
+var SRSULIntlStatMile = C.GoString(C._SRS_UL_INTL_STAT_MILE())
 
 // /** Linear unit Statute_Mile_Internationalconversion factor to meter */
-var SRSULIntlStatMileConv = C.GoString(C._SRS_UL_INTL_STAT_MILE_CONV)
+var SRSULIntlStatMileConv = C.GoString(C._SRS_UL_INTL_STAT_MILE_CONV())
 
 // /** Linear unit Fathom_International */
-var SRSULIntlFathom = C.GoString(C._SRS_UL_INTL_FATHOM)
+var SRSULIntlFathom = C.GoString(C._SRS_UL_INTL_FATHOM())
 
 // /** Linear unit Fathom_International conversion factor to meter */
-var SRSULIntlFathomConv = C.GoString(C._SRS_UL_INTL_FATHOM_CONV)
+var SRSULIntlFathomConv = C.GoString(C._SRS_UL_INTL_FATHOM_CONV())
 
 // /** Linear unit Chain_International */
-var SRSULIntlChain = C.GoString(C._SRS_UL_INTL_CHAIN)
+var SRSULIntlChain = C.GoString(C._SRS_UL_INTL_CHAIN())
 
 // /** Linear unit Chain_International conversion factor to meter */
-var SRSULIntlChainConv = C.GoString(C._SRS_UL_INTL_CHAIN_CONV)
+var SRSULIntlChainConv = C.GoString(C._SRS_UL_INTL_CHAIN_CONV())
 
 // /** Linear unit Link_International */
-var SRSULIntlLink = C.GoString(C._SRS_UL_INTL_LINK)
+var SRSULIntlLink = C.GoString(C._SRS_UL_INTL_LINK())
 
 // /** Linear unit Link_International conversion factor to meter */
-var SRSULIntlLinkConv = C.GoString(C._SRS_UL_INTL_LINK_CONV)
+var SRSULIntlLinkConv = C.GoString(C._SRS_UL_INTL_LINK_CONV())
 
 // /** Linear unit Inch_US_Surveyor */
-var SRSULUSInch = C.GoString(C._SRS_UL_US_INCH)
+var SRSULUSInch = C.GoString(C._SRS_UL_US_INCH())
 
 // /** Linear unit Inch_US_Surveyor conversion factor to meter */
-var SRSULUSInchConv = C.GoString(C._SRS_UL_US_INCH_CONV)
+var SRSULUSInchConv = C.GoString(C._SRS_UL_US_INCH_CONV())
 
 // /** Linear unit Yard_US_Surveyor */
-var SRSULUSYard = C.GoString(C._SRS_UL_US_YARD)
+var SRSULUSYard = C.GoString(C._SRS_UL_US_YARD())
 
 // /** Linear unit Yard_US_Surveyor conversion factor to meter */
-var SRSULUSYardConv = C.GoString(C._SRS_UL_US_YARD_CONV)
+var SRSULUSYardConv = C.GoString(C._SRS_UL_US_YARD_CONV())
 
 // /** Linear unit Chain_US_Surveyor */
-var SRSULUSChain = C.GoString(C._SRS_UL_US_CHAIN)
+var SRSULUSChain = C.GoString(C._SRS_UL_US_CHAIN())
 
 // /** Linear unit Chain_US_Surveyor conversion factor to meter */
-var SRSULUSChainConv = C.GoString(C._SRS_UL_US_CHAIN_CONV)
+var SRSULUSChainConv = C.GoString(C._SRS_UL_US_CHAIN_CONV())
 
 // /** Linear unit Statute_Mile_US_Surveyor */
-var SRSULUSStatMile = C.GoString(C._SRS_UL_US_STAT_MILE)
+var SRSULUSStatMile = C.GoString(C._SRS_UL_US_STAT_MILE())
 
 // /** Linear unit Statute_Mile_US_Surveyor conversion factor to meter */
-var SRSULUSStatMileConv = C.GoString(C._SRS_UL_US_STAT_MILE_CONV)
+var SRSULUSStatMileConv = C.GoString(C._SRS_UL_US_STAT_MILE_CONV())
 
 // /** Linear unit Yard_Indian */
-var SRSULIndianYard = C.GoString(C._SRS_UL_INDIAN_YARD)
+var SRSULIndianYard = C.GoString(C._SRS_UL_INDIAN_YARD())
 
 // /** Linear unit Yard_Indian conversion factor to meter */
-var SRSULIndianYardConv = C.GoString(C._SRS_UL_INDIAN_YARD_CONV)
+var SRSULIndianYardConv = C.GoString(C._SRS_UL_INDIAN_YARD_CONV())
 
 // /** Linear unit Foot_Indian */
-var SRSULIndianFoot = C.GoString(C._SRS_UL_INDIAN_FOOT)
+var SRSULIndianFoot = C.GoString(C._SRS_UL_INDIAN_FOOT())
 
 // /** Linear unit Foot_Indian conversion factor to meter */
-var SRSULIndianFootConv = C.GoString(C._SRS_UL_INDIAN_FOOT_CONV)
+var SRSULIndianFootConv = C.GoString(C._SRS_UL_INDIAN_FOOT_CONV())
 
 // /** Linear unit Chain_Indian */
-var SRSULIndianChain = C.GoString(C._SRS_UL_INDIAN_CHAIN)
+var SRSULIndianChain = C.GoString(C._SRS_UL_INDIAN_CHAIN())
 
 // /** Linear unit Chain_Indian conversion factor to meter */
-var SRSULIndianChainConv = C.GoString(C._SRS_UL_INDIAN_CHAIN_CONV)
+var SRSULIndianChainConv = C.GoString(C._SRS_UL_INDIAN_CHAIN_CONV())
 
 // /** Angular unit degree */
-var SRSUADegree = C.GoString(C._SRS_UA_DEGREE)
+var SRSUADegree = C.GoString(C._SRS_UA_DEGREE())
 
 // /** Angular unit degree conversion factor to radians */
-var SRSUADegreeConv = C.GoString(C._SRS_UA_DEGREE_CONV)
+var SRSUADegreeConv = C.GoString(C._SRS_UA_DEGREE_CONV())
 
 // /** Angular unit radian */
-var SRSUARadian = C.GoString(C._SRS_UA_RADIAN)
+var SRSUARadian = C.GoString(C._SRS_UA_RADIAN())
 
 // /** Prime meridian Greenwich */
-var SRSPMGreenwich = C.GoString(C._SRS_PM_GREENWICH)
+var SRSPMGreenwich = C.GoString(C._SRS_PM_GREENWICH())
 
 // /** North_American_Datum_1927 datum name */
-var SRSDNNad27 = C.GoString(C._SRS_DN_NAD27)
+var SRSDNNad27 = C.GoString(C._SRS_DN_NAD27())
 
 // /** North_American_Datum_1983 datum name */
-var SRSDNNad83 = C.GoString(C._SRS_DN_NAD83)
+var SRSDNNad83 = C.GoString(C._SRS_DN_NAD83())
 
 // /** WGS_1972 datum name */
-var SRSDNWgs72 = C.GoString(C._SRS_DN_WGS72)
+var SRSDNWgs72 = C.GoString(C._SRS_DN_WGS72())
 
 // /** WGS_1984 datum name */
-var SRSDNWgs84 = C.GoString(C._SRS_DN_WGS84)
+var SRSDNWgs84 = C.GoString(C._SRS_DN_WGS84())
 
 // /** Semi-major axis of the WGS84 ellipsoid */
 const SRSWgs84SemiMajor = C.SRS_WGS84_SEMIMAJOR
@@ -556,18 +551,9 @@ func osrSetPROJSearchPaths(paths CSLConstList) {
 	C.OSRSetPROJSearchPaths(cPaths)
 }
 
-func OSRSetPROJSearchPaths(paths CSLConstList) {
-	osrSetPROJSearchPaths(paths)
-}
-
 func osrGetPROJSearchPaths() (result CSLConstList) {
 	raw := C.OSRGetPROJSearchPaths()
 	result = cslConstList(raw)
-	return
-}
-
-func OSRGetPROJSearchPaths() (result CSLConstList) {
-	result = osrGetPROJSearchPaths()
 	return
 }
 
@@ -576,18 +562,9 @@ func osrSetPROJAuxDbPaths(paths CSLConstList) {
 	C.OSRSetPROJAuxDbPaths(cPaths)
 }
 
-func OSRSetPROJAuxDbPaths(paths CSLConstList) {
-	osrSetPROJAuxDbPaths(paths)
-}
-
 func osrGetPROJAuxDbPaths() (result CSLConstList) {
 	raw := C.OSRGetPROJAuxDbPaths()
 	result = cslConstList(raw)
-	return
-}
-
-func OSRGetPROJAuxDbPaths() (result CSLConstList) {
-	result = osrGetPROJAuxDbPaths()
 	return
 }
 
@@ -595,17 +572,8 @@ func osrSetPROJEnableNetwork(enabled int) {
 	C.OSRSetPROJEnableNetwork(C.int(enabled))
 }
 
-func OSRSetPROJEnableNetwork(enabled int) {
-	osrSetPROJEnableNetwork(enabled)
-}
-
 func osrGetPROJEnableNetwork() (result int) {
 	result = int(C.OSRGetPROJEnableNetwork())
-	return
-}
-
-func OSRGetPROJEnableNetwork() (result int) {
-	result = osrGetPROJEnableNetwork()
 	return
 }
 
@@ -615,11 +583,6 @@ func osrGetPROJVersion() (major, minor, patch int) {
 	major = int(cMajor)
 	minor = int(cMinor)
 	patch = int(cPatch)
-	return
-}
-
-func OSRGetPROJVersion() (major, minor, patch int) {
-	major, minor, patch = osrGetPROJVersion()
 	return
 }
 
@@ -633,24 +596,8 @@ func osrNewSpatialReference(wkt string) (result OGRSpatialReference) {
 	return
 }
 
-func OSRNewSpatialReference(wkt string) (result OGRSpatialReference, err error) {
-	result = osrNewSpatialReference(wkt)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func osrCloneGeogCS(sr OGRSpatialReference) (result OGRSpatialReference) {
 	result = OGRSpatialReference{cValue: C.OSRCloneGeogCS(sr.cValue)}
-	return
-}
-
-func (sr OGRSpatialReference) CloneGeogCS() (result OGRSpatialReference, err error) {
-	result = osrCloneGeogCS(sr)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -659,15 +606,7 @@ func osrClone(sr OGRSpatialReference) (result OGRSpatialReference) {
 	return
 }
 
-func (sr OGRSpatialReference) Clone() (result OGRSpatialReference, err error) {
-	result = osrClone(sr)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
-func (sr OGRSpatialReference) Destroy() {
+func osrDestroySpatialReference(sr OGRSpatialReference) {
 	C.OSRDestroySpatialReference(sr.cValue)
 }
 
@@ -676,22 +615,12 @@ func osrReference(sr OGRSpatialReference) (result int) {
 	return
 }
 
-func (sr OGRSpatialReference) Reference() (result int) {
-	result = osrReference(sr)
-	return
-}
-
 func osrDereference(sr OGRSpatialReference) (result int) {
 	result = int(C.OSRDereference(sr.cValue))
 	return
 }
 
-func (sr OGRSpatialReference) Dereference() (result int) {
-	result = osrDereference(sr)
-	return
-}
-
-func (sr OGRSpatialReference) Release() {
+func osrRelease(sr OGRSpatialReference) {
 	C.OSRRelease(sr.cValue)
 }
 
@@ -700,28 +629,13 @@ func osrValidate(sr OGRSpatialReference) (result OGRErr) {
 	return
 }
 
-func (sr OGRSpatialReference) Validate() (err error) {
-	err = ogrError(osrValidate(sr))
-	return
-}
-
 func osrImportFromEPSG(sr OGRSpatialReference, nCode int) (result OGRErr) {
 	result = OGRErr(C.OSRImportFromEPSG(sr.cValue, C.int(nCode)))
 	return
 }
 
-func (sr OGRSpatialReference) ImportFromEPSG(nCode int) (err error) {
-	err = ogrError(osrImportFromEPSG(sr, nCode))
-	return
-}
-
 func osrImportFromEPSGA(sr OGRSpatialReference, nCode int) (result OGRErr) {
 	result = OGRErr(C.OSRImportFromEPSGA(sr.cValue, C.int(nCode)))
-	return
-}
-
-func (sr OGRSpatialReference) ImportFromEPSGA(nCode int) (err error) {
-	err = ogrError(osrImportFromEPSGA(sr, nCode))
 	return
 }
 
@@ -732,11 +646,6 @@ func osrImportFromWkt(sr OGRSpatialReference, wkt string) (result OGRErr) {
 	return
 }
 
-func (sr OGRSpatialReference) ImportFromWkt(wkt string) (err error) {
-	err = ogrError(osrImportFromWkt(sr, wkt))
-	return
-}
-
 func osrImportFromProj4(sr OGRSpatialReference, proj4 string) (result OGRErr) {
 	cs := C.CString(proj4)
 	defer C.free(unsafe.Pointer(cs))
@@ -744,19 +653,9 @@ func osrImportFromProj4(sr OGRSpatialReference, proj4 string) (result OGRErr) {
 	return
 }
 
-func (sr OGRSpatialReference) ImportFromProj4(proj4 string) (err error) {
-	err = ogrError(osrImportFromProj4(sr, proj4))
-	return
-}
-
 func osrImportFromESRI(sr OGRSpatialReference, lines CSLConstList) (result OGRErr) {
 	cLines := lines.cValue
 	result = OGRErr(C.OSRImportFromESRI(sr.cValue, cLines))
-	return
-}
-
-func (sr OGRSpatialReference) ImportFromESRI(lines CSLConstList) (err error) {
-	err = ogrError(osrImportFromESRI(sr, lines))
 	return
 }
 
@@ -773,11 +672,6 @@ func osrImportFromPCI(sr OGRSpatialReference, proj, units string, arParams []flo
 	return
 }
 
-func (sr OGRSpatialReference) ImportFromPCI(proj, units string, arParams []float64) (err error) {
-	err = ogrError(osrImportFromPCI(sr, proj, units, arParams))
-	return
-}
-
 func osrImportFromUSGS(sr OGRSpatialReference, projSys, zone int, arParams []float64, datum int) (result OGRErr) {
 	var pParams *C.double
 	if len(arParams) > 0 {
@@ -787,20 +681,10 @@ func osrImportFromUSGS(sr OGRSpatialReference, projSys, zone int, arParams []flo
 	return
 }
 
-func (sr OGRSpatialReference) ImportFromUSGS(projSys, zone int, arParams []float64, datum int) (err error) {
-	err = ogrError(osrImportFromUSGS(sr, projSys, zone, arParams, datum))
-	return
-}
-
 func osrImportFromXML(sr OGRSpatialReference, xmlString string) (result OGRErr) {
 	cs := C.CString(xmlString)
 	defer C.free(unsafe.Pointer(cs))
 	result = OGRErr(C.OSRImportFromXML(sr.cValue, cs))
-	return
-}
-
-func (sr OGRSpatialReference) ImportFromXML(xmlString string) (err error) {
-	err = ogrError(osrImportFromXML(sr, xmlString))
 	return
 }
 
@@ -813,11 +697,6 @@ func osrImportFromDict(sr OGRSpatialReference, dictFile, code string) (result OG
 	return
 }
 
-func (sr OGRSpatialReference) ImportFromDict(dictFile, code string) (err error) {
-	err = ogrError(osrImportFromDict(sr, dictFile, code))
-	return
-}
-
 func osrImportFromPanorama(sr OGRSpatialReference, projSys, datum, ellipsoid int, arParams []float64) (result OGRErr) {
 	var pParams *C.double
 	if len(arParams) > 0 {
@@ -827,19 +706,9 @@ func osrImportFromPanorama(sr OGRSpatialReference, projSys, datum, ellipsoid int
 	return
 }
 
-func (sr OGRSpatialReference) ImportFromPanorama(projSys, datum, ellipsoid int, arParams []float64) (err error) {
-	err = ogrError(osrImportFromPanorama(sr, projSys, datum, ellipsoid, arParams))
-	return
-}
-
 func osrImportFromOzi(sr OGRSpatialReference, lines CSLConstList) (result OGRErr) {
 	cLines := lines.cValue
 	result = OGRErr(C.OSRImportFromOzi(sr.cValue, cLines))
-	return
-}
-
-func (sr OGRSpatialReference) ImportFromOzi(lines CSLConstList) (err error) {
-	err = ogrError(osrImportFromOzi(sr, lines))
 	return
 }
 
@@ -847,11 +716,6 @@ func osrImportFromMICoordSys(sr OGRSpatialReference, coordSys string) (result OG
 	cs := C.CString(coordSys)
 	defer C.free(unsafe.Pointer(cs))
 	result = OGRErr(C.OSRImportFromMICoordSys(sr.cValue, cs))
-	return
-}
-
-func (sr OGRSpatialReference) ImportFromMICoordSys(coordSys string) (err error) {
-	err = ogrError(osrImportFromMICoordSys(sr, coordSys))
 	return
 }
 
@@ -866,20 +730,10 @@ func osrImportFromERM(sr OGRSpatialReference, proj, datum, units string) (result
 	return
 }
 
-func (sr OGRSpatialReference) ImportFromERM(proj, datum, units string) (err error) {
-	err = ogrError(osrImportFromERM(sr, proj, datum, units))
-	return
-}
-
 func osrImportFromUrl(sr OGRSpatialReference, url string) (result OGRErr) {
 	cs := C.CString(url)
 	defer C.free(unsafe.Pointer(cs))
 	result = OGRErr(C.OSRImportFromUrl(sr.cValue, cs))
-	return
-}
-
-func (sr OGRSpatialReference) ImportFromUrl(url string) (err error) {
-	err = ogrError(osrImportFromUrl(sr, url))
 	return
 }
 
@@ -891,24 +745,12 @@ func osrImportFromCF1(sr OGRSpatialReference, keyValues CSLConstList, units stri
 	return
 }
 
-func (sr OGRSpatialReference) ImportFromCF1(keyValues CSLConstList, units string) (err error) {
-	err = ogrError(osrImportFromCF1(sr, keyValues, units))
-	return
-}
-
 func osrExportToWkt(sr OGRSpatialReference) (result string, status OGRErr) {
 	var p *C.char
 	ogrErr := OGRErr(C.OSRExportToWkt(sr.cValue, &p))
 	defer CPLFree(unsafe.Pointer(p))
 	result = C.GoString(p)
 	status = ogrErr
-	return
-}
-
-func (sr OGRSpatialReference) ExportToWkt() (result string, err error) {
-	var status OGRErr
-	result, status = osrExportToWkt(sr)
-	err = ogrError(status)
 	return
 }
 
@@ -922,26 +764,12 @@ func osrExportToWktEx(sr OGRSpatialReference, options CSLConstList) (result stri
 	return
 }
 
-func (sr OGRSpatialReference) ExportToWktEx(options CSLConstList) (result string, err error) {
-	var status OGRErr
-	result, status = osrExportToWktEx(sr, options)
-	err = ogrError(status)
-	return
-}
-
 func osrExportToPrettyWkt(sr OGRSpatialReference, simplify int) (result string, status OGRErr) {
 	var p *C.char
 	ogrErr := OGRErr(C.OSRExportToPrettyWkt(sr.cValue, &p, C.int(simplify)))
 	defer CPLFree(unsafe.Pointer(p))
 	result = C.GoString(p)
 	status = ogrErr
-	return
-}
-
-func (sr OGRSpatialReference) ExportToPrettyWkt(simplify int) (result string, err error) {
-	var status OGRErr
-	result, status = osrExportToPrettyWkt(sr, simplify)
-	err = ogrError(status)
 	return
 }
 
@@ -955,26 +783,12 @@ func osrExportToPROJJSON(sr OGRSpatialReference, options CSLConstList) (result s
 	return
 }
 
-func (sr OGRSpatialReference) ExportToPROJJSON(options CSLConstList) (result string, err error) {
-	var status OGRErr
-	result, status = osrExportToPROJJSON(sr, options)
-	err = ogrError(status)
-	return
-}
-
 func osrExportToProj4(sr OGRSpatialReference) (result string, status OGRErr) {
 	var p *C.char
 	ogrErr := OGRErr(C.OSRExportToProj4(sr.cValue, &p))
 	defer CPLFree(unsafe.Pointer(p))
 	result = C.GoString(p)
 	status = ogrErr
-	return
-}
-
-func (sr OGRSpatialReference) ExportToProj4() (result string, err error) {
-	var status OGRErr
-	result, status = osrExportToProj4(sr)
-	err = ogrError(status)
 	return
 }
 
@@ -996,13 +810,6 @@ func osrExportToPCI(sr OGRSpatialReference) (proj, units string, params []float6
 	return
 }
 
-func (sr OGRSpatialReference) ExportToPCI() (proj, units string, params []float64, err error) {
-	var status OGRErr
-	proj, units, params, status = osrExportToPCI(sr)
-	err = ogrError(status)
-	return
-}
-
 func osrExportToUSGS(sr OGRSpatialReference) (projSys, zone int, params []float64, datum int, status OGRErr) {
 	var cProjSys, cZone, cDatum C.long
 	var cParams *C.double
@@ -1020,13 +827,6 @@ func osrExportToUSGS(sr OGRSpatialReference) (projSys, zone int, params []float6
 	return
 }
 
-func (sr OGRSpatialReference) ExportToUSGS() (projSys, zone int, params []float64, datum int, err error) {
-	var status OGRErr
-	projSys, zone, params, datum, status = osrExportToUSGS(sr)
-	err = ogrError(status)
-	return
-}
-
 func osrExportToXML(sr OGRSpatialReference, dialect string) (result string, status OGRErr) {
 	var cs *C.char
 	if dialect != "" {
@@ -1038,13 +838,6 @@ func osrExportToXML(sr OGRSpatialReference, dialect string) (result string, stat
 	defer CPLFree(unsafe.Pointer(p))
 	result = C.GoString(p)
 	status = ogrErr
-	return
-}
-
-func (sr OGRSpatialReference) ExportToXML(dialect string) (result string, err error) {
-	var status OGRErr
-	result, status = osrExportToXML(sr, dialect)
-	err = ogrError(status)
 	return
 }
 
@@ -1065,26 +858,12 @@ func osrExportToPanorama(sr OGRSpatialReference) (projSys, datum, ellipsoid, zon
 	return
 }
 
-func (sr OGRSpatialReference) ExportToPanorama() (projSys, datum, ellipsoid, zone int, params []float64, err error) {
-	var status OGRErr
-	projSys, datum, ellipsoid, zone, params, status = osrExportToPanorama(sr)
-	err = ogrError(status)
-	return
-}
-
 func osrExportToMICoordSys(sr OGRSpatialReference) (result string, status OGRErr) {
 	var p *C.char
 	ogrErr := OGRErr(C.OSRExportToMICoordSys(sr.cValue, &p))
 	defer CPLFree(unsafe.Pointer(p))
 	result = C.GoString(p)
 	status = ogrErr
-	return
-}
-
-func (sr OGRSpatialReference) ExportToMICoordSys() (result string, err error) {
-	var status OGRErr
-	result, status = osrExportToMICoordSys(sr)
-	err = ogrError(status)
 	return
 }
 
@@ -1097,13 +876,6 @@ func osrExportToERM(sr OGRSpatialReference) (proj, datum, units string, status O
 	datum = C.GoString(&cDatum[0])
 	units = C.GoString(&cUnits[0])
 	status = ogrErr
-	return
-}
-
-func (sr OGRSpatialReference) ExportToERM() (proj, datum, units string, err error) {
-	var status OGRErr
-	proj, datum, units, status = osrExportToERM(sr)
-	err = ogrError(status)
 	return
 }
 
@@ -1122,20 +894,8 @@ func osrExportToCF1(sr OGRSpatialReference, options CSLConstList) (gridMappingNa
 	return
 }
 
-func (sr OGRSpatialReference) ExportToCF1(options CSLConstList) (gridMappingName string, keyValues CSLConstList, units string, err error) {
-	var status OGRErr
-	gridMappingName, keyValues, units, status = osrExportToCF1(sr, options)
-	err = ogrError(status)
-	return
-}
-
 func osrMorphToESRI(sr OGRSpatialReference) (result OGRErr) {
 	result = OGRErr(C.OSRMorphToESRI(sr.cValue))
-	return
-}
-
-func (sr OGRSpatialReference) MorphToESRI() (err error) {
-	err = ogrError(osrMorphToESRI(sr))
 	return
 }
 
@@ -1144,18 +904,8 @@ func osrMorphFromESRI(sr OGRSpatialReference) (result OGRErr) {
 	return
 }
 
-func (sr OGRSpatialReference) MorphFromESRI() (err error) {
-	err = ogrError(osrMorphFromESRI(sr))
-	return
-}
-
 func osrStripVertical(sr OGRSpatialReference) (result OGRErr) {
 	result = OGRErr(C.OSRStripVertical(sr.cValue))
-	return
-}
-
-func (sr OGRSpatialReference) StripVertical() (err error) {
-	err = ogrError(osrStripVertical(sr))
 	return
 }
 
@@ -1167,31 +917,13 @@ func osrConvertToOtherProjection(sr OGRSpatialReference, targetProjection string
 	return
 }
 
-func (sr OGRSpatialReference) ConvertToOtherProjection(targetProjection string, options CSLConstList) (result OGRSpatialReference, err error) {
-	result = osrConvertToOtherProjection(sr, targetProjection, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func osrGetName(sr OGRSpatialReference) (result string) {
 	result = C.GoString(C.OSRGetName(sr.cValue))
 	return
 }
 
-func (sr OGRSpatialReference) GetName() (result string) {
-	result = osrGetName(sr)
-	return
-}
-
 func osrGetCelestialBodyName(sr OGRSpatialReference) (result string) {
 	result = C.GoString(C.OSRGetCelestialBodyName(sr.cValue))
-	return
-}
-
-func (sr OGRSpatialReference) GetCelestialBodyName() (result string) {
-	result = osrGetCelestialBodyName(sr)
 	return
 }
 
@@ -1204,20 +936,10 @@ func osrSetAttrValue(sr OGRSpatialReference, nodePath, newValue string) (result 
 	return
 }
 
-func (sr OGRSpatialReference) SetAttrValue(nodePath, newValue string) (err error) {
-	err = ogrError(osrSetAttrValue(sr, nodePath, newValue))
-	return
-}
-
 func osrGetAttrValue(sr OGRSpatialReference, name string, iChild int) (result string) {
 	cs := C.CString(name)
 	defer C.free(unsafe.Pointer(cs))
 	result = C.GoString(C.OSRGetAttrValue(sr.cValue, cs, C.int(iChild)))
-	return
-}
-
-func (sr OGRSpatialReference) GetAttrValue(name string, iChild int) (result string) {
-	result = osrGetAttrValue(sr, name, iChild)
 	return
 }
 
@@ -1228,11 +950,6 @@ func osrSetAngularUnits(sr OGRSpatialReference, name string, inDegrees float64) 
 	return
 }
 
-func (sr OGRSpatialReference) SetAngularUnits(name string, inDegrees float64) (err error) {
-	err = ogrError(osrSetAngularUnits(sr, name, inDegrees))
-	return
-}
-
 func osrGetAngularUnits(sr OGRSpatialReference) (result float64, name string) {
 	var pName *C.char
 	result = float64(C.OSRGetAngularUnits(sr.cValue, &pName))
@@ -1240,20 +957,10 @@ func osrGetAngularUnits(sr OGRSpatialReference) (result float64, name string) {
 	return
 }
 
-func (sr OGRSpatialReference) GetAngularUnits() (result float64, name string) {
-	result, name = osrGetAngularUnits(sr)
-	return
-}
-
 func osrSetLinearUnits(sr OGRSpatialReference, name string, inMeters float64) (result OGRErr) {
 	cs := C.CString(name)
 	defer C.free(unsafe.Pointer(cs))
 	result = OGRErr(C.OSRSetLinearUnits(sr.cValue, cs, C.double(inMeters)))
-	return
-}
-
-func (sr OGRSpatialReference) SetLinearUnits(name string, inMeters float64) (err error) {
-	err = ogrError(osrSetLinearUnits(sr, name, inMeters))
 	return
 }
 
@@ -1266,11 +973,6 @@ func osrSetTargetLinearUnits(sr OGRSpatialReference, targetKey, name string, inM
 	return
 }
 
-func (sr OGRSpatialReference) SetTargetLinearUnits(targetKey, name string, inMeters float64) (err error) {
-	err = ogrError(osrSetTargetLinearUnits(sr, targetKey, name, inMeters))
-	return
-}
-
 func osrSetLinearUnitsAndUpdateParameters(sr OGRSpatialReference, name string, inMeters float64) (result OGRErr) {
 	cs := C.CString(name)
 	defer C.free(unsafe.Pointer(cs))
@@ -1278,20 +980,10 @@ func osrSetLinearUnitsAndUpdateParameters(sr OGRSpatialReference, name string, i
 	return
 }
 
-func (sr OGRSpatialReference) SetLinearUnitsAndUpdateParameters(name string, inMeters float64) (err error) {
-	err = ogrError(osrSetLinearUnitsAndUpdateParameters(sr, name, inMeters))
-	return
-}
-
 func osrGetLinearUnits(sr OGRSpatialReference) (result float64, name string) {
 	var pName *C.char
 	result = float64(C.OSRGetLinearUnits(sr.cValue, &pName))
 	name = C.GoString(pName)
-	return
-}
-
-func (sr OGRSpatialReference) GetLinearUnits() (result float64, name string) {
-	result, name = osrGetLinearUnits(sr)
 	return
 }
 
@@ -1304,20 +996,10 @@ func osrGetTargetLinearUnits(sr OGRSpatialReference, targetKey string) (result f
 	return
 }
 
-func (sr OGRSpatialReference) GetTargetLinearUnits(targetKey string) (result float64, name string) {
-	result, name = osrGetTargetLinearUnits(sr, targetKey)
-	return
-}
-
 func osrGetPrimeMeridian(sr OGRSpatialReference) (result float64, name string) {
 	var pName *C.char
 	result = float64(C.OSRGetPrimeMeridian(sr.cValue, &pName))
 	name = C.GoString(pName)
-	return
-}
-
-func (sr OGRSpatialReference) GetPrimeMeridian() (result float64, name string) {
-	result, name = osrGetPrimeMeridian(sr)
 	return
 }
 
@@ -1326,18 +1008,8 @@ func osrIsGeographic(sr OGRSpatialReference) (result bool) {
 	return
 }
 
-func (sr OGRSpatialReference) IsGeographic() (result bool) {
-	result = osrIsGeographic(sr)
-	return
-}
-
 func osrIsDerivedGeographic(sr OGRSpatialReference) (result bool) {
 	result = C.OSRIsDerivedGeographic(sr.cValue) != 0
-	return
-}
-
-func (sr OGRSpatialReference) IsDerivedGeographic() (result bool) {
-	result = osrIsDerivedGeographic(sr)
 	return
 }
 
@@ -1346,18 +1018,8 @@ func osrIsLocal(sr OGRSpatialReference) (result bool) {
 	return
 }
 
-func (sr OGRSpatialReference) IsLocal() (result bool) {
-	result = osrIsLocal(sr)
-	return
-}
-
 func osrIsProjected(sr OGRSpatialReference) (result bool) {
 	result = C.OSRIsProjected(sr.cValue) != 0
-	return
-}
-
-func (sr OGRSpatialReference) IsProjected() (result bool) {
-	result = osrIsProjected(sr)
 	return
 }
 
@@ -1366,18 +1028,8 @@ func osrIsDerivedProjected(sr OGRSpatialReference) (result bool) {
 	return
 }
 
-func (sr OGRSpatialReference) IsDerivedProjected() (result bool) {
-	result = osrIsDerivedProjected(sr)
-	return
-}
-
 func osrIsCompound(sr OGRSpatialReference) (result bool) {
 	result = C.OSRIsCompound(sr.cValue) != 0
-	return
-}
-
-func (sr OGRSpatialReference) IsCompound() (result bool) {
-	result = osrIsCompound(sr)
 	return
 }
 
@@ -1386,18 +1038,8 @@ func osrIsGeocentric(sr OGRSpatialReference) (result bool) {
 	return
 }
 
-func (sr OGRSpatialReference) IsGeocentric() (result bool) {
-	result = osrIsGeocentric(sr)
-	return
-}
-
 func osrIsVertical(sr OGRSpatialReference) (result bool) {
 	result = C.OSRIsVertical(sr.cValue) != 0
-	return
-}
-
-func (sr OGRSpatialReference) IsVertical() (result bool) {
-	result = osrIsVertical(sr)
 	return
 }
 
@@ -1406,18 +1048,8 @@ func osrIsDynamic(sr OGRSpatialReference) (result bool) {
 	return
 }
 
-func (sr OGRSpatialReference) IsDynamic() (result bool) {
-	result = osrIsDynamic(sr)
-	return
-}
-
 func osrHasPointMotionOperation(sr OGRSpatialReference) (result bool) {
 	result = C.OSRHasPointMotionOperation(sr.cValue) != 0
-	return
-}
-
-func (sr OGRSpatialReference) HasPointMotionOperation() (result bool) {
-	result = osrHasPointMotionOperation(sr)
 	return
 }
 
@@ -1426,28 +1058,13 @@ func osrIsSameGeogCS(sr, other OGRSpatialReference) (result bool) {
 	return
 }
 
-func (sr OGRSpatialReference) IsSameGeogCS(other OGRSpatialReference) (result bool) {
-	result = osrIsSameGeogCS(sr, other)
-	return
-}
-
 func osrIsSameVertCS(sr, other OGRSpatialReference) (result bool) {
 	result = C.OSRIsSameVertCS(sr.cValue, other.cValue) != 0
 	return
 }
 
-func (sr OGRSpatialReference) IsSameVertCS(other OGRSpatialReference) (result bool) {
-	result = osrIsSameVertCS(sr, other)
-	return
-}
-
 func osrIsSame(sr, other OGRSpatialReference) (result bool) {
 	result = C.OSRIsSame(sr.cValue, other.cValue) != 0
-	return
-}
-
-func (sr OGRSpatialReference) IsSame(other OGRSpatialReference) (result bool) {
-	result = osrIsSame(sr, other)
 	return
 }
 
@@ -1457,26 +1074,12 @@ func osrIsSameEx(sr, other OGRSpatialReference, options CSLConstList) (result bo
 	return
 }
 
-func (sr OGRSpatialReference) IsSameEx(other OGRSpatialReference, options CSLConstList) (result bool) {
-	result = osrIsSameEx(sr, other, options)
-	return
-}
-
 func osrSetCoordinateEpoch(sr OGRSpatialReference, epoch float64) {
 	C.OSRSetCoordinateEpoch(sr.cValue, C.double(epoch))
 }
 
-func (sr OGRSpatialReference) SetCoordinateEpoch(epoch float64) {
-	osrSetCoordinateEpoch(sr, epoch)
-}
-
 func osrGetCoordinateEpoch(sr OGRSpatialReference) (result float64) {
 	result = float64(C.OSRGetCoordinateEpoch(sr.cValue))
-	return
-}
-
-func (sr OGRSpatialReference) GetCoordinateEpoch() (result float64) {
-	result = osrGetCoordinateEpoch(sr)
 	return
 }
 
@@ -1487,20 +1090,10 @@ func osrSetLocalCS(sr OGRSpatialReference, name string) (result OGRErr) {
 	return
 }
 
-func (sr OGRSpatialReference) SetLocalCS(name string) (err error) {
-	err = ogrError(osrSetLocalCS(sr, name))
-	return
-}
-
 func osrSetProjCS(sr OGRSpatialReference, name string) (result OGRErr) {
 	cs := C.CString(name)
 	defer C.free(unsafe.Pointer(cs))
 	result = OGRErr(C.OSRSetProjCS(sr.cValue, cs))
-	return
-}
-
-func (sr OGRSpatialReference) SetProjCS(name string) (err error) {
-	err = ogrError(osrSetProjCS(sr, name))
 	return
 }
 
@@ -1511,11 +1104,6 @@ func osrSetGeocCS(sr OGRSpatialReference, name string) (result OGRErr) {
 	return
 }
 
-func (sr OGRSpatialReference) SetGeocCS(name string) (err error) {
-	err = ogrError(osrSetGeocCS(sr, name))
-	return
-}
-
 func osrSetWellKnownGeogCS(sr OGRSpatialReference, name string) (result OGRErr) {
 	cs := C.CString(name)
 	defer C.free(unsafe.Pointer(cs))
@@ -1523,20 +1111,10 @@ func osrSetWellKnownGeogCS(sr OGRSpatialReference, name string) (result OGRErr) 
 	return
 }
 
-func (sr OGRSpatialReference) SetWellKnownGeogCS(name string) (err error) {
-	err = ogrError(osrSetWellKnownGeogCS(sr, name))
-	return
-}
-
 func osrSetFromUserInput(sr OGRSpatialReference, definition string) (result OGRErr) {
 	cs := C.CString(definition)
 	defer C.free(unsafe.Pointer(cs))
 	result = OGRErr(C.OSRSetFromUserInput(sr.cValue, cs))
-	return
-}
-
-func (sr OGRSpatialReference) SetFromUserInput(definition string) (err error) {
-	err = ogrError(osrSetFromUserInput(sr, definition))
 	return
 }
 
@@ -1548,28 +1126,13 @@ func osrSetFromUserInputEx(sr OGRSpatialReference, definition string, options CS
 	return
 }
 
-func (sr OGRSpatialReference) SetFromUserInputEx(definition string, options CSLConstList) (err error) {
-	err = ogrError(osrSetFromUserInputEx(sr, definition, options))
-	return
-}
-
 func osrCopyGeogCSFrom(sr, src OGRSpatialReference) (result OGRErr) {
 	result = OGRErr(C.OSRCopyGeogCSFrom(sr.cValue, src.cValue))
 	return
 }
 
-func (sr OGRSpatialReference) CopyGeogCSFrom(src OGRSpatialReference) (err error) {
-	err = ogrError(osrCopyGeogCSFrom(sr, src))
-	return
-}
-
 func osrSetTOWGS84(sr OGRSpatialReference, dx, dy, dz, ex, ey, ez, ppm float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetTOWGS84(sr.cValue, C.double(dx), C.double(dy), C.double(dz), C.double(ex), C.double(ey), C.double(ez), C.double(ppm)))
-	return
-}
-
-func (sr OGRSpatialReference) SetTOWGS84(dx, dy, dz, ex, ey, ez, ppm float64) (err error) {
-	err = ogrError(osrSetTOWGS84(sr, dx, dy, dz, ex, ey, ez, ppm))
 	return
 }
 
@@ -1585,20 +1148,8 @@ func osrGetTOWGS84(sr OGRSpatialReference) (params []float64, status OGRErr) {
 	return
 }
 
-func (sr OGRSpatialReference) GetTOWGS84() (params []float64, err error) {
-	var status OGRErr
-	params, status = osrGetTOWGS84(sr)
-	err = ogrError(status)
-	return
-}
-
 func osrAddGuessedTOWGS84(sr OGRSpatialReference) (result OGRErr) {
 	result = OGRErr(C.OSRAddGuessedTOWGS84(sr.cValue))
-	return
-}
-
-func (sr OGRSpatialReference) AddGuessedTOWGS84() (err error) {
-	err = ogrError(osrAddGuessedTOWGS84(sr))
 	return
 }
 
@@ -1606,11 +1157,6 @@ func osrSetCompoundCS(sr OGRSpatialReference, name string, horizSRS, vertSRS OGR
 	cs := C.CString(name)
 	defer C.free(unsafe.Pointer(cs))
 	result = OGRErr(C.OSRSetCompoundCS(sr.cValue, cs, horizSRS.cValue, vertSRS.cValue))
-	return
-}
-
-func (sr OGRSpatialReference) SetCompoundCS(name string, horizSRS, vertSRS OGRSpatialReference) (err error) {
-	err = ogrError(osrSetCompoundCS(sr, name, horizSRS, vertSRS))
 	return
 }
 
@@ -1624,11 +1170,6 @@ func osrPromoteTo3D(sr OGRSpatialReference, name string) (result OGRErr) {
 	return
 }
 
-func (sr OGRSpatialReference) PromoteTo3D(name string) (err error) {
-	err = ogrError(osrPromoteTo3D(sr, name))
-	return
-}
-
 func osrDemoteTo2D(sr OGRSpatialReference, name string) (result OGRErr) {
 	var cs *C.char
 	if name != "" {
@@ -1636,11 +1177,6 @@ func osrDemoteTo2D(sr OGRSpatialReference, name string) (result OGRErr) {
 		defer C.free(unsafe.Pointer(cs))
 	}
 	result = OGRErr(C.OSRDemoteTo2D(sr.cValue, cs))
-	return
-}
-
-func (sr OGRSpatialReference) DemoteTo2D(name string) (err error) {
-	err = ogrError(osrDemoteTo2D(sr, name))
 	return
 }
 
@@ -1665,22 +1201,12 @@ func osrSetGeogCS(sr OGRSpatialReference, geogName, datumName, ellipsoidName str
 	return
 }
 
-func (sr OGRSpatialReference) SetGeogCS(geogName, datumName, ellipsoidName string, semiMajor, invFlattening float64, pmName string, pmOffset float64, units string, convertToRadians float64) (err error) {
-	err = ogrError(osrSetGeogCS(sr, geogName, datumName, ellipsoidName, semiMajor, invFlattening, pmName, pmOffset, units, convertToRadians))
-	return
-}
-
 func osrSetVertCS(sr OGRSpatialReference, vertCSName, vertDatumName string, vertDatumType int) (result OGRErr) {
 	csName := C.CString(vertCSName)
 	defer C.free(unsafe.Pointer(csName))
 	csDatum := C.CString(vertDatumName)
 	defer C.free(unsafe.Pointer(csDatum))
 	result = OGRErr(C.OSRSetVertCS(sr.cValue, csName, csDatum, C.int(vertDatumType)))
-	return
-}
-
-func (sr OGRSpatialReference) SetVertCS(vertCSName, vertDatumName string, vertDatumType int) (err error) {
-	err = ogrError(osrSetVertCS(sr, vertCSName, vertDatumName, vertDatumType))
 	return
 }
 
@@ -1691,13 +1217,6 @@ func osrGetSemiMajor(sr OGRSpatialReference) (result float64, status OGRErr) {
 	return
 }
 
-func (sr OGRSpatialReference) GetSemiMajor() (result float64, err error) {
-	var status OGRErr
-	result, status = osrGetSemiMajor(sr)
-	err = ogrError(status)
-	return
-}
-
 func osrGetSemiMinor(sr OGRSpatialReference) (result float64, status OGRErr) {
 	var ogrErr C.OGRErr
 	result = float64(C.OSRGetSemiMinor(sr.cValue, &ogrErr))
@@ -1705,24 +1224,10 @@ func osrGetSemiMinor(sr OGRSpatialReference) (result float64, status OGRErr) {
 	return
 }
 
-func (sr OGRSpatialReference) GetSemiMinor() (result float64, err error) {
-	var status OGRErr
-	result, status = osrGetSemiMinor(sr)
-	err = ogrError(status)
-	return
-}
-
 func osrGetInvFlattening(sr OGRSpatialReference) (result float64, status OGRErr) {
 	var ogrErr C.OGRErr
 	result = float64(C.OSRGetInvFlattening(sr.cValue, &ogrErr))
 	status = OGRErr(ogrErr)
-	return
-}
-
-func (sr OGRSpatialReference) GetInvFlattening() (result float64, err error) {
-	var status OGRErr
-	result, status = osrGetInvFlattening(sr)
-	err = ogrError(status)
 	return
 }
 
@@ -1735,11 +1240,6 @@ func osrSetAuthority(sr OGRSpatialReference, targetKey, authority string, code i
 	return
 }
 
-func (sr OGRSpatialReference) SetAuthority(targetKey, authority string, code int) (err error) {
-	err = ogrError(osrSetAuthority(sr, targetKey, authority, code))
-	return
-}
-
 func osrGetAuthorityCode(sr OGRSpatialReference, targetKey string) (result string) {
 	cs := C.CString(targetKey)
 	defer C.free(unsafe.Pointer(cs))
@@ -1747,20 +1247,10 @@ func osrGetAuthorityCode(sr OGRSpatialReference, targetKey string) (result strin
 	return
 }
 
-func (sr OGRSpatialReference) GetAuthorityCode(targetKey string) (result string) {
-	result = osrGetAuthorityCode(sr, targetKey)
-	return
-}
-
 func osrGetAuthorityName(sr OGRSpatialReference, targetKey string) (result string) {
 	cs := C.CString(targetKey)
 	defer C.free(unsafe.Pointer(cs))
 	result = C.GoString(C.OSRGetAuthorityName(sr.cValue, cs))
-	return
-}
-
-func (sr OGRSpatialReference) GetAuthorityName(targetKey string) (result string) {
-	result = osrGetAuthorityName(sr, targetKey)
 	return
 }
 
@@ -1776,11 +1266,6 @@ func osrGetAreaOfUse(sr OGRSpatialReference) (westLon, southLat, eastLon, northL
 	return
 }
 
-func (sr OGRSpatialReference) GetAreaOfUse() (westLon, southLat, eastLon, northLat float64, areaName string, result bool) {
-	westLon, southLat, eastLon, northLat, areaName, result = osrGetAreaOfUse(sr)
-	return
-}
-
 func osrSetProjection(sr OGRSpatialReference, projection string) (result OGRErr) {
 	cs := C.CString(projection)
 	defer C.free(unsafe.Pointer(cs))
@@ -1788,20 +1273,10 @@ func osrSetProjection(sr OGRSpatialReference, projection string) (result OGRErr)
 	return
 }
 
-func (sr OGRSpatialReference) SetProjection(projection string) (err error) {
-	err = ogrError(osrSetProjection(sr, projection))
-	return
-}
-
 func osrSetProjParm(sr OGRSpatialReference, name string, value float64) (result OGRErr) {
 	cs := C.CString(name)
 	defer C.free(unsafe.Pointer(cs))
 	result = OGRErr(C.OSRSetProjParm(sr.cValue, cs, C.double(value)))
-	return
-}
-
-func (sr OGRSpatialReference) SetProjParm(name string, value float64) (err error) {
-	err = ogrError(osrSetProjParm(sr, name, value))
 	return
 }
 
@@ -1814,22 +1289,10 @@ func osrGetProjParm(sr OGRSpatialReference, name string, dfDefault float64) (res
 	return
 }
 
-func (sr OGRSpatialReference) GetProjParm(name string, dfDefault float64) (result float64, err error) {
-	var status OGRErr
-	result, status = osrGetProjParm(sr, name, dfDefault)
-	err = ogrError(status)
-	return
-}
-
 func osrSetNormProjParm(sr OGRSpatialReference, name string, value float64) (result OGRErr) {
 	cs := C.CString(name)
 	defer C.free(unsafe.Pointer(cs))
 	result = OGRErr(C.OSRSetNormProjParm(sr.cValue, cs, C.double(value)))
-	return
-}
-
-func (sr OGRSpatialReference) SetNormProjParm(name string, value float64) (err error) {
-	err = ogrError(osrSetNormProjParm(sr, name, value))
 	return
 }
 
@@ -1842,24 +1305,8 @@ func osrGetNormProjParm(sr OGRSpatialReference, name string, dfDefault float64) 
 	return
 }
 
-func (sr OGRSpatialReference) GetNormProjParm(name string, dfDefault float64) (result float64, err error) {
-	var status OGRErr
-	result, status = osrGetNormProjParm(sr, name, dfDefault)
-	err = ogrError(status)
-	return
-}
-
 func osrSetUTM(sr OGRSpatialReference, zone, north int) (result OGRErr) {
 	result = OGRErr(C.OSRSetUTM(sr.cValue, C.int(zone), C.int(north)))
-	return
-}
-
-func (sr OGRSpatialReference) SetUTM(zone int, north bool) (err error) {
-	bNorth := 0
-	if north {
-		bNorth = 1
-	}
-	err = ogrError(osrSetUTM(sr, zone, bNorth))
 	return
 }
 
@@ -1870,22 +1317,8 @@ func osrGetUTMZone(sr OGRSpatialReference) (zone int, north bool) {
 	return
 }
 
-func (sr OGRSpatialReference) GetUTMZone() (zone int, north bool) {
-	zone, north = osrGetUTMZone(sr)
-	return
-}
-
 func osrSetStatePlane(sr OGRSpatialReference, zone, nad83 int) (result OGRErr) {
 	result = OGRErr(C.OSRSetStatePlane(sr.cValue, C.int(zone), C.int(nad83)))
-	return
-}
-
-func (sr OGRSpatialReference) SetStatePlane(zone int, nad83 bool) (err error) {
-	bNad83 := 0
-	if nad83 {
-		bNad83 = 1
-	}
-	err = ogrError(osrSetStatePlane(sr, zone, bNad83))
 	return
 }
 
@@ -1896,22 +1329,8 @@ func osrSetStatePlaneWithUnits(sr OGRSpatialReference, zone, nad83 int, unitName
 	return
 }
 
-func (sr OGRSpatialReference) SetStatePlaneWithUnits(zone int, nad83 bool, unitName string, unit float64) (err error) {
-	bNad83 := 0
-	if nad83 {
-		bNad83 = 1
-	}
-	err = ogrError(osrSetStatePlaneWithUnits(sr, zone, bNad83, unitName, unit))
-	return
-}
-
 func osrAutoIdentifyEPSG(sr OGRSpatialReference) (result OGRErr) {
 	result = OGRErr(C.OSRAutoIdentifyEPSG(sr.cValue))
-	return
-}
-
-func (sr OGRSpatialReference) AutoIdentifyEPSG() (err error) {
-	err = ogrError(osrAutoIdentifyEPSG(sr))
 	return
 }
 
@@ -1937,26 +1356,8 @@ func osrFindMatches(sr OGRSpatialReference, options CSLConstList, count *int, ma
 	return
 }
 
-func (sr OGRSpatialReference) FindMatches(options CSLConstList) (result []OGRSpatialReference, matchConfidence []int) {
-	var count int
-	list := osrFindMatches(sr, options, &count, &matchConfidence)
-	if list.cValue == nil || count == 0 {
-		return
-	}
-	src := unsafe.Slice(list.cValue, count)
-	result = make([]OGRSpatialReference, count)
-	for i := range result {
-		result[i] = OGRSpatialReference{cValue: src[i]}
-	}
-	return
-}
-
 func osrFreeSRSArray(pahSRS OGRSpatialReferences) {
 	C.OSRFreeSRSArray(pahSRS.cValue)
-}
-
-func (srs OGRSpatialReferences) FreeSRSArray() {
-	osrFreeSRSArray(srs)
 }
 
 func osrEPSGTreatsAsLatLong(sr OGRSpatialReference) (result bool) {
@@ -1964,18 +1365,8 @@ func osrEPSGTreatsAsLatLong(sr OGRSpatialReference) (result bool) {
 	return
 }
 
-func (sr OGRSpatialReference) EPSGTreatsAsLatLong() (result bool) {
-	result = osrEPSGTreatsAsLatLong(sr)
-	return
-}
-
 func osrEPSGTreatsAsNorthingEasting(sr OGRSpatialReference) (result bool) {
 	result = C.OSREPSGTreatsAsNorthingEasting(sr.cValue) != 0
-	return
-}
-
-func (sr OGRSpatialReference) EPSGTreatsAsNorthingEasting() (result bool) {
-	result = osrEPSGTreatsAsNorthingEasting(sr)
 	return
 }
 
@@ -1988,18 +1379,8 @@ func osrGetAxis(sr OGRSpatialReference, targetKey string, iAxis int) (name strin
 	return
 }
 
-func (sr OGRSpatialReference) GetAxis(targetKey string, iAxis int) (name string, orientation OGRAxisOrientation) {
-	name, orientation = osrGetAxis(sr, targetKey, iAxis)
-	return
-}
-
 func osrGetAxesCount(sr OGRSpatialReference) (result int) {
 	result = int(C.OSRGetAxesCount(sr.cValue))
-	return
-}
-
-func (sr OGRSpatialReference) GetAxesCount() (result int) {
-	result = osrGetAxesCount(sr)
 	return
 }
 
@@ -2011,11 +1392,6 @@ func osrSetAxes(sr OGRSpatialReference, targetKey, xAxisName string, xOrientatio
 	csY := C.CString(yAxisName)
 	defer C.free(unsafe.Pointer(csY))
 	result = OGRErr(C.OSRSetAxes(sr.cValue, csKey, csX, C.OGRAxisOrientation(xOrientation), csY, C.OGRAxisOrientation(yOrientation)))
-	return
-}
-
-func (sr OGRSpatialReference) SetAxes(targetKey, xAxisName string, xOrientation OGRAxisOrientation, yAxisName string, yOrientation OGRAxisOrientation) (err error) {
-	err = ogrError(osrSetAxes(sr, targetKey, xAxisName, xOrientation, yAxisName, yOrientation))
 	return
 }
 
@@ -2032,17 +1408,8 @@ func osrGetAxisMappingStrategy(sr OGRSpatialReference) (result OSRAxisMappingStr
 	return
 }
 
-func (sr OGRSpatialReference) GetAxisMappingStrategy() (result OSRAxisMappingStrategy) {
-	result = osrGetAxisMappingStrategy(sr)
-	return
-}
-
 func osrSetAxisMappingStrategy(sr OGRSpatialReference, strategy OSRAxisMappingStrategy) {
 	C.OSRSetAxisMappingStrategy(sr.cValue, C.OSRAxisMappingStrategy(strategy))
-}
-
-func (sr OGRSpatialReference) SetAxisMappingStrategy(strategy OSRAxisMappingStrategy) {
-	osrSetAxisMappingStrategy(sr, strategy)
 }
 
 func osrGetDataAxisToSRSAxisMapping(sr OGRSpatialReference) (result []int) {
@@ -2060,11 +1427,6 @@ func osrGetDataAxisToSRSAxisMapping(sr OGRSpatialReference) (result []int) {
 	return
 }
 
-func (sr OGRSpatialReference) GetDataAxisToSRSAxisMapping() (result []int) {
-	result = osrGetDataAxisToSRSAxisMapping(sr)
-	return
-}
-
 func osrSetDataAxisToSRSAxisMapping(sr OGRSpatialReference, mapping []int) (result OGRErr) {
 	if len(mapping) == 0 {
 		return
@@ -2077,19 +1439,9 @@ func osrSetDataAxisToSRSAxisMapping(sr OGRSpatialReference, mapping []int) (resu
 	return
 }
 
-func (sr OGRSpatialReference) SetDataAxisToSRSAxisMapping(mapping []int) (err error) {
-	err = ogrError(osrSetDataAxisToSRSAxisMapping(sr, mapping))
-	return
-}
-
 /** Albers Conic Equal Area */
 func osrSetACEA(sr OGRSpatialReference, dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetACEA(sr.cValue, C.double(dfStdP1), C.double(dfStdP2), C.double(dfCenterLat), C.double(dfCenterLong), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetACEA(dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetACEA(sr, dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2099,19 +1451,9 @@ func osrSetAE(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfFalseEasting,
 	return
 }
 
-func (sr OGRSpatialReference) SetAE(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetAE(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Bonne */
 func osrSetBonne(sr OGRSpatialReference, dfStandardParallel, dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetBonne(sr.cValue, C.double(dfStandardParallel), C.double(dfCentralMeridian), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetBonne(dfStandardParallel, dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetBonne(sr, dfStandardParallel, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2121,19 +1463,9 @@ func osrSetCEA(sr OGRSpatialReference, dfStdP1, dfCentralMeridian, dfFalseEastin
 	return
 }
 
-func (sr OGRSpatialReference) SetCEA(dfStdP1, dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetCEA(sr, dfStdP1, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Cassini-Soldner */
 func osrSetCS(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetCS(sr.cValue, C.double(dfCenterLat), C.double(dfCenterLong), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetCS(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetCS(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2143,19 +1475,9 @@ func osrSetEC(sr OGRSpatialReference, dfStdP1, dfStdP2, dfCenterLat, dfCenterLon
 	return
 }
 
-func (sr OGRSpatialReference) SetEC(dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetEC(sr, dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Eckert I-VI */
 func osrSetEckert(sr OGRSpatialReference, nVariation int, dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetEckert(sr.cValue, C.int(nVariation), C.double(dfCentralMeridian), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetEckert(nVariation int, dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetEckert(sr, nVariation, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2165,19 +1487,9 @@ func osrSetEckertIV(sr OGRSpatialReference, dfCentralMeridian, dfFalseEasting, d
 	return
 }
 
-func (sr OGRSpatialReference) SetEckertIV(dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetEckertIV(sr, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Eckert VI */
 func osrSetEckertVI(sr OGRSpatialReference, dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetEckertVI(sr.cValue, C.double(dfCentralMeridian), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetEckertVI(dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetEckertVI(sr, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2187,19 +1499,9 @@ func osrSetEquirectangular(sr OGRSpatialReference, dfCenterLat, dfCenterLong, df
 	return
 }
 
-func (sr OGRSpatialReference) SetEquirectangular(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetEquirectangular(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Equirectangular generalized form */
 func osrSetEquirectangular2(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfPseudoStdParallel1, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetEquirectangular2(sr.cValue, C.double(dfCenterLat), C.double(dfCenterLong), C.double(dfPseudoStdParallel1), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetEquirectangular2(dfCenterLat, dfCenterLong, dfPseudoStdParallel1, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetEquirectangular2(sr, dfCenterLat, dfCenterLong, dfPseudoStdParallel1, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2209,19 +1511,9 @@ func osrSetGS(sr OGRSpatialReference, dfCentralMeridian, dfFalseEasting, dfFalse
 	return
 }
 
-func (sr OGRSpatialReference) SetGS(dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetGS(sr, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Goode Homolosine */
 func osrSetGH(sr OGRSpatialReference, dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetGH(sr.cValue, C.double(dfCentralMeridian), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetGH(dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetGH(sr, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2231,19 +1523,9 @@ func osrSetIGH(sr OGRSpatialReference) (result OGRErr) {
 	return
 }
 
-func (sr OGRSpatialReference) SetIGH() (err error) {
-	err = ogrError(osrSetIGH(sr))
-	return
-}
-
 /** GEOS - Geostationary Satellite View */
 func osrSetGEOS(sr OGRSpatialReference, dfCentralMeridian, dfSatelliteHeight, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetGEOS(sr.cValue, C.double(dfCentralMeridian), C.double(dfSatelliteHeight), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetGEOS(dfCentralMeridian, dfSatelliteHeight, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetGEOS(sr, dfCentralMeridian, dfSatelliteHeight, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2253,19 +1535,9 @@ func osrSetGaussSchreiberTMercator(sr OGRSpatialReference, dfCenterLat, dfCenter
 	return
 }
 
-func (sr OGRSpatialReference) SetGaussSchreiberTMercator(dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetGaussSchreiberTMercator(sr, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Gnomonic */
 func osrSetGnomonic(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetGnomonic(sr.cValue, C.double(dfCenterLat), C.double(dfCenterLong), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetGnomonic(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetGnomonic(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2283,18 +1555,8 @@ func osrSetHOM(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfAzimuth, dfR
 	return
 }
 
-func (sr OGRSpatialReference) SetHOM(dfCenterLat, dfCenterLong, dfAzimuth, dfRectToSkew, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetHOM(sr, dfCenterLat, dfCenterLong, dfAzimuth, dfRectToSkew, dfScale, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 func osrSetHOMAC(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfAzimuth, dfRectToSkew, dfScale, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetHOMAC(sr.cValue, C.double(dfCenterLat), C.double(dfCenterLong), C.double(dfAzimuth), C.double(dfRectToSkew), C.double(dfScale), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetHOMAC(dfCenterLat, dfCenterLong, dfAzimuth, dfRectToSkew, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetHOMAC(sr, dfCenterLat, dfCenterLong, dfAzimuth, dfRectToSkew, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2304,19 +1566,9 @@ func osrSetHOM2PNO(sr OGRSpatialReference, dfCenterLat, dfLat1, dfLong1, dfLat2,
 	return
 }
 
-func (sr OGRSpatialReference) SetHOM2PNO(dfCenterLat, dfLat1, dfLong1, dfLat2, dfLong2, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetHOM2PNO(sr, dfCenterLat, dfLat1, dfLong1, dfLat2, dfLong2, dfScale, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** International Map of the World Polyconic */
 func osrSetIWMPolyconic(sr OGRSpatialReference, dfLat1, dfLat2, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetIWMPolyconic(sr.cValue, C.double(dfLat1), C.double(dfLat2), C.double(dfCenterLong), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetIWMPolyconic(dfLat1, dfLat2, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetIWMPolyconic(sr, dfLat1, dfLat2, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2326,19 +1578,9 @@ func osrSetKrovak(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfAzimuth, 
 	return
 }
 
-func (sr OGRSpatialReference) SetKrovak(dfCenterLat, dfCenterLong, dfAzimuth, dfPseudoStdParallelLat, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetKrovak(sr, dfCenterLat, dfCenterLong, dfAzimuth, dfPseudoStdParallelLat, dfScale, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Lambert Azimuthal Equal-Area */
 func osrSetLAEA(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetLAEA(sr.cValue, C.double(dfCenterLat), C.double(dfCenterLong), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetLAEA(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetLAEA(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2348,19 +1590,9 @@ func osrSetLCC(sr OGRSpatialReference, dfStdP1, dfStdP2, dfCenterLat, dfCenterLo
 	return
 }
 
-func (sr OGRSpatialReference) SetLCC(dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetLCC(sr, dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Lambert Conformal Conic 1SP */
 func osrSetLCC1SP(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetLCC1SP(sr.cValue, C.double(dfCenterLat), C.double(dfCenterLong), C.double(dfScale), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetLCC1SP(dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetLCC1SP(sr, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2370,19 +1602,9 @@ func osrSetLCCB(sr OGRSpatialReference, dfStdP1, dfStdP2, dfCenterLat, dfCenterL
 	return
 }
 
-func (sr OGRSpatialReference) SetLCCB(dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetLCCB(sr, dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Miller Cylindrical */
 func osrSetMC(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetMC(sr.cValue, C.double(dfCenterLat), C.double(dfCenterLong), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetMC(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetMC(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2392,19 +1614,9 @@ func osrSetMercator(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfScale, 
 	return
 }
 
-func (sr OGRSpatialReference) SetMercator(dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetMercator(sr, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Mercator 2SP */
 func osrSetMercator2SP(sr OGRSpatialReference, dfStdP1, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetMercator2SP(sr.cValue, C.double(dfStdP1), C.double(dfCenterLat), C.double(dfCenterLong), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetMercator2SP(dfStdP1, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetMercator2SP(sr, dfStdP1, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2414,19 +1626,9 @@ func osrSetMollweide(sr OGRSpatialReference, dfCentralMeridian, dfFalseEasting, 
 	return
 }
 
-func (sr OGRSpatialReference) SetMollweide(dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetMollweide(sr, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** New Zealand Map Grid */
 func osrSetNZMG(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetNZMG(sr.cValue, C.double(dfCenterLat), C.double(dfCenterLong), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetNZMG(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetNZMG(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2436,19 +1638,9 @@ func osrSetOS(sr OGRSpatialReference, dfOriginLat, dfCMeridian, dfScale, dfFalse
 	return
 }
 
-func (sr OGRSpatialReference) SetOS(dfOriginLat, dfCMeridian, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetOS(sr, dfOriginLat, dfCMeridian, dfScale, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Orthographic */
 func osrSetOrthographic(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetOrthographic(sr.cValue, C.double(dfCenterLat), C.double(dfCenterLong), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetOrthographic(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetOrthographic(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2458,19 +1650,9 @@ func osrSetPolyconic(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfFalseE
 	return
 }
 
-func (sr OGRSpatialReference) SetPolyconic(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetPolyconic(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Polar Stereographic */
 func osrSetPS(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetPS(sr.cValue, C.double(dfCenterLat), C.double(dfCenterLong), C.double(dfScale), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetPS(dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetPS(sr, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2480,19 +1662,9 @@ func osrSetRobinson(sr OGRSpatialReference, dfCenterLong, dfFalseEasting, dfFals
 	return
 }
 
-func (sr OGRSpatialReference) SetRobinson(dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetRobinson(sr, dfCenterLong, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Sinusoidal */
 func osrSetSinusoidal(sr OGRSpatialReference, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetSinusoidal(sr.cValue, C.double(dfCenterLong), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetSinusoidal(dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetSinusoidal(sr, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2502,19 +1674,9 @@ func osrSetStereographic(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfSc
 	return
 }
 
-func (sr OGRSpatialReference) SetStereographic(dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetStereographic(sr, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Swiss Oblique Cylindrical */
 func osrSetSOC(sr OGRSpatialReference, dfLatitudeOfOrigin, dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetSOC(sr.cValue, C.double(dfLatitudeOfOrigin), C.double(dfCentralMeridian), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetSOC(dfLatitudeOfOrigin, dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetSOC(sr, dfLatitudeOfOrigin, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2528,21 +1690,11 @@ func osrSetTM(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfScale, dfFals
 	return
 }
 
-func (sr OGRSpatialReference) SetTM(dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetTM(sr, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Transverse Mercator variant */
 func osrSetTMVariant(sr OGRSpatialReference, pszVariantName string, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	cs := C.CString(pszVariantName)
 	defer C.free(unsafe.Pointer(cs))
 	result = OGRErr(C.OSRSetTMVariant(sr.cValue, cs, C.double(dfCenterLat), C.double(dfCenterLong), C.double(dfScale), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetTMVariant(pszVariantName string, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetTMVariant(sr, pszVariantName, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2552,19 +1704,9 @@ func osrSetTMG(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfFalseEasting
 	return
 }
 
-func (sr OGRSpatialReference) SetTMG(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetTMG(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Transverse Mercator (South Oriented) */
 func osrSetTMSO(sr OGRSpatialReference, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetTMSO(sr.cValue, C.double(dfCenterLat), C.double(dfCenterLong), C.double(dfScale), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetTMSO(dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetTMSO(sr, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2574,19 +1716,9 @@ func osrSetTPED(sr OGRSpatialReference, dfLat1, dfLong1, dfLat2, dfLong2, dfFals
 	return
 }
 
-func (sr OGRSpatialReference) SetTPED(dfLat1, dfLong1, dfLat2, dfLong2, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetTPED(sr, dfLat1, dfLong1, dfLat2, dfLong2, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** VanDerGrinten */
 func osrSetVDG(sr OGRSpatialReference, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetVDG(sr.cValue, C.double(dfCenterLong), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetVDG(dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetVDG(sr, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2596,19 +1728,9 @@ func osrSetWagner(sr OGRSpatialReference, nVariation int, dfCenterLat, dfFalseEa
 	return
 }
 
-func (sr OGRSpatialReference) SetWagner(nVariation int, dfCenterLat, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetWagner(sr, nVariation, dfCenterLat, dfFalseEasting, dfFalseNorthing))
-	return
-}
-
 /** Quadrilateralized Spherical Cube */
 func osrSetQSC(sr OGRSpatialReference, dfCenterLat, dfCenterLong float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetQSC(sr.cValue, C.double(dfCenterLat), C.double(dfCenterLong)))
-	return
-}
-
-func (sr OGRSpatialReference) SetQSC(dfCenterLat, dfCenterLong float64) (err error) {
-	err = ogrError(osrSetQSC(sr, dfCenterLat, dfCenterLong))
 	return
 }
 
@@ -2618,19 +1740,9 @@ func osrSetSCH(sr OGRSpatialReference, dfPegLat, dfPegLong, dfPegHeading, dfPegH
 	return
 }
 
-func (sr OGRSpatialReference) SetSCH(dfPegLat, dfPegLong, dfPegHeading, dfPegHgt float64) (err error) {
-	err = ogrError(osrSetSCH(sr, dfPegLat, dfPegLong, dfPegHeading, dfPegHgt))
-	return
-}
-
 /** Vertical Perspective / Near-sided Perspective */
 func osrSetVerticalPerspective(sr OGRSpatialReference, dfTopoOriginLat, dfTopoOriginLon, dfTopoOriginHeight, dfViewPointHeight, dfFalseEasting, dfFalseNorthing float64) (result OGRErr) {
 	result = OGRErr(C.OSRSetVerticalPerspective(sr.cValue, C.double(dfTopoOriginLat), C.double(dfTopoOriginLon), C.double(dfTopoOriginHeight), C.double(dfViewPointHeight), C.double(dfFalseEasting), C.double(dfFalseNorthing)))
-	return
-}
-
-func (sr OGRSpatialReference) SetVerticalPerspective(dfTopoOriginLat, dfTopoOriginLon, dfTopoOriginHeight, dfViewPointHeight, dfFalseEasting, dfFalseNorthing float64) (err error) {
-	err = ogrError(osrSetVerticalPerspective(sr, dfTopoOriginLat, dfTopoOriginLon, dfTopoOriginHeight, dfViewPointHeight, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
@@ -2639,22 +1751,12 @@ func osrCalcInvFlattening(semiMajor, semiMinor float64) (result float64) {
 	return
 }
 
-func OSRCalcInvFlattening(semiMajor, semiMinor float64) (result float64) {
-	result = osrCalcInvFlattening(semiMajor, semiMinor)
-	return
-}
-
 func osrCalcSemiMinorFromInvFlattening(semiMajor, invFlattening float64) (result float64) {
 	result = float64(C.OSRCalcSemiMinorFromInvFlattening(C.double(semiMajor), C.double(invFlattening)))
 	return
 }
 
-func OSRCalcSemiMinorFromInvFlattening(semiMajor, invFlattening float64) (result float64) {
-	result = osrCalcSemiMinorFromInvFlattening(semiMajor, invFlattening)
-	return
-}
-
-func OSRCleanup() {
+func osrCleanup() {
 	C.OSRCleanup()
 }
 
@@ -2695,37 +1797,13 @@ func osrGetCRSInfoListFromDatabase(authName string, params OSRCRSListParameters,
 	return
 }
 
-func OSRGetCRSInfoListFromDatabase(authName string, params OSRCRSListParameters) (result []OSRCRSInfo, err error) {
-	var count int
-	list := osrGetCRSInfoListFromDatabase(authName, params, &count)
-	if list.cValue == nil {
-		err = lastError()
-		return
-	}
-	src := unsafe.Slice(list.cValue, count)
-	result = make([]OSRCRSInfo, count)
-	for i := range result {
-		result[i] = OSRCRSInfo{cValue: src[i]}
-	}
-	return
-}
-
 func osrDestroyCRSInfoList(list OSRCRSInfos) {
 	C.OSRDestroyCRSInfoList(list.cValue)
-}
-
-func OSRDestroyCRSInfoList(list OSRCRSInfos) {
-	osrDestroyCRSInfoList(list)
 }
 
 func osrGetAuthorityListFromDatabase() (result CSLConstList) {
 	raw := C.OSRGetAuthorityListFromDatabase()
 	result = cslConstList(raw)
-	return
-}
-
-func OSRGetAuthorityListFromDatabase() (result CSLConstList) {
-	result = osrGetAuthorityListFromDatabase()
 	return
 }
 
@@ -2738,24 +1816,8 @@ func octNewCoordinateTransformation(source, target OGRSpatialReference) (result 
 	return
 }
 
-func OCTNewCoordinateTransformation(source, target OGRSpatialReference) (result OGRCoordinateTransformation, err error) {
-	result = octNewCoordinateTransformation(source, target)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func octNewCoordinateTransformationOptions() (result OGRCoordinateTransformationOptions) {
 	result = OGRCoordinateTransformationOptions{cValue: C.OCTNewCoordinateTransformationOptions()}
-	return
-}
-
-func OCTNewCoordinateTransformationOptions() (result OGRCoordinateTransformationOptions, err error) {
-	result = octNewCoordinateTransformationOptions()
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -2766,22 +1828,8 @@ func octCoordinateTransformationOptionsSetOperation(opts OGRCoordinateTransforma
 	return
 }
 
-func (opts OGRCoordinateTransformationOptions) SetOperation(pszCO string, reverseCO bool) (result bool) {
-	bReverseCO := 0
-	if reverseCO {
-		bReverseCO = 1
-	}
-	result = octCoordinateTransformationOptionsSetOperation(opts, pszCO, bReverseCO)
-	return
-}
-
 func octCoordinateTransformationOptionsSetAreaOfInterest(opts OGRCoordinateTransformationOptions, dfWestLongitudeDeg, dfSouthLatitudeDeg, dfEastLongitudeDeg, dfNorthLatitudeDeg float64) (result bool) {
 	result = C.OCTCoordinateTransformationOptionsSetAreaOfInterest(opts.cValue, C.double(dfWestLongitudeDeg), C.double(dfSouthLatitudeDeg), C.double(dfEastLongitudeDeg), C.double(dfNorthLatitudeDeg)) != 0
-	return
-}
-
-func (opts OGRCoordinateTransformationOptions) SetAreaOfInterest(dfWestLongitudeDeg, dfSouthLatitudeDeg, dfEastLongitudeDeg, dfNorthLatitudeDeg float64) (result bool) {
-	result = octCoordinateTransformationOptionsSetAreaOfInterest(opts, dfWestLongitudeDeg, dfSouthLatitudeDeg, dfEastLongitudeDeg, dfNorthLatitudeDeg)
 	return
 }
 
@@ -2790,22 +1838,8 @@ func octCoordinateTransformationOptionsSetDesiredAccuracy(opts OGRCoordinateTran
 	return
 }
 
-func (opts OGRCoordinateTransformationOptions) SetDesiredAccuracy(dfAccuracy float64) (result bool) {
-	result = octCoordinateTransformationOptionsSetDesiredAccuracy(opts, dfAccuracy)
-	return
-}
-
 func octCoordinateTransformationOptionsSetBallparkAllowed(opts OGRCoordinateTransformationOptions, bAllowBallpark int) (result bool) {
 	result = C.OCTCoordinateTransformationOptionsSetBallparkAllowed(opts.cValue, C.int(bAllowBallpark)) != 0
-	return
-}
-
-func (opts OGRCoordinateTransformationOptions) SetBallparkAllowed(allowBallpark bool) (result bool) {
-	bAllowBallpark := 0
-	if allowBallpark {
-		bAllowBallpark = 1
-	}
-	result = octCoordinateTransformationOptionsSetBallparkAllowed(opts, bAllowBallpark)
 	return
 }
 
@@ -2814,12 +1848,7 @@ func octCoordinateTransformationOptionsSetOnlyBest(opts OGRCoordinateTransformat
 	return
 }
 
-func (opts OGRCoordinateTransformationOptions) SetOnlyBest(bOnlyBest bool) (result bool) {
-	result = octCoordinateTransformationOptionsSetOnlyBest(opts, bOnlyBest)
-	return
-}
-
-func (opts OGRCoordinateTransformationOptions) Destroy() {
+func octDestroyCoordinateTransformationOptions(opts OGRCoordinateTransformationOptions) {
 	C.OCTDestroyCoordinateTransformationOptions(opts.cValue)
 }
 
@@ -2828,24 +1857,12 @@ func octNewCoordinateTransformationEx(source, target OGRSpatialReference, option
 	return
 }
 
-func OCTNewCoordinateTransformationEx(source, target OGRSpatialReference, options OGRCoordinateTransformationOptions) (result OGRCoordinateTransformation, err error) {
-	result = octNewCoordinateTransformationEx(source, target, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
+func octDestroyCoordinateTransformation(ct OGRCoordinateTransformation) {
+	C.OCTDestroyCoordinateTransformation(ct.cValue)
 }
 
 func octClone(ct OGRCoordinateTransformation) (result OGRCoordinateTransformation) {
 	result = OGRCoordinateTransformation{cValue: C.OCTClone(ct.cValue)}
-	return
-}
-
-func (ct OGRCoordinateTransformation) Clone() (result OGRCoordinateTransformation, err error) {
-	result = octClone(ct)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -2854,36 +1871,14 @@ func octGetSourceCS(ct OGRCoordinateTransformation) (result OGRSpatialReference)
 	return
 }
 
-func (ct OGRCoordinateTransformation) GetSourceCS() (result OGRSpatialReference) {
-	result = octGetSourceCS(ct)
-	return
-}
-
 func octGetTargetCS(ct OGRCoordinateTransformation) (result OGRSpatialReference) {
 	result = OGRSpatialReference{cValue: C.OCTGetTargetCS(ct.cValue)}
-	return
-}
-
-func (ct OGRCoordinateTransformation) GetTargetCS() (result OGRSpatialReference) {
-	result = octGetTargetCS(ct)
 	return
 }
 
 func octGetInverse(ct OGRCoordinateTransformation) (result OGRCoordinateTransformation) {
 	result = OGRCoordinateTransformation{cValue: C.OCTGetInverse(ct.cValue)}
 	return
-}
-
-func (ct OGRCoordinateTransformation) GetInverse() (result OGRCoordinateTransformation, err error) {
-	result = octGetInverse(ct)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
-func (ct OGRCoordinateTransformation) Destroy() {
-	C.OCTDestroyCoordinateTransformation(ct.cValue)
 }
 
 func octTransform(ct OGRCoordinateTransformation, x, y, z []float64) (result bool) {
@@ -2914,11 +1909,6 @@ func octTransform(ct OGRCoordinateTransformation, x, y, z []float64) (result boo
 	for i := 0; i < len(cz); i++ {
 		z[i] = float64(cz[i])
 	}
-	return
-}
-
-func (ct OGRCoordinateTransformation) Transform(x, y, z []float64) (result bool) {
-	result = octTransform(ct, x, y, z)
 	return
 }
 
@@ -2955,11 +1945,6 @@ func octTransformEx(ct OGRCoordinateTransformation, x, y, z []float64) (success 
 	for i := 0; i < nCount; i++ {
 		success[i] = cSuccess[i] != 0
 	}
-	return
-}
-
-func (ct OGRCoordinateTransformation) TransformEx(x, y, z []float64) (success []bool, result bool) {
-	success, result = octTransformEx(ct, x, y, z)
 	return
 }
 
@@ -3011,11 +1996,6 @@ func octTransform4D(ct OGRCoordinateTransformation, x, y, z, t []float64) (succe
 	return
 }
 
-func (ct OGRCoordinateTransformation) Transform4D(x, y, z, t []float64) (success []bool, result bool) {
-	success, result = octTransform4D(ct, x, y, z, t)
-	return
-}
-
 func octTransform4DWithErrorCodes(ct OGRCoordinateTransformation, x, y, z, t []float64) (errorCodes []int, result bool) {
 	nCount := len(x)
 	if nCount == 0 {
@@ -3064,11 +2044,6 @@ func octTransform4DWithErrorCodes(ct OGRCoordinateTransformation, x, y, z, t []f
 	return
 }
 
-func (ct OGRCoordinateTransformation) Transform4DWithErrorCodes(x, y, z, t []float64) (errorCodes []int, result bool) {
-	errorCodes, result = octTransform4DWithErrorCodes(ct, x, y, z, t)
-	return
-}
-
 func octTransformBounds(ct OGRCoordinateTransformation, xmin, ymin, xmax, ymax float64, densifyPts int) (outXmin, outYmin, outXmax, outYmax float64, result bool) {
 	var coutXmin, coutYmin, coutXmax, coutYmax C.double
 	result = C.OCTTransformBounds(ct.cValue, C.double(xmin), C.double(ymin), C.double(xmax), C.double(ymax), &coutXmin, &coutYmin, &coutXmax, &coutYmax, C.int(densifyPts)) != 0
@@ -3076,10 +2051,5 @@ func octTransformBounds(ct OGRCoordinateTransformation, xmin, ymin, xmax, ymax f
 	outYmin = float64(coutYmin)
 	outXmax = float64(coutXmax)
 	outYmax = float64(coutYmax)
-	return
-}
-
-func (ct OGRCoordinateTransformation) TransformBounds(xmin, ymin, xmax, ymax float64, densifyPts int) (outXmin, outYmin, outXmax, outYmax float64, result bool) {
-	outXmin, outYmin, outXmax, outYmax, result = octTransformBounds(ct, xmin, ymin, xmax, ymax, densifyPts)
 	return
 }

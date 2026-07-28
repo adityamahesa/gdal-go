@@ -3,18 +3,18 @@
 
 #include "cpl_port.h"
 
-const GIntBig  _GINTBIG_MIN  = GINTBIG_MIN;
-const GIntBig  _GINTBIG_MAX  = GINTBIG_MAX;
-const GIntBig  _GINT64_MIN   = GINT64_MIN;
-const GIntBig  _GINT64_MAX   = GINT64_MAX;
-// All-ones unsigned bounds: kept as (non-const) globals so cgo reads them at
+static GIntBig _GINTBIG_MIN(void) { return GINTBIG_MIN; }
+static GIntBig _GINTBIG_MAX(void) { return GINTBIG_MAX; }
+static GIntBig _GINT64_MIN(void)  { return GINT64_MIN; }
+static GIntBig _GINT64_MAX(void)  { return GINT64_MAX; }
+// All-ones unsigned bounds: read through an accessor so cgo evaluates them at
 // runtime instead of as untyped -1 constants that would overflow on conversion.
-GUIntBig _GUINTBIG_MAX = GUINTBIG_MAX;
-GUIntBig _GUINT64_MAX  = GUINT64_MAX;
-// Kept as a (non-const) global so cgo reads the full-precision double at runtime;
+static GUIntBig _GUINTBIG_MAX(void) { return GUINTBIG_MAX; }
+static GUIntBig _GUINT64_MAX(void)  { return GUINT64_MAX; }
+// Read through an accessor so cgo evaluates the full-precision double at runtime;
 // as a constant cgo would marshal it through a low-precision decimal form.
-double _M_PI = M_PI;
-const char* const _CPL_FRMT_GIB  = CPL_FRMT_GIB;
-const char* const _CPL_FRMT_GUIB = CPL_FRMT_GUIB;
+static double _M_PI(void)               { return M_PI; }
+static const char* _CPL_FRMT_GIB(void)  { return CPL_FRMT_GIB; }
+static const char* _CPL_FRMT_GUIB(void) { return CPL_FRMT_GUIB; }
 
 #endif /* GDAL_GO_CPL_PORT_PREAMBLE_H */

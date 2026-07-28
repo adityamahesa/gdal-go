@@ -41,13 +41,13 @@ type GIntBig C.GIntBig
 type GUIntBig C.GUIntBig
 
 // Minimum GIntBig value
-var GIntBigMin = GIntBig(C._GINTBIG_MIN)
+var GIntBigMin = GIntBig(C._GINTBIG_MIN())
 
 // Maximum GIntBig value
-var GIntBigMax = GIntBig(C._GINTBIG_MAX)
+var GIntBigMax = GIntBig(C._GINTBIG_MAX())
 
 // Maximum GUIntBig value
-var GUIntBigMax = GUIntBig(C._GUINTBIG_MAX)
+var GUIntBigMax = GUIntBig(C._GUINTBIG_MAX())
 
 const CPLHasGInt64 = C.CPL_HAS_GINT64
 
@@ -58,13 +58,13 @@ type GInt64 C.GInt64
 type GUInt64 C.GUInt64
 
 // Minimum GInt64 value
-var GInt64Min = GIntBig(C._GINT64_MIN)
+var GInt64Min = GIntBig(C._GINT64_MIN())
 
 // Maximum GInt64 value
-var GInt64Max = GIntBig(C._GINT64_MAX)
+var GInt64Max = GIntBig(C._GINT64_MAX())
 
 // Maximum GUInt64 value
-var GUInt64Max = GUIntBig(C._GUINT64_MAX)
+var GUInt64Max = GUIntBig(C._GUINT64_MAX())
 
 // Integer type large enough to hold the difference between 2 addresses
 type GPtrDiff_t C.GPtrDiff_t
@@ -73,17 +73,17 @@ type GPtrDiff_t C.GPtrDiff_t
 // not part of the public ABI here, so they are skipped.
 
 // Printf formatting for GIntBig
-var CPLFrmtGIB = C.GoString(C._CPL_FRMT_GIB)
+var CPLFrmtGIB = C.GoString(C._CPL_FRMT_GIB())
 
 // Printf formatting for GUIntBig
-var CPLFrmtGUIB = C.GoString(C._CPL_FRMT_GUIB)
+var CPLFrmtGUIB = C.GoString(C._CPL_FRMT_GUIB())
 
 // MIN(a, b), MAX(a, b): deferred — value-producing macros to be wrapped in a later pass.
 
 // ABS(x): deferred — value-producing macro to be wrapped in a later pass.
 
 // PI definition
-var MPi = float64(C._M_PI)
+var MPi = float64(C._M_PI())
 
 // CPLIsEqual(x, y): deferred — value-producing macro to be wrapped in a later pass.
 

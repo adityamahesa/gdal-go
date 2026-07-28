@@ -3,175 +3,175 @@
 
 #include "ogr_srs_api.h"
 
-const char* const _SRS_WKT_WGS84_LAT_LONG = SRS_WKT_WGS84_LAT_LONG;
+static const char* _SRS_WKT_WGS84_LAT_LONG(void) { return SRS_WKT_WGS84_LAT_LONG; }
 
-const char* const _SRS_PT_ALBERS_CONIC_EQUAL_AREA                       = SRS_PT_ALBERS_CONIC_EQUAL_AREA;
-const char* const _SRS_PT_AZIMUTHAL_EQUIDISTANT                         = SRS_PT_AZIMUTHAL_EQUIDISTANT;
-const char* const _SRS_PT_CASSINI_SOLDNER                               = SRS_PT_CASSINI_SOLDNER;
-const char* const _SRS_PT_CYLINDRICAL_EQUAL_AREA                        = SRS_PT_CYLINDRICAL_EQUAL_AREA;
-const char* const _SRS_PT_BONNE                                         = SRS_PT_BONNE;
-const char* const _SRS_PT_ECKERT_I                                      = SRS_PT_ECKERT_I;
-const char* const _SRS_PT_ECKERT_II                                     = SRS_PT_ECKERT_II;
-const char* const _SRS_PT_ECKERT_III                                    = SRS_PT_ECKERT_III;
-const char* const _SRS_PT_ECKERT_IV                                     = SRS_PT_ECKERT_IV;
-const char* const _SRS_PT_ECKERT_V                                      = SRS_PT_ECKERT_V;
-const char* const _SRS_PT_ECKERT_VI                                     = SRS_PT_ECKERT_VI;
-const char* const _SRS_PT_EQUIDISTANT_CONIC                             = SRS_PT_EQUIDISTANT_CONIC;
-const char* const _SRS_PT_EQUIRECTANGULAR                               = SRS_PT_EQUIRECTANGULAR;
-const char* const _SRS_PT_GALL_STEREOGRAPHIC                            = SRS_PT_GALL_STEREOGRAPHIC;
-const char* const _SRS_PT_GAUSSSCHREIBERTMERCATOR                       = SRS_PT_GAUSSSCHREIBERTMERCATOR;
-const char* const _SRS_PT_GEOSTATIONARY_SATELLITE                       = SRS_PT_GEOSTATIONARY_SATELLITE;
-const char* const _SRS_PT_GOODE_HOMOLOSINE                              = SRS_PT_GOODE_HOMOLOSINE;
-const char* const _SRS_PT_IGH                                           = SRS_PT_IGH;
-const char* const _SRS_PT_GNOMONIC                                      = SRS_PT_GNOMONIC;
-const char* const _SRS_PT_HOTINE_OBLIQUE_MERCATOR_AZIMUTH_CENTER        = SRS_PT_HOTINE_OBLIQUE_MERCATOR_AZIMUTH_CENTER;
-const char* const _SRS_PT_HOTINE_OBLIQUE_MERCATOR                       = SRS_PT_HOTINE_OBLIQUE_MERCATOR;
-const char* const _SRS_PT_HOTINE_OBLIQUE_MERCATOR_TWO_POINT_NATURAL_ORIGIN = SRS_PT_HOTINE_OBLIQUE_MERCATOR_TWO_POINT_NATURAL_ORIGIN;
-const char* const _SRS_PT_LABORDE_OBLIQUE_MERCATOR                      = SRS_PT_LABORDE_OBLIQUE_MERCATOR;
-const char* const _SRS_PT_LAMBERT_CONFORMAL_CONIC_1SP                   = SRS_PT_LAMBERT_CONFORMAL_CONIC_1SP;
-const char* const _SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP                   = SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP;
-const char* const _SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP_BELGIUM           = SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP_BELGIUM;
-const char* const _SRS_PT_LAMBERT_AZIMUTHAL_EQUAL_AREA                  = SRS_PT_LAMBERT_AZIMUTHAL_EQUAL_AREA;
-const char* const _SRS_PT_MERCATOR_1SP                                  = SRS_PT_MERCATOR_1SP;
-const char* const _SRS_PT_MERCATOR_2SP                                  = SRS_PT_MERCATOR_2SP;
-const char* const _SRS_PT_MERCATOR_AUXILIARY_SPHERE                     = SRS_PT_MERCATOR_AUXILIARY_SPHERE;
-const char* const _SRS_PT_MILLER_CYLINDRICAL                            = SRS_PT_MILLER_CYLINDRICAL;
-const char* const _SRS_PT_MOLLWEIDE                                     = SRS_PT_MOLLWEIDE;
-const char* const _SRS_PT_NEW_ZEALAND_MAP_GRID                          = SRS_PT_NEW_ZEALAND_MAP_GRID;
-const char* const _SRS_PT_OBLIQUE_STEREOGRAPHIC                         = SRS_PT_OBLIQUE_STEREOGRAPHIC;
-const char* const _SRS_PT_ORTHOGRAPHIC                                  = SRS_PT_ORTHOGRAPHIC;
-const char* const _SRS_PT_POLAR_STEREOGRAPHIC                           = SRS_PT_POLAR_STEREOGRAPHIC;
-const char* const _SRS_PT_POLYCONIC                                     = SRS_PT_POLYCONIC;
-const char* const _SRS_PT_ROBINSON                                      = SRS_PT_ROBINSON;
-const char* const _SRS_PT_SINUSOIDAL                                    = SRS_PT_SINUSOIDAL;
-const char* const _SRS_PT_STEREOGRAPHIC                                 = SRS_PT_STEREOGRAPHIC;
-const char* const _SRS_PT_SWISS_OBLIQUE_CYLINDRICAL                     = SRS_PT_SWISS_OBLIQUE_CYLINDRICAL;
-const char* const _SRS_PT_TRANSVERSE_MERCATOR                           = SRS_PT_TRANSVERSE_MERCATOR;
-const char* const _SRS_PT_TRANSVERSE_MERCATOR_SOUTH_ORIENTED            = SRS_PT_TRANSVERSE_MERCATOR_SOUTH_ORIENTED;
-const char* const _SRS_PT_TRANSVERSE_MERCATOR_MI_21                     = SRS_PT_TRANSVERSE_MERCATOR_MI_21;
-const char* const _SRS_PT_TRANSVERSE_MERCATOR_MI_22                     = SRS_PT_TRANSVERSE_MERCATOR_MI_22;
-const char* const _SRS_PT_TRANSVERSE_MERCATOR_MI_23                     = SRS_PT_TRANSVERSE_MERCATOR_MI_23;
-const char* const _SRS_PT_TRANSVERSE_MERCATOR_MI_24                     = SRS_PT_TRANSVERSE_MERCATOR_MI_24;
-const char* const _SRS_PT_TRANSVERSE_MERCATOR_MI_25                     = SRS_PT_TRANSVERSE_MERCATOR_MI_25;
-const char* const _SRS_PT_TUNISIA_MINING_GRID                           = SRS_PT_TUNISIA_MINING_GRID;
-const char* const _SRS_PT_TWO_POINT_EQUIDISTANT                         = SRS_PT_TWO_POINT_EQUIDISTANT;
-const char* const _SRS_PT_VANDERGRINTEN                                 = SRS_PT_VANDERGRINTEN;
-const char* const _SRS_PT_KROVAK                                        = SRS_PT_KROVAK;
-const char* const _SRS_PT_IMW_POLYCONIC                                 = SRS_PT_IMW_POLYCONIC;
-const char* const _SRS_PT_WAGNER_I                                      = SRS_PT_WAGNER_I;
-const char* const _SRS_PT_WAGNER_II                                     = SRS_PT_WAGNER_II;
-const char* const _SRS_PT_WAGNER_III                                    = SRS_PT_WAGNER_III;
-const char* const _SRS_PT_WAGNER_IV                                     = SRS_PT_WAGNER_IV;
-const char* const _SRS_PT_WAGNER_V                                      = SRS_PT_WAGNER_V;
-const char* const _SRS_PT_WAGNER_VI                                     = SRS_PT_WAGNER_VI;
-const char* const _SRS_PT_WAGNER_VII                                    = SRS_PT_WAGNER_VII;
-const char* const _SRS_PT_QSC                                           = SRS_PT_QSC;
-const char* const _SRS_PT_AITOFF                                        = SRS_PT_AITOFF;
-const char* const _SRS_PT_WINKEL_I                                      = SRS_PT_WINKEL_I;
-const char* const _SRS_PT_WINKEL_II                                     = SRS_PT_WINKEL_II;
-const char* const _SRS_PT_WINKEL_TRIPEL                                 = SRS_PT_WINKEL_TRIPEL;
-const char* const _SRS_PT_CRASTER_PARABOLIC                             = SRS_PT_CRASTER_PARABOLIC;
-const char* const _SRS_PT_LOXIMUTHAL                                    = SRS_PT_LOXIMUTHAL;
-const char* const _SRS_PT_QUARTIC_AUTHALIC                              = SRS_PT_QUARTIC_AUTHALIC;
-const char* const _SRS_PT_SCH                                           = SRS_PT_SCH;
+static const char* _SRS_PT_ALBERS_CONIC_EQUAL_AREA(void)                          { return SRS_PT_ALBERS_CONIC_EQUAL_AREA; }
+static const char* _SRS_PT_AZIMUTHAL_EQUIDISTANT(void)                            { return SRS_PT_AZIMUTHAL_EQUIDISTANT; }
+static const char* _SRS_PT_CASSINI_SOLDNER(void)                                  { return SRS_PT_CASSINI_SOLDNER; }
+static const char* _SRS_PT_CYLINDRICAL_EQUAL_AREA(void)                           { return SRS_PT_CYLINDRICAL_EQUAL_AREA; }
+static const char* _SRS_PT_BONNE(void)                                            { return SRS_PT_BONNE; }
+static const char* _SRS_PT_ECKERT_I(void)                                         { return SRS_PT_ECKERT_I; }
+static const char* _SRS_PT_ECKERT_II(void)                                        { return SRS_PT_ECKERT_II; }
+static const char* _SRS_PT_ECKERT_III(void)                                       { return SRS_PT_ECKERT_III; }
+static const char* _SRS_PT_ECKERT_IV(void)                                        { return SRS_PT_ECKERT_IV; }
+static const char* _SRS_PT_ECKERT_V(void)                                         { return SRS_PT_ECKERT_V; }
+static const char* _SRS_PT_ECKERT_VI(void)                                        { return SRS_PT_ECKERT_VI; }
+static const char* _SRS_PT_EQUIDISTANT_CONIC(void)                                { return SRS_PT_EQUIDISTANT_CONIC; }
+static const char* _SRS_PT_EQUIRECTANGULAR(void)                                  { return SRS_PT_EQUIRECTANGULAR; }
+static const char* _SRS_PT_GALL_STEREOGRAPHIC(void)                               { return SRS_PT_GALL_STEREOGRAPHIC; }
+static const char* _SRS_PT_GAUSSSCHREIBERTMERCATOR(void)                          { return SRS_PT_GAUSSSCHREIBERTMERCATOR; }
+static const char* _SRS_PT_GEOSTATIONARY_SATELLITE(void)                          { return SRS_PT_GEOSTATIONARY_SATELLITE; }
+static const char* _SRS_PT_GOODE_HOMOLOSINE(void)                                 { return SRS_PT_GOODE_HOMOLOSINE; }
+static const char* _SRS_PT_IGH(void)                                              { return SRS_PT_IGH; }
+static const char* _SRS_PT_GNOMONIC(void)                                         { return SRS_PT_GNOMONIC; }
+static const char* _SRS_PT_HOTINE_OBLIQUE_MERCATOR_AZIMUTH_CENTER(void)           { return SRS_PT_HOTINE_OBLIQUE_MERCATOR_AZIMUTH_CENTER; }
+static const char* _SRS_PT_HOTINE_OBLIQUE_MERCATOR(void)                          { return SRS_PT_HOTINE_OBLIQUE_MERCATOR; }
+static const char* _SRS_PT_HOTINE_OBLIQUE_MERCATOR_TWO_POINT_NATURAL_ORIGIN(void) { return SRS_PT_HOTINE_OBLIQUE_MERCATOR_TWO_POINT_NATURAL_ORIGIN; }
+static const char* _SRS_PT_LABORDE_OBLIQUE_MERCATOR(void)                         { return SRS_PT_LABORDE_OBLIQUE_MERCATOR; }
+static const char* _SRS_PT_LAMBERT_CONFORMAL_CONIC_1SP(void)                      { return SRS_PT_LAMBERT_CONFORMAL_CONIC_1SP; }
+static const char* _SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP(void)                      { return SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP; }
+static const char* _SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP_BELGIUM(void)              { return SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP_BELGIUM; }
+static const char* _SRS_PT_LAMBERT_AZIMUTHAL_EQUAL_AREA(void)                     { return SRS_PT_LAMBERT_AZIMUTHAL_EQUAL_AREA; }
+static const char* _SRS_PT_MERCATOR_1SP(void)                                     { return SRS_PT_MERCATOR_1SP; }
+static const char* _SRS_PT_MERCATOR_2SP(void)                                     { return SRS_PT_MERCATOR_2SP; }
+static const char* _SRS_PT_MERCATOR_AUXILIARY_SPHERE(void)                        { return SRS_PT_MERCATOR_AUXILIARY_SPHERE; }
+static const char* _SRS_PT_MILLER_CYLINDRICAL(void)                               { return SRS_PT_MILLER_CYLINDRICAL; }
+static const char* _SRS_PT_MOLLWEIDE(void)                                        { return SRS_PT_MOLLWEIDE; }
+static const char* _SRS_PT_NEW_ZEALAND_MAP_GRID(void)                             { return SRS_PT_NEW_ZEALAND_MAP_GRID; }
+static const char* _SRS_PT_OBLIQUE_STEREOGRAPHIC(void)                            { return SRS_PT_OBLIQUE_STEREOGRAPHIC; }
+static const char* _SRS_PT_ORTHOGRAPHIC(void)                                     { return SRS_PT_ORTHOGRAPHIC; }
+static const char* _SRS_PT_POLAR_STEREOGRAPHIC(void)                              { return SRS_PT_POLAR_STEREOGRAPHIC; }
+static const char* _SRS_PT_POLYCONIC(void)                                        { return SRS_PT_POLYCONIC; }
+static const char* _SRS_PT_ROBINSON(void)                                         { return SRS_PT_ROBINSON; }
+static const char* _SRS_PT_SINUSOIDAL(void)                                       { return SRS_PT_SINUSOIDAL; }
+static const char* _SRS_PT_STEREOGRAPHIC(void)                                    { return SRS_PT_STEREOGRAPHIC; }
+static const char* _SRS_PT_SWISS_OBLIQUE_CYLINDRICAL(void)                        { return SRS_PT_SWISS_OBLIQUE_CYLINDRICAL; }
+static const char* _SRS_PT_TRANSVERSE_MERCATOR(void)                              { return SRS_PT_TRANSVERSE_MERCATOR; }
+static const char* _SRS_PT_TRANSVERSE_MERCATOR_SOUTH_ORIENTED(void)               { return SRS_PT_TRANSVERSE_MERCATOR_SOUTH_ORIENTED; }
+static const char* _SRS_PT_TRANSVERSE_MERCATOR_MI_21(void)                        { return SRS_PT_TRANSVERSE_MERCATOR_MI_21; }
+static const char* _SRS_PT_TRANSVERSE_MERCATOR_MI_22(void)                        { return SRS_PT_TRANSVERSE_MERCATOR_MI_22; }
+static const char* _SRS_PT_TRANSVERSE_MERCATOR_MI_23(void)                        { return SRS_PT_TRANSVERSE_MERCATOR_MI_23; }
+static const char* _SRS_PT_TRANSVERSE_MERCATOR_MI_24(void)                        { return SRS_PT_TRANSVERSE_MERCATOR_MI_24; }
+static const char* _SRS_PT_TRANSVERSE_MERCATOR_MI_25(void)                        { return SRS_PT_TRANSVERSE_MERCATOR_MI_25; }
+static const char* _SRS_PT_TUNISIA_MINING_GRID(void)                              { return SRS_PT_TUNISIA_MINING_GRID; }
+static const char* _SRS_PT_TWO_POINT_EQUIDISTANT(void)                            { return SRS_PT_TWO_POINT_EQUIDISTANT; }
+static const char* _SRS_PT_VANDERGRINTEN(void)                                    { return SRS_PT_VANDERGRINTEN; }
+static const char* _SRS_PT_KROVAK(void)                                           { return SRS_PT_KROVAK; }
+static const char* _SRS_PT_IMW_POLYCONIC(void)                                    { return SRS_PT_IMW_POLYCONIC; }
+static const char* _SRS_PT_WAGNER_I(void)                                         { return SRS_PT_WAGNER_I; }
+static const char* _SRS_PT_WAGNER_II(void)                                        { return SRS_PT_WAGNER_II; }
+static const char* _SRS_PT_WAGNER_III(void)                                       { return SRS_PT_WAGNER_III; }
+static const char* _SRS_PT_WAGNER_IV(void)                                        { return SRS_PT_WAGNER_IV; }
+static const char* _SRS_PT_WAGNER_V(void)                                         { return SRS_PT_WAGNER_V; }
+static const char* _SRS_PT_WAGNER_VI(void)                                        { return SRS_PT_WAGNER_VI; }
+static const char* _SRS_PT_WAGNER_VII(void)                                       { return SRS_PT_WAGNER_VII; }
+static const char* _SRS_PT_QSC(void)                                              { return SRS_PT_QSC; }
+static const char* _SRS_PT_AITOFF(void)                                           { return SRS_PT_AITOFF; }
+static const char* _SRS_PT_WINKEL_I(void)                                         { return SRS_PT_WINKEL_I; }
+static const char* _SRS_PT_WINKEL_II(void)                                        { return SRS_PT_WINKEL_II; }
+static const char* _SRS_PT_WINKEL_TRIPEL(void)                                    { return SRS_PT_WINKEL_TRIPEL; }
+static const char* _SRS_PT_CRASTER_PARABOLIC(void)                                { return SRS_PT_CRASTER_PARABOLIC; }
+static const char* _SRS_PT_LOXIMUTHAL(void)                                       { return SRS_PT_LOXIMUTHAL; }
+static const char* _SRS_PT_QUARTIC_AUTHALIC(void)                                 { return SRS_PT_QUARTIC_AUTHALIC; }
+static const char* _SRS_PT_SCH(void)                                              { return SRS_PT_SCH; }
 
-const char* const _SRS_PP_CENTRAL_MERIDIAN        = SRS_PP_CENTRAL_MERIDIAN;
-const char* const _SRS_PP_SCALE_FACTOR            = SRS_PP_SCALE_FACTOR;
-const char* const _SRS_PP_STANDARD_PARALLEL_1     = SRS_PP_STANDARD_PARALLEL_1;
-const char* const _SRS_PP_STANDARD_PARALLEL_2     = SRS_PP_STANDARD_PARALLEL_2;
-const char* const _SRS_PP_PSEUDO_STD_PARALLEL_1   = SRS_PP_PSEUDO_STD_PARALLEL_1;
-const char* const _SRS_PP_LONGITUDE_OF_CENTER     = SRS_PP_LONGITUDE_OF_CENTER;
-const char* const _SRS_PP_LATITUDE_OF_CENTER      = SRS_PP_LATITUDE_OF_CENTER;
-const char* const _SRS_PP_LONGITUDE_OF_ORIGIN     = SRS_PP_LONGITUDE_OF_ORIGIN;
-const char* const _SRS_PP_LATITUDE_OF_ORIGIN      = SRS_PP_LATITUDE_OF_ORIGIN;
-const char* const _SRS_PP_FALSE_EASTING           = SRS_PP_FALSE_EASTING;
-const char* const _SRS_PP_FALSE_NORTHING          = SRS_PP_FALSE_NORTHING;
-const char* const _SRS_PP_AZIMUTH                 = SRS_PP_AZIMUTH;
-const char* const _SRS_PP_LONGITUDE_OF_POINT_1    = SRS_PP_LONGITUDE_OF_POINT_1;
-const char* const _SRS_PP_LATITUDE_OF_POINT_1     = SRS_PP_LATITUDE_OF_POINT_1;
-const char* const _SRS_PP_LONGITUDE_OF_POINT_2    = SRS_PP_LONGITUDE_OF_POINT_2;
-const char* const _SRS_PP_LATITUDE_OF_POINT_2     = SRS_PP_LATITUDE_OF_POINT_2;
-const char* const _SRS_PP_LONGITUDE_OF_POINT_3    = SRS_PP_LONGITUDE_OF_POINT_3;
-const char* const _SRS_PP_LATITUDE_OF_POINT_3     = SRS_PP_LATITUDE_OF_POINT_3;
-const char* const _SRS_PP_RECTIFIED_GRID_ANGLE    = SRS_PP_RECTIFIED_GRID_ANGLE;
-const char* const _SRS_PP_LANDSAT_NUMBER          = SRS_PP_LANDSAT_NUMBER;
-const char* const _SRS_PP_PATH_NUMBER             = SRS_PP_PATH_NUMBER;
-const char* const _SRS_PP_PERSPECTIVE_POINT_HEIGHT = SRS_PP_PERSPECTIVE_POINT_HEIGHT;
-const char* const _SRS_PP_SATELLITE_HEIGHT        = SRS_PP_SATELLITE_HEIGHT;
-const char* const _SRS_PP_FIPSZONE                = SRS_PP_FIPSZONE;
-const char* const _SRS_PP_ZONE                    = SRS_PP_ZONE;
-const char* const _SRS_PP_LATITUDE_OF_1ST_POINT   = SRS_PP_LATITUDE_OF_1ST_POINT;
-const char* const _SRS_PP_LONGITUDE_OF_1ST_POINT  = SRS_PP_LONGITUDE_OF_1ST_POINT;
-const char* const _SRS_PP_LATITUDE_OF_2ND_POINT   = SRS_PP_LATITUDE_OF_2ND_POINT;
-const char* const _SRS_PP_LONGITUDE_OF_2ND_POINT  = SRS_PP_LONGITUDE_OF_2ND_POINT;
-const char* const _SRS_PP_PEG_POINT_LATITUDE      = SRS_PP_PEG_POINT_LATITUDE;
-const char* const _SRS_PP_PEG_POINT_LONGITUDE     = SRS_PP_PEG_POINT_LONGITUDE;
-const char* const _SRS_PP_PEG_POINT_HEADING       = SRS_PP_PEG_POINT_HEADING;
-const char* const _SRS_PP_PEG_POINT_HEIGHT        = SRS_PP_PEG_POINT_HEIGHT;
+static const char* _SRS_PP_CENTRAL_MERIDIAN(void)         { return SRS_PP_CENTRAL_MERIDIAN; }
+static const char* _SRS_PP_SCALE_FACTOR(void)             { return SRS_PP_SCALE_FACTOR; }
+static const char* _SRS_PP_STANDARD_PARALLEL_1(void)      { return SRS_PP_STANDARD_PARALLEL_1; }
+static const char* _SRS_PP_STANDARD_PARALLEL_2(void)      { return SRS_PP_STANDARD_PARALLEL_2; }
+static const char* _SRS_PP_PSEUDO_STD_PARALLEL_1(void)    { return SRS_PP_PSEUDO_STD_PARALLEL_1; }
+static const char* _SRS_PP_LONGITUDE_OF_CENTER(void)      { return SRS_PP_LONGITUDE_OF_CENTER; }
+static const char* _SRS_PP_LATITUDE_OF_CENTER(void)       { return SRS_PP_LATITUDE_OF_CENTER; }
+static const char* _SRS_PP_LONGITUDE_OF_ORIGIN(void)      { return SRS_PP_LONGITUDE_OF_ORIGIN; }
+static const char* _SRS_PP_LATITUDE_OF_ORIGIN(void)       { return SRS_PP_LATITUDE_OF_ORIGIN; }
+static const char* _SRS_PP_FALSE_EASTING(void)            { return SRS_PP_FALSE_EASTING; }
+static const char* _SRS_PP_FALSE_NORTHING(void)           { return SRS_PP_FALSE_NORTHING; }
+static const char* _SRS_PP_AZIMUTH(void)                  { return SRS_PP_AZIMUTH; }
+static const char* _SRS_PP_LONGITUDE_OF_POINT_1(void)     { return SRS_PP_LONGITUDE_OF_POINT_1; }
+static const char* _SRS_PP_LATITUDE_OF_POINT_1(void)      { return SRS_PP_LATITUDE_OF_POINT_1; }
+static const char* _SRS_PP_LONGITUDE_OF_POINT_2(void)     { return SRS_PP_LONGITUDE_OF_POINT_2; }
+static const char* _SRS_PP_LATITUDE_OF_POINT_2(void)      { return SRS_PP_LATITUDE_OF_POINT_2; }
+static const char* _SRS_PP_LONGITUDE_OF_POINT_3(void)     { return SRS_PP_LONGITUDE_OF_POINT_3; }
+static const char* _SRS_PP_LATITUDE_OF_POINT_3(void)      { return SRS_PP_LATITUDE_OF_POINT_3; }
+static const char* _SRS_PP_RECTIFIED_GRID_ANGLE(void)     { return SRS_PP_RECTIFIED_GRID_ANGLE; }
+static const char* _SRS_PP_LANDSAT_NUMBER(void)           { return SRS_PP_LANDSAT_NUMBER; }
+static const char* _SRS_PP_PATH_NUMBER(void)              { return SRS_PP_PATH_NUMBER; }
+static const char* _SRS_PP_PERSPECTIVE_POINT_HEIGHT(void) { return SRS_PP_PERSPECTIVE_POINT_HEIGHT; }
+static const char* _SRS_PP_SATELLITE_HEIGHT(void)         { return SRS_PP_SATELLITE_HEIGHT; }
+static const char* _SRS_PP_FIPSZONE(void)                 { return SRS_PP_FIPSZONE; }
+static const char* _SRS_PP_ZONE(void)                     { return SRS_PP_ZONE; }
+static const char* _SRS_PP_LATITUDE_OF_1ST_POINT(void)    { return SRS_PP_LATITUDE_OF_1ST_POINT; }
+static const char* _SRS_PP_LONGITUDE_OF_1ST_POINT(void)   { return SRS_PP_LONGITUDE_OF_1ST_POINT; }
+static const char* _SRS_PP_LATITUDE_OF_2ND_POINT(void)    { return SRS_PP_LATITUDE_OF_2ND_POINT; }
+static const char* _SRS_PP_LONGITUDE_OF_2ND_POINT(void)   { return SRS_PP_LONGITUDE_OF_2ND_POINT; }
+static const char* _SRS_PP_PEG_POINT_LATITUDE(void)       { return SRS_PP_PEG_POINT_LATITUDE; }
+static const char* _SRS_PP_PEG_POINT_LONGITUDE(void)      { return SRS_PP_PEG_POINT_LONGITUDE; }
+static const char* _SRS_PP_PEG_POINT_HEADING(void)        { return SRS_PP_PEG_POINT_HEADING; }
+static const char* _SRS_PP_PEG_POINT_HEIGHT(void)         { return SRS_PP_PEG_POINT_HEIGHT; }
 
-const char* const _SRS_UL_METER              = SRS_UL_METER;
-const char* const _SRS_UL_FOOT              = SRS_UL_FOOT;
-const char* const _SRS_UL_FOOT_CONV         = SRS_UL_FOOT_CONV;
-const char* const _SRS_UL_US_FOOT           = SRS_UL_US_FOOT;
-const char* const _SRS_UL_US_FOOT_CONV      = SRS_UL_US_FOOT_CONV;
-const char* const _SRS_UL_NAUTICAL_MILE     = SRS_UL_NAUTICAL_MILE;
-const char* const _SRS_UL_NAUTICAL_MILE_CONV = SRS_UL_NAUTICAL_MILE_CONV;
-const char* const _SRS_UL_LINK              = SRS_UL_LINK;
-const char* const _SRS_UL_LINK_CONV         = SRS_UL_LINK_CONV;
-const char* const _SRS_UL_CHAIN             = SRS_UL_CHAIN;
-const char* const _SRS_UL_CHAIN_CONV        = SRS_UL_CHAIN_CONV;
-const char* const _SRS_UL_ROD               = SRS_UL_ROD;
-const char* const _SRS_UL_ROD_CONV          = SRS_UL_ROD_CONV;
-const char* const _SRS_UL_LINK_Clarke       = SRS_UL_LINK_Clarke;
-const char* const _SRS_UL_LINK_Clarke_CONV  = SRS_UL_LINK_Clarke_CONV;
-const char* const _SRS_UL_KILOMETER         = SRS_UL_KILOMETER;
-const char* const _SRS_UL_KILOMETER_CONV    = SRS_UL_KILOMETER_CONV;
-const char* const _SRS_UL_DECIMETER         = SRS_UL_DECIMETER;
-const char* const _SRS_UL_DECIMETER_CONV    = SRS_UL_DECIMETER_CONV;
-const char* const _SRS_UL_CENTIMETER        = SRS_UL_CENTIMETER;
-const char* const _SRS_UL_CENTIMETER_CONV   = SRS_UL_CENTIMETER_CONV;
-const char* const _SRS_UL_MILLIMETER        = SRS_UL_MILLIMETER;
-const char* const _SRS_UL_MILLIMETER_CONV   = SRS_UL_MILLIMETER_CONV;
-const char* const _SRS_UL_INTL_NAUT_MILE    = SRS_UL_INTL_NAUT_MILE;
-const char* const _SRS_UL_INTL_NAUT_MILE_CONV = SRS_UL_INTL_NAUT_MILE_CONV;
-const char* const _SRS_UL_INTL_INCH         = SRS_UL_INTL_INCH;
-const char* const _SRS_UL_INTL_INCH_CONV    = SRS_UL_INTL_INCH_CONV;
-const char* const _SRS_UL_INTL_FOOT         = SRS_UL_INTL_FOOT;
-const char* const _SRS_UL_INTL_FOOT_CONV    = SRS_UL_INTL_FOOT_CONV;
-const char* const _SRS_UL_INTL_YARD         = SRS_UL_INTL_YARD;
-const char* const _SRS_UL_INTL_YARD_CONV    = SRS_UL_INTL_YARD_CONV;
-const char* const _SRS_UL_INTL_STAT_MILE    = SRS_UL_INTL_STAT_MILE;
-const char* const _SRS_UL_INTL_STAT_MILE_CONV = SRS_UL_INTL_STAT_MILE_CONV;
-const char* const _SRS_UL_INTL_FATHOM       = SRS_UL_INTL_FATHOM;
-const char* const _SRS_UL_INTL_FATHOM_CONV  = SRS_UL_INTL_FATHOM_CONV;
-const char* const _SRS_UL_INTL_CHAIN        = SRS_UL_INTL_CHAIN;
-const char* const _SRS_UL_INTL_CHAIN_CONV   = SRS_UL_INTL_CHAIN_CONV;
-const char* const _SRS_UL_INTL_LINK         = SRS_UL_INTL_LINK;
-const char* const _SRS_UL_INTL_LINK_CONV    = SRS_UL_INTL_LINK_CONV;
-const char* const _SRS_UL_US_INCH           = SRS_UL_US_INCH;
-const char* const _SRS_UL_US_INCH_CONV      = SRS_UL_US_INCH_CONV;
-const char* const _SRS_UL_US_YARD           = SRS_UL_US_YARD;
-const char* const _SRS_UL_US_YARD_CONV      = SRS_UL_US_YARD_CONV;
-const char* const _SRS_UL_US_CHAIN          = SRS_UL_US_CHAIN;
-const char* const _SRS_UL_US_CHAIN_CONV     = SRS_UL_US_CHAIN_CONV;
-const char* const _SRS_UL_US_STAT_MILE      = SRS_UL_US_STAT_MILE;
-const char* const _SRS_UL_US_STAT_MILE_CONV = SRS_UL_US_STAT_MILE_CONV;
-const char* const _SRS_UL_INDIAN_YARD       = SRS_UL_INDIAN_YARD;
-const char* const _SRS_UL_INDIAN_YARD_CONV  = SRS_UL_INDIAN_YARD_CONV;
-const char* const _SRS_UL_INDIAN_FOOT       = SRS_UL_INDIAN_FOOT;
-const char* const _SRS_UL_INDIAN_FOOT_CONV  = SRS_UL_INDIAN_FOOT_CONV;
-const char* const _SRS_UL_INDIAN_CHAIN      = SRS_UL_INDIAN_CHAIN;
-const char* const _SRS_UL_INDIAN_CHAIN_CONV = SRS_UL_INDIAN_CHAIN_CONV;
+static const char* _SRS_UL_METER(void)               { return SRS_UL_METER; }
+static const char* _SRS_UL_FOOT(void)                { return SRS_UL_FOOT; }
+static const char* _SRS_UL_FOOT_CONV(void)           { return SRS_UL_FOOT_CONV; }
+static const char* _SRS_UL_US_FOOT(void)             { return SRS_UL_US_FOOT; }
+static const char* _SRS_UL_US_FOOT_CONV(void)        { return SRS_UL_US_FOOT_CONV; }
+static const char* _SRS_UL_NAUTICAL_MILE(void)       { return SRS_UL_NAUTICAL_MILE; }
+static const char* _SRS_UL_NAUTICAL_MILE_CONV(void)  { return SRS_UL_NAUTICAL_MILE_CONV; }
+static const char* _SRS_UL_LINK(void)                { return SRS_UL_LINK; }
+static const char* _SRS_UL_LINK_CONV(void)           { return SRS_UL_LINK_CONV; }
+static const char* _SRS_UL_CHAIN(void)               { return SRS_UL_CHAIN; }
+static const char* _SRS_UL_CHAIN_CONV(void)          { return SRS_UL_CHAIN_CONV; }
+static const char* _SRS_UL_ROD(void)                 { return SRS_UL_ROD; }
+static const char* _SRS_UL_ROD_CONV(void)            { return SRS_UL_ROD_CONV; }
+static const char* _SRS_UL_LINK_Clarke(void)         { return SRS_UL_LINK_Clarke; }
+static const char* _SRS_UL_LINK_Clarke_CONV(void)    { return SRS_UL_LINK_Clarke_CONV; }
+static const char* _SRS_UL_KILOMETER(void)           { return SRS_UL_KILOMETER; }
+static const char* _SRS_UL_KILOMETER_CONV(void)      { return SRS_UL_KILOMETER_CONV; }
+static const char* _SRS_UL_DECIMETER(void)           { return SRS_UL_DECIMETER; }
+static const char* _SRS_UL_DECIMETER_CONV(void)      { return SRS_UL_DECIMETER_CONV; }
+static const char* _SRS_UL_CENTIMETER(void)          { return SRS_UL_CENTIMETER; }
+static const char* _SRS_UL_CENTIMETER_CONV(void)     { return SRS_UL_CENTIMETER_CONV; }
+static const char* _SRS_UL_MILLIMETER(void)          { return SRS_UL_MILLIMETER; }
+static const char* _SRS_UL_MILLIMETER_CONV(void)     { return SRS_UL_MILLIMETER_CONV; }
+static const char* _SRS_UL_INTL_NAUT_MILE(void)      { return SRS_UL_INTL_NAUT_MILE; }
+static const char* _SRS_UL_INTL_NAUT_MILE_CONV(void) { return SRS_UL_INTL_NAUT_MILE_CONV; }
+static const char* _SRS_UL_INTL_INCH(void)           { return SRS_UL_INTL_INCH; }
+static const char* _SRS_UL_INTL_INCH_CONV(void)      { return SRS_UL_INTL_INCH_CONV; }
+static const char* _SRS_UL_INTL_FOOT(void)           { return SRS_UL_INTL_FOOT; }
+static const char* _SRS_UL_INTL_FOOT_CONV(void)      { return SRS_UL_INTL_FOOT_CONV; }
+static const char* _SRS_UL_INTL_YARD(void)           { return SRS_UL_INTL_YARD; }
+static const char* _SRS_UL_INTL_YARD_CONV(void)      { return SRS_UL_INTL_YARD_CONV; }
+static const char* _SRS_UL_INTL_STAT_MILE(void)      { return SRS_UL_INTL_STAT_MILE; }
+static const char* _SRS_UL_INTL_STAT_MILE_CONV(void) { return SRS_UL_INTL_STAT_MILE_CONV; }
+static const char* _SRS_UL_INTL_FATHOM(void)         { return SRS_UL_INTL_FATHOM; }
+static const char* _SRS_UL_INTL_FATHOM_CONV(void)    { return SRS_UL_INTL_FATHOM_CONV; }
+static const char* _SRS_UL_INTL_CHAIN(void)          { return SRS_UL_INTL_CHAIN; }
+static const char* _SRS_UL_INTL_CHAIN_CONV(void)     { return SRS_UL_INTL_CHAIN_CONV; }
+static const char* _SRS_UL_INTL_LINK(void)           { return SRS_UL_INTL_LINK; }
+static const char* _SRS_UL_INTL_LINK_CONV(void)      { return SRS_UL_INTL_LINK_CONV; }
+static const char* _SRS_UL_US_INCH(void)             { return SRS_UL_US_INCH; }
+static const char* _SRS_UL_US_INCH_CONV(void)        { return SRS_UL_US_INCH_CONV; }
+static const char* _SRS_UL_US_YARD(void)             { return SRS_UL_US_YARD; }
+static const char* _SRS_UL_US_YARD_CONV(void)        { return SRS_UL_US_YARD_CONV; }
+static const char* _SRS_UL_US_CHAIN(void)            { return SRS_UL_US_CHAIN; }
+static const char* _SRS_UL_US_CHAIN_CONV(void)       { return SRS_UL_US_CHAIN_CONV; }
+static const char* _SRS_UL_US_STAT_MILE(void)        { return SRS_UL_US_STAT_MILE; }
+static const char* _SRS_UL_US_STAT_MILE_CONV(void)   { return SRS_UL_US_STAT_MILE_CONV; }
+static const char* _SRS_UL_INDIAN_YARD(void)         { return SRS_UL_INDIAN_YARD; }
+static const char* _SRS_UL_INDIAN_YARD_CONV(void)    { return SRS_UL_INDIAN_YARD_CONV; }
+static const char* _SRS_UL_INDIAN_FOOT(void)         { return SRS_UL_INDIAN_FOOT; }
+static const char* _SRS_UL_INDIAN_FOOT_CONV(void)    { return SRS_UL_INDIAN_FOOT_CONV; }
+static const char* _SRS_UL_INDIAN_CHAIN(void)        { return SRS_UL_INDIAN_CHAIN; }
+static const char* _SRS_UL_INDIAN_CHAIN_CONV(void)   { return SRS_UL_INDIAN_CHAIN_CONV; }
 
-const char* const _SRS_UA_DEGREE      = SRS_UA_DEGREE;
-const char* const _SRS_UA_DEGREE_CONV = SRS_UA_DEGREE_CONV;
-const char* const _SRS_UA_RADIAN      = SRS_UA_RADIAN;
+static const char* _SRS_UA_DEGREE(void)      { return SRS_UA_DEGREE; }
+static const char* _SRS_UA_DEGREE_CONV(void) { return SRS_UA_DEGREE_CONV; }
+static const char* _SRS_UA_RADIAN(void)      { return SRS_UA_RADIAN; }
 
-const char* const _SRS_PM_GREENWICH = SRS_PM_GREENWICH;
+static const char* _SRS_PM_GREENWICH(void) { return SRS_PM_GREENWICH; }
 
-const char* const _SRS_DN_NAD27 = SRS_DN_NAD27;
-const char* const _SRS_DN_NAD83 = SRS_DN_NAD83;
-const char* const _SRS_DN_WGS72 = SRS_DN_WGS72;
-const char* const _SRS_DN_WGS84 = SRS_DN_WGS84;
+static const char* _SRS_DN_NAD27(void) { return SRS_DN_NAD27; }
+static const char* _SRS_DN_NAD83(void) { return SRS_DN_NAD83; }
+static const char* _SRS_DN_WGS72(void) { return SRS_DN_WGS72; }
+static const char* _SRS_DN_WGS84(void) { return SRS_DN_WGS84; }
 
 #endif /* GDAL_GO_OGR_SRS_API_PREAMBLE_H */
