@@ -61,6 +61,8 @@ func CSLTokenizeString2(s, delimiter string, flags int) CSLConstList {
 // Print writes the list, one string per line, to filename (created/truncated).
 // The C function's raw FILE* is not exposed; it prints to the opened file.
 func (l CSLConstList) Print(filename string) (result int, err error) {
+	scope := errScope()
+	defer scope()
 	fp, closeFn, err := cFOpen(filename, "w")
 	if err != nil {
 		return 0, err
@@ -160,6 +162,8 @@ func (l CSLConstList) FetchBool(key string, dflt bool) bool {
 // CPLParseMemorySize parses a memory size such as "10MB" into a byte count.
 // unitSpecified reports whether value carried an explicit unit.
 func CPLParseMemorySize(value string) (nValue GIntBig, unitSpecified bool, err error) {
+	scope := errScope()
+	defer scope()
 	err = cplErr(cplParseMemorySize(value, &nValue, &unitSpecified))
 	return
 }

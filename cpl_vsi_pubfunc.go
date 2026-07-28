@@ -3,6 +3,8 @@ package gdal
 import "unsafe"
 
 func VSIFOpenL(filename, access string) (result VSILFile, err error) {
+	scope := errScope()
+	defer scope()
 	result = vsiFOpenL(filename, access)
 	if result.cValue == nil {
 		err = lastError()
@@ -11,6 +13,8 @@ func VSIFOpenL(filename, access string) (result VSILFile, err error) {
 }
 
 func VSIFOpenExL(filename, access string, setError int) (result VSILFile, err error) {
+	scope := errScope()
+	defer scope()
 	result = vsiFOpenExL(filename, access, setError)
 	if result.cValue == nil {
 		err = lastError()
@@ -19,6 +23,8 @@ func VSIFOpenExL(filename, access string, setError int) (result VSILFile, err er
 }
 
 func VSIFOpenEx2L(filename, access string, setError int, options CSLConstList) (result VSILFile, err error) {
+	scope := errScope()
+	defer scope()
 	result = vsiFOpenEx2L(filename, access, setError, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -106,6 +112,8 @@ func (f VSILFile) GetRangeStatusL(start, length VSILOffset) (result VSIRangeStat
 }
 
 func VSIIngestFile(file VSILFile, filename string, maxSize int64) (result []byte, err error) {
+	scope := errScope()
+	defer scope()
 	var ret int
 	result, ret = vsiIngestFile(file, filename, maxSize)
 	if ret == 0 {
@@ -129,6 +137,8 @@ func (s VSIStatBufL) Mode() int {
 }
 
 func VSIStatL(filename string) (result VSIStatBufL, err error) {
+	scope := errScope()
+	defer scope()
 	var ret int
 	result, ret = vsiStatL(filename)
 	if ret != 0 {
@@ -138,6 +148,8 @@ func VSIStatL(filename string) (result VSIStatBufL, err error) {
 }
 
 func VSIStatExL(filename string, flags int) (result VSIStatBufL, err error) {
+	scope := errScope()
+	defer scope()
 	var ret int
 	result, ret = vsiStatExL(filename, flags)
 	if ret != 0 {
@@ -335,6 +347,8 @@ func VSIGetDirectorySeparator(path string) (result string) {
 }
 
 func VSIOpenDir(path string, recurseDepth int, options CSLConstList) (result VSIDir, err error) {
+	scope := errScope()
+	defer scope()
 	result = vsiOpenDir(path, recurseDepth, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -521,6 +535,8 @@ func VSIDuplicateFileSystemHandler(sourceFSName, newFSName string) (result bool)
 // takeOwnership is 0 the buffer is referenced (not copied), so data must remain
 // valid for the lifetime of the file handle.
 func VSIFileFromMemBuffer(filename string, data []byte, takeOwnership int) (result VSILFile, err error) {
+	scope := errScope()
+	defer scope()
 	result = vsiFileFromMemBuffer(filename, data, takeOwnership)
 	if result.cValue == nil {
 		err = lastError()

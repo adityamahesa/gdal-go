@@ -332,6 +332,8 @@ func CPLDecToPackedDMS(dec float64) (result float64) {
 }
 
 func CPLStringToComplex(s string) (real, imag float64, err error) {
+	scope := errScope()
+	defer scope()
 	var ret CPLErr
 	real, imag, ret = cplStringToComplex(s)
 	err = cplErr(ret)
@@ -371,6 +373,8 @@ func (h CPLLockFileHandle) UnlockFileEx() {
 }
 
 func CPLCreateZip(zipFilename string, options CSLConstList) (result unsafe.Pointer, err error) {
+	scope := errScope()
+	defer scope()
 	result = cplCreateZip(zipFilename, options)
 	if result == nil {
 		err = lastError()
@@ -379,22 +383,32 @@ func CPLCreateZip(zipFilename string, options CSLConstList) (result unsafe.Point
 }
 
 func CPLCreateFileInZip(zip unsafe.Pointer, filename string, options CSLConstList) (err error) {
+	scope := errScope()
+	defer scope()
 	return cplErr(cplCreateFileInZip(zip, filename, options))
 }
 
 func CPLWriteFileInZip(zip unsafe.Pointer, buffer []byte) (err error) {
+	scope := errScope()
+	defer scope()
 	return cplErr(cplWriteFileInZip(zip, buffer))
 }
 
 func CPLCloseFileInZip(zip unsafe.Pointer) (err error) {
+	scope := errScope()
+	defer scope()
 	return cplErr(cplCloseFileInZip(zip))
 }
 
 func CPLAddFileInZip(zip unsafe.Pointer, archiveFilename, inputFilename string, fpInput VSILFile, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
+	scope := errScope()
+	defer scope()
 	return cplErr(cplAddFileInZip(zip, archiveFilename, inputFilename, fpInput, options, progress, progressData))
 }
 
 func CPLCloseZip(zip unsafe.Pointer) (err error) {
+	scope := errScope()
+	defer scope()
 	return cplErr(cplCloseZip(zip))
 }
 

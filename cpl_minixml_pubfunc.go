@@ -1,6 +1,8 @@
 package gdal
 
 func CPLParseXMLString(xml string) (result CPLXMLNode, err error) {
+	scope := errScope()
+	defer scope()
 	result = cplParseXMLString(xml)
 	if result.cValue == nil {
 		err = lastError()
@@ -13,6 +15,8 @@ func (n CPLXMLNode) Destroy() {
 }
 
 func (n CPLXMLNode) GetNode(path string) (result CPLXMLNode, err error) {
+	scope := errScope()
+	defer scope()
 	result = cplGetXMLNode(n, path)
 	if result.cValue == nil {
 		err = lastError()
@@ -21,6 +25,8 @@ func (n CPLXMLNode) GetNode(path string) (result CPLXMLNode, err error) {
 }
 
 func (n CPLXMLNode) SearchNode(target string) (result CPLXMLNode, err error) {
+	scope := errScope()
+	defer scope()
 	result = cplSearchXMLNode(n, target)
 	if result.cValue == nil {
 		err = lastError()
@@ -33,6 +39,8 @@ func (n CPLXMLNode) GetValue(path, dflt string) string {
 }
 
 func (n CPLXMLNode) CreateNode(eType CPLXMLNodeType, text string) (result CPLXMLNode, err error) {
+	scope := errScope()
+	defer scope()
 	result = cplCreateXMLNode(n, eType, text)
 	if result.cValue == nil {
 		err = lastError()
@@ -57,6 +65,8 @@ func (n CPLXMLNode) AddSibling(newSibling CPLXMLNode) {
 }
 
 func (n CPLXMLNode) CreateElementAndValue(name, value string) (result CPLXMLNode, err error) {
+	scope := errScope()
+	defer scope()
 	result = cplCreateXMLElementAndValue(n, name, value)
 	if result.cValue == nil {
 		err = lastError()
@@ -69,6 +79,8 @@ func (n CPLXMLNode) AddAttributeAndValue(name, value string) {
 }
 
 func (n CPLXMLNode) CloneTree() (result CPLXMLNode, err error) {
+	scope := errScope()
+	defer scope()
 	result = cplCloneXMLTree(n)
 	if result.cValue == nil {
 		err = lastError()
@@ -90,6 +102,8 @@ func CPLCleanXMLElementName(name string) (result string) {
 }
 
 func CPLParseXMLFile(filename string) (result CPLXMLNode, err error) {
+	scope := errScope()
+	defer scope()
 	result = cplParseXMLFile(filename)
 	if result.cValue == nil {
 		err = lastError()

@@ -40,6 +40,8 @@ func OSRGetPROJVersion() (major, minor, patch int) {
 }
 
 func OSRNewSpatialReference(wkt string) (result OGRSpatialReference, err error) {
+	scope := errScope()
+	defer scope()
 	result = osrNewSpatialReference(wkt)
 	if result.cValue == nil {
 		err = lastError()
@@ -48,6 +50,8 @@ func OSRNewSpatialReference(wkt string) (result OGRSpatialReference, err error) 
 }
 
 func (sr OGRSpatialReference) CloneGeogCS() (result OGRSpatialReference, err error) {
+	scope := errScope()
+	defer scope()
 	result = osrCloneGeogCS(sr)
 	if result.cValue == nil {
 		err = lastError()
@@ -56,6 +60,8 @@ func (sr OGRSpatialReference) CloneGeogCS() (result OGRSpatialReference, err err
 }
 
 func (sr OGRSpatialReference) Clone() (result OGRSpatialReference, err error) {
+	scope := errScope()
+	defer scope()
 	result = osrClone(sr)
 	if result.cValue == nil {
 		err = lastError()
@@ -82,86 +88,120 @@ func (sr OGRSpatialReference) Release() {
 }
 
 func (sr OGRSpatialReference) Validate() (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrValidate(sr))
 	return
 }
 
 func (sr OGRSpatialReference) ImportFromEPSG(nCode int) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrImportFromEPSG(sr, nCode))
 	return
 }
 
 func (sr OGRSpatialReference) ImportFromEPSGA(nCode int) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrImportFromEPSGA(sr, nCode))
 	return
 }
 
 func (sr OGRSpatialReference) ImportFromWkt(wkt string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrImportFromWkt(sr, wkt))
 	return
 }
 
 func (sr OGRSpatialReference) ImportFromProj4(proj4 string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrImportFromProj4(sr, proj4))
 	return
 }
 
 func (sr OGRSpatialReference) ImportFromESRI(lines CSLConstList) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrImportFromESRI(sr, lines))
 	return
 }
 
 func (sr OGRSpatialReference) ImportFromPCI(proj, units string, arParams []float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrImportFromPCI(sr, proj, units, arParams))
 	return
 }
 
 func (sr OGRSpatialReference) ImportFromUSGS(projSys, zone int, arParams []float64, datum int) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrImportFromUSGS(sr, projSys, zone, arParams, datum))
 	return
 }
 
 func (sr OGRSpatialReference) ImportFromXML(xmlString string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrImportFromXML(sr, xmlString))
 	return
 }
 
 func (sr OGRSpatialReference) ImportFromDict(dictFile, code string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrImportFromDict(sr, dictFile, code))
 	return
 }
 
 func (sr OGRSpatialReference) ImportFromPanorama(projSys, datum, ellipsoid int, arParams []float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrImportFromPanorama(sr, projSys, datum, ellipsoid, arParams))
 	return
 }
 
 func (sr OGRSpatialReference) ImportFromOzi(lines CSLConstList) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrImportFromOzi(sr, lines))
 	return
 }
 
 func (sr OGRSpatialReference) ImportFromMICoordSys(coordSys string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrImportFromMICoordSys(sr, coordSys))
 	return
 }
 
 func (sr OGRSpatialReference) ImportFromERM(proj, datum, units string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrImportFromERM(sr, proj, datum, units))
 	return
 }
 
 func (sr OGRSpatialReference) ImportFromUrl(url string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrImportFromUrl(sr, url))
 	return
 }
 
 func (sr OGRSpatialReference) ImportFromCF1(keyValues CSLConstList, units string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrImportFromCF1(sr, keyValues, units))
 	return
 }
 
 func (sr OGRSpatialReference) ExportToWkt() (result string, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	result, status = osrExportToWkt(sr)
 	err = ogrError(status)
@@ -169,6 +209,8 @@ func (sr OGRSpatialReference) ExportToWkt() (result string, err error) {
 }
 
 func (sr OGRSpatialReference) ExportToWktEx(options CSLConstList) (result string, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	result, status = osrExportToWktEx(sr, options)
 	err = ogrError(status)
@@ -176,6 +218,8 @@ func (sr OGRSpatialReference) ExportToWktEx(options CSLConstList) (result string
 }
 
 func (sr OGRSpatialReference) ExportToPrettyWkt(simplify int) (result string, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	result, status = osrExportToPrettyWkt(sr, simplify)
 	err = ogrError(status)
@@ -183,6 +227,8 @@ func (sr OGRSpatialReference) ExportToPrettyWkt(simplify int) (result string, er
 }
 
 func (sr OGRSpatialReference) ExportToPROJJSON(options CSLConstList) (result string, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	result, status = osrExportToPROJJSON(sr, options)
 	err = ogrError(status)
@@ -190,6 +236,8 @@ func (sr OGRSpatialReference) ExportToPROJJSON(options CSLConstList) (result str
 }
 
 func (sr OGRSpatialReference) ExportToProj4() (result string, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	result, status = osrExportToProj4(sr)
 	err = ogrError(status)
@@ -197,6 +245,8 @@ func (sr OGRSpatialReference) ExportToProj4() (result string, err error) {
 }
 
 func (sr OGRSpatialReference) ExportToPCI() (proj, units string, params []float64, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	proj, units, params, status = osrExportToPCI(sr)
 	err = ogrError(status)
@@ -204,6 +254,8 @@ func (sr OGRSpatialReference) ExportToPCI() (proj, units string, params []float6
 }
 
 func (sr OGRSpatialReference) ExportToUSGS() (projSys, zone int, params []float64, datum int, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	projSys, zone, params, datum, status = osrExportToUSGS(sr)
 	err = ogrError(status)
@@ -211,6 +263,8 @@ func (sr OGRSpatialReference) ExportToUSGS() (projSys, zone int, params []float6
 }
 
 func (sr OGRSpatialReference) ExportToXML(dialect string) (result string, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	result, status = osrExportToXML(sr, dialect)
 	err = ogrError(status)
@@ -218,6 +272,8 @@ func (sr OGRSpatialReference) ExportToXML(dialect string) (result string, err er
 }
 
 func (sr OGRSpatialReference) ExportToPanorama() (projSys, datum, ellipsoid, zone int, params []float64, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	projSys, datum, ellipsoid, zone, params, status = osrExportToPanorama(sr)
 	err = ogrError(status)
@@ -225,6 +281,8 @@ func (sr OGRSpatialReference) ExportToPanorama() (projSys, datum, ellipsoid, zon
 }
 
 func (sr OGRSpatialReference) ExportToMICoordSys() (result string, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	result, status = osrExportToMICoordSys(sr)
 	err = ogrError(status)
@@ -232,6 +290,8 @@ func (sr OGRSpatialReference) ExportToMICoordSys() (result string, err error) {
 }
 
 func (sr OGRSpatialReference) ExportToERM() (proj, datum, units string, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	proj, datum, units, status = osrExportToERM(sr)
 	err = ogrError(status)
@@ -239,6 +299,8 @@ func (sr OGRSpatialReference) ExportToERM() (proj, datum, units string, err erro
 }
 
 func (sr OGRSpatialReference) ExportToCF1(options CSLConstList) (gridMappingName string, keyValues CSLConstList, units string, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	gridMappingName, keyValues, units, status = osrExportToCF1(sr, options)
 	err = ogrError(status)
@@ -246,21 +308,29 @@ func (sr OGRSpatialReference) ExportToCF1(options CSLConstList) (gridMappingName
 }
 
 func (sr OGRSpatialReference) MorphToESRI() (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrMorphToESRI(sr))
 	return
 }
 
 func (sr OGRSpatialReference) MorphFromESRI() (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrMorphFromESRI(sr))
 	return
 }
 
 func (sr OGRSpatialReference) StripVertical() (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrStripVertical(sr))
 	return
 }
 
 func (sr OGRSpatialReference) ConvertToOtherProjection(targetProjection string, options CSLConstList) (result OGRSpatialReference, err error) {
+	scope := errScope()
+	defer scope()
 	result = osrConvertToOtherProjection(sr, targetProjection, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -279,6 +349,8 @@ func (sr OGRSpatialReference) GetCelestialBodyName() (result string) {
 }
 
 func (sr OGRSpatialReference) SetAttrValue(nodePath, newValue string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetAttrValue(sr, nodePath, newValue))
 	return
 }
@@ -289,6 +361,8 @@ func (sr OGRSpatialReference) GetAttrValue(name string, iChild int) (result stri
 }
 
 func (sr OGRSpatialReference) SetAngularUnits(name string, inDegrees float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetAngularUnits(sr, name, inDegrees))
 	return
 }
@@ -299,16 +373,22 @@ func (sr OGRSpatialReference) GetAngularUnits() (result float64, name string) {
 }
 
 func (sr OGRSpatialReference) SetLinearUnits(name string, inMeters float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetLinearUnits(sr, name, inMeters))
 	return
 }
 
 func (sr OGRSpatialReference) SetTargetLinearUnits(targetKey, name string, inMeters float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetTargetLinearUnits(sr, targetKey, name, inMeters))
 	return
 }
 
 func (sr OGRSpatialReference) SetLinearUnitsAndUpdateParameters(name string, inMeters float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetLinearUnitsAndUpdateParameters(sr, name, inMeters))
 	return
 }
@@ -408,46 +488,64 @@ func (sr OGRSpatialReference) GetCoordinateEpoch() (result float64) {
 }
 
 func (sr OGRSpatialReference) SetLocalCS(name string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetLocalCS(sr, name))
 	return
 }
 
 func (sr OGRSpatialReference) SetProjCS(name string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetProjCS(sr, name))
 	return
 }
 
 func (sr OGRSpatialReference) SetGeocCS(name string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetGeocCS(sr, name))
 	return
 }
 
 func (sr OGRSpatialReference) SetWellKnownGeogCS(name string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetWellKnownGeogCS(sr, name))
 	return
 }
 
 func (sr OGRSpatialReference) SetFromUserInput(definition string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetFromUserInput(sr, definition))
 	return
 }
 
 func (sr OGRSpatialReference) SetFromUserInputEx(definition string, options CSLConstList) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetFromUserInputEx(sr, definition, options))
 	return
 }
 
 func (sr OGRSpatialReference) CopyGeogCSFrom(src OGRSpatialReference) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrCopyGeogCSFrom(sr, src))
 	return
 }
 
 func (sr OGRSpatialReference) SetTOWGS84(dx, dy, dz, ex, ey, ez, ppm float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetTOWGS84(sr, dx, dy, dz, ex, ey, ez, ppm))
 	return
 }
 
 func (sr OGRSpatialReference) GetTOWGS84() (params []float64, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	params, status = osrGetTOWGS84(sr)
 	err = ogrError(status)
@@ -455,36 +553,50 @@ func (sr OGRSpatialReference) GetTOWGS84() (params []float64, err error) {
 }
 
 func (sr OGRSpatialReference) AddGuessedTOWGS84() (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrAddGuessedTOWGS84(sr))
 	return
 }
 
 func (sr OGRSpatialReference) SetCompoundCS(name string, horizSRS, vertSRS OGRSpatialReference) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetCompoundCS(sr, name, horizSRS, vertSRS))
 	return
 }
 
 func (sr OGRSpatialReference) PromoteTo3D(name string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrPromoteTo3D(sr, name))
 	return
 }
 
 func (sr OGRSpatialReference) DemoteTo2D(name string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrDemoteTo2D(sr, name))
 	return
 }
 
 func (sr OGRSpatialReference) SetGeogCS(geogName, datumName, ellipsoidName string, semiMajor, invFlattening float64, pmName string, pmOffset float64, units string, convertToRadians float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetGeogCS(sr, geogName, datumName, ellipsoidName, semiMajor, invFlattening, pmName, pmOffset, units, convertToRadians))
 	return
 }
 
 func (sr OGRSpatialReference) SetVertCS(vertCSName, vertDatumName string, vertDatumType int) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetVertCS(sr, vertCSName, vertDatumName, vertDatumType))
 	return
 }
 
 func (sr OGRSpatialReference) GetSemiMajor() (result float64, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	result, status = osrGetSemiMajor(sr)
 	err = ogrError(status)
@@ -492,6 +604,8 @@ func (sr OGRSpatialReference) GetSemiMajor() (result float64, err error) {
 }
 
 func (sr OGRSpatialReference) GetSemiMinor() (result float64, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	result, status = osrGetSemiMinor(sr)
 	err = ogrError(status)
@@ -499,6 +613,8 @@ func (sr OGRSpatialReference) GetSemiMinor() (result float64, err error) {
 }
 
 func (sr OGRSpatialReference) GetInvFlattening() (result float64, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	result, status = osrGetInvFlattening(sr)
 	err = ogrError(status)
@@ -506,6 +622,8 @@ func (sr OGRSpatialReference) GetInvFlattening() (result float64, err error) {
 }
 
 func (sr OGRSpatialReference) SetAuthority(targetKey, authority string, code int) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetAuthority(sr, targetKey, authority, code))
 	return
 }
@@ -526,16 +644,22 @@ func (sr OGRSpatialReference) GetAreaOfUse() (westLon, southLat, eastLon, northL
 }
 
 func (sr OGRSpatialReference) SetProjection(projection string) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetProjection(sr, projection))
 	return
 }
 
 func (sr OGRSpatialReference) SetProjParm(name string, value float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetProjParm(sr, name, value))
 	return
 }
 
 func (sr OGRSpatialReference) GetProjParm(name string, dfDefault float64) (result float64, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	result, status = osrGetProjParm(sr, name, dfDefault)
 	err = ogrError(status)
@@ -543,11 +667,15 @@ func (sr OGRSpatialReference) GetProjParm(name string, dfDefault float64) (resul
 }
 
 func (sr OGRSpatialReference) SetNormProjParm(name string, value float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetNormProjParm(sr, name, value))
 	return
 }
 
 func (sr OGRSpatialReference) GetNormProjParm(name string, dfDefault float64) (result float64, err error) {
+	scope := errScope()
+	defer scope()
 	var status OGRErr
 	result, status = osrGetNormProjParm(sr, name, dfDefault)
 	err = ogrError(status)
@@ -555,6 +683,8 @@ func (sr OGRSpatialReference) GetNormProjParm(name string, dfDefault float64) (r
 }
 
 func (sr OGRSpatialReference) SetUTM(zone int, north bool) (err error) {
+	scope := errScope()
+	defer scope()
 	bNorth := 0
 	if north {
 		bNorth = 1
@@ -569,6 +699,8 @@ func (sr OGRSpatialReference) GetUTMZone() (zone int, north bool) {
 }
 
 func (sr OGRSpatialReference) SetStatePlane(zone int, nad83 bool) (err error) {
+	scope := errScope()
+	defer scope()
 	bNad83 := 0
 	if nad83 {
 		bNad83 = 1
@@ -578,6 +710,8 @@ func (sr OGRSpatialReference) SetStatePlane(zone int, nad83 bool) (err error) {
 }
 
 func (sr OGRSpatialReference) SetStatePlaneWithUnits(zone int, nad83 bool, unitName string, unit float64) (err error) {
+	scope := errScope()
+	defer scope()
 	bNad83 := 0
 	if nad83 {
 		bNad83 = 1
@@ -587,6 +721,8 @@ func (sr OGRSpatialReference) SetStatePlaneWithUnits(zone int, nad83 bool, unitN
 }
 
 func (sr OGRSpatialReference) AutoIdentifyEPSG() (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrAutoIdentifyEPSG(sr))
 	return
 }
@@ -630,6 +766,8 @@ func (sr OGRSpatialReference) GetAxesCount() (result int) {
 }
 
 func (sr OGRSpatialReference) SetAxes(targetKey, xAxisName string, xOrientation OGRAxisOrientation, yAxisName string, yOrientation OGRAxisOrientation) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetAxes(sr, targetKey, xAxisName, xOrientation, yAxisName, yOrientation))
 	return
 }
@@ -649,251 +787,351 @@ func (sr OGRSpatialReference) GetDataAxisToSRSAxisMapping() (result []int) {
 }
 
 func (sr OGRSpatialReference) SetDataAxisToSRSAxisMapping(mapping []int) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetDataAxisToSRSAxisMapping(sr, mapping))
 	return
 }
 
 func (sr OGRSpatialReference) SetACEA(dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetACEA(sr, dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetAE(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetAE(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetBonne(dfStandardParallel, dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetBonne(sr, dfStandardParallel, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetCEA(dfStdP1, dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetCEA(sr, dfStdP1, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetCS(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetCS(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetEC(dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetEC(sr, dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetEckert(nVariation int, dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetEckert(sr, nVariation, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetEckertIV(dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetEckertIV(sr, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetEckertVI(dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetEckertVI(sr, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetEquirectangular(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetEquirectangular(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetEquirectangular2(dfCenterLat, dfCenterLong, dfPseudoStdParallel1, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetEquirectangular2(sr, dfCenterLat, dfCenterLong, dfPseudoStdParallel1, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetGS(dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetGS(sr, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetGH(dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetGH(sr, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetIGH() (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetIGH(sr))
 	return
 }
 
 func (sr OGRSpatialReference) SetGEOS(dfCentralMeridian, dfSatelliteHeight, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetGEOS(sr, dfCentralMeridian, dfSatelliteHeight, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetGaussSchreiberTMercator(dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetGaussSchreiberTMercator(sr, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetGnomonic(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetGnomonic(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetHOM(dfCenterLat, dfCenterLong, dfAzimuth, dfRectToSkew, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetHOM(sr, dfCenterLat, dfCenterLong, dfAzimuth, dfRectToSkew, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetHOMAC(dfCenterLat, dfCenterLong, dfAzimuth, dfRectToSkew, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetHOMAC(sr, dfCenterLat, dfCenterLong, dfAzimuth, dfRectToSkew, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetHOM2PNO(dfCenterLat, dfLat1, dfLong1, dfLat2, dfLong2, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetHOM2PNO(sr, dfCenterLat, dfLat1, dfLong1, dfLat2, dfLong2, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetIWMPolyconic(dfLat1, dfLat2, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetIWMPolyconic(sr, dfLat1, dfLat2, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetKrovak(dfCenterLat, dfCenterLong, dfAzimuth, dfPseudoStdParallelLat, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetKrovak(sr, dfCenterLat, dfCenterLong, dfAzimuth, dfPseudoStdParallelLat, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetLAEA(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetLAEA(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetLCC(dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetLCC(sr, dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetLCC1SP(dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetLCC1SP(sr, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetLCCB(dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetLCCB(sr, dfStdP1, dfStdP2, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetMC(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetMC(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetMercator(dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetMercator(sr, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetMercator2SP(dfStdP1, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetMercator2SP(sr, dfStdP1, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetMollweide(dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetMollweide(sr, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetNZMG(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetNZMG(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetOS(dfOriginLat, dfCMeridian, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetOS(sr, dfOriginLat, dfCMeridian, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetOrthographic(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetOrthographic(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetPolyconic(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetPolyconic(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetPS(dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetPS(sr, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetRobinson(dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetRobinson(sr, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetSinusoidal(dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetSinusoidal(sr, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetStereographic(dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetStereographic(sr, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetSOC(dfLatitudeOfOrigin, dfCentralMeridian, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetSOC(sr, dfLatitudeOfOrigin, dfCentralMeridian, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetTM(dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetTM(sr, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetTMVariant(pszVariantName string, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetTMVariant(sr, pszVariantName, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetTMG(dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetTMG(sr, dfCenterLat, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetTMSO(dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetTMSO(sr, dfCenterLat, dfCenterLong, dfScale, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetTPED(dfLat1, dfLong1, dfLat2, dfLong2, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetTPED(sr, dfLat1, dfLong1, dfLat2, dfLong2, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetVDG(dfCenterLong, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetVDG(sr, dfCenterLong, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetWagner(nVariation int, dfCenterLat, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetWagner(sr, nVariation, dfCenterLat, dfFalseEasting, dfFalseNorthing))
 	return
 }
 
 func (sr OGRSpatialReference) SetQSC(dfCenterLat, dfCenterLong float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetQSC(sr, dfCenterLat, dfCenterLong))
 	return
 }
 
 func (sr OGRSpatialReference) SetSCH(dfPegLat, dfPegLong, dfPegHeading, dfPegHgt float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetSCH(sr, dfPegLat, dfPegLong, dfPegHeading, dfPegHgt))
 	return
 }
 
 func (sr OGRSpatialReference) SetVerticalPerspective(dfTopoOriginLat, dfTopoOriginLon, dfTopoOriginHeight, dfViewPointHeight, dfFalseEasting, dfFalseNorthing float64) (err error) {
+	scope := errScope()
+	defer scope()
 	err = ogrError(osrSetVerticalPerspective(sr, dfTopoOriginLat, dfTopoOriginLon, dfTopoOriginHeight, dfViewPointHeight, dfFalseEasting, dfFalseNorthing))
 	return
 }
@@ -913,6 +1151,8 @@ func OSRCleanup() {
 }
 
 func OSRGetCRSInfoListFromDatabase(authName string, params OSRCRSListParameters) (result []OSRCRSInfo, err error) {
+	scope := errScope()
+	defer scope()
 	var count int
 	list := osrGetCRSInfoListFromDatabase(authName, params, &count)
 	if list.cValue == nil {
@@ -937,6 +1177,8 @@ func OSRGetAuthorityListFromDatabase() (result CSLConstList) {
 }
 
 func OCTNewCoordinateTransformation(source, target OGRSpatialReference) (result OGRCoordinateTransformation, err error) {
+	scope := errScope()
+	defer scope()
 	result = octNewCoordinateTransformation(source, target)
 	if result.cValue == nil {
 		err = lastError()
@@ -945,6 +1187,8 @@ func OCTNewCoordinateTransformation(source, target OGRSpatialReference) (result 
 }
 
 func OCTNewCoordinateTransformationOptions() (result OGRCoordinateTransformationOptions, err error) {
+	scope := errScope()
+	defer scope()
 	result = octNewCoordinateTransformationOptions()
 	if result.cValue == nil {
 		err = lastError()
@@ -990,6 +1234,8 @@ func (opts OGRCoordinateTransformationOptions) Destroy() {
 }
 
 func OCTNewCoordinateTransformationEx(source, target OGRSpatialReference, options OGRCoordinateTransformationOptions) (result OGRCoordinateTransformation, err error) {
+	scope := errScope()
+	defer scope()
 	result = octNewCoordinateTransformationEx(source, target, options)
 	if result.cValue == nil {
 		err = lastError()
@@ -998,6 +1244,8 @@ func OCTNewCoordinateTransformationEx(source, target OGRSpatialReference, option
 }
 
 func (ct OGRCoordinateTransformation) Clone() (result OGRCoordinateTransformation, err error) {
+	scope := errScope()
+	defer scope()
 	result = octClone(ct)
 	if result.cValue == nil {
 		err = lastError()
@@ -1016,6 +1264,8 @@ func (ct OGRCoordinateTransformation) GetTargetCS() (result OGRSpatialReference)
 }
 
 func (ct OGRCoordinateTransformation) GetInverse() (result OGRCoordinateTransformation, err error) {
+	scope := errScope()
+	defer scope()
 	result = octGetInverse(ct)
 	if result.cValue == nil {
 		err = lastError()
