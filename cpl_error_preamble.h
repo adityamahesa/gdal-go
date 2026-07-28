@@ -8,6 +8,6 @@ static CPLErrorHandler cplDefaultErrorHandlerFn()         { return CPLDefaultErr
 static CPLErrorHandler cplQuietErrorHandlerFn()           { return CPLQuietErrorHandler; }
 static CPLErrorHandler cplQuietWarningsErrorHandlerFn()   { return CPLQuietWarningsErrorHandler; }
 
-const CPLErr _VALIDATE_POINTER_ERR = VALIDATE_POINTER_ERR;
+static CPLErr _VALIDATE_POINTER_ERR(void) { return VALIDATE_POINTER_ERR; }
 
 #endif /* GDAL_GO_CPL_ERROR_PREAMBLE_H */

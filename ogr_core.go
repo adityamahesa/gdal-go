@@ -52,33 +52,6 @@ const (
 	OGRErrNonExistingFeature      OGRErr = C.OGRERR_NON_EXISTING_FEATURE
 )
 
-func (e OGRErr) String() string {
-	switch e {
-	case OGRErrNone:
-		return "OGRERR_NONE"
-	case OGRErrNotEnoughData:
-		return "OGRERR_NOT_ENOUGH_DATA"
-	case OGRErrNotEnoughMemory:
-		return "OGRERR_NOT_ENOUGH_MEMORY"
-	case OGRErrUnsupportedGeometryType:
-		return "OGRERR_UNSUPPORTED_GEOMETRY_TYPE"
-	case OGRErrUnsupportedOperation:
-		return "OGRERR_UNSUPPORTED_OPERATION"
-	case OGRErrCorruptData:
-		return "OGRERR_CORRUPT_DATA"
-	case OGRErrFailure:
-		return "OGRERR_FAILURE"
-	case OGRErrUnsupportedSRS:
-		return "OGRERR_UNSUPPORTED_SRS"
-	case OGRErrInvalidHandle:
-		return "OGRERR_INVALID_HANDLE"
-	case OGRErrNonExistingFeature:
-		return "OGRERR_NON_EXISTING_FEATURE"
-	default:
-		return "OGRERR_UNKNOWN"
-	}
-}
-
 type OGRBoolean = C.OGRBoolean
 
 /* -------------------------------------------------------------------- */
@@ -203,17 +176,8 @@ func wkbFlatten(x OGRwkbGeometryType) (result OGRwkbGeometryType) {
 	return
 }
 
-func WkbFlatten(x OGRwkbGeometryType) (result OGRwkbGeometryType) {
-	result = wkbFlatten(x)
-	return
-}
-
 func wkbHasZ(x OGRwkbGeometryType) bool {
 	return ogrGTHasZ(x) != 0
-}
-
-func WkbHasZ(x OGRwkbGeometryType) bool {
-	return wkbHasZ(x)
 }
 
 func wkbSetZ(x OGRwkbGeometryType) (result OGRwkbGeometryType) {
@@ -221,26 +185,12 @@ func wkbSetZ(x OGRwkbGeometryType) (result OGRwkbGeometryType) {
 	return
 }
 
-func WkbSetZ(x OGRwkbGeometryType) (result OGRwkbGeometryType) {
-	result = wkbSetZ(x)
-	return
-}
-
 func wkbHasM(x OGRwkbGeometryType) bool {
 	return ogrGTHasM(x) != 0
 }
 
-func WkbHasM(x OGRwkbGeometryType) bool {
-	return wkbHasM(x)
-}
-
 func wkbSetM(x OGRwkbGeometryType) (result OGRwkbGeometryType) {
 	result = ogrGTSetM(x)
-	return
-}
-
-func WkbSetM(x OGRwkbGeometryType) (result OGRwkbGeometryType) {
-	result = wkbSetM(x)
 	return
 }
 
@@ -251,18 +201,8 @@ func ogrGeometryTypeToName(eType OGRwkbGeometryType) (result string) {
 	return
 }
 
-func (gt OGRwkbGeometryType) ToName() (result string) {
-	result = ogrGeometryTypeToName(gt)
-	return
-}
-
 func ogrMergeGeometryTypes(eMain, eExtra OGRwkbGeometryType) (result OGRwkbGeometryType) {
 	result = OGRwkbGeometryType(C.OGRMergeGeometryTypes(C.OGRwkbGeometryType(eMain), C.OGRwkbGeometryType(eExtra)))
-	return
-}
-
-func (gt OGRwkbGeometryType) Merge(extra OGRwkbGeometryType) (result OGRwkbGeometryType) {
-	result = ogrMergeGeometryTypes(gt, extra)
 	return
 }
 
@@ -271,18 +211,8 @@ func ogrMergeGeometryTypesEx(eMain, eExtra OGRwkbGeometryType, bAllowPromotingTo
 	return
 }
 
-func (gt OGRwkbGeometryType) MergeEx(extra OGRwkbGeometryType, allowPromotingToCurves int) (result OGRwkbGeometryType) {
-	result = ogrMergeGeometryTypesEx(gt, extra, allowPromotingToCurves)
-	return
-}
-
 func ogrGTFlatten(eType OGRwkbGeometryType) (result OGRwkbGeometryType) {
 	result = OGRwkbGeometryType(C.OGR_GT_Flatten(C.OGRwkbGeometryType(eType)))
-	return
-}
-
-func (gt OGRwkbGeometryType) Flatten() (result OGRwkbGeometryType) {
-	result = ogrGTFlatten(gt)
 	return
 }
 
@@ -291,17 +221,9 @@ func ogrGTSetZ(eType OGRwkbGeometryType) (result OGRwkbGeometryType) {
 	return
 }
 
-func (gt *OGRwkbGeometryType) SetZ() {
-	*gt = ogrGTSetZ(*gt)
-}
-
 func ogrGTSetM(eType OGRwkbGeometryType) (result OGRwkbGeometryType) {
 	result = OGRwkbGeometryType(C.OGR_GT_SetM(C.OGRwkbGeometryType(eType)))
 	return
-}
-
-func (gt *OGRwkbGeometryType) SetM() {
-	*gt = ogrGTSetM(*gt)
 }
 
 func ogrGTSetModifier(eType OGRwkbGeometryType, bSetZ, bSetM int) (result OGRwkbGeometryType) {
@@ -309,17 +231,8 @@ func ogrGTSetModifier(eType OGRwkbGeometryType, bSetZ, bSetM int) (result OGRwkb
 	return
 }
 
-func (gt *OGRwkbGeometryType) SetModifier(bSetZ, bSetM int) {
-	*gt = ogrGTSetModifier(*gt, bSetZ, bSetM)
-}
-
 func ogrGTHasZ(eType OGRwkbGeometryType) (result int) {
 	result = int(C.OGR_GT_HasZ(C.OGRwkbGeometryType(eType)))
-	return
-}
-
-func (gt OGRwkbGeometryType) HasZ() (result bool) {
-	result = ogrGTHasZ(gt) != 0
 	return
 }
 
@@ -328,18 +241,8 @@ func ogrGTHasM(eType OGRwkbGeometryType) (result int) {
 	return
 }
 
-func (gt OGRwkbGeometryType) HasM() (result bool) {
-	result = ogrGTHasM(gt) != 0
-	return
-}
-
 func ogrGTIsSubClassOf(eType, eSuperType OGRwkbGeometryType) (result int) {
 	result = int(C.OGR_GT_IsSubClassOf(C.OGRwkbGeometryType(eType), C.OGRwkbGeometryType(eSuperType)))
-	return
-}
-
-func (gt OGRwkbGeometryType) IsSubClassOf(eSuperType OGRwkbGeometryType) (result bool) {
-	result = ogrGTIsSubClassOf(gt, eSuperType) != 0
 	return
 }
 
@@ -348,18 +251,8 @@ func ogrGTIsCurve(eType OGRwkbGeometryType) (result int) {
 	return
 }
 
-func (gt OGRwkbGeometryType) IsCurve() (result bool) {
-	result = ogrGTIsCurve(gt) != 0
-	return
-}
-
 func ogrGTIsSurface(eType OGRwkbGeometryType) (result int) {
 	result = int(C.OGR_GT_IsSurface(C.OGRwkbGeometryType(eType)))
-	return
-}
-
-func (gt OGRwkbGeometryType) IsSurface() (result bool) {
-	result = ogrGTIsSurface(gt) != 0
 	return
 }
 
@@ -368,18 +261,8 @@ func ogrGTIsNonLinear(eType OGRwkbGeometryType) (result int) {
 	return
 }
 
-func (gt OGRwkbGeometryType) IsNonLinear() (result bool) {
-	result = ogrGTIsNonLinear(gt) != 0
-	return
-}
-
 func ogrGTGetCollection(eType OGRwkbGeometryType) (result OGRwkbGeometryType) {
 	result = OGRwkbGeometryType(C.OGR_GT_GetCollection(C.OGRwkbGeometryType(eType)))
-	return
-}
-
-func (gt OGRwkbGeometryType) GetCollection() (result OGRwkbGeometryType) {
-	result = ogrGTGetCollection(gt)
 	return
 }
 
@@ -388,28 +271,13 @@ func ogrGTGetSingle(eType OGRwkbGeometryType) (result OGRwkbGeometryType) {
 	return
 }
 
-func (gt OGRwkbGeometryType) GetSingle() (result OGRwkbGeometryType) {
-	result = ogrGTGetSingle(gt)
-	return
-}
-
 func ogrGTGetCurve(eType OGRwkbGeometryType) (result OGRwkbGeometryType) {
 	result = OGRwkbGeometryType(C.OGR_GT_GetCurve(C.OGRwkbGeometryType(eType)))
 	return
 }
 
-func (gt OGRwkbGeometryType) GetCurve() (result OGRwkbGeometryType) {
-	result = ogrGTGetCurve(gt)
-	return
-}
-
 func ogrGTGetLinear(eType OGRwkbGeometryType) (result OGRwkbGeometryType) {
 	result = OGRwkbGeometryType(C.OGR_GT_GetLinear(C.OGRwkbGeometryType(eType)))
-	return
-}
-
-func (gt OGRwkbGeometryType) GetLinear() (result OGRwkbGeometryType) {
-	result = ogrGTGetLinear(gt)
 	return
 }
 
@@ -476,7 +344,7 @@ const AlterCommentFlag = C.ALTER_COMMENT_FLAG
 // /** Alter all parameters of field definition.
 //   - Used by OGR_L_AlterFieldDefn().
 //     */
-var AlterAllFlag = int(C._ALTER_ALL_FLAG)
+var AlterAllFlag = int(C._ALTER_ALL_FLAG())
 
 // /** Alter geometry field name.
 //   - Used by OGR_L_AlterGeomFieldDefn().
@@ -512,7 +380,7 @@ const AlterGeomFieldDefnSRSCoordEpochFlag = C.ALTER_GEOM_FIELD_DEFN_SRS_COORD_EP
 //   - Used by OGR_L_AlterGeomFieldDefn().
 //   - @since GDAL 3.6
 //     */
-var AlterGeomFieldDefnAllFlag = int(C._ALTER_GEOM_FIELD_DEFN_ALL_FLAG)
+var AlterGeomFieldDefnAllFlag = int(C._ALTER_GEOM_FIELD_DEFN_ALL_FLAG())
 
 // /** Validate that fields respect not-null constraints.
 //   - Used by OGR_F_Validate().
@@ -546,7 +414,7 @@ const OGRFValAllowDifferentGeomDim = C.OGR_F_VAL_ALLOW_DIFFERENT_GEOM_DIM
 // /** Enable all validation tests (except OGR_F_VAL_ALLOW_DIFFERENT_GEOM_DIM)
 //   - Used by OGR_F_Validate().
 //     */
-var OGRFValAll = int(C._OGR_F_VAL_ALL)
+var OGRFValAll = int(C._OGR_F_VAL_ALL())
 
 // /************************************************************************/
 // /*                  ogr_feature.h related definitions.                  */
@@ -659,11 +527,6 @@ func ogrGetMS(fSec float32) (result int) {
 	return
 }
 
-func OGRGetMS(fSec float32) (result int) {
-	result = ogrGetMS(fSec)
-	return
-}
-
 // /** Option for OGRParseDate() to ask for lax checks on the input format */
 const OGRParseDateOptionLax = C.OGRPARSEDATE_OPTION_LAX
 
@@ -674,67 +537,61 @@ func ogrParseDate(pszInput string, psOutput OGRField, nOptions int) (result int)
 	return
 }
 
-func OGRParseDate(input string, options int) (result OGRField, ok bool) {
-	result = OGRField{cValue: new(C.OGRField)}
-	ok = ogrParseDate(input, result, options) != 0
-	return
-}
-
 // Layer capabilities (OLC*)
 var (
-	OLCRandomRead          = C.GoString(C._OLCRandomRead)
-	OLCSequentialWrite     = C.GoString(C._OLCSequentialWrite)
-	OLCRandomWrite         = C.GoString(C._OLCRandomWrite)
-	OLCFastSpatialFilter   = C.GoString(C._OLCFastSpatialFilter)
-	OLCFastFeatureCount    = C.GoString(C._OLCFastFeatureCount)
-	OLCFastGetExtent       = C.GoString(C._OLCFastGetExtent)
-	OLCFastGetExtent3D     = C.GoString(C._OLCFastGetExtent3D)
-	OLCCreateField         = C.GoString(C._OLCCreateField)
-	OLCDeleteField         = C.GoString(C._OLCDeleteField)
-	OLCReorderFields       = C.GoString(C._OLCReorderFields)
-	OLCAlterFieldDefn      = C.GoString(C._OLCAlterFieldDefn)
-	OLCAlterGeomFieldDefn  = C.GoString(C._OLCAlterGeomFieldDefn)
-	OLCTransactions        = C.GoString(C._OLCTransactions)
-	OLCDeleteFeature       = C.GoString(C._OLCDeleteFeature)
-	OLCUpsertFeature       = C.GoString(C._OLCUpsertFeature)
-	OLCUpdateFeature       = C.GoString(C._OLCUpdateFeature)
-	OLCFastSetNextByIndex  = C.GoString(C._OLCFastSetNextByIndex)
-	OLCStringsAsUTF8       = C.GoString(C._OLCStringsAsUTF8)
-	OLCIgnoreFields        = C.GoString(C._OLCIgnoreFields)
-	OLCCreateGeomField     = C.GoString(C._OLCCreateGeomField)
-	OLCCurveGeometries     = C.GoString(C._OLCCurveGeometries)
-	OLCMeasuredGeometries  = C.GoString(C._OLCMeasuredGeometries)
-	OLCZGeometries         = C.GoString(C._OLCZGeometries)
-	OLCRename              = C.GoString(C._OLCRename)
-	OLCFastGetArrowStream  = C.GoString(C._OLCFastGetArrowStream)
-	OLCFastWriteArrowBatch = C.GoString(C._OLCFastWriteArrowBatch)
+	OLCRandomRead          = C.GoString(C._OLCRandomRead())
+	OLCSequentialWrite     = C.GoString(C._OLCSequentialWrite())
+	OLCRandomWrite         = C.GoString(C._OLCRandomWrite())
+	OLCFastSpatialFilter   = C.GoString(C._OLCFastSpatialFilter())
+	OLCFastFeatureCount    = C.GoString(C._OLCFastFeatureCount())
+	OLCFastGetExtent       = C.GoString(C._OLCFastGetExtent())
+	OLCFastGetExtent3D     = C.GoString(C._OLCFastGetExtent3D())
+	OLCCreateField         = C.GoString(C._OLCCreateField())
+	OLCDeleteField         = C.GoString(C._OLCDeleteField())
+	OLCReorderFields       = C.GoString(C._OLCReorderFields())
+	OLCAlterFieldDefn      = C.GoString(C._OLCAlterFieldDefn())
+	OLCAlterGeomFieldDefn  = C.GoString(C._OLCAlterGeomFieldDefn())
+	OLCTransactions        = C.GoString(C._OLCTransactions())
+	OLCDeleteFeature       = C.GoString(C._OLCDeleteFeature())
+	OLCUpsertFeature       = C.GoString(C._OLCUpsertFeature())
+	OLCUpdateFeature       = C.GoString(C._OLCUpdateFeature())
+	OLCFastSetNextByIndex  = C.GoString(C._OLCFastSetNextByIndex())
+	OLCStringsAsUTF8       = C.GoString(C._OLCStringsAsUTF8())
+	OLCIgnoreFields        = C.GoString(C._OLCIgnoreFields())
+	OLCCreateGeomField     = C.GoString(C._OLCCreateGeomField())
+	OLCCurveGeometries     = C.GoString(C._OLCCurveGeometries())
+	OLCMeasuredGeometries  = C.GoString(C._OLCMeasuredGeometries())
+	OLCZGeometries         = C.GoString(C._OLCZGeometries())
+	OLCRename              = C.GoString(C._OLCRename())
+	OLCFastGetArrowStream  = C.GoString(C._OLCFastGetArrowStream())
+	OLCFastWriteArrowBatch = C.GoString(C._OLCFastWriteArrowBatch())
 )
 
 // Dataset capabilities (ODs*)
 var (
-	ODsCCreateLayer                     = C.GoString(C._ODsCCreateLayer)
-	ODsCDeleteLayer                     = C.GoString(C._ODsCDeleteLayer)
-	ODsCCreateGeomFieldAfterCreateLayer = C.GoString(C._ODsCCreateGeomFieldAfterCreateLayer)
-	ODsCCurveGeometries                 = C.GoString(C._ODsCCurveGeometries)
-	ODsCTransactions                    = C.GoString(C._ODsCTransactions)
-	ODsCEmulatedTransactions            = C.GoString(C._ODsCEmulatedTransactions)
-	ODsCMeasuredGeometries              = C.GoString(C._ODsCMeasuredGeometries)
-	ODsCZGeometries                     = C.GoString(C._ODsCZGeometries)
-	ODsCRandomLayerRead                 = C.GoString(C._ODsCRandomLayerRead)
-	ODsCRandomLayerWrite                = C.GoString(C._ODsCRandomLayerWrite)
-	ODsCAddFieldDomain                  = C.GoString(C._ODsCAddFieldDomain)
-	ODsCDeleteFieldDomain               = C.GoString(C._ODsCDeleteFieldDomain)
-	ODsCUpdateFieldDomain               = C.GoString(C._ODsCUpdateFieldDomain)
+	ODsCCreateLayer                     = C.GoString(C._ODsCCreateLayer())
+	ODsCDeleteLayer                     = C.GoString(C._ODsCDeleteLayer())
+	ODsCCreateGeomFieldAfterCreateLayer = C.GoString(C._ODsCCreateGeomFieldAfterCreateLayer())
+	ODsCCurveGeometries                 = C.GoString(C._ODsCCurveGeometries())
+	ODsCTransactions                    = C.GoString(C._ODsCTransactions())
+	ODsCEmulatedTransactions            = C.GoString(C._ODsCEmulatedTransactions())
+	ODsCMeasuredGeometries              = C.GoString(C._ODsCMeasuredGeometries())
+	ODsCZGeometries                     = C.GoString(C._ODsCZGeometries())
+	ODsCRandomLayerRead                 = C.GoString(C._ODsCRandomLayerRead())
+	ODsCRandomLayerWrite                = C.GoString(C._ODsCRandomLayerWrite())
+	ODsCAddFieldDomain                  = C.GoString(C._ODsCAddFieldDomain())
+	ODsCDeleteFieldDomain               = C.GoString(C._ODsCDeleteFieldDomain())
+	ODsCUpdateFieldDomain               = C.GoString(C._ODsCUpdateFieldDomain())
 )
 
 // Driver capabilities (ODr*)
 var (
-	ODrCCreateDataSource = C.GoString(C._ODrCCreateDataSource)
-	ODrCDeleteDataSource = C.GoString(C._ODrCDeleteDataSource)
+	ODrCCreateDataSource = C.GoString(C._ODrCCreateDataSource())
+	ODrCDeleteDataSource = C.GoString(C._ODrCDeleteDataSource())
 )
 
 // Layer metadata items
-var OLMD_FID64 = C.GoString(C._OLMD_FID64)
+var OLMD_FID64 = C.GoString(C._OLMD_FID64())
 
 // /************************************************************************/
 // /*                  ogr_featurestyle.h related definitions.             */

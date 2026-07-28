@@ -38,6 +38,16 @@ func cBytes(data []byte) unsafe.Pointer {
 	return unsafe.Pointer(&data[0])
 }
 
+// goBytes copies n bytes from a C-allocated buffer into a new Go slice,
+// returning nil for a nil pointer or a non-positive length. It is the inverse of
+// cBytes and keeps the C.GoBytes conversion out of the public wrappers.
+func goBytes(ptr unsafe.Pointer, n int) []byte {
+	if ptr == nil || n <= 0 {
+		return nil
+	}
+	return C.GoBytes(ptr, C.int(n))
+}
+
 // cInts converts a Go int slice to a C int array, returning a pointer to the
 // first element (nil for empty). The backing array stays alive while the
 // returned pointer is reachable, so it is safe to pass to C for a single call.

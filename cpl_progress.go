@@ -19,15 +19,6 @@ func gdalCreateScaledProgress(dfMin, dfMax float64, pfnProgress GDALProgressFunc
 	return
 }
 
-func GDALCreateScaledProgress(dfMin, dfMax float64, pfnProgress GDALProgressFunc, pData unsafe.Pointer) (result unsafe.Pointer) {
-	result = gdalCreateScaledProgress(dfMin, dfMax, pfnProgress, pData)
-	return
-}
-
 func gdalDestroyScaledProgress(pData unsafe.Pointer) {
 	C.GDALDestroyScaledProgress(pData)
-}
-
-func GDALDestroyScaledProgress(pData unsafe.Pointer) {
-	gdalDestroyScaledProgress(pData)
 }

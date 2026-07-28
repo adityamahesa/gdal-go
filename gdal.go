@@ -37,19 +37,8 @@ func gdalGetDataTypeSize(dataType GDALDataType) (result int) {
 	return
 }
 
-// Deprecated: use SizeBits or SizeBytes instead.
-func (dt GDALDataType) Size() (result int) {
-	result = gdalGetDataTypeSize(dt)
-	return
-}
-
 func gdalGetDataTypeSizeBits(dataType GDALDataType) (result int) {
 	result = int(C.GDALGetDataTypeSizeBits(C.GDALDataType(dataType)))
-	return
-}
-
-func (dt GDALDataType) SizeBits() (result int) {
-	result = gdalGetDataTypeSizeBits(dt)
 	return
 }
 
@@ -58,18 +47,8 @@ func gdalGetDataTypeSizeBytes(dataType GDALDataType) (result int) {
 	return
 }
 
-func (dt GDALDataType) SizeBytes() (result int) {
-	result = gdalGetDataTypeSizeBytes(dt)
-	return
-}
-
 func gdalDataTypeIsComplex(dataType GDALDataType) (result bool) {
 	result = C.GDALDataTypeIsComplex(C.GDALDataType(dataType)) != 0
-	return
-}
-
-func (dt GDALDataType) IsComplex() (result bool) {
-	result = gdalDataTypeIsComplex(dt)
 	return
 }
 
@@ -78,18 +57,8 @@ func gdalDataTypeIsInteger(dataType GDALDataType) (result bool) {
 	return
 }
 
-func (dt GDALDataType) IsInteger() (result bool) {
-	result = gdalDataTypeIsInteger(dt)
-	return
-}
-
 func gdalDataTypeIsFloating(dataType GDALDataType) (result bool) {
 	result = C.GDALDataTypeIsFloating(C.GDALDataType(dataType)) != 0
-	return
-}
-
-func (dt GDALDataType) IsFloating() (result bool) {
-	result = gdalDataTypeIsFloating(dt)
 	return
 }
 
@@ -98,18 +67,8 @@ func gdalDataTypeIsSigned(dataType GDALDataType) (result bool) {
 	return
 }
 
-func (dt GDALDataType) IsSigned() (result bool) {
-	result = gdalDataTypeIsSigned(dt)
-	return
-}
-
 func gdalGetDataTypeName(dataType GDALDataType) (result string) {
 	result = C.GoString(C.GDALGetDataTypeName(C.GDALDataType(dataType)))
-	return
-}
-
-func (dt GDALDataType) GetName() (result string) {
-	result = gdalGetDataTypeName(dt)
 	return
 }
 
@@ -120,18 +79,8 @@ func gdalGetDataTypeByName(name string) (result GDALDataType) {
 	return
 }
 
-func GDALGetDataTypeByName(name string) (result GDALDataType) {
-	result = gdalGetDataTypeByName(name)
-	return
-}
-
 func gdalDataTypeUnion(a, b GDALDataType) (result GDALDataType) {
 	result = GDALDataType(C.GDALDataTypeUnion(C.GDALDataType(a), C.GDALDataType(b)))
-	return
-}
-
-func (dt GDALDataType) Union(other GDALDataType) (result GDALDataType) {
-	result = gdalDataTypeUnion(dt, other)
 	return
 }
 
@@ -140,28 +89,13 @@ func gdalDataTypeUnionWithValue(dataType GDALDataType, value float64, complex in
 	return
 }
 
-func (dt GDALDataType) UnionWithValue(value float64, complex int) (result GDALDataType) {
-	result = gdalDataTypeUnionWithValue(dt, value, complex)
-	return
-}
-
 func gdalFindDataType(bits, signed, floating, complex int) (result GDALDataType) {
 	result = GDALDataType(C.GDALFindDataType(C.int(bits), C.int(signed), C.int(floating), C.int(complex)))
 	return
 }
 
-func GDALFindDataType(bits, signed, floating, complex int) (result GDALDataType) {
-	result = gdalFindDataType(bits, signed, floating, complex)
-	return
-}
-
 func gdalFindDataTypeForValue(value float64, complex int) (result GDALDataType) {
 	result = GDALDataType(C.GDALFindDataTypeForValue(C.double(value), C.int(complex)))
-	return
-}
-
-func GDALFindDataTypeForValue(value float64, complex int) (result GDALDataType) {
-	result = gdalFindDataTypeForValue(value, complex)
 	return
 }
 
@@ -173,18 +107,8 @@ func gdalAdjustValueToDataType(dataType GDALDataType, value float64, clamped, ro
 	return float64(r)
 }
 
-func (dt GDALDataType) AdjustValue(value float64) (result float64, clamped, rounded int) {
-	result = gdalAdjustValueToDataType(dt, value, &clamped, &rounded)
-	return
-}
-
 func gdalIsValueExactAs(value float64, dataType GDALDataType) (result bool) {
 	result = bool(C.GDALIsValueExactAs(C.double(value), C.GDALDataType(dataType)))
-	return
-}
-
-func (dt GDALDataType) IsValueExactAs(value float64) (result bool) {
-	result = gdalIsValueExactAs(value, dt)
 	return
 }
 
@@ -193,28 +117,13 @@ func gdalIsValueInRangeOf(value float64, dataType GDALDataType) (result bool) {
 	return
 }
 
-func (dt GDALDataType) IsValueInRangeOf(value float64) (result bool) {
-	result = gdalIsValueInRangeOf(value, dt)
-	return
-}
-
 func gdalGetNonComplexDataType(dataType GDALDataType) (result GDALDataType) {
 	result = GDALDataType(C.GDALGetNonComplexDataType(C.GDALDataType(dataType)))
 	return
 }
 
-func (dt GDALDataType) GetNonComplex() (result GDALDataType) {
-	result = gdalGetNonComplexDataType(dt)
-	return
-}
-
 func gdalDataTypeIsConversionLossy(from, to GDALDataType) (result bool) {
 	result = C.GDALDataTypeIsConversionLossy(C.GDALDataType(from), C.GDALDataType(to)) != 0
-	return
-}
-
-func (dt GDALDataType) IsConversionLossyTo(to GDALDataType) (result bool) {
-	result = gdalDataTypeIsConversionLossy(dt, to)
 	return
 }
 
@@ -234,20 +143,10 @@ func gdalGetAsyncStatusTypeName(status GDALAsyncStatusType) (result string) {
 	return
 }
 
-func (s GDALAsyncStatusType) GetName() (result string) {
-	result = gdalGetAsyncStatusTypeName(s)
-	return
-}
-
 func gdalGetAsyncStatusTypeByName(name string) (result GDALAsyncStatusType) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	result = GDALAsyncStatusType(C.GDALGetAsyncStatusTypeByName(cName))
-	return
-}
-
-func GDALGetAsyncStatusTypeByName(name string) (result GDALAsyncStatusType) {
-	result = gdalGetAsyncStatusTypeByName(name)
 	return
 }
 
@@ -351,20 +250,10 @@ func gdalGetColorInterpretationName(colorInterp GDALColorInterp) (result string)
 	return
 }
 
-func (ci GDALColorInterp) GetName() (result string) {
-	result = gdalGetColorInterpretationName(ci)
-	return
-}
-
 func gdalGetColorInterpretationByName(name string) (result GDALColorInterp) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	result = GDALColorInterp(C.GDALGetColorInterpretationByName(cName))
-	return
-}
-
-func GDALGetColorInterpretationByName(name string) (result GDALColorInterp) {
-	result = gdalGetColorInterpretationByName(name)
 	return
 }
 
@@ -383,16 +272,11 @@ func gdalGetPaletteInterpretationName(paletteInterp GDALPaletteInterp) (result s
 	return
 }
 
-func (pi GDALPaletteInterp) GetName() (result string) {
-	result = gdalGetPaletteInterpretationName(pi)
-	return
-}
-
 // "well known" metadata items.
 var (
-	GDALMDAreaOrPoint = C.GoString(C._GDALMD_AREA_OR_POINT)
-	GDALMDAOPArea     = C.GoString(C._GDALMD_AOP_AREA)
-	GDALMDAOPPoint    = C.GoString(C._GDALMD_AOP_POINT)
+	GDALMDAreaOrPoint = C.GoString(C._GDALMD_AREA_OR_POINT())
+	GDALMDAOPArea     = C.GoString(C._GDALMD_AOP_AREA())
+	GDALMDAOPPoint    = C.GoString(C._GDALMD_AOP_POINT())
 )
 
 // GDAL-specific error codes (100 to 299 reserved for GDAL).
@@ -421,121 +305,108 @@ const (
 // Driver metadata (GDAL_DMD_*), capability (GDAL_DCAP_*), dimension type
 // (GDAL_DIM_TYPE_*) and driver capability (GDsC*) item names.
 var (
-	GDALDMDLongName                                  = C.GoString(C._GDAL_DMD_LONGNAME)
-	GDALDMDHelpTopic                                 = C.GoString(C._GDAL_DMD_HELPTOPIC)
-	GDALDMDMimeType                                  = C.GoString(C._GDAL_DMD_MIMETYPE)
-	GDALDMDExtension                                 = C.GoString(C._GDAL_DMD_EXTENSION)
-	GDALDMDConnectionPrefix                          = C.GoString(C._GDAL_DMD_CONNECTION_PREFIX)
-	GDALDMDExtensions                                = C.GoString(C._GDAL_DMD_EXTENSIONS)
-	GDALDMDCreationOptionList                        = C.GoString(C._GDAL_DMD_CREATIONOPTIONLIST)
-	GDALDMDOverviewCreationOptionList                = C.GoString(C._GDAL_DMD_OVERVIEW_CREATIONOPTIONLIST)
-	GDALDMDMultidimDatasetCreationOptionList         = C.GoString(C._GDAL_DMD_MULTIDIM_DATASET_CREATIONOPTIONLIST)
-	GDALDMDMultidimGroupCreationOptionList           = C.GoString(C._GDAL_DMD_MULTIDIM_GROUP_CREATIONOPTIONLIST)
-	GDALDMDMultidimDimensionCreationOptionList       = C.GoString(C._GDAL_DMD_MULTIDIM_DIMENSION_CREATIONOPTIONLIST)
-	GDALDMDMultidimArrayCreationOptionList           = C.GoString(C._GDAL_DMD_MULTIDIM_ARRAY_CREATIONOPTIONLIST)
-	GDALDMDMultidimArrayOpenOptionList               = C.GoString(C._GDAL_DMD_MULTIDIM_ARRAY_OPENOPTIONLIST)
-	GDALDMDMultidimAttributeCreationOptionList       = C.GoString(C._GDAL_DMD_MULTIDIM_ATTRIBUTE_CREATIONOPTIONLIST)
-	GDALDMDOpenOptionList                            = C.GoString(C._GDAL_DMD_OPENOPTIONLIST)
-	GDALDMDCreationDataTypes                         = C.GoString(C._GDAL_DMD_CREATIONDATATYPES)
-	GDALDMDCreationFieldDataTypes                    = C.GoString(C._GDAL_DMD_CREATIONFIELDDATATYPES)
-	GDALDMDCreationFieldDataSubTypes                 = C.GoString(C._GDAL_DMD_CREATIONFIELDDATASUBTYPES)
-	GDALDMDMaxStringLength                           = C.GoString(C._GDAL_DMD_MAX_STRING_LENGTH)
-	GDALDMDCreationFieldDefnFlags                    = C.GoString(C._GDAL_DMD_CREATION_FIELD_DEFN_FLAGS)
-	GDALDMDSubdatasets                               = C.GoString(C._GDAL_DMD_SUBDATASETS)
-	GDALDCAPCreateSubdatasets                        = C.GoString(C._GDAL_DCAP_CREATE_SUBDATASETS)
-	GDALDMDNumericFieldWidthIncludesDecimalSeparator = C.GoString(C._GDAL_DMD_NUMERIC_FIELD_WIDTH_INCLUDES_DECIMAL_SEPARATOR)
-	GDALDMDNumericFieldWidthIncludesSign             = C.GoString(C._GDAL_DMD_NUMERIC_FIELD_WIDTH_INCLUDES_SIGN)
-	GDALDCAPOpen                                     = C.GoString(C._GDAL_DCAP_OPEN)
-	GDALDCAPCreate                                   = C.GoString(C._GDAL_DCAP_CREATE)
-	GDALDCAPCreateMultidimensional                   = C.GoString(C._GDAL_DCAP_CREATE_MULTIDIMENSIONAL)
-	GDALDCAPCreateCopy                               = C.GoString(C._GDAL_DCAP_CREATECOPY)
-	GDALDCAPCreateOnlyVisibleAtCloseTime             = C.GoString(C._GDAL_DCAP_CREATE_ONLY_VISIBLE_AT_CLOSE_TIME)
-	GDALDCAPVectorTranslateFrom                      = C.GoString(C._GDAL_DCAP_VECTOR_TRANSLATE_FROM)
-	GDALDCAPCreateCopyMultidimensional               = C.GoString(C._GDAL_DCAP_CREATECOPY_MULTIDIMENSIONAL)
-	GDALDCAPMultidimRaster                           = C.GoString(C._GDAL_DCAP_MULTIDIM_RASTER)
-	GDALDCAPSubCreateCopy                            = C.GoString(C._GDAL_DCAP_SUBCREATECOPY)
-	GDALDCAPAppend                                   = C.GoString(C._GDAL_DCAP_APPEND)
-	GDALDCAPUpdate                                   = C.GoString(C._GDAL_DCAP_UPDATE)
-	GDALDCAPVirtualIO                                = C.GoString(C._GDAL_DCAP_VIRTUALIO)
-	GDALDCAPRaster                                   = C.GoString(C._GDAL_DCAP_RASTER)
-	GDALDCAPVector                                   = C.GoString(C._GDAL_DCAP_VECTOR)
-	GDALDCAPGNM                                      = C.GoString(C._GDAL_DCAP_GNM)
-	GDALDCAPCreateLayer                              = C.GoString(C._GDAL_DCAP_CREATE_LAYER)
-	GDALDCAPDeleteLayer                              = C.GoString(C._GDAL_DCAP_DELETE_LAYER)
-	GDALDCAPCreateField                              = C.GoString(C._GDAL_DCAP_CREATE_FIELD)
-	GDALDCAPDeleteField                              = C.GoString(C._GDAL_DCAP_DELETE_FIELD)
-	GDALDCAPReorderFields                            = C.GoString(C._GDAL_DCAP_REORDER_FIELDS)
-	GDALDMDAlterFieldDefnFlags                       = C.GoString(C._GDAL_DMD_ALTER_FIELD_DEFN_FLAGS)
-	GDALDMDIllegalFieldNames                         = C.GoString(C._GDAL_DMD_ILLEGAL_FIELD_NAMES)
-	GDALDCAPNotNullFields                            = C.GoString(C._GDAL_DCAP_NOTNULL_FIELDS)
-	GDALDCAPUniqueFields                             = C.GoString(C._GDAL_DCAP_UNIQUE_FIELDS)
-	GDALDCAPDefaultFields                            = C.GoString(C._GDAL_DCAP_DEFAULT_FIELDS)
-	GDALDCAPNotNullGeomFields                        = C.GoString(C._GDAL_DCAP_NOTNULL_GEOMFIELDS)
-	GDALDCAPNonspatial                               = C.GoString(C._GDAL_DCAP_NONSPATIAL)
-	GDALDCAPCurveGeometries                          = C.GoString(C._GDAL_DCAP_CURVE_GEOMETRIES)
-	GDALDCAPMeasuredGeometries                       = C.GoString(C._GDAL_DCAP_MEASURED_GEOMETRIES)
-	GDALDCAPZGeometries                              = C.GoString(C._GDAL_DCAP_Z_GEOMETRIES)
-	GDALDMDGeometryFlags                             = C.GoString(C._GDAL_DMD_GEOMETRY_FLAGS)
-	GDALDCAPFeatureStyles                            = C.GoString(C._GDAL_DCAP_FEATURE_STYLES)
-	GDALDCAPFeatureStylesRead                        = C.GoString(C._GDAL_DCAP_FEATURE_STYLES_READ)
-	GDALDCAPFeatureStylesWrite                       = C.GoString(C._GDAL_DCAP_FEATURE_STYLES_WRITE)
-	GDALDCAPCoordinateEpoch                          = C.GoString(C._GDAL_DCAP_COORDINATE_EPOCH)
-	GDALDCAPMultipleVectorLayers                     = C.GoString(C._GDAL_DCAP_MULTIPLE_VECTOR_LAYERS)
-	GDALDCAPFieldDomains                             = C.GoString(C._GDAL_DCAP_FIELD_DOMAINS)
-	GDALDCAPRelationships                            = C.GoString(C._GDAL_DCAP_RELATIONSHIPS)
-	GDALDCAPCreateRelationship                       = C.GoString(C._GDAL_DCAP_CREATE_RELATIONSHIP)
-	GDALDCAPDeleteRelationship                       = C.GoString(C._GDAL_DCAP_DELETE_RELATIONSHIP)
-	GDALDCAPUpdateRelationship                       = C.GoString(C._GDAL_DCAP_UPDATE_RELATIONSHIP)
-	GDALDCAPFlushCacheConsistentState                = C.GoString(C._GDAL_DCAP_FLUSHCACHE_CONSISTENT_STATE)
-	GDALDCAPHonorGeomCoordinatePrecision             = C.GoString(C._GDAL_DCAP_HONOR_GEOM_COORDINATE_PRECISION)
-	GDALDCAPUpsert                                   = C.GoString(C._GDAL_DCAP_UPSERT)
-	GDALDMDRelationshipFlags                         = C.GoString(C._GDAL_DMD_RELATIONSHIP_FLAGS)
-	GDALDMDRelationshipRelatedTableTypes             = C.GoString(C._GDAL_DMD_RELATIONSHIP_RELATED_TABLE_TYPES)
-	GDALDCAPRenameLayers                             = C.GoString(C._GDAL_DCAP_RENAME_LAYERS)
-	GDALDMDCreationFieldDomainTypes                  = C.GoString(C._GDAL_DMD_CREATION_FIELD_DOMAIN_TYPES)
-	GDALDMDAlterGeomFieldDefnFlags                   = C.GoString(C._GDAL_DMD_ALTER_GEOM_FIELD_DEFN_FLAGS)
-	GDALDMDSupportedSQLDialects                      = C.GoString(C._GDAL_DMD_SUPPORTED_SQL_DIALECTS)
-	GDALDMDPluginInstallationMessage                 = C.GoString(C._GDAL_DMD_PLUGIN_INSTALLATION_MESSAGE)
-	GDALDMDUpdateItems                               = C.GoString(C._GDAL_DMD_UPDATE_ITEMS)
-	GDALDimTypeHorizontalX                           = C.GoString(C._GDAL_DIM_TYPE_HORIZONTAL_X)
-	GDALDimTypeHorizontalY                           = C.GoString(C._GDAL_DIM_TYPE_HORIZONTAL_Y)
-	GDALDimTypeVertical                              = C.GoString(C._GDAL_DIM_TYPE_VERTICAL)
-	GDALDimTypeTemporal                              = C.GoString(C._GDAL_DIM_TYPE_TEMPORAL)
-	GDALDimTypeParametric                            = C.GoString(C._GDAL_DIM_TYPE_PARAMETRIC)
-	GDALDCAPReopenAfterWriteRequired                 = C.GoString(C._GDAL_DCAP_REOPEN_AFTER_WRITE_REQUIRED)
-	GDALDCAPCanReadAfterDelete                       = C.GoString(C._GDAL_DCAP_CAN_READ_AFTER_DELETE)
-	GDsCAddRelationship                              = C.GoString(C._GDsCAddRelationship)
-	GDsCDeleteRelationship                           = C.GoString(C._GDsCDeleteRelationship)
-	GDsCUpdateRelationship                           = C.GoString(C._GDsCUpdateRelationship)
-	GDsCFastGetExtent                                = C.GoString(C._GDsCFastGetExtent)
-	GDsCFastGetExtentWGS84LongLat                    = C.GoString(C._GDsCFastGetExtentWGS84LongLat)
+	GDALDMDLongName                                  = C.GoString(C._GDAL_DMD_LONGNAME())
+	GDALDMDHelpTopic                                 = C.GoString(C._GDAL_DMD_HELPTOPIC())
+	GDALDMDMimeType                                  = C.GoString(C._GDAL_DMD_MIMETYPE())
+	GDALDMDExtension                                 = C.GoString(C._GDAL_DMD_EXTENSION())
+	GDALDMDConnectionPrefix                          = C.GoString(C._GDAL_DMD_CONNECTION_PREFIX())
+	GDALDMDExtensions                                = C.GoString(C._GDAL_DMD_EXTENSIONS())
+	GDALDMDCreationOptionList                        = C.GoString(C._GDAL_DMD_CREATIONOPTIONLIST())
+	GDALDMDOverviewCreationOptionList                = C.GoString(C._GDAL_DMD_OVERVIEW_CREATIONOPTIONLIST())
+	GDALDMDMultidimDatasetCreationOptionList         = C.GoString(C._GDAL_DMD_MULTIDIM_DATASET_CREATIONOPTIONLIST())
+	GDALDMDMultidimGroupCreationOptionList           = C.GoString(C._GDAL_DMD_MULTIDIM_GROUP_CREATIONOPTIONLIST())
+	GDALDMDMultidimDimensionCreationOptionList       = C.GoString(C._GDAL_DMD_MULTIDIM_DIMENSION_CREATIONOPTIONLIST())
+	GDALDMDMultidimArrayCreationOptionList           = C.GoString(C._GDAL_DMD_MULTIDIM_ARRAY_CREATIONOPTIONLIST())
+	GDALDMDMultidimArrayOpenOptionList               = C.GoString(C._GDAL_DMD_MULTIDIM_ARRAY_OPENOPTIONLIST())
+	GDALDMDMultidimAttributeCreationOptionList       = C.GoString(C._GDAL_DMD_MULTIDIM_ATTRIBUTE_CREATIONOPTIONLIST())
+	GDALDMDOpenOptionList                            = C.GoString(C._GDAL_DMD_OPENOPTIONLIST())
+	GDALDMDCreationDataTypes                         = C.GoString(C._GDAL_DMD_CREATIONDATATYPES())
+	GDALDMDCreationFieldDataTypes                    = C.GoString(C._GDAL_DMD_CREATIONFIELDDATATYPES())
+	GDALDMDCreationFieldDataSubTypes                 = C.GoString(C._GDAL_DMD_CREATIONFIELDDATASUBTYPES())
+	GDALDMDMaxStringLength                           = C.GoString(C._GDAL_DMD_MAX_STRING_LENGTH())
+	GDALDMDCreationFieldDefnFlags                    = C.GoString(C._GDAL_DMD_CREATION_FIELD_DEFN_FLAGS())
+	GDALDMDSubdatasets                               = C.GoString(C._GDAL_DMD_SUBDATASETS())
+	GDALDCAPCreateSubdatasets                        = C.GoString(C._GDAL_DCAP_CREATE_SUBDATASETS())
+	GDALDMDNumericFieldWidthIncludesDecimalSeparator = C.GoString(C._GDAL_DMD_NUMERIC_FIELD_WIDTH_INCLUDES_DECIMAL_SEPARATOR())
+	GDALDMDNumericFieldWidthIncludesSign             = C.GoString(C._GDAL_DMD_NUMERIC_FIELD_WIDTH_INCLUDES_SIGN())
+	GDALDCAPOpen                                     = C.GoString(C._GDAL_DCAP_OPEN())
+	GDALDCAPCreate                                   = C.GoString(C._GDAL_DCAP_CREATE())
+	GDALDCAPCreateMultidimensional                   = C.GoString(C._GDAL_DCAP_CREATE_MULTIDIMENSIONAL())
+	GDALDCAPCreateCopy                               = C.GoString(C._GDAL_DCAP_CREATECOPY())
+	GDALDCAPCreateOnlyVisibleAtCloseTime             = C.GoString(C._GDAL_DCAP_CREATE_ONLY_VISIBLE_AT_CLOSE_TIME())
+	GDALDCAPVectorTranslateFrom                      = C.GoString(C._GDAL_DCAP_VECTOR_TRANSLATE_FROM())
+	GDALDCAPCreateCopyMultidimensional               = C.GoString(C._GDAL_DCAP_CREATECOPY_MULTIDIMENSIONAL())
+	GDALDCAPMultidimRaster                           = C.GoString(C._GDAL_DCAP_MULTIDIM_RASTER())
+	GDALDCAPSubCreateCopy                            = C.GoString(C._GDAL_DCAP_SUBCREATECOPY())
+	GDALDCAPAppend                                   = C.GoString(C._GDAL_DCAP_APPEND())
+	GDALDCAPUpdate                                   = C.GoString(C._GDAL_DCAP_UPDATE())
+	GDALDCAPVirtualIO                                = C.GoString(C._GDAL_DCAP_VIRTUALIO())
+	GDALDCAPRaster                                   = C.GoString(C._GDAL_DCAP_RASTER())
+	GDALDCAPVector                                   = C.GoString(C._GDAL_DCAP_VECTOR())
+	GDALDCAPGNM                                      = C.GoString(C._GDAL_DCAP_GNM())
+	GDALDCAPCreateLayer                              = C.GoString(C._GDAL_DCAP_CREATE_LAYER())
+	GDALDCAPDeleteLayer                              = C.GoString(C._GDAL_DCAP_DELETE_LAYER())
+	GDALDCAPCreateField                              = C.GoString(C._GDAL_DCAP_CREATE_FIELD())
+	GDALDCAPDeleteField                              = C.GoString(C._GDAL_DCAP_DELETE_FIELD())
+	GDALDCAPReorderFields                            = C.GoString(C._GDAL_DCAP_REORDER_FIELDS())
+	GDALDMDAlterFieldDefnFlags                       = C.GoString(C._GDAL_DMD_ALTER_FIELD_DEFN_FLAGS())
+	GDALDMDIllegalFieldNames                         = C.GoString(C._GDAL_DMD_ILLEGAL_FIELD_NAMES())
+	GDALDCAPNotNullFields                            = C.GoString(C._GDAL_DCAP_NOTNULL_FIELDS())
+	GDALDCAPUniqueFields                             = C.GoString(C._GDAL_DCAP_UNIQUE_FIELDS())
+	GDALDCAPDefaultFields                            = C.GoString(C._GDAL_DCAP_DEFAULT_FIELDS())
+	GDALDCAPNotNullGeomFields                        = C.GoString(C._GDAL_DCAP_NOTNULL_GEOMFIELDS())
+	GDALDCAPNonspatial                               = C.GoString(C._GDAL_DCAP_NONSPATIAL())
+	GDALDCAPCurveGeometries                          = C.GoString(C._GDAL_DCAP_CURVE_GEOMETRIES())
+	GDALDCAPMeasuredGeometries                       = C.GoString(C._GDAL_DCAP_MEASURED_GEOMETRIES())
+	GDALDCAPZGeometries                              = C.GoString(C._GDAL_DCAP_Z_GEOMETRIES())
+	GDALDMDGeometryFlags                             = C.GoString(C._GDAL_DMD_GEOMETRY_FLAGS())
+	GDALDCAPFeatureStyles                            = C.GoString(C._GDAL_DCAP_FEATURE_STYLES())
+	GDALDCAPFeatureStylesRead                        = C.GoString(C._GDAL_DCAP_FEATURE_STYLES_READ())
+	GDALDCAPFeatureStylesWrite                       = C.GoString(C._GDAL_DCAP_FEATURE_STYLES_WRITE())
+	GDALDCAPCoordinateEpoch                          = C.GoString(C._GDAL_DCAP_COORDINATE_EPOCH())
+	GDALDCAPMultipleVectorLayers                     = C.GoString(C._GDAL_DCAP_MULTIPLE_VECTOR_LAYERS())
+	GDALDCAPFieldDomains                             = C.GoString(C._GDAL_DCAP_FIELD_DOMAINS())
+	GDALDCAPRelationships                            = C.GoString(C._GDAL_DCAP_RELATIONSHIPS())
+	GDALDCAPCreateRelationship                       = C.GoString(C._GDAL_DCAP_CREATE_RELATIONSHIP())
+	GDALDCAPDeleteRelationship                       = C.GoString(C._GDAL_DCAP_DELETE_RELATIONSHIP())
+	GDALDCAPUpdateRelationship                       = C.GoString(C._GDAL_DCAP_UPDATE_RELATIONSHIP())
+	GDALDCAPFlushCacheConsistentState                = C.GoString(C._GDAL_DCAP_FLUSHCACHE_CONSISTENT_STATE())
+	GDALDCAPHonorGeomCoordinatePrecision             = C.GoString(C._GDAL_DCAP_HONOR_GEOM_COORDINATE_PRECISION())
+	GDALDCAPUpsert                                   = C.GoString(C._GDAL_DCAP_UPSERT())
+	GDALDMDRelationshipFlags                         = C.GoString(C._GDAL_DMD_RELATIONSHIP_FLAGS())
+	GDALDMDRelationshipRelatedTableTypes             = C.GoString(C._GDAL_DMD_RELATIONSHIP_RELATED_TABLE_TYPES())
+	GDALDCAPRenameLayers                             = C.GoString(C._GDAL_DCAP_RENAME_LAYERS())
+	GDALDMDCreationFieldDomainTypes                  = C.GoString(C._GDAL_DMD_CREATION_FIELD_DOMAIN_TYPES())
+	GDALDMDAlterGeomFieldDefnFlags                   = C.GoString(C._GDAL_DMD_ALTER_GEOM_FIELD_DEFN_FLAGS())
+	GDALDMDSupportedSQLDialects                      = C.GoString(C._GDAL_DMD_SUPPORTED_SQL_DIALECTS())
+	GDALDMDPluginInstallationMessage                 = C.GoString(C._GDAL_DMD_PLUGIN_INSTALLATION_MESSAGE())
+	GDALDMDUpdateItems                               = C.GoString(C._GDAL_DMD_UPDATE_ITEMS())
+	GDALDimTypeHorizontalX                           = C.GoString(C._GDAL_DIM_TYPE_HORIZONTAL_X())
+	GDALDimTypeHorizontalY                           = C.GoString(C._GDAL_DIM_TYPE_HORIZONTAL_Y())
+	GDALDimTypeVertical                              = C.GoString(C._GDAL_DIM_TYPE_VERTICAL())
+	GDALDimTypeTemporal                              = C.GoString(C._GDAL_DIM_TYPE_TEMPORAL())
+	GDALDimTypeParametric                            = C.GoString(C._GDAL_DIM_TYPE_PARAMETRIC())
+	GDALDCAPReopenAfterWriteRequired                 = C.GoString(C._GDAL_DCAP_REOPEN_AFTER_WRITE_REQUIRED())
+	GDALDCAPCanReadAfterDelete                       = C.GoString(C._GDAL_DCAP_CAN_READ_AFTER_DELETE())
+	GDsCAddRelationship                              = C.GoString(C._GDsCAddRelationship())
+	GDsCDeleteRelationship                           = C.GoString(C._GDsCDeleteRelationship())
+	GDsCUpdateRelationship                           = C.GoString(C._GDsCUpdateRelationship())
+	GDsCFastGetExtent                                = C.GoString(C._GDsCFastGetExtent())
+	GDsCFastGetExtentWGS84LongLat                    = C.GoString(C._GDsCFastGetExtentWGS84LongLat())
 )
 
 func gdalAllRegister() {
 	C.GDALAllRegister()
 }
 
-func GDALAllRegister() {
-	gdalAllRegister()
-}
-
 func gdalRegisterPlugins() {
 	C.GDALRegisterPlugins()
-}
-
-func GDALRegisterPlugins() {
-	gdalRegisterPlugins()
 }
 
 func gdalRegisterPlugin(name string) (result CPLErr) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	result = CPLErr(C.GDALRegisterPlugin(cName))
-	return
-}
-
-func GDALRegisterPlugin(name string) (err error) {
-	err = cplErr(gdalRegisterPlugin(name))
 	return
 }
 
@@ -547,14 +418,6 @@ func gdalCreate(driver GDALDriver, name string, xSize, ySize, bands int, dataTyp
 	return
 }
 
-func (d GDALDriver) Create(name string, xSize, ySize, bands int, dataType GDALDataType, options CSLConstList) (result GDALDataset, err error) {
-	result = gdalCreate(d, name, xSize, ySize, bands, dataType, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalCreateCopy(driver GDALDriver, name string, src GDALDataset, strict int, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (result GDALDataset) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
@@ -563,27 +426,11 @@ func gdalCreateCopy(driver GDALDriver, name string, src GDALDataset, strict int,
 	return
 }
 
-func (d GDALDriver) CreateCopy(name string, src GDALDataset, strict int, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (result GDALDataset, err error) {
-	result = gdalCreateCopy(d, name, src, strict, options, progress, progressData)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalIdentifyDriver(filename string, fileList CSLConstList) (result GDALDriver) {
 	cName := C.CString(filename)
 	defer C.free(unsafe.Pointer(cName))
 	files := fileList.cValue
 	result = GDALDriver{cValue: C.GDALIdentifyDriver(cName, files)}
-	return
-}
-
-func GDALIdentifyDriver(filename string, fileList CSLConstList) (result GDALDriver, err error) {
-	result = gdalIdentifyDriver(filename, fileList)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -596,14 +443,6 @@ func gdalIdentifyDriverEx(filename string, identifyFlags uint, allowedDrivers, f
 	return
 }
 
-func GDALIdentifyDriverEx(filename string, identifyFlags uint, allowedDrivers, fileList CSLConstList) (result GDALDriver, err error) {
-	result = gdalIdentifyDriverEx(filename, identifyFlags, allowedDrivers, fileList)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalOpen(filename string, access GDALAccess) (result GDALDataset) {
 	cName := C.CString(filename)
 	defer C.free(unsafe.Pointer(cName))
@@ -611,26 +450,10 @@ func gdalOpen(filename string, access GDALAccess) (result GDALDataset) {
 	return
 }
 
-func GDALOpen(filename string, access GDALAccess) (result GDALDataset, err error) {
-	result = gdalOpen(filename, access)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalOpenShared(filename string, access GDALAccess) (result GDALDataset) {
 	cName := C.CString(filename)
 	defer C.free(unsafe.Pointer(cName))
 	result = GDALDataset{cValue: C.GDALOpenShared(cName, C.GDALAccess(access))}
-	return
-}
-
-func GDALOpenShared(filename string, access GDALAccess) (result GDALDataset, err error) {
-	result = gdalOpenShared(filename, access)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -668,14 +491,6 @@ func gdalOpenEx(filename string, openFlags GDALOpenFlag, allowedDrivers, openOpt
 	return
 }
 
-func GDALOpenEx(filename string, openFlags GDALOpenFlag, allowedDrivers, openOptions, siblingFiles CSLConstList) (result GDALDataset, err error) {
-	result = gdalOpenEx(filename, openFlags, allowedDrivers, openOptions, siblingFiles)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalDumpOpenDatasets(filename string) (result int, err error) {
 	fp, closeFn, err := cFOpen(filename, "w")
 	if err != nil {
@@ -686,22 +501,10 @@ func gdalDumpOpenDatasets(filename string) (result int, err error) {
 	return
 }
 
-func GDALDumpOpenDatasets(filename string) (result int, err error) {
-	return gdalDumpOpenDatasets(filename)
-}
-
 func gdalGetDriverByName(name string) (result GDALDriver) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	result = GDALDriver{cValue: C.GDALGetDriverByName(cName)}
-	return
-}
-
-func GDALGetDriverByName(name string) (result GDALDriver, err error) {
-	result = gdalGetDriverByName(name)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -710,21 +513,8 @@ func gdalGetDriverCount() (result int) {
 	return
 }
 
-func GDALGetDriverCount() (result int) {
-	result = gdalGetDriverCount()
-	return
-}
-
 func gdalGetDriver(index int) (result GDALDriver) {
 	result = GDALDriver{cValue: C.GDALGetDriver(C.int(index))}
-	return
-}
-
-func GDALGetDriver(index int) (result GDALDriver, err error) {
-	result = gdalGetDriver(index)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -733,20 +523,8 @@ func gdalCreateDriver() (result GDALDriver) {
 	return
 }
 
-func GDALCreateDriver() (result GDALDriver, err error) {
-	result = gdalCreateDriver()
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalDestroyDriver(driver GDALDriver) {
 	C.GDALDestroyDriver(driver.cValue)
-}
-
-func (d GDALDriver) Destroy() {
-	gdalDestroyDriver(d)
 }
 
 func gdalRegisterDriver(driver GDALDriver) (result int) {
@@ -754,44 +532,22 @@ func gdalRegisterDriver(driver GDALDriver) (result int) {
 	return
 }
 
-func (d GDALDriver) Register() (result int) {
-	result = gdalRegisterDriver(d)
-	return
-}
-
 func gdalDeregisterDriver(driver GDALDriver) {
 	C.GDALDeregisterDriver(driver.cValue)
-}
-
-func (d GDALDriver) Deregister() {
-	gdalDeregisterDriver(d)
 }
 
 func gdalDestroyDriverManager() {
 	C.GDALDestroyDriverManager()
 }
 
-func GDALDestroyDriverManager() {
-	gdalDestroyDriverManager()
-}
-
 func gdalDestroy() {
 	C.GDALDestroy()
-}
-
-func GDALDestroy() {
-	gdalDestroy()
 }
 
 func gdalDeleteDataset(driver GDALDriver, filename string) (result CPLErr) {
 	cName := C.CString(filename)
 	defer C.free(unsafe.Pointer(cName))
 	result = CPLErr(C.GDALDeleteDataset(driver.cValue, cName))
-	return
-}
-
-func (d GDALDriver) DeleteDataset(filename string) (err error) {
-	err = cplErr(gdalDeleteDataset(d, filename))
 	return
 }
 
@@ -804,11 +560,6 @@ func gdalRenameDataset(driver GDALDriver, newName, oldName string) (result CPLEr
 	return
 }
 
-func (d GDALDriver) RenameDataset(newName, oldName string) (err error) {
-	err = cplErr(gdalRenameDataset(d, newName, oldName))
-	return
-}
-
 func gdalCopyDatasetFiles(driver GDALDriver, newName, oldName string) (result CPLErr) {
 	cNew := C.CString(newName)
 	defer C.free(unsafe.Pointer(cNew))
@@ -818,19 +569,9 @@ func gdalCopyDatasetFiles(driver GDALDriver, newName, oldName string) (result CP
 	return
 }
 
-func (d GDALDriver) CopyDatasetFiles(newName, oldName string) (err error) {
-	err = cplErr(gdalCopyDatasetFiles(d, newName, oldName))
-	return
-}
-
 func gdalValidateCreationOptions(driver GDALDriver, options CSLConstList) (result bool) {
 	opts := options.cValue
 	result = C.GDALValidateCreationOptions(driver.cValue, opts) != 0
-	return
-}
-
-func (d GDALDriver) ValidateCreationOptions(options CSLConstList) (result bool) {
-	result = gdalValidateCreationOptions(d, options)
 	return
 }
 
@@ -845,20 +586,10 @@ func gdalGetOutputDriversForDatasetName(destFilename string, flagRasterVector in
 	return
 }
 
-func GDALGetOutputDriversForDatasetName(destFilename string, flagRasterVector int, singleMatch, emitWarning bool) (result CSLConstList) {
-	result = gdalGetOutputDriversForDatasetName(destFilename, flagRasterVector, singleMatch, emitWarning)
-	return
-}
-
 func gdalDriverHasOpenOption(driver GDALDriver, openOptionName string) (result bool) {
 	cName := C.CString(openOptionName)
 	defer C.free(unsafe.Pointer(cName))
 	result = bool(C.GDALDriverHasOpenOption(driver.cValue, cName))
-	return
-}
-
-func (d GDALDriver) HasOpenOption(openOptionName string) (result bool) {
-	result = gdalDriverHasOpenOption(d, openOptionName)
 	return
 }
 
@@ -869,18 +600,8 @@ func gdalGetDriverShortName(driver GDALDriver) (result string) {
 	return
 }
 
-func (d GDALDriver) GetShortName() (result string) {
-	result = gdalGetDriverShortName(d)
-	return
-}
-
 func gdalGetDriverLongName(driver GDALDriver) (result string) {
 	result = C.GoString(C.GDALGetDriverLongName(driver.cValue))
-	return
-}
-
-func (d GDALDriver) GetLongName() (result string) {
-	result = gdalGetDriverLongName(d)
 	return
 }
 
@@ -889,18 +610,8 @@ func gdalGetDriverHelpTopic(driver GDALDriver) (result string) {
 	return
 }
 
-func (d GDALDriver) GetHelpTopic() (result string) {
-	result = gdalGetDriverHelpTopic(d)
-	return
-}
-
 func gdalGetDriverCreationOptionList(driver GDALDriver) (result string) {
 	result = C.GoString(C.GDALGetDriverCreationOptionList(driver.cValue))
-	return
-}
-
-func (d GDALDriver) GetCreationOptionList() (result string) {
-	result = gdalGetDriverCreationOptionList(d)
 	return
 }
 
@@ -930,19 +641,8 @@ func gdalInitGCPs(count int, gcps GDALGCPs) {
 	C.GDALInitGCPs(C.int(count), gcps.cPtr())
 }
 
-// GDALInitGCPs allocates and initializes a list of count Ground Control Points.
-func GDALInitGCPs(count int) (result GDALGCPs) {
-	result = make(GDALGCPs, count)
-	gdalInitGCPs(count, result)
-	return
-}
-
 func gdalDeinitGCPs(count int, gcps GDALGCPs) {
 	C.GDALDeinitGCPs(C.int(count), gcps.cPtr())
-}
-
-func (g GDALGCPs) Deinit() {
-	gdalDeinitGCPs(len(g), g)
 }
 
 func gdalDuplicateGCPs(count int, gcps GDALGCPs) (result GDALGCPs) {
@@ -954,11 +654,6 @@ func gdalDuplicateGCPs(count int, gcps GDALGCPs) (result GDALGCPs) {
 	return
 }
 
-func (g GDALGCPs) Duplicate() (result GDALGCPs) {
-	result = gdalDuplicateGCPs(len(g), g)
-	return
-}
-
 func gdalGCPsToGeoTransform(count int, gcps GDALGCPs, geoTransform *[6]float64, approxOK int) int {
 	var gt [6]C.double
 	r := C.GDALGCPsToGeoTransform(C.int(count), gcps.cPtr(), &gt[0], C.int(approxOK))
@@ -966,11 +661,6 @@ func gdalGCPsToGeoTransform(count int, gcps GDALGCPs, geoTransform *[6]float64, 
 		geoTransform[i] = float64(gt[i])
 	}
 	return int(r)
-}
-
-func (g GDALGCPs) ToGeoTransform(approxOK int) (geoTransform [6]float64, ok bool) {
-	ok = gdalGCPsToGeoTransform(len(g), g, &geoTransform, approxOK) != 0
-	return
 }
 
 func gdalInvGeoTransform(geoTransform [6]float64, result *[6]float64) int {
@@ -985,11 +675,6 @@ func gdalInvGeoTransform(geoTransform [6]float64, result *[6]float64) int {
 	return int(r)
 }
 
-func GDALInvGeoTransform(geoTransform [6]float64) (result [6]float64, ok bool) {
-	ok = gdalInvGeoTransform(geoTransform, &result) != 0
-	return
-}
-
 func gdalApplyGeoTransform(geoTransform [6]float64, pixel, line float64, geoX, geoY *float64) {
 	var gt [6]C.double
 	for i, v := range geoTransform {
@@ -999,11 +684,6 @@ func gdalApplyGeoTransform(geoTransform [6]float64, pixel, line float64, geoX, g
 	C.GDALApplyGeoTransform(&gt[0], C.double(pixel), C.double(line), &x, &y)
 	*geoX = float64(x)
 	*geoY = float64(y)
-}
-
-func GDALApplyGeoTransform(geoTransform [6]float64, pixel, line float64) (geoX, geoY float64) {
-	gdalApplyGeoTransform(geoTransform, pixel, line, &geoX, &geoY)
-	return
 }
 
 func gdalComposeGeoTransforms(a, b [6]float64, result *[6]float64) {
@@ -1018,11 +698,6 @@ func gdalComposeGeoTransforms(a, b [6]float64, result *[6]float64) {
 	}
 }
 
-func GDALComposeGeoTransforms(a, b [6]float64) (result [6]float64) {
-	gdalComposeGeoTransforms(a, b, &result)
-	return
-}
-
 func gdalGCPsToHomography(count int, gcps GDALGCPs, homography *[9]float64) int {
 	var h [9]C.double
 	r := C.GDALGCPsToHomography(C.int(count), gcps.cPtr(), &h[0])
@@ -1030,11 +705,6 @@ func gdalGCPsToHomography(count int, gcps GDALGCPs, homography *[9]float64) int 
 		homography[i] = float64(h[i])
 	}
 	return int(r)
-}
-
-func (g GDALGCPs) ToHomography() (homography [9]float64, ok bool) {
-	ok = gdalGCPsToHomography(len(g), g, &homography) != 0
-	return
 }
 
 func gdalInvHomography(homography [9]float64, result *[9]float64) int {
@@ -1049,11 +719,6 @@ func gdalInvHomography(homography [9]float64, result *[9]float64) int {
 	return int(r)
 }
 
-func GDALInvHomography(homography [9]float64) (result [9]float64, ok bool) {
-	ok = gdalInvHomography(homography, &result) != 0
-	return
-}
-
 func gdalApplyHomography(homography [9]float64, x, y float64, outX, outY *float64) int {
 	var h [9]C.double
 	for i, v := range homography {
@@ -1066,11 +731,6 @@ func gdalApplyHomography(homography [9]float64, x, y float64, outX, outY *float6
 	return int(r)
 }
 
-func GDALApplyHomography(homography [9]float64, x, y float64) (outX, outY float64, ok bool) {
-	ok = gdalApplyHomography(homography, x, y, &outX, &outY) != 0
-	return
-}
-
 func gdalComposeHomographies(a, b [9]float64, result *[9]float64) {
 	var ca, cb, out [9]C.double
 	for i := range a {
@@ -1081,11 +741,6 @@ func gdalComposeHomographies(a, b [9]float64, result *[9]float64) {
 	for i := range out {
 		result[i] = float64(out[i])
 	}
-}
-
-func GDALComposeHomographies(a, b [9]float64) (result [9]float64) {
-	gdalComposeHomographies(a, b, &result)
-	return
 }
 
 // /* ==================================================================== */
@@ -1101,20 +756,10 @@ func gdalGetMetadataDomainList(object GDALMajorObject) (result CSLConstList) {
 	return
 }
 
-func (o GDALMajorObject) GetMetadataDomainList() (result CSLConstList) {
-	result = gdalGetMetadataDomainList(o)
-	return
-}
-
 func gdalGetMetadata(object GDALMajorObject, domain string) (result CSLConstList) {
 	cDomain := C.CString(domain)
 	defer C.free(unsafe.Pointer(cDomain))
 	result = cslConstList(C.GDALGetMetadata(object.cValue, cDomain))
-	return
-}
-
-func (o GDALMajorObject) GetMetadata(domain string) (result CSLConstList) {
-	result = gdalGetMetadata(o, domain)
 	return
 }
 
@@ -1126,22 +771,12 @@ func gdalSetMetadata(object GDALMajorObject, metadata CSLConstList, domain strin
 	return
 }
 
-func (o GDALMajorObject) SetMetadata(metadata CSLConstList, domain string) (err error) {
-	err = cplErr(gdalSetMetadata(o, metadata, domain))
-	return
-}
-
 func gdalGetMetadataItem(object GDALMajorObject, name, domain string) (result string) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	cDomain := C.CString(domain)
 	defer C.free(unsafe.Pointer(cDomain))
 	result = C.GoString(C.GDALGetMetadataItem(object.cValue, cName, cDomain))
-	return
-}
-
-func (o GDALMajorObject) GetMetadataItem(name, domain string) (result string) {
-	result = gdalGetMetadataItem(o, name, domain)
 	return
 }
 
@@ -1156,18 +791,8 @@ func gdalSetMetadataItem(object GDALMajorObject, name, value, domain string) (re
 	return
 }
 
-func (o GDALMajorObject) SetMetadataItem(name, value, domain string) (err error) {
-	err = cplErr(gdalSetMetadataItem(o, name, value, domain))
-	return
-}
-
 func gdalGetDescription(object GDALMajorObject) (result string) {
 	result = C.GoString(C.GDALGetDescription(object.cValue))
-	return
-}
-
-func (o GDALMajorObject) GetDescription() (result string) {
-	result = gdalGetDescription(o)
 	return
 }
 
@@ -1177,24 +802,15 @@ func gdalSetDescription(object GDALMajorObject, description string) {
 	C.GDALSetDescription(object.cValue, cDesc)
 }
 
-func (o GDALMajorObject) SetDescription(description string) {
-	gdalSetDescription(o, description)
-}
-
 // /* ==================================================================== */
 // /*      GDALDataset class ... normally this represents one file.        */
 // /* ==================================================================== */
 
 // Name of driver metadata item for layer creation option list.
-var GDALDSLayerCreationOptionList = C.GoString(C._GDAL_DS_LAYER_CREATIONOPTIONLIST)
+var GDALDSLayerCreationOptionList = C.GoString(C._GDAL_DS_LAYER_CREATIONOPTIONLIST())
 
 func gdalGetDatasetDriver(dataset GDALDataset) (result GDALDriver) {
 	result = GDALDriver{cValue: C.GDALGetDatasetDriver(dataset.cValue)}
-	return
-}
-
-func (ds GDALDataset) GetDriver() (result GDALDriver) {
-	result = gdalGetDatasetDriver(ds)
 	return
 }
 
@@ -1207,26 +823,12 @@ func gdalGetFileList(dataset GDALDataset) (result CSLConstList) {
 	return
 }
 
-func (ds GDALDataset) GetFileList() (result CSLConstList) {
-	result = gdalGetFileList(ds)
-	return
-}
-
 func gdalDatasetMarkSuppressOnClose(dataset GDALDataset) {
 	C.GDALDatasetMarkSuppressOnClose(dataset.cValue)
 }
 
-func (ds GDALDataset) MarkSuppressOnClose() {
-	gdalDatasetMarkSuppressOnClose(ds)
-}
-
 func gdalClose(dataset GDALDataset) (result CPLErr) {
 	result = CPLErr(C.GDALClose(dataset.cValue))
-	return
-}
-
-func (ds GDALDataset) Close() (err error) {
-	err = cplErr(gdalClose(ds))
 	return
 }
 
@@ -1235,18 +837,8 @@ func gdalDatasetRunCloseWithoutDestroying(dataset GDALDataset) (result CPLErr) {
 	return
 }
 
-func (ds GDALDataset) RunCloseWithoutDestroying() (err error) {
-	err = cplErr(gdalDatasetRunCloseWithoutDestroying(ds))
-	return
-}
-
 func gdalGetRasterXSize(dataset GDALDataset) (result int) {
 	result = int(C.GDALGetRasterXSize(dataset.cValue))
-	return
-}
-
-func (ds GDALDataset) GetRasterXSize() (result int) {
-	result = gdalGetRasterXSize(ds)
 	return
 }
 
@@ -1255,31 +847,13 @@ func gdalGetRasterYSize(dataset GDALDataset) (result int) {
 	return
 }
 
-func (ds GDALDataset) GetRasterYSize() (result int) {
-	result = gdalGetRasterYSize(ds)
-	return
-}
-
 func gdalGetRasterCount(dataset GDALDataset) (result int) {
 	result = int(C.GDALGetRasterCount(dataset.cValue))
 	return
 }
 
-func (ds GDALDataset) GetRasterCount() (result int) {
-	result = gdalGetRasterCount(ds)
-	return
-}
-
 func gdalGetRasterBand(dataset GDALDataset, band int) (result GDALRasterBand) {
 	result = GDALRasterBand{cValue: C.GDALGetRasterBand(dataset.cValue, C.int(band))}
-	return
-}
-
-func (ds GDALDataset) GetRasterBand(band int) (result GDALRasterBand, err error) {
-	result = gdalGetRasterBand(ds, band)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -1289,22 +863,9 @@ func gdalDatasetIsThreadSafe(dataset GDALDataset, scopeFlags int, options CSLCon
 	return
 }
 
-func (ds GDALDataset) IsThreadSafe(scopeFlags int, options CSLConstList) (result bool) {
-	result = gdalDatasetIsThreadSafe(ds, scopeFlags, options)
-	return
-}
-
 func gdalGetThreadSafeDataset(dataset GDALDataset, scopeFlags int, options CSLConstList) (result GDALDataset) {
 	opts := options.cValue
 	result = GDALDataset{cValue: C.GDALGetThreadSafeDataset(dataset.cValue, C.int(scopeFlags), opts)}
-	return
-}
-
-func (ds GDALDataset) GetThreadSafeDataset(scopeFlags int, options CSLConstList) (result GDALDataset, err error) {
-	result = gdalGetThreadSafeDataset(ds, scopeFlags, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -1314,22 +875,9 @@ func gdalAddBand(dataset GDALDataset, dataType GDALDataType, options CSLConstLis
 	return
 }
 
-func (ds GDALDataset) AddBand(dataType GDALDataType, options CSLConstList) (err error) {
-	err = cplErr(gdalAddBand(ds, dataType, options))
-	return
-}
-
 func gdalBeginAsyncReader(dataset GDALDataset, xOff, yOff, xSize, ySize int, buf unsafe.Pointer, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandMap []int, pixelSpace, lineSpace, bandSpace int, options CSLConstList) (result GDALAsyncReader) {
 	opts := options.cValue
 	result = GDALAsyncReader{cValue: C.GDALBeginAsyncReader(dataset.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), buf, C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(bandCount), cInts(bandMap), C.int(pixelSpace), C.int(lineSpace), C.int(bandSpace), opts)}
-	return
-}
-
-func (ds GDALDataset) BeginAsyncReader(xOff, yOff, xSize, ySize int, buf []byte, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandMap []int, pixelSpace, lineSpace, bandSpace int, options CSLConstList) (result GDALAsyncReader, err error) {
-	result = gdalBeginAsyncReader(ds, xOff, yOff, xSize, ySize, cBytes(buf), bufXSize, bufYSize, bufType, bandCount, bandMap, pixelSpace, lineSpace, bandSpace, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -1337,27 +885,13 @@ func gdalEndAsyncReader(dataset GDALDataset, reader GDALAsyncReader) {
 	C.GDALEndAsyncReader(dataset.cValue, reader.cValue)
 }
 
-func (ds GDALDataset) EndAsyncReader(reader GDALAsyncReader) {
-	gdalEndAsyncReader(ds, reader)
-}
-
 func gdalDatasetRasterIO(dataset GDALDataset, rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer unsafe.Pointer, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList []int, pixelSpace, lineSpace, bandSpace int) (result CPLErr) {
 	result = CPLErr(C.GDALDatasetRasterIO(dataset.cValue, C.GDALRWFlag(rwFlag), C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), buffer, C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(bandCount), cInts(bandList), C.int(pixelSpace), C.int(lineSpace), C.int(bandSpace)))
 	return
 }
 
-func (ds GDALDataset) RasterIO(rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer []byte, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList []int, pixelSpace, lineSpace, bandSpace int) (err error) {
-	err = cplErr(gdalDatasetRasterIO(ds, rwFlag, xOff, yOff, xSize, ySize, cBytes(buffer), bufXSize, bufYSize, bufType, bandCount, bandList, pixelSpace, lineSpace, bandSpace))
-	return
-}
-
 func gdalDatasetRasterIOEx(dataset GDALDataset, rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer unsafe.Pointer, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList []int, pixelSpace, lineSpace, bandSpace int64, extraArg GDALRasterIOExtraArg) (result CPLErr) {
 	result = CPLErr(C.GDALDatasetRasterIOEx(dataset.cValue, C.GDALRWFlag(rwFlag), C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), buffer, C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.int(bandCount), cInts(bandList), C.GSpacing(pixelSpace), C.GSpacing(lineSpace), C.GSpacing(bandSpace), extraArg.cValue))
-	return
-}
-
-func (ds GDALDataset) RasterIOEx(rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer []byte, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList []int, pixelSpace, lineSpace, bandSpace int64, extraArg GDALRasterIOExtraArg) (err error) {
-	err = cplErr(gdalDatasetRasterIOEx(ds, rwFlag, xOff, yOff, xSize, ySize, cBytes(buffer), bufXSize, bufYSize, bufType, bandCount, bandList, pixelSpace, lineSpace, bandSpace, extraArg))
 	return
 }
 
@@ -1367,22 +901,12 @@ func gdalDatasetAdviseRead(dataset GDALDataset, xOff, yOff, xSize, ySize, bufXSi
 	return
 }
 
-func (ds GDALDataset) AdviseRead(xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, bandCount int, bandList []int, options CSLConstList) (err error) {
-	err = cplErr(gdalDatasetAdviseRead(ds, xOff, yOff, xSize, ySize, bufXSize, bufYSize, bufType, bandCount, bandList, options))
-	return
-}
-
 func gdalDatasetGetCompressionFormats(dataset GDALDataset, xOff, yOff, xSize, ySize, bandCount int, bandList []int) (result CSLConstList) {
 	raw := C.GDALDatasetGetCompressionFormats(dataset.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), C.int(bandCount), cInts(bandList))
 	if raw == nil {
 		return
 	}
 	result = cslConstList(raw)
-	return
-}
-
-func (ds GDALDataset) GetCompressionFormats(xOff, yOff, xSize, ySize, bandCount int, bandList []int) (result CSLConstList) {
-	result = gdalDatasetGetCompressionFormats(ds, xOff, yOff, xSize, ySize, bandCount, bandList)
 	return
 }
 
@@ -1408,37 +932,13 @@ func gdalDatasetReadCompressedData(dataset GDALDataset, format string, xOff, yOf
 	return
 }
 
-func (ds GDALDataset) ReadCompressedData(format string, xOff, yOff, xSize, ySize, bandCount int, bandList []int) (buffer []byte, detailedFormat string, err error) {
-	var cBuffer unsafe.Pointer
-	var size int
-	err = cplErr(gdalDatasetReadCompressedData(ds, format, xOff, yOff, xSize, ySize, bandCount, bandList, &cBuffer, &size, &detailedFormat))
-	if err != nil {
-		return
-	}
-	if cBuffer != nil {
-		buffer = C.GoBytes(cBuffer, C.int(size))
-		vsiFree(cBuffer)
-	}
-	return
-}
-
 func gdalGetProjectionRef(dataset GDALDataset) (result string) {
 	result = C.GoString(C.GDALGetProjectionRef(dataset.cValue))
 	return
 }
 
-func (ds GDALDataset) GetProjectionRef() (result string) {
-	result = gdalGetProjectionRef(ds)
-	return
-}
-
 func gdalGetSpatialRef(dataset GDALDataset) (result OGRSpatialReference) {
 	result = OGRSpatialReference{cValue: C.GDALGetSpatialRef(dataset.cValue)}
-	return
-}
-
-func (ds GDALDataset) GetSpatialRef() (result OGRSpatialReference) {
-	result = gdalGetSpatialRef(ds)
 	return
 }
 
@@ -1449,18 +949,8 @@ func gdalSetProjection(dataset GDALDataset, projection string) (result CPLErr) {
 	return
 }
 
-func (ds GDALDataset) SetProjection(projection string) (err error) {
-	err = cplErr(gdalSetProjection(ds, projection))
-	return
-}
-
 func gdalSetSpatialRef(dataset GDALDataset, srs OGRSpatialReference) (result CPLErr) {
 	result = CPLErr(C.GDALSetSpatialRef(dataset.cValue, srs.cValue))
-	return
-}
-
-func (ds GDALDataset) SetSpatialRef(srs OGRSpatialReference) (err error) {
-	err = cplErr(gdalSetSpatialRef(ds, srs))
 	return
 }
 
@@ -1473,11 +963,6 @@ func gdalGetGeoTransform(dataset GDALDataset, geoTransform *[6]float64) (result 
 	return
 }
 
-func (ds GDALDataset) GetGeoTransform() (geoTransform [6]float64, err error) {
-	err = cplErr(gdalGetGeoTransform(ds, &geoTransform))
-	return
-}
-
 func gdalSetGeoTransform(dataset GDALDataset, geoTransform [6]float64) (result CPLErr) {
 	var gt [6]C.double
 	for i, v := range geoTransform {
@@ -1487,30 +972,13 @@ func gdalSetGeoTransform(dataset GDALDataset, geoTransform [6]float64) (result C
 	return
 }
 
-func (ds GDALDataset) SetGeoTransform(geoTransform [6]float64) (err error) {
-	err = cplErr(gdalSetGeoTransform(ds, geoTransform))
-	return
-}
-
 func gdalGetExtent(dataset GDALDataset, envelope OGREnvelope, crs OGRSpatialReference) (result CPLErr) {
 	result = CPLErr(C.GDALGetExtent(dataset.cValue, envelope.cValue, crs.cValue))
 	return
 }
 
-func (ds GDALDataset) GetExtent(crs OGRSpatialReference) (envelope OGREnvelope, err error) {
-	envelope = OGREnvelope{cValue: new(C.OGREnvelope)}
-	err = cplErr(gdalGetExtent(ds, envelope, crs))
-	return
-}
-
 func gdalGetExtentWGS84LongLat(dataset GDALDataset, envelope OGREnvelope) (result CPLErr) {
 	result = CPLErr(C.GDALGetExtentWGS84LongLat(dataset.cValue, envelope.cValue))
-	return
-}
-
-func (ds GDALDataset) GetExtentWGS84LongLat() (envelope OGREnvelope, err error) {
-	envelope = OGREnvelope{cValue: new(C.OGREnvelope)}
-	err = cplErr(gdalGetExtentWGS84LongLat(ds, envelope))
 	return
 }
 
@@ -1523,18 +991,8 @@ func gdalDatasetGeolocationToPixelLine(dataset GDALDataset, geolocX, geolocY flo
 	return
 }
 
-func (ds GDALDataset) GeolocationToPixelLine(geolocX, geolocY float64, srs OGRSpatialReference, transformerOptions CSLConstList) (pixel, line float64, err error) {
-	err = cplErr(gdalDatasetGeolocationToPixelLine(ds, geolocX, geolocY, srs, &pixel, &line, transformerOptions))
-	return
-}
-
 func gdalGetGCPCount(dataset GDALDataset) (result int) {
 	result = int(C.GDALGetGCPCount(dataset.cValue))
-	return
-}
-
-func (ds GDALDataset) GetGCPCount() (result int) {
-	result = gdalGetGCPCount(ds)
 	return
 }
 
@@ -1543,18 +1001,8 @@ func gdalGetGCPProjection(dataset GDALDataset) (result string) {
 	return
 }
 
-func (ds GDALDataset) GetGCPProjection() (result string) {
-	result = gdalGetGCPProjection(ds)
-	return
-}
-
 func gdalGetGCPSpatialRef(dataset GDALDataset) (result OGRSpatialReference) {
 	result = OGRSpatialReference{cValue: C.GDALGetGCPSpatialRef(dataset.cValue)}
-	return
-}
-
-func (ds GDALDataset) GetGCPSpatialRef() (result OGRSpatialReference) {
-	result = gdalGetGCPSpatialRef(ds)
 	return
 }
 
@@ -1568,11 +1016,6 @@ func gdalGetGCPs(dataset GDALDataset) (result GDALGCPs) {
 	return
 }
 
-func (ds GDALDataset) GetGCPs() (result GDALGCPs) {
-	result = gdalGetGCPs(ds)
-	return
-}
-
 func gdalSetGCPs(dataset GDALDataset, count int, gcps GDALGCPs, projection string) (result CPLErr) {
 	cProj := C.CString(projection)
 	defer C.free(unsafe.Pointer(cProj))
@@ -1580,18 +1023,8 @@ func gdalSetGCPs(dataset GDALDataset, count int, gcps GDALGCPs, projection strin
 	return
 }
 
-func (ds GDALDataset) SetGCPs(gcps GDALGCPs, projection string) (err error) {
-	err = cplErr(gdalSetGCPs(ds, len(gcps), gcps, projection))
-	return
-}
-
 func gdalSetGCPs2(dataset GDALDataset, count int, gcps GDALGCPs, srs OGRSpatialReference) (result CPLErr) {
 	result = CPLErr(C.GDALSetGCPs2(dataset.cValue, C.int(count), gcps.cPtr(), srs.cValue))
-	return
-}
-
-func (ds GDALDataset) SetGCPs2(gcps GDALGCPs, srs OGRSpatialReference) (err error) {
-	err = cplErr(gdalSetGCPs2(ds, len(gcps), gcps, srs))
 	return
 }
 
@@ -1601,17 +1034,8 @@ func gdalGetInternalHandle(dataset GDALDataset, request string) unsafe.Pointer {
 	return C.GDALGetInternalHandle(dataset.cValue, cRequest)
 }
 
-func (ds GDALDataset) GetInternalHandle(request string) unsafe.Pointer {
-	return gdalGetInternalHandle(ds, request)
-}
-
 func gdalReferenceDataset(dataset GDALDataset) (result int) {
 	result = int(C.GDALReferenceDataset(dataset.cValue))
-	return
-}
-
-func (ds GDALDataset) Reference() (result int) {
-	result = gdalReferenceDataset(ds)
 	return
 }
 
@@ -1620,18 +1044,8 @@ func gdalDereferenceDataset(dataset GDALDataset) (result int) {
 	return
 }
 
-func (ds GDALDataset) Dereference() (result int) {
-	result = gdalDereferenceDataset(ds)
-	return
-}
-
 func gdalReleaseDataset(dataset GDALDataset) (result int) {
 	result = int(C.GDALReleaseDataset(dataset.cValue))
-	return
-}
-
-func (ds GDALDataset) Release() (result int) {
-	result = gdalReleaseDataset(ds)
 	return
 }
 
@@ -1642,21 +1056,11 @@ func gdalBuildOverviews(dataset GDALDataset, resampling string, nOverviews int, 
 	return
 }
 
-func (ds GDALDataset) BuildOverviews(resampling string, overviewList, bandList []int, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
-	err = cplErr(gdalBuildOverviews(ds, resampling, len(overviewList), overviewList, len(bandList), bandList, progress, progressData))
-	return
-}
-
 func gdalBuildOverviewsEx(dataset GDALDataset, resampling string, nOverviews int, overviewList []int, bandCount int, bandList []int, progress GDALProgressFunc, progressData unsafe.Pointer, options CSLConstList) (result CPLErr) {
 	cResampling := C.CString(resampling)
 	defer C.free(unsafe.Pointer(cResampling))
 	opts := options.cValue
 	result = CPLErr(C.GDALBuildOverviewsEx(dataset.cValue, cResampling, C.int(nOverviews), cInts(overviewList), C.int(bandCount), cInts(bandList), progress.cValue, progressData, opts))
-	return
-}
-
-func (ds GDALDataset) BuildOverviewsEx(resampling string, overviewList, bandList []int, progress GDALProgressFunc, progressData unsafe.Pointer, options CSLConstList) (err error) {
-	err = cplErr(gdalBuildOverviewsEx(ds, resampling, len(overviewList), overviewList, len(bandList), bandList, progress, progressData, options))
 	return
 }
 
@@ -1672,28 +1076,8 @@ func gdalGetOpenDatasets(datasets *GDALDatasets, count *int) {
 	}
 }
 
-func GDALGetOpenDatasets() (result []GDALDataset) {
-	var datasets GDALDatasets
-	var count int
-	gdalGetOpenDatasets(&datasets, &count)
-	if datasets.cValue == nil || count == 0 {
-		return
-	}
-	src := unsafe.Slice(datasets.cValue, count)
-	result = make([]GDALDataset, count)
-	for i := range result {
-		result[i] = GDALDataset{cValue: src[i]}
-	}
-	return
-}
-
 func gdalGetAccess(dataset GDALDataset) (result int) {
 	result = int(C.GDALGetAccess(dataset.cValue))
-	return
-}
-
-func (ds GDALDataset) GetAccess() (result int) {
-	result = gdalGetAccess(ds)
 	return
 }
 
@@ -1702,28 +1086,13 @@ func gdalFlushCache(dataset GDALDataset) (result CPLErr) {
 	return
 }
 
-func (ds GDALDataset) FlushCache() (err error) {
-	err = cplErr(gdalFlushCache(ds))
-	return
-}
-
 func gdalDropCache(dataset GDALDataset) (result CPLErr) {
 	result = CPLErr(C.GDALDropCache(dataset.cValue))
 	return
 }
 
-func (ds GDALDataset) DropCache() (err error) {
-	err = cplErr(gdalDropCache(ds))
-	return
-}
-
 func gdalCreateDatasetMaskBand(dataset GDALDataset, flags int) (result CPLErr) {
 	result = CPLErr(C.GDALCreateDatasetMaskBand(dataset.cValue, C.int(flags)))
-	return
-}
-
-func (ds GDALDataset) CreateMaskBand(flags int) (err error) {
-	err = cplErr(gdalCreateDatasetMaskBand(ds, flags))
 	return
 }
 
@@ -1733,19 +1102,9 @@ func gdalDatasetCopyWholeRaster(srcDataset, dstDataset GDALDataset, options CSLC
 	return
 }
 
-func (src GDALDataset) CopyWholeRaster(dst GDALDataset, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
-	err = cplErr(gdalDatasetCopyWholeRaster(src, dst, options, progress, progressData))
-	return
-}
-
 func gdalRasterBandCopyWholeRaster(srcBand, dstBand GDALRasterBand, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
 	opts := options.cValue
 	result = CPLErr(C.GDALRasterBandCopyWholeRaster(srcBand.cValue, dstBand.cValue, opts, progress.cValue, progressData))
-	return
-}
-
-func (src GDALRasterBand) CopyWholeRaster(dst GDALRasterBand, options CSLConstList, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
-	err = cplErr(gdalRasterBandCopyWholeRaster(src, dst, options, progress, progressData))
 	return
 }
 
@@ -1753,11 +1112,6 @@ func gdalRegenerateOverviews(srcBand GDALRasterBand, overviewCount int, overview
 	cResampling := C.CString(resampling)
 	defer C.free(unsafe.Pointer(cResampling))
 	result = CPLErr(C.GDALRegenerateOverviews(srcBand.cValue, C.int(overviewCount), overviewBands.cPtr(), cResampling, progress.cValue, progressData))
-	return
-}
-
-func (src GDALRasterBand) RegenerateOverviews(overviewBands GDALRasterBands, resampling string, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
-	err = cplErr(gdalRegenerateOverviews(src, len(overviewBands), overviewBands, resampling, progress, progressData))
 	return
 }
 
@@ -1769,18 +1123,8 @@ func gdalRegenerateOverviewsEx(srcBand GDALRasterBand, overviewCount int, overvi
 	return
 }
 
-func (src GDALRasterBand) RegenerateOverviewsEx(overviewBands GDALRasterBands, resampling string, progress GDALProgressFunc, progressData unsafe.Pointer, options CSLConstList) (err error) {
-	err = cplErr(gdalRegenerateOverviewsEx(src, len(overviewBands), overviewBands, resampling, progress, progressData, options))
-	return
-}
-
 func gdalDatasetGetLayerCount(dataset GDALDataset) (result int) {
 	result = int(C.GDALDatasetGetLayerCount(dataset.cValue))
-	return
-}
-
-func (ds GDALDataset) GetLayerCount() (result int) {
-	result = gdalDatasetGetLayerCount(ds)
 	return
 }
 
@@ -1789,25 +1133,9 @@ func gdalDatasetGetLayer(dataset GDALDataset, index int) (result OGRLayer) {
 	return
 }
 
-func (ds GDALDataset) GetLayer(index int) (result OGRLayer, err error) {
-	result = gdalDatasetGetLayer(ds, index)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 // OGR_L_GetDataset is defined here to avoid a circular dependency with ogr_api.h.
 func ogrLGetDataset(layer OGRLayer) (result GDALDataset) {
 	result = GDALDataset{cValue: C.OGR_L_GetDataset(layer.cValue)}
-	return
-}
-
-func (l OGRLayer) GetDataset() (result GDALDataset, err error) {
-	result = ogrLGetDataset(l)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -1818,31 +1146,13 @@ func gdalDatasetGetLayerByName(dataset GDALDataset, name string) (result OGRLaye
 	return
 }
 
-func (ds GDALDataset) GetLayerByName(name string) (result OGRLayer, err error) {
-	result = gdalDatasetGetLayerByName(ds, name)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalDatasetIsLayerPrivate(dataset GDALDataset, index int) (result bool) {
 	result = C.GDALDatasetIsLayerPrivate(dataset.cValue, C.int(index)) != 0
 	return
 }
 
-func (ds GDALDataset) IsLayerPrivate(index int) (result bool) {
-	result = gdalDatasetIsLayerPrivate(ds, index)
-	return
-}
-
 func gdalDatasetDeleteLayer(dataset GDALDataset, index int) (result OGRErr) {
 	result = OGRErr(C.GDALDatasetDeleteLayer(dataset.cValue, C.int(index)))
-	return
-}
-
-func (ds GDALDataset) DeleteLayer(index int) (err error) {
-	err = ogrError(gdalDatasetDeleteLayer(ds, index))
 	return
 }
 
@@ -1854,27 +1164,11 @@ func gdalDatasetCreateLayer(dataset GDALDataset, name string, srs OGRSpatialRefe
 	return
 }
 
-func (ds GDALDataset) CreateLayer(name string, srs OGRSpatialReference, geomType OGRwkbGeometryType, options CSLConstList) (result OGRLayer, err error) {
-	result = gdalDatasetCreateLayer(ds, name, srs, geomType, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalDatasetCreateLayerFromGeomFieldDefn(dataset GDALDataset, name string, geomFieldDefn OGRGeomFieldDefn, options CSLConstList) (result OGRLayer) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	opts := options.cValue
 	result = OGRLayer{cValue: C.GDALDatasetCreateLayerFromGeomFieldDefn(dataset.cValue, cName, geomFieldDefn.cValue, opts)}
-	return
-}
-
-func (ds GDALDataset) CreateLayerFromGeomFieldDefn(name string, geomFieldDefn OGRGeomFieldDefn, options CSLConstList) (result OGRLayer, err error) {
-	result = gdalDatasetCreateLayerFromGeomFieldDefn(ds, name, geomFieldDefn, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -1886,20 +1180,8 @@ func gdalDatasetCopyLayer(dataset GDALDataset, srcLayer OGRLayer, newName string
 	return
 }
 
-func (ds GDALDataset) CopyLayer(srcLayer OGRLayer, newName string, options CSLConstList) (result OGRLayer, err error) {
-	result = gdalDatasetCopyLayer(ds, srcLayer, newName, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalDatasetResetReading(dataset GDALDataset) {
 	C.GDALDatasetResetReading(dataset.cValue)
-}
-
-func (ds GDALDataset) ResetReading() {
-	gdalDatasetResetReading(ds)
 }
 
 func gdalDatasetGetNextFeature(dataset GDALDataset, belongingLayer *OGRLayer, progressPct *float64, progress GDALProgressFunc, progressData unsafe.Pointer) (result OGRFeature) {
@@ -1915,23 +1197,10 @@ func gdalDatasetGetNextFeature(dataset GDALDataset, belongingLayer *OGRLayer, pr
 	return
 }
 
-func (ds GDALDataset) GetNextFeature(progress GDALProgressFunc, progressData unsafe.Pointer) (feature OGRFeature, belongingLayer OGRLayer, progressPct float64, err error) {
-	feature = gdalDatasetGetNextFeature(ds, &belongingLayer, &progressPct, progress, progressData)
-	if feature.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalDatasetTestCapability(dataset GDALDataset, capability string) (result bool) {
 	cCapability := C.CString(capability)
 	defer C.free(unsafe.Pointer(cCapability))
 	result = C.GDALDatasetTestCapability(dataset.cValue, cCapability) != 0
-	return
-}
-
-func (ds GDALDataset) TestCapability(capability string) (result bool) {
-	result = gdalDatasetTestCapability(ds, capability)
 	return
 }
 
@@ -1944,21 +1213,8 @@ func gdalDatasetExecuteSQL(dataset GDALDataset, statement string, spatialFilter 
 	return
 }
 
-func (ds GDALDataset) ExecuteSQL(statement string, spatialFilter OGRGeometry, dialect string) (result OGRLayer, err error) {
-	result = gdalDatasetExecuteSQL(ds, statement, spatialFilter, dialect)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalDatasetAbortSQL(dataset GDALDataset) (result OGRErr) {
 	result = OGRErr(C.GDALDatasetAbortSQL(dataset.cValue))
-	return
-}
-
-func (ds GDALDataset) AbortSQL() (err error) {
-	err = ogrError(gdalDatasetAbortSQL(ds))
 	return
 }
 
@@ -1966,20 +1222,8 @@ func gdalDatasetReleaseResultSet(dataset GDALDataset, layer OGRLayer) {
 	C.GDALDatasetReleaseResultSet(dataset.cValue, layer.cValue)
 }
 
-func (ds GDALDataset) ReleaseResultSet(layer OGRLayer) {
-	gdalDatasetReleaseResultSet(ds, layer)
-}
-
 func gdalDatasetGetStyleTable(dataset GDALDataset) (result OGRStyleTable) {
 	result = OGRStyleTable{cValue: C.GDALDatasetGetStyleTable(dataset.cValue)}
-	return
-}
-
-func (ds GDALDataset) GetStyleTable() (result OGRStyleTable, err error) {
-	result = gdalDatasetGetStyleTable(ds)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -1987,25 +1231,12 @@ func gdalDatasetSetStyleTableDirectly(dataset GDALDataset, styleTable OGRStyleTa
 	C.GDALDatasetSetStyleTableDirectly(dataset.cValue, styleTable.cValue)
 }
 
-func (ds GDALDataset) SetStyleTableDirectly(styleTable OGRStyleTable) {
-	gdalDatasetSetStyleTableDirectly(ds, styleTable)
-}
-
 func gdalDatasetSetStyleTable(dataset GDALDataset, styleTable OGRStyleTable) {
 	C.GDALDatasetSetStyleTable(dataset.cValue, styleTable.cValue)
 }
 
-func (ds GDALDataset) SetStyleTable(styleTable OGRStyleTable) {
-	gdalDatasetSetStyleTable(ds, styleTable)
-}
-
 func gdalDatasetStartTransaction(dataset GDALDataset, force int) (result OGRErr) {
 	result = OGRErr(C.GDALDatasetStartTransaction(dataset.cValue, C.int(force)))
-	return
-}
-
-func (ds GDALDataset) StartTransaction(force int) (err error) {
-	err = ogrError(gdalDatasetStartTransaction(ds, force))
 	return
 }
 
@@ -2014,18 +1245,8 @@ func gdalDatasetCommitTransaction(dataset GDALDataset) (result OGRErr) {
 	return
 }
 
-func (ds GDALDataset) CommitTransaction() (err error) {
-	err = ogrError(gdalDatasetCommitTransaction(ds))
-	return
-}
-
 func gdalDatasetRollbackTransaction(dataset GDALDataset) (result OGRErr) {
 	result = OGRErr(C.GDALDatasetRollbackTransaction(dataset.cValue))
-	return
-}
-
-func (ds GDALDataset) RollbackTransaction() (err error) {
-	err = ogrError(gdalDatasetRollbackTransaction(ds))
 	return
 }
 
@@ -2033,21 +1254,9 @@ func gdalDatasetClearStatistics(dataset GDALDataset) {
 	C.GDALDatasetClearStatistics(dataset.cValue)
 }
 
-func (ds GDALDataset) ClearStatistics() {
-	gdalDatasetClearStatistics(ds)
-}
-
 func gdalDatasetAsMDArray(dataset GDALDataset, options CSLConstList) (result GDALMDArray) {
 	opts := options.cValue
 	result = GDALMDArray{cValue: C.GDALDatasetAsMDArray(dataset.cValue, opts)}
-	return
-}
-
-func (ds GDALDataset) AsMDArray(options CSLConstList) (result GDALMDArray, err error) {
-	result = gdalDatasetAsMDArray(ds, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -2061,23 +1270,10 @@ func gdalDatasetGetFieldDomainNames(dataset GDALDataset, options CSLConstList) (
 	return
 }
 
-func (ds GDALDataset) GetFieldDomainNames(options CSLConstList) (result CSLConstList) {
-	result = gdalDatasetGetFieldDomainNames(ds, options)
-	return
-}
-
 func gdalDatasetGetFieldDomain(dataset GDALDataset, name string) (result OGRFieldDomain) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	result = OGRFieldDomain{cValue: C.GDALDatasetGetFieldDomain(dataset.cValue, cName)}
-	return
-}
-
-func (ds GDALDataset) GetFieldDomain(name string) (result OGRFieldDomain, err error) {
-	result = gdalDatasetGetFieldDomain(ds, name)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -2090,11 +1286,6 @@ func gdalDatasetAddFieldDomain(dataset GDALDataset, fieldDomain OGRFieldDomain, 
 		}
 		vsiFree(unsafe.Pointer(cReason))
 	}
-	return
-}
-
-func (ds GDALDataset) AddFieldDomain(fieldDomain OGRFieldDomain) (ok bool, failureReason string) {
-	ok = gdalDatasetAddFieldDomain(ds, fieldDomain, &failureReason)
 	return
 }
 
@@ -2112,11 +1303,6 @@ func gdalDatasetDeleteFieldDomain(dataset GDALDataset, name string, failureReaso
 	return
 }
 
-func (ds GDALDataset) DeleteFieldDomain(name string) (ok bool, failureReason string) {
-	ok = gdalDatasetDeleteFieldDomain(ds, name, &failureReason)
-	return
-}
-
 func gdalDatasetUpdateFieldDomain(dataset GDALDataset, fieldDomain OGRFieldDomain, failureReason *string) (result bool) {
 	var cReason *C.char
 	result = bool(C.GDALDatasetUpdateFieldDomain(dataset.cValue, fieldDomain.cValue, &cReason))
@@ -2126,11 +1312,6 @@ func gdalDatasetUpdateFieldDomain(dataset GDALDataset, fieldDomain OGRFieldDomai
 		}
 		vsiFree(unsafe.Pointer(cReason))
 	}
-	return
-}
-
-func (ds GDALDataset) UpdateFieldDomain(fieldDomain OGRFieldDomain) (ok bool, failureReason string) {
-	ok = gdalDatasetUpdateFieldDomain(ds, fieldDomain, &failureReason)
 	return
 }
 
@@ -2144,23 +1325,10 @@ func gdalDatasetGetRelationshipNames(dataset GDALDataset, options CSLConstList) 
 	return
 }
 
-func (ds GDALDataset) GetRelationshipNames(options CSLConstList) (result CSLConstList) {
-	result = gdalDatasetGetRelationshipNames(ds, options)
-	return
-}
-
 func gdalDatasetGetRelationship(dataset GDALDataset, name string) (result GDALRelationship) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	result = GDALRelationship{cValue: C.GDALDatasetGetRelationship(dataset.cValue, cName)}
-	return
-}
-
-func (ds GDALDataset) GetRelationship(name string) (result GDALRelationship, err error) {
-	result = gdalDatasetGetRelationship(ds, name)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -2173,11 +1341,6 @@ func gdalDatasetAddRelationship(dataset GDALDataset, relationship GDALRelationsh
 		}
 		vsiFree(unsafe.Pointer(cReason))
 	}
-	return
-}
-
-func (ds GDALDataset) AddRelationship(relationship GDALRelationship) (ok bool, failureReason string) {
-	ok = gdalDatasetAddRelationship(ds, relationship, &failureReason)
 	return
 }
 
@@ -2195,11 +1358,6 @@ func gdalDatasetDeleteRelationship(dataset GDALDataset, name string, failureReas
 	return
 }
 
-func (ds GDALDataset) DeleteRelationship(name string) (ok bool, failureReason string) {
-	ok = gdalDatasetDeleteRelationship(ds, name, &failureReason)
-	return
-}
-
 func gdalDatasetUpdateRelationship(dataset GDALDataset, relationship GDALRelationship, failureReason *string) (result bool) {
 	var cReason *C.char
 	result = bool(C.GDALDatasetUpdateRelationship(dataset.cValue, relationship.cValue, &cReason))
@@ -2209,11 +1367,6 @@ func gdalDatasetUpdateRelationship(dataset GDALDataset, relationship GDALRelatio
 		}
 		vsiFree(unsafe.Pointer(cReason))
 	}
-	return
-}
-
-func (ds GDALDataset) UpdateRelationship(relationship GDALRelationship) (ok bool, failureReason string) {
-	ok = gdalDatasetUpdateRelationship(ds, relationship, &failureReason)
 	return
 }
 
@@ -2245,14 +1398,6 @@ func gdalGetSubdatasetInfo(fileName string) (result GDALSubdatasetInfo) {
 	return
 }
 
-func GDALGetSubdatasetInfo(fileName string) (result GDALSubdatasetInfo, err error) {
-	result = gdalGetSubdatasetInfo(fileName)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 // /**
 //   - @brief Returns the file path component of a
 //   - subdataset descriptor effectively stripping the information about the subdataset
@@ -2272,11 +1417,6 @@ func gdalSubdatasetInfoGetPathComponent(info GDALSubdatasetInfo) (result string)
 	return
 }
 
-func (i GDALSubdatasetInfo) GetPathComponent() (result string) {
-	result = gdalSubdatasetInfoGetPathComponent(i)
-	return
-}
-
 // /**
 //   - @brief Returns the subdataset component of a subdataset descriptor descriptor.
 //   - The returned string must be freed with CPLFree().
@@ -2291,11 +1431,6 @@ func gdalSubdatasetInfoGetSubdatasetComponent(info GDALSubdatasetInfo) (result s
 		result = C.GoString(cResult)
 		vsiFree(unsafe.Pointer(cResult))
 	}
-	return
-}
-
-func (i GDALSubdatasetInfo) GetSubdatasetComponent() (result string) {
-	result = gdalSubdatasetInfoGetSubdatasetComponent(i)
 	return
 }
 
@@ -2319,11 +1454,6 @@ func gdalSubdatasetInfoModifyPathComponent(info GDALSubdatasetInfo, newPath stri
 	return
 }
 
-func (i GDALSubdatasetInfo) ModifyPathComponent(newPath string) (result string) {
-	result = gdalSubdatasetInfoModifyPathComponent(i, newPath)
-	return
-}
-
 // /**
 //   - @brief Destroys a GDALSubdatasetInfo object.
 //   - @param hInfo                 Pointer to GDALSubdatasetInfo object
@@ -2331,10 +1461,6 @@ func (i GDALSubdatasetInfo) ModifyPathComponent(newPath string) (result string) 
 //     */
 func gdalDestroySubdatasetInfo(info GDALSubdatasetInfo) {
 	C.GDALDestroySubdatasetInfo(info.cValue)
-}
-
-func (i GDALSubdatasetInfo) Destroy() {
-	gdalDestroySubdatasetInfo(i)
 }
 
 // /* ==================================================================== */
@@ -2350,21 +1476,11 @@ func gdalGetRasterDataType(band GDALRasterBand) (result GDALDataType) {
 	return
 }
 
-func (b GDALRasterBand) GetRasterDataType() (result GDALDataType) {
-	result = gdalGetRasterDataType(b)
-	return
-}
-
 func gdalGetBlockSize(band GDALRasterBand, xSize, ySize *int) {
 	var cXSize, cYSize C.int
 	C.GDALGetBlockSize(band.cValue, &cXSize, &cYSize)
 	*xSize = int(cXSize)
 	*ySize = int(cYSize)
-}
-
-func (b GDALRasterBand) GetBlockSize() (xSize, ySize int) {
-	gdalGetBlockSize(b, &xSize, &ySize)
-	return
 }
 
 func gdalGetActualBlockSize(band GDALRasterBand, xBlockOff, yBlockOff int, xValid, yValid *int) (result CPLErr) {
@@ -2375,19 +1491,9 @@ func gdalGetActualBlockSize(band GDALRasterBand, xBlockOff, yBlockOff int, xVali
 	return
 }
 
-func (b GDALRasterBand) GetActualBlockSize(xBlockOff, yBlockOff int) (xValid, yValid int, err error) {
-	err = cplErr(gdalGetActualBlockSize(b, xBlockOff, yBlockOff, &xValid, &yValid))
-	return
-}
-
 func gdalRasterAdviseRead(band GDALRasterBand, xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, options CSLConstList) (result CPLErr) {
 	opts := options.cValue
 	result = CPLErr(C.GDALRasterAdviseRead(band.cValue, C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), opts))
-	return
-}
-
-func (b GDALRasterBand) AdviseRead(xOff, yOff, xSize, ySize, bufXSize, bufYSize int, bufType GDALDataType, options CSLConstList) (err error) {
-	err = cplErr(gdalRasterAdviseRead(b, xOff, yOff, xSize, ySize, bufXSize, bufYSize, bufType, options))
 	return
 }
 
@@ -2396,18 +1502,8 @@ func gdalRasterIO(band GDALRasterBand, rwFlag GDALRWFlag, xOff, yOff, xSize, ySi
 	return
 }
 
-func (b GDALRasterBand) RasterIO(rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer []byte, bufXSize, bufYSize int, bufType GDALDataType, pixelSpace, lineSpace int) (err error) {
-	err = cplErr(gdalRasterIO(b, rwFlag, xOff, yOff, xSize, ySize, cBytes(buffer), bufXSize, bufYSize, bufType, pixelSpace, lineSpace))
-	return
-}
-
 func gdalRasterIOEx(band GDALRasterBand, rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer unsafe.Pointer, bufXSize, bufYSize int, bufType GDALDataType, pixelSpace, lineSpace int64, extraArg GDALRasterIOExtraArg) (result CPLErr) {
 	result = CPLErr(C.GDALRasterIOEx(band.cValue, C.GDALRWFlag(rwFlag), C.int(xOff), C.int(yOff), C.int(xSize), C.int(ySize), buffer, C.int(bufXSize), C.int(bufYSize), C.GDALDataType(bufType), C.GSpacing(pixelSpace), C.GSpacing(lineSpace), extraArg.cValue))
-	return
-}
-
-func (b GDALRasterBand) RasterIOEx(rwFlag GDALRWFlag, xOff, yOff, xSize, ySize int, buffer []byte, bufXSize, bufYSize int, bufType GDALDataType, pixelSpace, lineSpace int64, extraArg GDALRasterIOExtraArg) (err error) {
-	err = cplErr(gdalRasterIOEx(b, rwFlag, xOff, yOff, xSize, ySize, cBytes(buffer), bufXSize, bufYSize, bufType, pixelSpace, lineSpace, extraArg))
 	return
 }
 
@@ -2416,18 +1512,8 @@ func gdalReadBlock(band GDALRasterBand, xBlockOff, yBlockOff int, buffer unsafe.
 	return
 }
 
-func (b GDALRasterBand) ReadBlock(xBlockOff, yBlockOff int, buffer []byte) (err error) {
-	err = cplErr(gdalReadBlock(b, xBlockOff, yBlockOff, cBytes(buffer)))
-	return
-}
-
 func gdalWriteBlock(band GDALRasterBand, xBlockOff, yBlockOff int, buffer unsafe.Pointer) (result CPLErr) {
 	result = CPLErr(C.GDALWriteBlock(band.cValue, C.int(xBlockOff), C.int(yBlockOff), buffer))
-	return
-}
-
-func (b GDALRasterBand) WriteBlock(xBlockOff, yBlockOff int, buffer []byte) (err error) {
-	err = cplErr(gdalWriteBlock(b, xBlockOff, yBlockOff, cBytes(buffer)))
 	return
 }
 
@@ -2436,18 +1522,8 @@ func gdalGetRasterBandXSize(band GDALRasterBand) (result int) {
 	return
 }
 
-func (b GDALRasterBand) GetXSize() (result int) {
-	result = gdalGetRasterBandXSize(b)
-	return
-}
-
 func gdalGetRasterBandYSize(band GDALRasterBand) (result int) {
 	result = int(C.GDALGetRasterBandYSize(band.cValue))
-	return
-}
-
-func (b GDALRasterBand) GetYSize() (result int) {
-	result = gdalGetRasterBandYSize(b)
 	return
 }
 
@@ -2456,18 +1532,8 @@ func gdalGetRasterAccess(band GDALRasterBand) (result GDALAccess) {
 	return
 }
 
-func (b GDALRasterBand) GetAccess() (result GDALAccess) {
-	result = gdalGetRasterAccess(b)
-	return
-}
-
 func gdalGetBandNumber(band GDALRasterBand) (result int) {
 	result = int(C.GDALGetBandNumber(band.cValue))
-	return
-}
-
-func (b GDALRasterBand) GetBandNumber() (result int) {
-	result = gdalGetBandNumber(b)
 	return
 }
 
@@ -2476,21 +1542,8 @@ func gdalGetBandDataset(band GDALRasterBand) (result GDALDataset) {
 	return
 }
 
-func (b GDALRasterBand) GetDataset() (result GDALDataset, err error) {
-	result = gdalGetBandDataset(b)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalGetRasterColorInterpretation(band GDALRasterBand) (result GDALColorInterp) {
 	result = GDALColorInterp(C.GDALGetRasterColorInterpretation(band.cValue))
-	return
-}
-
-func (b GDALRasterBand) GetColorInterpretation() (result GDALColorInterp) {
-	result = gdalGetRasterColorInterpretation(b)
 	return
 }
 
@@ -2499,21 +1552,8 @@ func gdalSetRasterColorInterpretation(band GDALRasterBand, colorInterp GDALColor
 	return
 }
 
-func (b GDALRasterBand) SetColorInterpretation(colorInterp GDALColorInterp) (err error) {
-	err = cplErr(gdalSetRasterColorInterpretation(b, colorInterp))
-	return
-}
-
 func gdalGetRasterColorTable(band GDALRasterBand) (result GDALColorTable) {
 	result = GDALColorTable{cValue: C.GDALGetRasterColorTable(band.cValue)}
-	return
-}
-
-func (b GDALRasterBand) GetColorTable() (result GDALColorTable, err error) {
-	result = gdalGetRasterColorTable(b)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -2522,18 +1562,8 @@ func gdalSetRasterColorTable(band GDALRasterBand, colorTable GDALColorTable) (re
 	return
 }
 
-func (b GDALRasterBand) SetColorTable(colorTable GDALColorTable) (err error) {
-	err = cplErr(gdalSetRasterColorTable(b, colorTable))
-	return
-}
-
 func gdalHasArbitraryOverviews(band GDALRasterBand) (result bool) {
 	result = C.GDALHasArbitraryOverviews(band.cValue) != 0
-	return
-}
-
-func (b GDALRasterBand) HasArbitraryOverviews() (result bool) {
-	result = gdalHasArbitraryOverviews(b)
 	return
 }
 
@@ -2542,21 +1572,8 @@ func gdalGetOverviewCount(band GDALRasterBand) (result int) {
 	return
 }
 
-func (b GDALRasterBand) GetOverviewCount() (result int) {
-	result = gdalGetOverviewCount(b)
-	return
-}
-
 func gdalGetOverview(band GDALRasterBand, index int) (result GDALRasterBand) {
 	result = GDALRasterBand{cValue: C.GDALGetOverview(band.cValue, C.int(index))}
-	return
-}
-
-func (b GDALRasterBand) GetOverview(index int) (result GDALRasterBand, err error) {
-	result = gdalGetOverview(b, index)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -2567,24 +1584,10 @@ func gdalGetRasterNoDataValue(band GDALRasterBand, success *int) (result float64
 	return
 }
 
-func (b GDALRasterBand) GetNoDataValue() (value float64, ok bool) {
-	var success int
-	value = gdalGetRasterNoDataValue(b, &success)
-	ok = success != 0
-	return
-}
-
 func gdalGetRasterNoDataValueAsInt64(band GDALRasterBand, success *int) (result int64) {
 	var cSuccess C.int
 	result = int64(C.GDALGetRasterNoDataValueAsInt64(band.cValue, &cSuccess))
 	*success = int(cSuccess)
-	return
-}
-
-func (b GDALRasterBand) GetNoDataValueAsInt64() (value int64, ok bool) {
-	var success int
-	value = gdalGetRasterNoDataValueAsInt64(b, &success)
-	ok = success != 0
 	return
 }
 
@@ -2595,20 +1598,8 @@ func gdalGetRasterNoDataValueAsUInt64(band GDALRasterBand, success *int) (result
 	return
 }
 
-func (b GDALRasterBand) GetNoDataValueAsUInt64() (value uint64, ok bool) {
-	var success int
-	value = gdalGetRasterNoDataValueAsUInt64(b, &success)
-	ok = success != 0
-	return
-}
-
 func gdalSetRasterNoDataValue(band GDALRasterBand, value float64) (result CPLErr) {
 	result = CPLErr(C.GDALSetRasterNoDataValue(band.cValue, C.double(value)))
-	return
-}
-
-func (b GDALRasterBand) SetNoDataValue(value float64) (err error) {
-	err = cplErr(gdalSetRasterNoDataValue(b, value))
 	return
 }
 
@@ -2617,18 +1608,8 @@ func gdalSetRasterNoDataValueAsInt64(band GDALRasterBand, value int64) (result C
 	return
 }
 
-func (b GDALRasterBand) SetNoDataValueAsInt64(value int64) (err error) {
-	err = cplErr(gdalSetRasterNoDataValueAsInt64(b, value))
-	return
-}
-
 func gdalSetRasterNoDataValueAsUInt64(band GDALRasterBand, value uint64) (result CPLErr) {
 	result = CPLErr(C.GDALSetRasterNoDataValueAsUInt64(band.cValue, C.uint64_t(value)))
-	return
-}
-
-func (b GDALRasterBand) SetNoDataValueAsUInt64(value uint64) (err error) {
-	err = cplErr(gdalSetRasterNoDataValueAsUInt64(b, value))
 	return
 }
 
@@ -2637,29 +1618,14 @@ func gdalDeleteRasterNoDataValue(band GDALRasterBand) (result CPLErr) {
 	return
 }
 
-func (b GDALRasterBand) DeleteNoDataValue() (err error) {
-	err = cplErr(gdalDeleteRasterNoDataValue(b))
-	return
-}
-
 func gdalGetRasterCategoryNames(band GDALRasterBand) (result CSLConstList) {
 	result = cslConstList(C.GDALGetRasterCategoryNames(band.cValue))
-	return
-}
-
-func (b GDALRasterBand) GetCategoryNames() (result CSLConstList) {
-	result = gdalGetRasterCategoryNames(b)
 	return
 }
 
 func gdalSetRasterCategoryNames(band GDALRasterBand, names CSLConstList) (result CPLErr) {
 	n := names.cValue
 	result = CPLErr(C.GDALSetRasterCategoryNames(band.cValue, n))
-	return
-}
-
-func (b GDALRasterBand) SetCategoryNames(names CSLConstList) (err error) {
-	err = cplErr(gdalSetRasterCategoryNames(b, names))
 	return
 }
 
@@ -2670,24 +1636,10 @@ func gdalGetRasterMinimum(band GDALRasterBand, success *int) (result float64) {
 	return
 }
 
-func (b GDALRasterBand) GetMinimum() (value float64, ok bool) {
-	var success int
-	value = gdalGetRasterMinimum(b, &success)
-	ok = success != 0
-	return
-}
-
 func gdalGetRasterMaximum(band GDALRasterBand, success *int) (result float64) {
 	var cSuccess C.int
 	result = float64(C.GDALGetRasterMaximum(band.cValue, &cSuccess))
 	*success = int(cSuccess)
-	return
-}
-
-func (b GDALRasterBand) GetMaximum() (value float64, ok bool) {
-	var success int
-	value = gdalGetRasterMaximum(b, &success)
-	ok = success != 0
 	return
 }
 
@@ -2701,11 +1653,6 @@ func gdalGetRasterStatistics(band GDALRasterBand, approxOK, force int, min, max,
 	return
 }
 
-func (b GDALRasterBand) GetStatistics(approxOK, force int) (min, max, mean, stdDev float64, err error) {
-	err = cplErr(gdalGetRasterStatistics(b, approxOK, force, &min, &max, &mean, &stdDev))
-	return
-}
-
 func gdalComputeRasterStatistics(band GDALRasterBand, approxOK int, min, max, mean, stdDev *float64, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
 	var cMin, cMax, cMean, cStdDev C.double
 	result = CPLErr(C.GDALComputeRasterStatistics(band.cValue, C.int(approxOK), &cMin, &cMax, &cMean, &cStdDev, progress.cValue, progressData))
@@ -2716,18 +1663,8 @@ func gdalComputeRasterStatistics(band GDALRasterBand, approxOK int, min, max, me
 	return
 }
 
-func (b GDALRasterBand) ComputeStatistics(approxOK int, progress GDALProgressFunc, progressData unsafe.Pointer) (min, max, mean, stdDev float64, err error) {
-	err = cplErr(gdalComputeRasterStatistics(b, approxOK, &min, &max, &mean, &stdDev, progress, progressData))
-	return
-}
-
 func gdalSetRasterStatistics(band GDALRasterBand, min, max, mean, stdDev float64) (result CPLErr) {
 	result = CPLErr(C.GDALSetRasterStatistics(band.cValue, C.double(min), C.double(max), C.double(mean), C.double(stdDev)))
-	return
-}
-
-func (b GDALRasterBand) SetStatistics(min, max, mean, stdDev float64) (err error) {
-	err = cplErr(gdalSetRasterStatistics(b, min, max, mean, stdDev))
 	return
 }
 
@@ -2736,21 +1673,8 @@ func gdalRasterBandAsMDArray(band GDALRasterBand) (result GDALMDArray) {
 	return
 }
 
-func (b GDALRasterBand) AsMDArray() (result GDALMDArray, err error) {
-	result = gdalRasterBandAsMDArray(b)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalGetRasterUnitType(band GDALRasterBand) (result string) {
 	result = C.GoString(C.GDALGetRasterUnitType(band.cValue))
-	return
-}
-
-func (b GDALRasterBand) GetUnitType() (result string) {
-	result = gdalGetRasterUnitType(b)
 	return
 }
 
@@ -2761,11 +1685,6 @@ func gdalSetRasterUnitType(band GDALRasterBand, newValue string) (result CPLErr)
 	return
 }
 
-func (b GDALRasterBand) SetUnitType(newValue string) (err error) {
-	err = cplErr(gdalSetRasterUnitType(b, newValue))
-	return
-}
-
 func gdalGetRasterOffset(band GDALRasterBand, success *int) (result float64) {
 	var cSuccess C.int
 	result = float64(C.GDALGetRasterOffset(band.cValue, &cSuccess))
@@ -2773,20 +1692,8 @@ func gdalGetRasterOffset(band GDALRasterBand, success *int) (result float64) {
 	return
 }
 
-func (b GDALRasterBand) GetOffset() (value float64, ok bool) {
-	var success int
-	value = gdalGetRasterOffset(b, &success)
-	ok = success != 0
-	return
-}
-
 func gdalSetRasterOffset(band GDALRasterBand, newOffset float64) (result CPLErr) {
 	result = CPLErr(C.GDALSetRasterOffset(band.cValue, C.double(newOffset)))
-	return
-}
-
-func (b GDALRasterBand) SetOffset(newOffset float64) (err error) {
-	err = cplErr(gdalSetRasterOffset(b, newOffset))
 	return
 }
 
@@ -2797,20 +1704,8 @@ func gdalGetRasterScale(band GDALRasterBand, success *int) (result float64) {
 	return
 }
 
-func (b GDALRasterBand) GetScale() (value float64, ok bool) {
-	var success int
-	value = gdalGetRasterScale(b, &success)
-	ok = success != 0
-	return
-}
-
 func gdalSetRasterScale(band GDALRasterBand, newScale float64) (result CPLErr) {
 	result = CPLErr(C.GDALSetRasterScale(band.cValue, C.double(newScale)))
-	return
-}
-
-func (b GDALRasterBand) SetScale(newScale float64) (err error) {
-	err = cplErr(gdalSetRasterScale(b, newScale))
 	return
 }
 
@@ -2819,11 +1714,6 @@ func gdalComputeRasterMinMax(band GDALRasterBand, approxOK int, minMax *[2]float
 	result = CPLErr(C.GDALComputeRasterMinMax(band.cValue, C.int(approxOK), &cMinMax[0]))
 	minMax[0] = float64(cMinMax[0])
 	minMax[1] = float64(cMinMax[1])
-	return
-}
-
-func (b GDALRasterBand) ComputeMinMax(approxOK int) (minMax [2]float64, err error) {
-	err = cplErr(gdalComputeRasterMinMax(b, approxOK, &minMax))
 	return
 }
 
@@ -2840,28 +1730,13 @@ func gdalComputeRasterMinMaxLocation(band GDALRasterBand, min, max *float64, min
 	return
 }
 
-func (b GDALRasterBand) ComputeMinMaxLocation() (min, max float64, minX, minY, maxX, maxY int, err error) {
-	err = cplErr(gdalComputeRasterMinMaxLocation(b, &min, &max, &minX, &minY, &maxX, &maxY))
-	return
-}
-
 func gdalFlushRasterCache(band GDALRasterBand) (result CPLErr) {
 	result = CPLErr(C.GDALFlushRasterCache(band.cValue))
 	return
 }
 
-func (b GDALRasterBand) FlushCache() (err error) {
-	err = cplErr(gdalFlushRasterCache(b))
-	return
-}
-
 func gdalDropRasterCache(band GDALRasterBand) (result CPLErr) {
 	result = CPLErr(C.GDALDropRasterCache(band.cValue))
-	return
-}
-
-func (b GDALRasterBand) DropCache() (err error) {
-	err = cplErr(gdalDropRasterCache(b))
 	return
 }
 
@@ -2879,13 +1754,6 @@ func gdalGetRasterHistogram(band GDALRasterBand, min, max float64, nBuckets int,
 	return
 }
 
-// Deprecated: use GetHistogramEx.
-func (b GDALRasterBand) GetHistogram(min, max float64, nBuckets, includeOutOfRange, approxOK int, progress GDALProgressFunc, progressData unsafe.Pointer) (histogram []int, err error) {
-	histogram = make([]int, nBuckets)
-	err = cplErr(gdalGetRasterHistogram(b, min, max, nBuckets, histogram, includeOutOfRange, approxOK, progress, progressData))
-	return
-}
-
 func gdalGetRasterHistogramEx(band GDALRasterBand, min, max float64, nBuckets int, histogram []uint64, includeOutOfRange, approxOK int, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
 	cHist := make([]C.GUIntBig, nBuckets)
 	var ptr *C.GUIntBig
@@ -2896,12 +1764,6 @@ func gdalGetRasterHistogramEx(band GDALRasterBand, min, max float64, nBuckets in
 	for i := 0; i < nBuckets; i++ {
 		histogram[i] = uint64(cHist[i])
 	}
-	return
-}
-
-func (b GDALRasterBand) GetHistogramEx(min, max float64, nBuckets, includeOutOfRange, approxOK int, progress GDALProgressFunc, progressData unsafe.Pointer) (histogram []uint64, err error) {
-	histogram = make([]uint64, nBuckets)
-	err = cplErr(gdalGetRasterHistogramEx(b, min, max, nBuckets, histogram, includeOutOfRange, approxOK, progress, progressData))
 	return
 }
 
@@ -2925,11 +1787,6 @@ func gdalGetDefaultHistogramEx(band GDALRasterBand, min, max *float64, buckets *
 	return
 }
 
-func (b GDALRasterBand) GetDefaultHistogramEx(force int, progress GDALProgressFunc, progressData unsafe.Pointer) (min, max float64, buckets int, histogram []uint64, err error) {
-	err = cplErr(gdalGetDefaultHistogramEx(b, &min, &max, &buckets, &histogram, force, progress, progressData))
-	return
-}
-
 func gdalSetDefaultHistogramEx(band GDALRasterBand, min, max float64, nBuckets int, histogram []uint64) (result CPLErr) {
 	cHist := make([]C.GUIntBig, nBuckets)
 	for i := 0; i < nBuckets && i < len(histogram); i++ {
@@ -2943,11 +1800,6 @@ func gdalSetDefaultHistogramEx(band GDALRasterBand, min, max float64, nBuckets i
 	return
 }
 
-func (b GDALRasterBand) SetDefaultHistogramEx(min, max float64, histogram []uint64) (err error) {
-	err = cplErr(gdalSetDefaultHistogramEx(b, min, max, len(histogram), histogram))
-	return
-}
-
 func gdalGetRandomRasterSample(band GDALRasterBand, samples int, buffer []float32) (result int) {
 	var ptr *C.float
 	if len(buffer) > 0 {
@@ -2957,22 +1809,8 @@ func gdalGetRandomRasterSample(band GDALRasterBand, samples int, buffer []float3
 	return
 }
 
-func (b GDALRasterBand) GetRandomSample(samples int) (buffer []float32, count int) {
-	buffer = make([]float32, samples)
-	count = gdalGetRandomRasterSample(b, samples, buffer)
-	return
-}
-
 func gdalGetRasterSampleOverview(band GDALRasterBand, desiredSamples int) (result GDALRasterBand) {
 	result = GDALRasterBand{cValue: C.GDALGetRasterSampleOverview(band.cValue, C.int(desiredSamples))}
-	return
-}
-
-func (b GDALRasterBand) GetSampleOverview(desiredSamples int) (result GDALRasterBand, err error) {
-	result = gdalGetRasterSampleOverview(b, desiredSamples)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -2981,21 +1819,8 @@ func gdalGetRasterSampleOverviewEx(band GDALRasterBand, desiredSamples uint64) (
 	return
 }
 
-func (b GDALRasterBand) GetSampleOverviewEx(desiredSamples uint64) (result GDALRasterBand, err error) {
-	result = gdalGetRasterSampleOverviewEx(b, desiredSamples)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalFillRaster(band GDALRasterBand, realValue, imaginaryValue float64) (result CPLErr) {
 	result = CPLErr(C.GDALFillRaster(band.cValue, C.double(realValue), C.double(imaginaryValue)))
-	return
-}
-
-func (b GDALRasterBand) Fill(realValue, imaginaryValue float64) (err error) {
-	err = cplErr(gdalFillRaster(b, realValue, imaginaryValue))
 	return
 }
 
@@ -3007,18 +1832,8 @@ func gdalComputeBandStats(band GDALRasterBand, sampleStep int, mean, stdDev *flo
 	return
 }
 
-func (b GDALRasterBand) ComputeBandStats(sampleStep int, progress GDALProgressFunc, progressData unsafe.Pointer) (mean, stdDev float64, err error) {
-	err = cplErr(gdalComputeBandStats(b, sampleStep, &mean, &stdDev, progress, progressData))
-	return
-}
-
 func gdalOverviewMagnitudeCorrection(baseBand GDALRasterBand, overviewCount int, overviews GDALRasterBands, progress GDALProgressFunc, progressData unsafe.Pointer) (result CPLErr) {
 	result = CPLErr(C.GDALOverviewMagnitudeCorrection(baseBand.cValue, C.int(overviewCount), overviews.cPtr(), progress.cValue, progressData))
-	return
-}
-
-func (b GDALRasterBand) OverviewMagnitudeCorrection(overviews GDALRasterBands, progress GDALProgressFunc, progressData unsafe.Pointer) (err error) {
-	err = cplErr(gdalOverviewMagnitudeCorrection(b, len(overviews), overviews, progress, progressData))
 	return
 }
 
@@ -3027,21 +1842,8 @@ func gdalGetDefaultRAT(band GDALRasterBand) (result GDALRasterAttributeTable) {
 	return
 }
 
-func (b GDALRasterBand) GetDefaultRAT() (result GDALRasterAttributeTable, err error) {
-	result = gdalGetDefaultRAT(b)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalSetDefaultRAT(band GDALRasterBand, rat GDALRasterAttributeTable) (result CPLErr) {
 	result = CPLErr(C.GDALSetDefaultRAT(band.cValue, rat.cValue))
-	return
-}
-
-func (b GDALRasterBand) SetDefaultRAT(rat GDALRasterAttributeTable) (err error) {
-	err = cplErr(gdalSetDefaultRAT(b, rat))
 	return
 }
 
@@ -3057,22 +1859,12 @@ func gdalRasterInterpolateAtPoint(band GDALRasterBand, pixel, line float64, inte
 	return
 }
 
-func (b GDALRasterBand) InterpolateAtPoint(pixel, line float64, interpolation GDALRIOResampleAlg) (realValue, imagValue float64, err error) {
-	err = cplErr(gdalRasterInterpolateAtPoint(b, pixel, line, interpolation, &realValue, &imagValue))
-	return
-}
-
 func gdalRasterInterpolateAtGeolocation(band GDALRasterBand, geolocX, geolocY float64, srs OGRSpatialReference, interpolation GDALRIOResampleAlg, realValue, imagValue *float64, transformerOptions CSLConstList) (result CPLErr) {
 	opts := transformerOptions.cValue
 	var cReal, cImag C.double
 	result = CPLErr(C.GDALRasterInterpolateAtGeolocation(band.cValue, C.double(geolocX), C.double(geolocY), srs.cValue, C.GDALRIOResampleAlg(interpolation), &cReal, &cImag, opts))
 	*realValue = float64(cReal)
 	*imagValue = float64(cImag)
-	return
-}
-
-func (b GDALRasterBand) InterpolateAtGeolocation(geolocX, geolocY float64, srs OGRSpatialReference, interpolation GDALRIOResampleAlg, transformerOptions CSLConstList) (realValue, imagValue float64, err error) {
-	err = cplErr(gdalRasterInterpolateAtGeolocation(b, geolocX, geolocY, srs, interpolation, &realValue, &imagValue, transformerOptions))
 	return
 }
 
@@ -3085,21 +1877,8 @@ func gdalGetMaskBand(band GDALRasterBand) (result GDALRasterBand) {
 	return
 }
 
-func (b GDALRasterBand) GetMaskBand() (result GDALRasterBand, err error) {
-	result = gdalGetMaskBand(b)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalGetMaskFlags(band GDALRasterBand) (result int) {
 	result = int(C.GDALGetMaskFlags(band.cValue))
-	return
-}
-
-func (b GDALRasterBand) GetMaskFlags() (result int) {
-	result = gdalGetMaskFlags(b)
 	return
 }
 
@@ -3108,18 +1887,8 @@ func gdalCreateMaskBand(band GDALRasterBand, flags int) (result CPLErr) {
 	return
 }
 
-func (b GDALRasterBand) CreateMaskBand(flags int) (err error) {
-	err = cplErr(gdalCreateMaskBand(b, flags))
-	return
-}
-
 func gdalIsMaskBand(band GDALRasterBand) (result bool) {
 	result = bool(C.GDALIsMaskBand(band.cValue))
-	return
-}
-
-func (b GDALRasterBand) IsMaskBand() (result bool) {
-	result = gdalIsMaskBand(b)
 	return
 }
 
@@ -3145,17 +1914,8 @@ func gdalGetDataCoverageStatus(band GDALRasterBand, xOff, yOff, xSize, ySize, ma
 	return
 }
 
-func (b GDALRasterBand) GetDataCoverageStatus(xOff, yOff, xSize, ySize, maskFlagStop int) (status int, dataPct float64) {
-	status = gdalGetDataCoverageStatus(b, xOff, yOff, xSize, ySize, maskFlagStop, &dataPct)
-	return
-}
-
 func gdalComputedRasterBandRelease(band GDALComputedRasterBand) {
 	C.GDALComputedRasterBandRelease(band.cValue)
-}
-
-func (b GDALComputedRasterBand) Release() {
-	gdalComputedRasterBandRelease(b)
 }
 
 // Raster algebra unary operation.
@@ -3171,14 +1931,6 @@ const (
 
 func gdalRasterBandUnaryOp(band GDALRasterBand, op GDALRasterAlgebraUnaryOperation) (result GDALComputedRasterBand) {
 	result = GDALComputedRasterBand{cValue: C.GDALRasterBandUnaryOp(band.cValue, C.GDALRasterAlgebraUnaryOperation(op))}
-	return
-}
-
-func (b GDALRasterBand) UnaryOp(op GDALRasterAlgebraUnaryOperation) (result GDALComputedRasterBand, err error) {
-	result = gdalRasterBandUnaryOp(b, op)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -3206,24 +1958,8 @@ func gdalRasterBandBinaryOpBand(band GDALRasterBand, op GDALRasterAlgebraBinaryO
 	return
 }
 
-func (b GDALRasterBand) BinaryOpBand(op GDALRasterAlgebraBinaryOperation, otherBand GDALRasterBand) (result GDALComputedRasterBand, err error) {
-	result = gdalRasterBandBinaryOpBand(b, op, otherBand)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalRasterBandBinaryOpDouble(band GDALRasterBand, op GDALRasterAlgebraBinaryOperation, constant float64) (result GDALComputedRasterBand) {
 	result = GDALComputedRasterBand{cValue: C.GDALRasterBandBinaryOpDouble(band.cValue, C.GDALRasterAlgebraBinaryOperation(op), C.double(constant))}
-	return
-}
-
-func (b GDALRasterBand) BinaryOpDouble(op GDALRasterAlgebraBinaryOperation, constant float64) (result GDALComputedRasterBand, err error) {
-	result = gdalRasterBandBinaryOpDouble(b, op, constant)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -3232,24 +1968,8 @@ func gdalRasterBandBinaryOpDoubleToBand(constant float64, op GDALRasterAlgebraBi
 	return
 }
 
-func GDALRasterBandBinaryOpDoubleToBand(constant float64, op GDALRasterAlgebraBinaryOperation, band GDALRasterBand) (result GDALComputedRasterBand, err error) {
-	result = gdalRasterBandBinaryOpDoubleToBand(constant, op, band)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalRasterBandIfThenElse(condBand, thenBand, elseBand GDALRasterBand) (result GDALComputedRasterBand) {
 	result = GDALComputedRasterBand{cValue: C.GDALRasterBandIfThenElse(condBand.cValue, thenBand.cValue, elseBand.cValue)}
-	return
-}
-
-func (b GDALRasterBand) IfThenElse(thenBand, elseBand GDALRasterBand) (result GDALComputedRasterBand, err error) {
-	result = gdalRasterBandIfThenElse(b, thenBand, elseBand)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -3258,24 +1978,8 @@ func gdalRasterBandAsDataType(band GDALRasterBand, dataType GDALDataType) (resul
 	return
 }
 
-func (b GDALRasterBand) AsDataType(dataType GDALDataType) (result GDALComputedRasterBand, err error) {
-	result = gdalRasterBandAsDataType(b, dataType)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalMaximumOfNBands(bandCount int, bands GDALRasterBands) (result GDALComputedRasterBand) {
 	result = GDALComputedRasterBand{cValue: C.GDALMaximumOfNBands(C.size_t(bandCount), bands.cPtr())}
-	return
-}
-
-func GDALMaximumOfNBands(bands GDALRasterBands) (result GDALComputedRasterBand, err error) {
-	result = gdalMaximumOfNBands(len(bands), bands)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -3284,24 +1988,8 @@ func gdalRasterBandMaxConstant(band GDALRasterBand, constant float64) (result GD
 	return
 }
 
-func (b GDALRasterBand) MaxConstant(constant float64) (result GDALComputedRasterBand, err error) {
-	result = gdalRasterBandMaxConstant(b, constant)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalMinimumOfNBands(bandCount int, bands GDALRasterBands) (result GDALComputedRasterBand) {
 	result = GDALComputedRasterBand{cValue: C.GDALMinimumOfNBands(C.size_t(bandCount), bands.cPtr())}
-	return
-}
-
-func GDALMinimumOfNBands(bands GDALRasterBands) (result GDALComputedRasterBand, err error) {
-	result = gdalMinimumOfNBands(len(bands), bands)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -3310,24 +1998,8 @@ func gdalRasterBandMinConstant(band GDALRasterBand, constant float64) (result GD
 	return
 }
 
-func (b GDALRasterBand) MinConstant(constant float64) (result GDALComputedRasterBand, err error) {
-	result = gdalRasterBandMinConstant(b, constant)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalMeanOfNBands(bandCount int, bands GDALRasterBands) (result GDALComputedRasterBand) {
 	result = GDALComputedRasterBand{cValue: C.GDALMeanOfNBands(C.size_t(bandCount), bands.cPtr())}
-	return
-}
-
-func GDALMeanOfNBands(bands GDALRasterBands) (result GDALComputedRasterBand, err error) {
-	result = gdalMeanOfNBands(len(bands), bands)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -3345,27 +2017,13 @@ func gdalARGetNextUpdatedRegion(reader GDALAsyncReader, timeout float64, xBufOff
 	return
 }
 
-func (r GDALAsyncReader) GetNextUpdatedRegion(timeout float64) (status GDALAsyncStatusType, xBufOff, yBufOff, xBufSize, yBufSize int) {
-	status = gdalARGetNextUpdatedRegion(r, timeout, &xBufOff, &yBufOff, &xBufSize, &yBufSize)
-	return
-}
-
 func gdalARLockBuffer(reader GDALAsyncReader, timeout float64) (result bool) {
 	result = C.GDALARLockBuffer(reader.cValue, C.double(timeout)) != 0
 	return
 }
 
-func (r GDALAsyncReader) LockBuffer(timeout float64) (result bool) {
-	result = gdalARLockBuffer(r, timeout)
-	return
-}
-
 func gdalARUnlockBuffer(reader GDALAsyncReader) {
 	C.GDALARUnlockBuffer(reader.cValue)
-}
-
-func (r GDALAsyncReader) UnlockBuffer() {
-	gdalARUnlockBuffer(r)
 }
 
 // Helper functions.
@@ -3377,40 +2035,20 @@ func gdalSwapWords(data unsafe.Pointer, wordSize, wordCount, wordSkip int) {
 	C.GDALSwapWords(data, C.int(wordSize), C.int(wordCount), C.int(wordSkip))
 }
 
-func GDALSwapWords(data []byte, wordSize, wordCount, wordSkip int) {
-	gdalSwapWords(cBytes(data), wordSize, wordCount, wordSkip)
-}
-
 func gdalSwapWordsEx(data unsafe.Pointer, wordSize int, wordCount int, wordSkip int) {
 	C.GDALSwapWordsEx(data, C.int(wordSize), C.size_t(wordCount), C.int(wordSkip))
-}
-
-func GDALSwapWordsEx(data []byte, wordSize, wordCount, wordSkip int) {
-	gdalSwapWordsEx(cBytes(data), wordSize, wordCount, wordSkip)
 }
 
 func gdalCopyWords(src unsafe.Pointer, srcType GDALDataType, srcPixelOffset int, dst unsafe.Pointer, dstType GDALDataType, dstPixelOffset, wordCount int) {
 	C.GDALCopyWords(src, C.GDALDataType(srcType), C.int(srcPixelOffset), dst, C.GDALDataType(dstType), C.int(dstPixelOffset), C.int(wordCount))
 }
 
-func GDALCopyWords(src []byte, srcType GDALDataType, srcPixelOffset int, dst []byte, dstType GDALDataType, dstPixelOffset, wordCount int) {
-	gdalCopyWords(cBytes(src), srcType, srcPixelOffset, cBytes(dst), dstType, dstPixelOffset, wordCount)
-}
-
 func gdalCopyWords64(src unsafe.Pointer, srcType GDALDataType, srcPixelOffset int, dst unsafe.Pointer, dstType GDALDataType, dstPixelOffset int, wordCount int64) {
 	C.GDALCopyWords64(src, C.GDALDataType(srcType), C.int(srcPixelOffset), dst, C.GDALDataType(dstType), C.int(dstPixelOffset), C.GPtrDiff_t(wordCount))
 }
 
-func GDALCopyWords64(src []byte, srcType GDALDataType, srcPixelOffset int, dst []byte, dstType GDALDataType, dstPixelOffset int, wordCount int64) {
-	gdalCopyWords64(cBytes(src), srcType, srcPixelOffset, cBytes(dst), dstType, dstPixelOffset, wordCount)
-}
-
 func gdalCopyBits(src unsafe.Pointer, srcOffset, srcStep int, dst unsafe.Pointer, dstOffset, dstStep, bitCount, stepCount int) {
 	C.GDALCopyBits((*C.GByte)(src), C.int(srcOffset), C.int(srcStep), (*C.GByte)(dst), C.int(dstOffset), C.int(dstStep), C.int(bitCount), C.int(stepCount))
-}
-
-func GDALCopyBits(src []byte, srcOffset, srcStep int, dst []byte, dstOffset, dstStep, bitCount, stepCount int) {
-	gdalCopyBits(cBytes(src), srcOffset, srcStep, cBytes(dst), dstOffset, dstStep, bitCount, stepCount)
 }
 
 // GDALDeinterleave is deferred: its void **ppDestBuffer output array of buffers
@@ -3420,17 +2058,8 @@ func gdalTranspose2D(src unsafe.Pointer, srcType GDALDataType, dst unsafe.Pointe
 	C.GDALTranspose2D(src, C.GDALDataType(srcType), dst, C.GDALDataType(dstType), C.size_t(srcWidth), C.size_t(srcHeight))
 }
 
-func GDALTranspose2D(src []byte, srcType GDALDataType, dst []byte, dstType GDALDataType, srcWidth, srcHeight int) {
-	gdalTranspose2D(cBytes(src), srcType, cBytes(dst), dstType, srcWidth, srcHeight)
-}
-
 func gdalGetNoDataReplacementValue(dataType GDALDataType, value float64) (result float64) {
 	result = float64(C.GDALGetNoDataReplacementValue(C.GDALDataType(dataType), C.double(value)))
-	return
-}
-
-func (dt GDALDataType) GetNoDataReplacementValue(value float64) (result float64) {
-	result = gdalGetNoDataReplacementValue(dt, value)
 	return
 }
 
@@ -3442,11 +2071,6 @@ func gdalLoadWorldFile(filename string, geoTransform *[6]float64) (result int) {
 	for i := range gt {
 		geoTransform[i] = float64(gt[i])
 	}
-	return
-}
-
-func GDALLoadWorldFile(filename string) (geoTransform [6]float64, ok bool) {
-	ok = gdalLoadWorldFile(filename, &geoTransform) != 0
 	return
 }
 
@@ -3463,11 +2087,6 @@ func gdalReadWorldFile(baseFilename, extension string, geoTransform *[6]float64)
 	return
 }
 
-func GDALReadWorldFile(baseFilename, extension string) (geoTransform [6]float64, ok bool) {
-	ok = gdalReadWorldFile(baseFilename, extension, &geoTransform) != 0
-	return
-}
-
 func gdalWriteWorldFile(baseFilename, extension string, geoTransform [6]float64) (result int) {
 	cBase := C.CString(baseFilename)
 	defer C.free(unsafe.Pointer(cBase))
@@ -3478,11 +2097,6 @@ func gdalWriteWorldFile(baseFilename, extension string, geoTransform [6]float64)
 		gt[i] = C.double(v)
 	}
 	result = int(C.GDALWriteWorldFile(cBase, cExt, &gt[0]))
-	return
-}
-
-func GDALWriteWorldFile(baseFilename, extension string, geoTransform [6]float64) (ok bool) {
-	ok = gdalWriteWorldFile(baseFilename, extension, geoTransform) != 0
 	return
 }
 
@@ -3497,28 +2111,13 @@ func gdalDecToDMS(angle float64, axis string, precision int) (result string) {
 	return
 }
 
-func GDALDecToDMS(angle float64, axis string, precision int) (result string) {
-	result = gdalDecToDMS(angle, axis, precision)
-	return
-}
-
 func gdalPackedDMSToDec(packed float64) (result float64) {
 	result = float64(C.GDALPackedDMSToDec(C.double(packed)))
 	return
 }
 
-func GDALPackedDMSToDec(packed float64) (result float64) {
-	result = gdalPackedDMSToDec(packed)
-	return
-}
-
 func gdalDecToPackedDMS(dec float64) (result float64) {
 	result = float64(C.GDALDecToPackedDMS(C.double(dec)))
-	return
-}
-
-func GDALDecToPackedDMS(dec float64) (result float64) {
-	result = gdalDecToPackedDMS(dec)
 	return
 }
 
@@ -3529,20 +2128,10 @@ func gdalVersionInfo(request string) (result string) {
 	return
 }
 
-func GDALVersionInfo(request string) (result string) {
-	result = gdalVersionInfo(request)
-	return
-}
-
 func gdalCheckVersion(versionMajor, versionMinor int, callingComponentName string) (result bool) {
 	cName := C.CString(callingComponentName)
 	defer C.free(unsafe.Pointer(cName))
 	result = C.GDALCheckVersion(C.int(versionMajor), C.int(versionMinor), cName) != 0
-	return
-}
-
-func GDALCheckVersion(versionMajor, versionMinor int, callingComponentName string) (result bool) {
-	result = gdalCheckVersion(versionMajor, versionMinor, callingComponentName)
 	return
 }
 
@@ -3564,11 +2153,6 @@ func gdalExtractRPCInfoV2(metadata CSLConstList, rpcInfo *GDALRPCInfoV2) (result
 	return
 }
 
-func GDALExtractRPCInfoV2(metadata CSLConstList) (rpcInfo GDALRPCInfoV2, ok bool) {
-	ok = gdalExtractRPCInfoV2(metadata, &rpcInfo) != 0
-	return
-}
-
 // /* ==================================================================== */
 // /*      Color tables.                                                   */
 // /* ==================================================================== */
@@ -3583,32 +2167,12 @@ func gdalCreateColorTable(paletteInterp GDALPaletteInterp) (result GDALColorTabl
 	return
 }
 
-func GDALCreateColorTable(paletteInterp GDALPaletteInterp) (result GDALColorTable, err error) {
-	result = gdalCreateColorTable(paletteInterp)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalDestroyColorTable(colorTable GDALColorTable) {
 	C.GDALDestroyColorTable(colorTable.cValue)
 }
 
-func (ct GDALColorTable) Destroy() {
-	gdalDestroyColorTable(ct)
-}
-
 func gdalCloneColorTable(colorTable GDALColorTable) (result GDALColorTable) {
 	result = GDALColorTable{cValue: C.GDALCloneColorTable(colorTable.cValue)}
-	return
-}
-
-func (ct GDALColorTable) Clone() (result GDALColorTable, err error) {
-	result = gdalCloneColorTable(ct)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -3617,18 +2181,8 @@ func gdalGetPaletteInterpretation(colorTable GDALColorTable) (result GDALPalette
 	return
 }
 
-func (ct GDALColorTable) GetPaletteInterpretation() (result GDALPaletteInterp) {
-	result = gdalGetPaletteInterpretation(ct)
-	return
-}
-
 func gdalGetColorEntryCount(colorTable GDALColorTable) (result int) {
 	result = int(C.GDALGetColorEntryCount(colorTable.cValue))
-	return
-}
-
-func (ct GDALColorTable) GetColorEntryCount() (result int) {
-	result = gdalGetColorEntryCount(ct)
 	return
 }
 
@@ -3640,18 +2194,8 @@ func gdalGetColorEntry(colorTable GDALColorTable, index int) (result GDALColorEn
 	return
 }
 
-func (ct GDALColorTable) GetColorEntry(index int) (result GDALColorEntry) {
-	result = gdalGetColorEntry(ct, index)
-	return
-}
-
 func gdalGetColorEntryAsRGB(colorTable GDALColorTable, index int, result *GDALColorEntry) (ret int) {
 	ret = int(C.GDALGetColorEntryAsRGB(colorTable.cValue, C.int(index), &result.cValue))
-	return
-}
-
-func (ct GDALColorTable) GetColorEntryAsRGB(index int) (result GDALColorEntry, ok bool) {
-	ok = gdalGetColorEntryAsRGB(ct, index, &result) != 0
 	return
 }
 
@@ -3659,16 +2203,8 @@ func gdalSetColorEntry(colorTable GDALColorTable, index int, entry GDALColorEntr
 	C.GDALSetColorEntry(colorTable.cValue, C.int(index), &entry.cValue)
 }
 
-func (ct GDALColorTable) SetColorEntry(index int, entry GDALColorEntry) {
-	gdalSetColorEntry(ct, index, entry)
-}
-
 func gdalCreateColorRamp(colorTable GDALColorTable, startIndex int, startColor GDALColorEntry, endIndex int, endColor GDALColorEntry) {
 	C.GDALCreateColorRamp(colorTable.cValue, C.int(startIndex), &startColor.cValue, C.int(endIndex), &endColor.cValue)
-}
-
-func (ct GDALColorTable) CreateColorRamp(startIndex int, startColor GDALColorEntry, endIndex int, endColor GDALColorEntry) {
-	gdalCreateColorRamp(ct, startIndex, startColor, endIndex, endColor)
 }
 
 // /* ==================================================================== */
@@ -3727,29 +2263,12 @@ func gdalCreateRasterAttributeTable() (result GDALRasterAttributeTable) {
 	return
 }
 
-func GDALCreateRasterAttributeTable() (result GDALRasterAttributeTable, err error) {
-	result = gdalCreateRasterAttributeTable()
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalDestroyRasterAttributeTable(rat GDALRasterAttributeTable) {
 	C.GDALDestroyRasterAttributeTable(rat.cValue)
 }
 
-func (rat GDALRasterAttributeTable) Destroy() {
-	gdalDestroyRasterAttributeTable(rat)
-}
-
 func gdalRATGetColumnCount(rat GDALRasterAttributeTable) (result int) {
 	result = int(C.GDALRATGetColumnCount(rat.cValue))
-	return
-}
-
-func (rat GDALRasterAttributeTable) GetColumnCount() (result int) {
-	result = gdalRATGetColumnCount(rat)
 	return
 }
 
@@ -3758,18 +2277,8 @@ func gdalRATGetNameOfCol(rat GDALRasterAttributeTable, col int) (result string) 
 	return
 }
 
-func (rat GDALRasterAttributeTable) GetNameOfCol(col int) (result string) {
-	result = gdalRATGetNameOfCol(rat, col)
-	return
-}
-
 func gdalRATGetUsageOfCol(rat GDALRasterAttributeTable, col int) (result GDALRATFieldUsage) {
 	result = GDALRATFieldUsage(C.GDALRATGetUsageOfCol(rat.cValue, C.int(col)))
-	return
-}
-
-func (rat GDALRasterAttributeTable) GetUsageOfCol(col int) (result GDALRATFieldUsage) {
-	result = gdalRATGetUsageOfCol(rat, col)
 	return
 }
 
@@ -3778,18 +2287,8 @@ func gdalRATGetTypeOfCol(rat GDALRasterAttributeTable, col int) (result GDALRATF
 	return
 }
 
-func (rat GDALRasterAttributeTable) GetTypeOfCol(col int) (result GDALRATFieldType) {
-	result = gdalRATGetTypeOfCol(rat, col)
-	return
-}
-
 func gdalGetRATFieldTypeName(fieldType GDALRATFieldType) (result string) {
 	result = C.GoString(C.GDALGetRATFieldTypeName(C.GDALRATFieldType(fieldType)))
-	return
-}
-
-func (ft GDALRATFieldType) GetName() (result string) {
-	result = gdalGetRATFieldTypeName(ft)
 	return
 }
 
@@ -3798,18 +2297,8 @@ func gdalGetRATFieldUsageName(usage GDALRATFieldUsage) (result string) {
 	return
 }
 
-func (fu GDALRATFieldUsage) GetName() (result string) {
-	result = gdalGetRATFieldUsageName(fu)
-	return
-}
-
 func gdalRATGetColOfUsage(rat GDALRasterAttributeTable, usage GDALRATFieldUsage) (result int) {
 	result = int(C.GDALRATGetColOfUsage(rat.cValue, C.GDALRATFieldUsage(usage)))
-	return
-}
-
-func (rat GDALRasterAttributeTable) GetColOfUsage(usage GDALRATFieldUsage) (result int) {
-	result = gdalRATGetColOfUsage(rat, usage)
 	return
 }
 
@@ -3818,18 +2307,8 @@ func gdalRATGetRowCount(rat GDALRasterAttributeTable) (result int) {
 	return
 }
 
-func (rat GDALRasterAttributeTable) GetRowCount() (result int) {
-	result = gdalRATGetRowCount(rat)
-	return
-}
-
 func gdalRATGetValueAsString(rat GDALRasterAttributeTable, row, field int) (result string) {
 	result = C.GoString(C.GDALRATGetValueAsString(rat.cValue, C.int(row), C.int(field)))
-	return
-}
-
-func (rat GDALRasterAttributeTable) GetValueAsString(row, field int) (result string) {
-	result = gdalRATGetValueAsString(rat, row, field)
 	return
 }
 
@@ -3838,28 +2317,13 @@ func gdalRATGetValueAsInt(rat GDALRasterAttributeTable, row, field int) (result 
 	return
 }
 
-func (rat GDALRasterAttributeTable) GetValueAsInt(row, field int) (result int) {
-	result = gdalRATGetValueAsInt(rat, row, field)
-	return
-}
-
 func gdalRATGetValueAsDouble(rat GDALRasterAttributeTable, row, field int) (result float64) {
 	result = float64(C.GDALRATGetValueAsDouble(rat.cValue, C.int(row), C.int(field)))
 	return
 }
 
-func (rat GDALRasterAttributeTable) GetValueAsDouble(row, field int) (result float64) {
-	result = gdalRATGetValueAsDouble(rat, row, field)
-	return
-}
-
 func gdalRATGetValueAsBoolean(rat GDALRasterAttributeTable, row, field int) (result bool) {
 	result = bool(C.GDALRATGetValueAsBoolean(rat.cValue, C.int(row), C.int(field)))
-	return
-}
-
-func (rat GDALRasterAttributeTable) GetValueAsBoolean(row, field int) (result bool) {
-	result = gdalRATGetValueAsBoolean(rat, row, field)
 	return
 }
 
@@ -3873,11 +2337,6 @@ func gdalRATGetValueAsDateTime(rat GDALRasterAttributeTable, row, field int, dat
 	return
 }
 
-func (rat GDALRasterAttributeTable) GetValueAsDateTime(row, field int) (dateTime GDALRATDateTime, err error) {
-	err = cplErr(gdalRATGetValueAsDateTime(rat, row, field, &dateTime))
-	return
-}
-
 func gdalRATGetValueAsWKBGeometry(rat GDALRasterAttributeTable, row, field int) (result []byte) {
 	var cSize C.size_t
 	ptr := C.GDALRATGetValueAsWKBGeometry(rat.cValue, C.int(row), C.int(field), &cSize)
@@ -3887,44 +2346,22 @@ func gdalRATGetValueAsWKBGeometry(rat GDALRasterAttributeTable, row, field int) 
 	return
 }
 
-func (rat GDALRasterAttributeTable) GetValueAsWKBGeometry(row, field int) (result []byte) {
-	result = gdalRATGetValueAsWKBGeometry(rat, row, field)
-	return
-}
-
 func gdalRATSetValueAsString(rat GDALRasterAttributeTable, row, field int, value string) {
 	cValue := C.CString(value)
 	defer C.free(unsafe.Pointer(cValue))
 	C.GDALRATSetValueAsString(rat.cValue, C.int(row), C.int(field), cValue)
 }
 
-func (rat GDALRasterAttributeTable) SetValueAsString(row, field int, value string) {
-	gdalRATSetValueAsString(rat, row, field, value)
-}
-
 func gdalRATSetValueAsInt(rat GDALRasterAttributeTable, row, field, value int) {
 	C.GDALRATSetValueAsInt(rat.cValue, C.int(row), C.int(field), C.int(value))
-}
-
-func (rat GDALRasterAttributeTable) SetValueAsInt(row, field, value int) {
-	gdalRATSetValueAsInt(rat, row, field, value)
 }
 
 func gdalRATSetValueAsDouble(rat GDALRasterAttributeTable, row, field int, value float64) {
 	C.GDALRATSetValueAsDouble(rat.cValue, C.int(row), C.int(field), C.double(value))
 }
 
-func (rat GDALRasterAttributeTable) SetValueAsDouble(row, field int, value float64) {
-	gdalRATSetValueAsDouble(rat, row, field, value)
-}
-
 func gdalRATSetValueAsBoolean(rat GDALRasterAttributeTable, row, field int, value bool) (result CPLErr) {
 	result = CPLErr(C.GDALRATSetValueAsBoolean(rat.cValue, C.int(row), C.int(field), C.bool(value)))
-	return
-}
-
-func (rat GDALRasterAttributeTable) SetValueAsBoolean(row, field int, value bool) (err error) {
-	err = cplErr(gdalRATSetValueAsBoolean(rat, row, field, value))
 	return
 }
 
@@ -3933,28 +2370,13 @@ func gdalRATSetValueAsDateTime(rat GDALRasterAttributeTable, row, field int, dat
 	return
 }
 
-func (rat GDALRasterAttributeTable) SetValueAsDateTime(row, field int, dateTime GDALRATDateTime) (err error) {
-	err = cplErr(gdalRATSetValueAsDateTime(rat, row, field, dateTime))
-	return
-}
-
 func gdalRATSetValueAsWKBGeometry(rat GDALRasterAttributeTable, row, field int, wkb unsafe.Pointer, wkbSize int) (result CPLErr) {
 	result = CPLErr(C.GDALRATSetValueAsWKBGeometry(rat.cValue, C.int(row), C.int(field), wkb, C.size_t(wkbSize)))
 	return
 }
 
-func (rat GDALRasterAttributeTable) SetValueAsWKBGeometry(row, field int, wkb []byte) (err error) {
-	err = cplErr(gdalRATSetValueAsWKBGeometry(rat, row, field, cBytes(wkb), len(wkb)))
-	return
-}
-
 func gdalRATChangesAreWrittenToFile(rat GDALRasterAttributeTable) (result bool) {
 	result = C.GDALRATChangesAreWrittenToFile(rat.cValue) != 0
-	return
-}
-
-func (rat GDALRasterAttributeTable) ChangesAreWrittenToFile() (result bool) {
-	result = gdalRATChangesAreWrittenToFile(rat)
 	return
 }
 
@@ -3974,11 +2396,6 @@ func gdalRATValuesIOAsDouble(rat GDALRasterAttributeTable, rwFlag GDALRWFlag, fi
 	return
 }
 
-func (rat GDALRasterAttributeTable) ValuesIOAsDouble(rwFlag GDALRWFlag, field, startRow int, data []float64) (err error) {
-	err = cplErr(gdalRATValuesIOAsDouble(rat, rwFlag, field, startRow, len(data), data))
-	return
-}
-
 func gdalRATValuesIOAsInteger(rat GDALRasterAttributeTable, rwFlag GDALRWFlag, field, startRow, length int, data []int) (result CPLErr) {
 	cData := make([]C.int, length)
 	for i := 0; i < length && i < len(data); i++ {
@@ -3995,21 +2412,12 @@ func gdalRATValuesIOAsInteger(rat GDALRasterAttributeTable, rwFlag GDALRWFlag, f
 	return
 }
 
-func (rat GDALRasterAttributeTable) ValuesIOAsInteger(rwFlag GDALRWFlag, field, startRow int, data []int) (err error) {
-	err = cplErr(gdalRATValuesIOAsInteger(rat, rwFlag, field, startRow, len(data), data))
-	return
-}
-
 // GDALRATValuesIOAsString, GDALRATValuesIOAsBoolean, GDALRATValuesIOAsDateTime
 // and GDALRATValuesIOAsWKBGeometry are deferred: their in/out char**, bool*,
 // DateTime array and GByte** parameters need a dedicated design.
 
 func gdalRATSetRowCount(rat GDALRasterAttributeTable, count int) {
 	C.GDALRATSetRowCount(rat.cValue, C.int(count))
-}
-
-func (rat GDALRasterAttributeTable) SetRowCount(count int) {
-	gdalRATSetRowCount(rat, count)
 }
 
 func gdalRATCreateColumn(rat GDALRasterAttributeTable, name string, fieldType GDALRATFieldType, fieldUsage GDALRATFieldUsage) (result CPLErr) {
@@ -4019,18 +2427,8 @@ func gdalRATCreateColumn(rat GDALRasterAttributeTable, name string, fieldType GD
 	return
 }
 
-func (rat GDALRasterAttributeTable) CreateColumn(name string, fieldType GDALRATFieldType, fieldUsage GDALRATFieldUsage) (err error) {
-	err = cplErr(gdalRATCreateColumn(rat, name, fieldType, fieldUsage))
-	return
-}
-
 func gdalRATSetLinearBinning(rat GDALRasterAttributeTable, row0Min, binSize float64) (result CPLErr) {
 	result = CPLErr(C.GDALRATSetLinearBinning(rat.cValue, C.double(row0Min), C.double(binSize)))
-	return
-}
-
-func (rat GDALRasterAttributeTable) SetLinearBinning(row0Min, binSize float64) (err error) {
-	err = cplErr(gdalRATSetLinearBinning(rat, row0Min, binSize))
 	return
 }
 
@@ -4042,18 +2440,8 @@ func gdalRATGetLinearBinning(rat GDALRasterAttributeTable, row0Min, binSize *flo
 	return
 }
 
-func (rat GDALRasterAttributeTable) GetLinearBinning() (row0Min, binSize float64, ok bool) {
-	ok = gdalRATGetLinearBinning(rat, &row0Min, &binSize) != 0
-	return
-}
-
 func gdalRATSetTableType(rat GDALRasterAttributeTable, tableType GDALRATTableType) (result CPLErr) {
 	result = CPLErr(C.GDALRATSetTableType(rat.cValue, C.GDALRATTableType(tableType)))
-	return
-}
-
-func (rat GDALRasterAttributeTable) SetTableType(tableType GDALRATTableType) (err error) {
-	err = cplErr(gdalRATSetTableType(rat, tableType))
 	return
 }
 
@@ -4062,31 +2450,13 @@ func gdalRATGetTableType(rat GDALRasterAttributeTable) (result GDALRATTableType)
 	return
 }
 
-func (rat GDALRasterAttributeTable) GetTableType() (result GDALRATTableType) {
-	result = gdalRATGetTableType(rat)
-	return
-}
-
 func gdalRATInitializeFromColorTable(rat GDALRasterAttributeTable, colorTable GDALColorTable) (result CPLErr) {
 	result = CPLErr(C.GDALRATInitializeFromColorTable(rat.cValue, colorTable.cValue))
 	return
 }
 
-func (rat GDALRasterAttributeTable) InitializeFromColorTable(colorTable GDALColorTable) (err error) {
-	err = cplErr(gdalRATInitializeFromColorTable(rat, colorTable))
-	return
-}
-
 func gdalRATTranslateToColorTable(rat GDALRasterAttributeTable, entryCount int) (result GDALColorTable) {
 	result = GDALColorTable{cValue: C.GDALRATTranslateToColorTable(rat.cValue, C.int(entryCount))}
-	return
-}
-
-func (rat GDALRasterAttributeTable) TranslateToColorTable(entryCount int) (result GDALColorTable, err error) {
-	result = gdalRATTranslateToColorTable(rat, entryCount)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -4100,20 +2470,8 @@ func gdalRATDumpReadable(rat GDALRasterAttributeTable, filename string) (err err
 	return
 }
 
-func (rat GDALRasterAttributeTable) DumpReadable(filename string) (err error) {
-	return gdalRATDumpReadable(rat, filename)
-}
-
 func gdalRATClone(rat GDALRasterAttributeTable) (result GDALRasterAttributeTable) {
 	result = GDALRasterAttributeTable{cValue: C.GDALRATClone(rat.cValue)}
-	return
-}
-
-func (rat GDALRasterAttributeTable) Clone() (result GDALRasterAttributeTable, err error) {
-	result = gdalRATClone(rat)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -4125,17 +2483,8 @@ func gdalRATGetRowOfValue(rat GDALRasterAttributeTable, value float64) (result i
 	return
 }
 
-func (rat GDALRasterAttributeTable) GetRowOfValue(value float64) (result int) {
-	result = gdalRATGetRowOfValue(rat, value)
-	return
-}
-
 func gdalRATRemoveStatistics(rat GDALRasterAttributeTable) {
 	C.GDALRATRemoveStatistics(rat.cValue)
-}
-
-func (rat GDALRasterAttributeTable) RemoveStatistics() {
-	gdalRATRemoveStatistics(rat)
 }
 
 // /* -------------------------------------------------------------------- */
@@ -4172,29 +2521,12 @@ func gdalRelationshipCreate(name, leftTableName, rightTableName string, cardinal
 	return
 }
 
-func GDALRelationshipCreate(name, leftTableName, rightTableName string, cardinality GDALRelationshipCardinality) (result GDALRelationship, err error) {
-	result = gdalRelationshipCreate(name, leftTableName, rightTableName, cardinality)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalDestroyRelationship(relationship GDALRelationship) {
 	C.GDALDestroyRelationship(relationship.cValue)
 }
 
-func (r GDALRelationship) Destroy() {
-	gdalDestroyRelationship(r)
-}
-
 func gdalRelationshipGetName(relationship GDALRelationship) (result string) {
 	result = C.GoString(C.GDALRelationshipGetName(relationship.cValue))
-	return
-}
-
-func (r GDALRelationship) GetName() (result string) {
-	result = gdalRelationshipGetName(r)
 	return
 }
 
@@ -4203,18 +2535,8 @@ func gdalRelationshipGetCardinality(relationship GDALRelationship) (result GDALR
 	return
 }
 
-func (r GDALRelationship) GetCardinality() (result GDALRelationshipCardinality) {
-	result = gdalRelationshipGetCardinality(r)
-	return
-}
-
 func gdalRelationshipGetLeftTableName(relationship GDALRelationship) (result string) {
 	result = C.GoString(C.GDALRelationshipGetLeftTableName(relationship.cValue))
-	return
-}
-
-func (r GDALRelationship) GetLeftTableName() (result string) {
-	result = gdalRelationshipGetLeftTableName(r)
 	return
 }
 
@@ -4223,18 +2545,8 @@ func gdalRelationshipGetRightTableName(relationship GDALRelationship) (result st
 	return
 }
 
-func (r GDALRelationship) GetRightTableName() (result string) {
-	result = gdalRelationshipGetRightTableName(r)
-	return
-}
-
 func gdalRelationshipGetMappingTableName(relationship GDALRelationship) (result string) {
 	result = C.GoString(C.GDALRelationshipGetMappingTableName(relationship.cValue))
-	return
-}
-
-func (r GDALRelationship) GetMappingTableName() (result string) {
-	result = gdalRelationshipGetMappingTableName(r)
 	return
 }
 
@@ -4244,21 +2556,12 @@ func gdalRelationshipSetMappingTableName(relationship GDALRelationship, name str
 	C.GDALRelationshipSetMappingTableName(relationship.cValue, cName)
 }
 
-func (r GDALRelationship) SetMappingTableName(name string) {
-	gdalRelationshipSetMappingTableName(r, name)
-}
-
 func gdalRelationshipGetLeftTableFields(relationship GDALRelationship) (result CSLConstList) {
 	raw := C.GDALRelationshipGetLeftTableFields(relationship.cValue)
 	if raw == nil {
 		return
 	}
 	result = cslConstList(raw)
-	return
-}
-
-func (r GDALRelationship) GetLeftTableFields() (result CSLConstList) {
-	result = gdalRelationshipGetLeftTableFields(r)
 	return
 }
 
@@ -4271,27 +2574,14 @@ func gdalRelationshipGetRightTableFields(relationship GDALRelationship) (result 
 	return
 }
 
-func (r GDALRelationship) GetRightTableFields() (result CSLConstList) {
-	result = gdalRelationshipGetRightTableFields(r)
-	return
-}
-
 func gdalRelationshipSetLeftTableFields(relationship GDALRelationship, fields CSLConstList) {
 	f := fields.cValue
 	C.GDALRelationshipSetLeftTableFields(relationship.cValue, f)
 }
 
-func (r GDALRelationship) SetLeftTableFields(fields CSLConstList) {
-	gdalRelationshipSetLeftTableFields(r, fields)
-}
-
 func gdalRelationshipSetRightTableFields(relationship GDALRelationship, fields CSLConstList) {
 	f := fields.cValue
 	C.GDALRelationshipSetRightTableFields(relationship.cValue, f)
-}
-
-func (r GDALRelationship) SetRightTableFields(fields CSLConstList) {
-	gdalRelationshipSetRightTableFields(r, fields)
 }
 
 func gdalRelationshipGetLeftMappingTableFields(relationship GDALRelationship) (result CSLConstList) {
@@ -4300,11 +2590,6 @@ func gdalRelationshipGetLeftMappingTableFields(relationship GDALRelationship) (r
 		return
 	}
 	result = cslConstList(raw)
-	return
-}
-
-func (r GDALRelationship) GetLeftMappingTableFields() (result CSLConstList) {
-	result = gdalRelationshipGetLeftMappingTableFields(r)
 	return
 }
 
@@ -4317,18 +2602,9 @@ func gdalRelationshipGetRightMappingTableFields(relationship GDALRelationship) (
 	return
 }
 
-func (r GDALRelationship) GetRightMappingTableFields() (result CSLConstList) {
-	result = gdalRelationshipGetRightMappingTableFields(r)
-	return
-}
-
 func gdalRelationshipSetLeftMappingTableFields(relationship GDALRelationship, fields CSLConstList) {
 	f := fields.cValue
 	C.GDALRelationshipSetLeftMappingTableFields(relationship.cValue, f)
-}
-
-func (r GDALRelationship) SetLeftMappingTableFields(fields CSLConstList) {
-	gdalRelationshipSetLeftMappingTableFields(r, fields)
 }
 
 func gdalRelationshipSetRightMappingTableFields(relationship GDALRelationship, fields CSLConstList) {
@@ -4336,17 +2612,8 @@ func gdalRelationshipSetRightMappingTableFields(relationship GDALRelationship, f
 	C.GDALRelationshipSetRightMappingTableFields(relationship.cValue, f)
 }
 
-func (r GDALRelationship) SetRightMappingTableFields(fields CSLConstList) {
-	gdalRelationshipSetRightMappingTableFields(r, fields)
-}
-
 func gdalRelationshipGetType(relationship GDALRelationship) (result GDALRelationshipType) {
 	result = GDALRelationshipType(C.GDALRelationshipGetType(relationship.cValue))
-	return
-}
-
-func (r GDALRelationship) GetType() (result GDALRelationshipType) {
-	result = gdalRelationshipGetType(r)
 	return
 }
 
@@ -4354,17 +2621,8 @@ func gdalRelationshipSetType(relationship GDALRelationship, relationshipType GDA
 	C.GDALRelationshipSetType(relationship.cValue, C.GDALRelationshipType(relationshipType))
 }
 
-func (r GDALRelationship) SetType(relationshipType GDALRelationshipType) {
-	gdalRelationshipSetType(r, relationshipType)
-}
-
 func gdalRelationshipGetForwardPathLabel(relationship GDALRelationship) (result string) {
 	result = C.GoString(C.GDALRelationshipGetForwardPathLabel(relationship.cValue))
-	return
-}
-
-func (r GDALRelationship) GetForwardPathLabel() (result string) {
-	result = gdalRelationshipGetForwardPathLabel(r)
 	return
 }
 
@@ -4374,17 +2632,8 @@ func gdalRelationshipSetForwardPathLabel(relationship GDALRelationship, label st
 	C.GDALRelationshipSetForwardPathLabel(relationship.cValue, cLabel)
 }
 
-func (r GDALRelationship) SetForwardPathLabel(label string) {
-	gdalRelationshipSetForwardPathLabel(r, label)
-}
-
 func gdalRelationshipGetBackwardPathLabel(relationship GDALRelationship) (result string) {
 	result = C.GoString(C.GDALRelationshipGetBackwardPathLabel(relationship.cValue))
-	return
-}
-
-func (r GDALRelationship) GetBackwardPathLabel() (result string) {
-	result = gdalRelationshipGetBackwardPathLabel(r)
 	return
 }
 
@@ -4394,17 +2643,8 @@ func gdalRelationshipSetBackwardPathLabel(relationship GDALRelationship, label s
 	C.GDALRelationshipSetBackwardPathLabel(relationship.cValue, cLabel)
 }
 
-func (r GDALRelationship) SetBackwardPathLabel(label string) {
-	gdalRelationshipSetBackwardPathLabel(r, label)
-}
-
 func gdalRelationshipGetRelatedTableType(relationship GDALRelationship) (result string) {
 	result = C.GoString(C.GDALRelationshipGetRelatedTableType(relationship.cValue))
-	return
-}
-
-func (r GDALRelationship) GetRelatedTableType() (result string) {
-	result = gdalRelationshipGetRelatedTableType(r)
 	return
 }
 
@@ -4412,10 +2652,6 @@ func gdalRelationshipSetRelatedTableType(relationship GDALRelationship, relatedT
 	cType := C.CString(relatedTableType)
 	defer C.free(unsafe.Pointer(cType))
 	C.GDALRelationshipSetRelatedTableType(relationship.cValue, cType)
-}
-
-func (r GDALRelationship) SetRelatedTableType(relatedTableType string) {
-	gdalRelationshipSetRelatedTableType(r, relatedTableType)
 }
 
 // /* ==================================================================== */
@@ -4426,17 +2662,8 @@ func gdalSetCacheMax(bytes int) {
 	C.GDALSetCacheMax(C.int(bytes))
 }
 
-func GDALSetCacheMax(bytes int) {
-	gdalSetCacheMax(bytes)
-}
-
 func gdalGetCacheMax() (result int) {
 	result = int(C.GDALGetCacheMax())
-	return
-}
-
-func GDALGetCacheMax() (result int) {
-	result = gdalGetCacheMax()
 	return
 }
 
@@ -4445,26 +2672,12 @@ func gdalGetCacheUsed() (result int) {
 	return
 }
 
-func GDALGetCacheUsed() (result int) {
-	result = gdalGetCacheUsed()
-	return
-}
-
 func gdalSetCacheMax64(bytes int64) {
 	C.GDALSetCacheMax64(C.GIntBig(bytes))
 }
 
-func GDALSetCacheMax64(bytes int64) {
-	gdalSetCacheMax64(bytes)
-}
-
 func gdalGetCacheMax64() (result int64) {
 	result = int64(C.GDALGetCacheMax64())
-	return
-}
-
-func GDALGetCacheMax64() (result int64) {
-	result = gdalGetCacheMax64()
 	return
 }
 
@@ -4473,18 +2686,8 @@ func gdalGetCacheUsed64() (result int64) {
 	return
 }
 
-func GDALGetCacheUsed64() (result int64) {
-	result = gdalGetCacheUsed64()
-	return
-}
-
 func gdalFlushCacheBlock() (result bool) {
 	result = C.GDALFlushCacheBlock() != 0
-	return
-}
-
-func GDALFlushCacheBlock() (result bool) {
-	result = gdalFlushCacheBlock()
 	return
 }
 
@@ -4509,27 +2712,11 @@ func gdalCreatePansharpenedVRT(xml string, panchroBand GDALRasterBand, inputSpec
 	return
 }
 
-func GDALCreatePansharpenedVRT(xml string, panchroBand GDALRasterBand, inputSpectralBands GDALRasterBands) (result GDALDataset, err error) {
-	result = gdalCreatePansharpenedVRT(xml, panchroBand, len(inputSpectralBands), inputSpectralBands)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalGetJPEG2000Structure(filename string, options CSLConstList) (result CPLXMLNode) {
 	cName := C.CString(filename)
 	defer C.free(unsafe.Pointer(cName))
 	opts := options.cValue
 	result = CPLXMLNode{cValue: C.GDALGetJPEG2000Structure(cName, opts)}
-	return
-}
-
-func GDALGetJPEG2000Structure(filename string, options CSLConstList) (result CPLXMLNode, err error) {
-	result = gdalGetJPEG2000Structure(filename, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -4546,24 +2733,8 @@ func gdalCreateMultiDimensional(driver GDALDriver, name string, rootGroupOptions
 	return
 }
 
-func (d GDALDriver) CreateMultiDimensional(name string, rootGroupOptions, options CSLConstList) (result GDALDataset, err error) {
-	result = gdalCreateMultiDimensional(d, name, rootGroupOptions, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalExtendedDataTypeCreate(dataType GDALDataType) (result GDALExtendedDataType) {
 	result = GDALExtendedDataType{cValue: C.GDALExtendedDataTypeCreate(C.GDALDataType(dataType))}
-	return
-}
-
-func GDALExtendedDataTypeCreate(dataType GDALDataType) (result GDALExtendedDataType, err error) {
-	result = gdalExtendedDataTypeCreate(dataType)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -4572,24 +2743,8 @@ func gdalExtendedDataTypeCreateString(maxStringLength int) (result GDALExtendedD
 	return
 }
 
-func GDALExtendedDataTypeCreateString(maxStringLength int) (result GDALExtendedDataType, err error) {
-	result = gdalExtendedDataTypeCreateString(maxStringLength)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalExtendedDataTypeCreateStringEx(maxStringLength int, subType GDALExtendedDataTypeSubType) (result GDALExtendedDataType) {
 	result = GDALExtendedDataType{cValue: C.GDALExtendedDataTypeCreateStringEx(C.size_t(maxStringLength), C.GDALExtendedDataTypeSubType(subType))}
-	return
-}
-
-func GDALExtendedDataTypeCreateStringEx(maxStringLength int, subType GDALExtendedDataTypeSubType) (result GDALExtendedDataType, err error) {
-	result = gdalExtendedDataTypeCreateStringEx(maxStringLength, subType)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -4604,29 +2759,12 @@ func gdalExtendedDataTypeCreateCompound(name string, totalSize, nComponents int,
 	return
 }
 
-func GDALExtendedDataTypeCreateCompound(name string, totalSize int, comps []GDALEDTComponent) (result GDALExtendedDataType, err error) {
-	result = gdalExtendedDataTypeCreateCompound(name, totalSize, len(comps), comps)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalExtendedDataTypeRelease(edt GDALExtendedDataType) {
 	C.GDALExtendedDataTypeRelease(edt.cValue)
 }
 
-func (edt GDALExtendedDataType) Release() {
-	gdalExtendedDataTypeRelease(edt)
-}
-
 func gdalExtendedDataTypeGetName(edt GDALExtendedDataType) (result string) {
 	result = C.GoString(C.GDALExtendedDataTypeGetName(edt.cValue))
-	return
-}
-
-func (edt GDALExtendedDataType) GetName() (result string) {
-	result = gdalExtendedDataTypeGetName(edt)
 	return
 }
 
@@ -4635,18 +2773,8 @@ func gdalExtendedDataTypeGetClass(edt GDALExtendedDataType) (result GDALExtended
 	return
 }
 
-func (edt GDALExtendedDataType) GetClass() (result GDALExtendedDataTypeClass) {
-	result = gdalExtendedDataTypeGetClass(edt)
-	return
-}
-
 func gdalExtendedDataTypeGetNumericDataType(edt GDALExtendedDataType) (result GDALDataType) {
 	result = GDALDataType(C.GDALExtendedDataTypeGetNumericDataType(edt.cValue))
-	return
-}
-
-func (edt GDALExtendedDataType) GetNumericDataType() (result GDALDataType) {
-	result = gdalExtendedDataTypeGetNumericDataType(edt)
 	return
 }
 
@@ -4655,18 +2783,8 @@ func gdalExtendedDataTypeGetSize(edt GDALExtendedDataType) (result int) {
 	return
 }
 
-func (edt GDALExtendedDataType) GetSize() (result int) {
-	result = gdalExtendedDataTypeGetSize(edt)
-	return
-}
-
 func gdalExtendedDataTypeGetMaxStringLength(edt GDALExtendedDataType) (result int) {
 	result = int(C.GDALExtendedDataTypeGetMaxStringLength(edt.cValue))
-	return
-}
-
-func (edt GDALExtendedDataType) GetMaxStringLength() (result int) {
-	result = gdalExtendedDataTypeGetMaxStringLength(edt)
 	return
 }
 
@@ -4679,18 +2797,8 @@ func gdalExtendedDataTypeCanConvertTo(sourceEDT, targetEDT GDALExtendedDataType)
 	return
 }
 
-func (edt GDALExtendedDataType) CanConvertTo(targetEDT GDALExtendedDataType) (result bool) {
-	result = gdalExtendedDataTypeCanConvertTo(edt, targetEDT)
-	return
-}
-
 func gdalExtendedDataTypeEquals(firstEDT, secondEDT GDALExtendedDataType) (result bool) {
 	result = C.GDALExtendedDataTypeEquals(firstEDT.cValue, secondEDT.cValue) != 0
-	return
-}
-
-func (edt GDALExtendedDataType) Equals(other GDALExtendedDataType) (result bool) {
-	result = gdalExtendedDataTypeEquals(edt, other)
 	return
 }
 
@@ -4699,21 +2807,8 @@ func gdalExtendedDataTypeGetSubType(edt GDALExtendedDataType) (result GDALExtend
 	return
 }
 
-func (edt GDALExtendedDataType) GetSubType() (result GDALExtendedDataTypeSubType) {
-	result = gdalExtendedDataTypeGetSubType(edt)
-	return
-}
-
 func gdalExtendedDataTypeGetRAT(edt GDALExtendedDataType) (result GDALRasterAttributeTable) {
 	result = GDALRasterAttributeTable{cValue: C.GDALExtendedDataTypeGetRAT(edt.cValue)}
-	return
-}
-
-func (edt GDALExtendedDataType) GetRAT() (result GDALRasterAttributeTable, err error) {
-	result = gdalExtendedDataTypeGetRAT(edt)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -4724,29 +2819,12 @@ func gdalEDTComponentCreate(name string, offset int, dataType GDALExtendedDataTy
 	return
 }
 
-func GDALEDTComponentCreate(name string, offset int, dataType GDALExtendedDataType) (result GDALEDTComponent, err error) {
-	result = gdalEDTComponentCreate(name, offset, dataType)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalEDTComponentRelease(comp GDALEDTComponent) {
 	C.GDALEDTComponentRelease(comp.cValue)
 }
 
-func (comp GDALEDTComponent) Release() {
-	gdalEDTComponentRelease(comp)
-}
-
 func gdalEDTComponentGetName(comp GDALEDTComponent) (result string) {
 	result = C.GoString(C.GDALEDTComponentGetName(comp.cValue))
-	return
-}
-
-func (comp GDALEDTComponent) GetName() (result string) {
-	result = gdalEDTComponentGetName(comp)
 	return
 }
 
@@ -4755,21 +2833,8 @@ func gdalEDTComponentGetOffset(comp GDALEDTComponent) (result int) {
 	return
 }
 
-func (comp GDALEDTComponent) GetOffset() (result int) {
-	result = gdalEDTComponentGetOffset(comp)
-	return
-}
-
 func gdalEDTComponentGetType(comp GDALEDTComponent) (result GDALExtendedDataType) {
 	result = GDALExtendedDataType{cValue: C.GDALEDTComponentGetType(comp.cValue)}
-	return
-}
-
-func (comp GDALEDTComponent) GetType() (result GDALExtendedDataType, err error) {
-	result = gdalEDTComponentGetType(comp)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -4778,20 +2843,8 @@ func gdalDatasetGetRootGroup(dataset GDALDataset) (result GDALGroup) {
 	return
 }
 
-func (ds GDALDataset) GetRootGroup() (result GDALGroup, err error) {
-	result = gdalDatasetGetRootGroup(ds)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalGroupRelease(group GDALGroup) {
 	C.GDALGroupRelease(group.cValue)
-}
-
-func (g GDALGroup) Release() {
-	gdalGroupRelease(g)
 }
 
 func gdalGroupGetName(group GDALGroup) (result string) {
@@ -4799,18 +2852,8 @@ func gdalGroupGetName(group GDALGroup) (result string) {
 	return
 }
 
-func (g GDALGroup) GetName() (result string) {
-	result = gdalGroupGetName(g)
-	return
-}
-
 func gdalGroupGetFullName(group GDALGroup) (result string) {
 	result = C.GoString(C.GDALGroupGetFullName(group.cValue))
-	return
-}
-
-func (g GDALGroup) GetFullName() (result string) {
-	result = gdalGroupGetFullName(g)
 	return
 }
 
@@ -4821,11 +2864,6 @@ func gdalGroupGetMDArrayNames(group GDALGroup, options CSLConstList) (result CSL
 		return
 	}
 	result = cslConstList(raw)
-	return
-}
-
-func (g GDALGroup) GetMDArrayNames(options CSLConstList) (result CSLConstList) {
-	result = gdalGroupGetMDArrayNames(g, options)
 	return
 }
 
@@ -4840,11 +2878,6 @@ func gdalGroupGetMDArrayFullNamesRecursive(group GDALGroup, groupOptions, arrayO
 	return
 }
 
-func (g GDALGroup) GetMDArrayFullNamesRecursive(groupOptions, arrayOptions CSLConstList) (result CSLConstList) {
-	result = gdalGroupGetMDArrayFullNamesRecursive(g, groupOptions, arrayOptions)
-	return
-}
-
 func gdalGroupOpenMDArray(group GDALGroup, name string, options CSLConstList) (result GDALMDArray) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
@@ -4853,27 +2886,11 @@ func gdalGroupOpenMDArray(group GDALGroup, name string, options CSLConstList) (r
 	return
 }
 
-func (g GDALGroup) OpenMDArray(name string, options CSLConstList) (result GDALMDArray, err error) {
-	result = gdalGroupOpenMDArray(g, name, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalGroupOpenMDArrayFromFullname(group GDALGroup, name string, options CSLConstList) (result GDALMDArray) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	opts := options.cValue
 	result = GDALMDArray{cValue: C.GDALGroupOpenMDArrayFromFullname(group.cValue, cName, opts)}
-	return
-}
-
-func (g GDALGroup) OpenMDArrayFromFullname(name string, options CSLConstList) (result GDALMDArray, err error) {
-	result = gdalGroupOpenMDArrayFromFullname(g, name, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -4887,14 +2904,6 @@ func gdalGroupResolveMDArray(group GDALGroup, name, startingPoint string, option
 	return
 }
 
-func (g GDALGroup) ResolveMDArray(name, startingPoint string, options CSLConstList) (result GDALMDArray, err error) {
-	result = gdalGroupResolveMDArray(g, name, startingPoint, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalGroupGetGroupNames(group GDALGroup, options CSLConstList) (result CSLConstList) {
 	opts := options.cValue
 	raw := C.GDALGroupGetGroupNames(group.cValue, opts)
@@ -4902,11 +2911,6 @@ func gdalGroupGetGroupNames(group GDALGroup, options CSLConstList) (result CSLCo
 		return
 	}
 	result = cslConstList(raw)
-	return
-}
-
-func (g GDALGroup) GetGroupNames(options CSLConstList) (result CSLConstList) {
-	result = gdalGroupGetGroupNames(g, options)
 	return
 }
 
@@ -4918,27 +2922,11 @@ func gdalGroupOpenGroup(group GDALGroup, name string, options CSLConstList) (res
 	return
 }
 
-func (g GDALGroup) OpenGroup(name string, options CSLConstList) (result GDALGroup, err error) {
-	result = gdalGroupOpenGroup(g, name, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalGroupOpenGroupFromFullname(group GDALGroup, name string, options CSLConstList) (result GDALGroup) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	opts := options.cValue
 	result = GDALGroup{cValue: C.GDALGroupOpenGroupFromFullname(group.cValue, cName, opts)}
-	return
-}
-
-func (g GDALGroup) OpenGroupFromFullname(name string, options CSLConstList) (result GDALGroup, err error) {
-	result = gdalGroupOpenGroupFromFullname(g, name, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -4952,24 +2940,11 @@ func gdalGroupGetVectorLayerNames(group GDALGroup, options CSLConstList) (result
 	return
 }
 
-func (g GDALGroup) GetVectorLayerNames(options CSLConstList) (result CSLConstList) {
-	result = gdalGroupGetVectorLayerNames(g, options)
-	return
-}
-
 func gdalGroupOpenVectorLayer(group GDALGroup, name string, options CSLConstList) (result OGRLayer) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	opts := options.cValue
 	result = OGRLayer{cValue: C.GDALGroupOpenVectorLayer(group.cValue, cName, opts)}
-	return
-}
-
-func (g GDALGroup) OpenVectorLayer(name string, options CSLConstList) (result OGRLayer, err error) {
-	result = gdalGroupOpenVectorLayer(g, name, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -4989,23 +2964,10 @@ func gdalGroupGetDimensions(group GDALGroup, options CSLConstList) (result []GDA
 	return
 }
 
-func (g GDALGroup) GetDimensions(options CSLConstList) (result []GDALDimension) {
-	result = gdalGroupGetDimensions(g, options)
-	return
-}
-
 func gdalGroupGetAttribute(group GDALGroup, name string) (result GDALAttribute) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	result = GDALAttribute{cValue: C.GDALGroupGetAttribute(group.cValue, cName)}
-	return
-}
-
-func (g GDALGroup) GetAttribute(name string) (result GDALAttribute, err error) {
-	result = gdalGroupGetAttribute(g, name)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -5025,18 +2987,8 @@ func gdalGroupGetAttributes(group GDALGroup, options CSLConstList) (result []GDA
 	return
 }
 
-func (g GDALGroup) GetAttributes(options CSLConstList) (result []GDALAttribute) {
-	result = gdalGroupGetAttributes(g, options)
-	return
-}
-
 func gdalGroupGetStructuralInfo(group GDALGroup) (result CSLConstList) {
 	result = cslConstList(C.GDALGroupGetStructuralInfo(group.cValue))
-	return
-}
-
-func (g GDALGroup) GetStructuralInfo() (result CSLConstList) {
-	result = gdalGroupGetStructuralInfo(g)
 	return
 }
 
@@ -5048,24 +3000,11 @@ func gdalGroupCreateGroup(group GDALGroup, name string, options CSLConstList) (r
 	return
 }
 
-func (g GDALGroup) CreateGroup(name string, options CSLConstList) (result GDALGroup, err error) {
-	result = gdalGroupCreateGroup(g, name, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalGroupDeleteGroup(group GDALGroup, name string, options CSLConstList) (result bool) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	opts := options.cValue
 	result = bool(C.GDALGroupDeleteGroup(group.cValue, cName, opts))
-	return
-}
-
-func (g GDALGroup) DeleteGroup(name string, options CSLConstList) (result bool) {
-	result = gdalGroupDeleteGroup(g, name, options)
 	return
 }
 
@@ -5081,14 +3020,6 @@ func gdalGroupCreateDimension(group GDALGroup, name, dimType, direction string, 
 	return
 }
 
-func (g GDALGroup) CreateDimension(name, dimType, direction string, size uint64, options CSLConstList) (result GDALDimension, err error) {
-	result = gdalGroupCreateDimension(g, name, dimType, direction, size, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalGroupCreateMDArray(group GDALGroup, name string, nDimensions int, dimensions []GDALDimension, dataType GDALExtendedDataType, options CSLConstList) (result GDALMDArray) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
@@ -5101,24 +3032,11 @@ func gdalGroupCreateMDArray(group GDALGroup, name string, nDimensions int, dimen
 	return
 }
 
-func (g GDALGroup) CreateMDArray(name string, dimensions []GDALDimension, dataType GDALExtendedDataType, options CSLConstList) (result GDALMDArray, err error) {
-	result = gdalGroupCreateMDArray(g, name, len(dimensions), dimensions, dataType, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalGroupDeleteMDArray(group GDALGroup, name string, options CSLConstList) (result bool) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	opts := options.cValue
 	result = bool(C.GDALGroupDeleteMDArray(group.cValue, cName, opts))
-	return
-}
-
-func (g GDALGroup) DeleteMDArray(name string, options CSLConstList) (result bool) {
-	result = gdalGroupDeleteMDArray(g, name, options)
 	return
 }
 
@@ -5138,14 +3056,6 @@ func gdalGroupCreateAttribute(group GDALGroup, name string, nDimensions int, dim
 	return
 }
 
-func (g GDALGroup) CreateAttribute(name string, dimensions []uint64, dataType GDALExtendedDataType, options CSLConstList) (result GDALAttribute, err error) {
-	result = gdalGroupCreateAttribute(g, name, len(dimensions), dimensions, dataType, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalGroupDeleteAttribute(group GDALGroup, name string, options CSLConstList) (result bool) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
@@ -5154,20 +3064,10 @@ func gdalGroupDeleteAttribute(group GDALGroup, name string, options CSLConstList
 	return
 }
 
-func (g GDALGroup) DeleteAttribute(name string, options CSLConstList) (result bool) {
-	result = gdalGroupDeleteAttribute(g, name, options)
-	return
-}
-
 func gdalGroupRename(group GDALGroup, newName string) (result bool) {
 	cName := C.CString(newName)
 	defer C.free(unsafe.Pointer(cName))
 	result = bool(C.GDALGroupRename(group.cValue, cName))
-	return
-}
-
-func (g GDALGroup) Rename(newName string) (result bool) {
-	result = gdalGroupRename(g, newName)
 	return
 }
 
@@ -5179,21 +3079,8 @@ func gdalGroupSubsetDimensionFromSelection(group GDALGroup, selection string, op
 	return
 }
 
-func (g GDALGroup) SubsetDimensionFromSelection(selection string, options CSLConstList) (result GDALGroup, err error) {
-	result = gdalGroupSubsetDimensionFromSelection(g, selection, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalGroupGetDataTypeCount(group GDALGroup) (result int) {
 	result = int(C.GDALGroupGetDataTypeCount(group.cValue))
-	return
-}
-
-func (g GDALGroup) GetDataTypeCount() (result int) {
-	result = gdalGroupGetDataTypeCount(g)
 	return
 }
 
@@ -5202,29 +3089,12 @@ func gdalGroupGetDataType(group GDALGroup, index int) (result GDALExtendedDataTy
 	return
 }
 
-func (g GDALGroup) GetDataType(index int) (result GDALExtendedDataType, err error) {
-	result = gdalGroupGetDataType(g, index)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalMDArrayRelease(array GDALMDArray) {
 	C.GDALMDArrayRelease(array.cValue)
 }
 
-func (a GDALMDArray) Release() {
-	gdalMDArrayRelease(a)
-}
-
 func gdalMDArrayGetName(array GDALMDArray) (result string) {
 	result = C.GoString(C.GDALMDArrayGetName(array.cValue))
-	return
-}
-
-func (a GDALMDArray) GetName() (result string) {
-	result = gdalMDArrayGetName(a)
 	return
 }
 
@@ -5233,28 +3103,13 @@ func gdalMDArrayGetFullName(array GDALMDArray) (result string) {
 	return
 }
 
-func (a GDALMDArray) GetFullName() (result string) {
-	result = gdalMDArrayGetFullName(a)
-	return
-}
-
 func gdalMDArrayGetTotalElementsCount(array GDALMDArray) (result uint64) {
 	result = uint64(C.GDALMDArrayGetTotalElementsCount(array.cValue))
 	return
 }
 
-func (a GDALMDArray) GetTotalElementsCount() (result uint64) {
-	result = gdalMDArrayGetTotalElementsCount(a)
-	return
-}
-
 func gdalMDArrayGetDimensionCount(array GDALMDArray) (result int) {
 	result = int(C.GDALMDArrayGetDimensionCount(array.cValue))
-	return
-}
-
-func (a GDALMDArray) GetDimensionCount() (result int) {
-	result = gdalMDArrayGetDimensionCount(a)
 	return
 }
 
@@ -5273,21 +3128,8 @@ func gdalMDArrayGetDimensions(array GDALMDArray) (result []GDALDimension) {
 	return
 }
 
-func (a GDALMDArray) GetDimensions() (result []GDALDimension) {
-	result = gdalMDArrayGetDimensions(a)
-	return
-}
-
 func gdalMDArrayGetDataType(array GDALMDArray) (result GDALExtendedDataType) {
 	result = GDALExtendedDataType{cValue: C.GDALMDArrayGetDataType(array.cValue)}
-	return
-}
-
-func (a GDALMDArray) GetDataType() (result GDALExtendedDataType, err error) {
-	result = gdalMDArrayGetDataType(a)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -5299,14 +3141,6 @@ func gdalMDArrayGetAttribute(array GDALMDArray, name string) (result GDALAttribu
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	result = GDALAttribute{cValue: C.GDALMDArrayGetAttribute(array.cValue, cName)}
-	return
-}
-
-func (a GDALMDArray) GetAttribute(name string) (result GDALAttribute, err error) {
-	result = gdalMDArrayGetAttribute(a, name)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -5326,11 +3160,6 @@ func gdalMDArrayGetAttributes(array GDALMDArray, options CSLConstList) (result [
 	return
 }
 
-func (a GDALMDArray) GetAttributes(options CSLConstList) (result []GDALAttribute) {
-	result = gdalMDArrayGetAttributes(a, options)
-	return
-}
-
 func gdalMDArrayCreateAttribute(array GDALMDArray, name string, nDimensions int, dimensions []uint64, dataType GDALExtendedDataType, options CSLConstList) (result GDALAttribute) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
@@ -5347,24 +3176,11 @@ func gdalMDArrayCreateAttribute(array GDALMDArray, name string, nDimensions int,
 	return
 }
 
-func (a GDALMDArray) CreateAttribute(name string, dimensions []uint64, dataType GDALExtendedDataType, options CSLConstList) (result GDALAttribute, err error) {
-	result = gdalMDArrayCreateAttribute(a, name, len(dimensions), dimensions, dataType, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalMDArrayDeleteAttribute(array GDALMDArray, name string, options CSLConstList) (result bool) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	opts := options.cValue
 	result = bool(C.GDALMDArrayDeleteAttribute(array.cValue, cName, opts))
-	return
-}
-
-func (a GDALMDArray) DeleteAttribute(name string, options CSLConstList) (result bool) {
-	result = gdalMDArrayDeleteAttribute(a, name, options)
 	return
 }
 
@@ -5382,11 +3198,6 @@ func gdalMDArrayResize(array GDALMDArray, newDimSizes []uint64, options CSLConst
 	return
 }
 
-func (a GDALMDArray) Resize(newDimSizes []uint64, options CSLConstList) (result bool) {
-	result = gdalMDArrayResize(a, newDimSizes, options)
-	return
-}
-
 // GDALMDArrayGetRawNoDataValue and GDALMDArraySetRawNoDataValue are deferred:
 // the raw void* nodata value needs a dedicated design.
 
@@ -5397,24 +3208,10 @@ func gdalMDArrayGetNoDataValueAsDouble(array GDALMDArray, hasNoData *int) (resul
 	return
 }
 
-func (a GDALMDArray) GetNoDataValueAsDouble() (value float64, ok bool) {
-	var has int
-	value = gdalMDArrayGetNoDataValueAsDouble(a, &has)
-	ok = has != 0
-	return
-}
-
 func gdalMDArrayGetNoDataValueAsInt64(array GDALMDArray, hasNoData *int) (result int64) {
 	var cHas C.int
 	result = int64(C.GDALMDArrayGetNoDataValueAsInt64(array.cValue, &cHas))
 	*hasNoData = int(cHas)
-	return
-}
-
-func (a GDALMDArray) GetNoDataValueAsInt64() (value int64, ok bool) {
-	var has int
-	value = gdalMDArrayGetNoDataValueAsInt64(a, &has)
-	ok = has != 0
 	return
 }
 
@@ -5425,20 +3222,8 @@ func gdalMDArrayGetNoDataValueAsUInt64(array GDALMDArray, hasNoData *int) (resul
 	return
 }
 
-func (a GDALMDArray) GetNoDataValueAsUInt64() (value uint64, ok bool) {
-	var has int
-	value = gdalMDArrayGetNoDataValueAsUInt64(a, &has)
-	ok = has != 0
-	return
-}
-
 func gdalMDArraySetNoDataValueAsDouble(array GDALMDArray, value float64) (result bool) {
 	result = C.GDALMDArraySetNoDataValueAsDouble(array.cValue, C.double(value)) != 0
-	return
-}
-
-func (a GDALMDArray) SetNoDataValueAsDouble(value float64) (result bool) {
-	result = gdalMDArraySetNoDataValueAsDouble(a, value)
 	return
 }
 
@@ -5447,18 +3232,8 @@ func gdalMDArraySetNoDataValueAsInt64(array GDALMDArray, value int64) (result bo
 	return
 }
 
-func (a GDALMDArray) SetNoDataValueAsInt64(value int64) (result bool) {
-	result = gdalMDArraySetNoDataValueAsInt64(a, value)
-	return
-}
-
 func gdalMDArraySetNoDataValueAsUInt64(array GDALMDArray, value uint64) (result bool) {
 	result = C.GDALMDArraySetNoDataValueAsUInt64(array.cValue, C.uint64_t(value)) != 0
-	return
-}
-
-func (a GDALMDArray) SetNoDataValueAsUInt64(value uint64) (result bool) {
-	result = gdalMDArraySetNoDataValueAsUInt64(a, value)
 	return
 }
 
@@ -5467,18 +3242,8 @@ func gdalMDArraySetScale(array GDALMDArray, scale float64) (result bool) {
 	return
 }
 
-func (a GDALMDArray) SetScale(scale float64) (result bool) {
-	result = gdalMDArraySetScale(a, scale)
-	return
-}
-
 func gdalMDArraySetScaleEx(array GDALMDArray, scale float64, storageType GDALDataType) (result bool) {
 	result = C.GDALMDArraySetScaleEx(array.cValue, C.double(scale), C.GDALDataType(storageType)) != 0
-	return
-}
-
-func (a GDALMDArray) SetScaleEx(scale float64, storageType GDALDataType) (result bool) {
-	result = gdalMDArraySetScaleEx(a, scale, storageType)
 	return
 }
 
@@ -5489,20 +3254,8 @@ func gdalMDArrayGetScale(array GDALMDArray, hasValue *int) (result float64) {
 	return
 }
 
-func (a GDALMDArray) GetScale() (value float64, ok bool) {
-	var has int
-	value = gdalMDArrayGetScale(a, &has)
-	ok = has != 0
-	return
-}
-
 func gdalMDArraySetOffset(array GDALMDArray, offset float64) (result bool) {
 	result = C.GDALMDArraySetOffset(array.cValue, C.double(offset)) != 0
-	return
-}
-
-func (a GDALMDArray) SetOffset(offset float64) (result bool) {
-	result = gdalMDArraySetOffset(a, offset)
 	return
 }
 
@@ -5511,22 +3264,10 @@ func gdalMDArraySetOffsetEx(array GDALMDArray, offset float64, storageType GDALD
 	return
 }
 
-func (a GDALMDArray) SetOffsetEx(offset float64, storageType GDALDataType) (result bool) {
-	result = gdalMDArraySetOffsetEx(a, offset, storageType)
-	return
-}
-
 func gdalMDArrayGetOffset(array GDALMDArray, hasValue *int) (result float64) {
 	var cHas C.int
 	result = float64(C.GDALMDArrayGetOffset(array.cValue, &cHas))
 	*hasValue = int(cHas)
-	return
-}
-
-func (a GDALMDArray) GetOffset() (value float64, ok bool) {
-	var has int
-	value = gdalMDArrayGetOffset(a, &has)
-	ok = has != 0
 	return
 }
 
@@ -5541,18 +3282,8 @@ func gdalMDArraySetUnit(array GDALMDArray, unit string) (result bool) {
 	return
 }
 
-func (a GDALMDArray) SetUnit(unit string) (result bool) {
-	result = gdalMDArraySetUnit(a, unit)
-	return
-}
-
 func gdalMDArrayGetUnit(array GDALMDArray) (result string) {
 	result = C.GoString(C.GDALMDArrayGetUnit(array.cValue))
-	return
-}
-
-func (a GDALMDArray) GetUnit() (result string) {
-	result = gdalMDArrayGetUnit(a)
 	return
 }
 
@@ -5561,28 +3292,13 @@ func gdalMDArraySetSpatialRef(array GDALMDArray, srs OGRSpatialReference) (resul
 	return
 }
 
-func (a GDALMDArray) SetSpatialRef(srs OGRSpatialReference) (result bool) {
-	result = gdalMDArraySetSpatialRef(a, srs)
-	return
-}
-
 func gdalMDArrayGetSpatialRef(array GDALMDArray) (result OGRSpatialReference) {
 	result = OGRSpatialReference{cValue: C.GDALMDArrayGetSpatialRef(array.cValue)}
 	return
 }
 
-func (a GDALMDArray) GetSpatialRef() (result OGRSpatialReference) {
-	result = gdalMDArrayGetSpatialRef(a)
-	return
-}
-
 func gdalMDArrayGetStructuralInfo(array GDALMDArray) (result CSLConstList) {
 	result = cslConstList(C.GDALMDArrayGetStructuralInfo(array.cValue))
-	return
-}
-
-func (a GDALMDArray) GetStructuralInfo() (result CSLConstList) {
-	result = gdalMDArrayGetStructuralInfo(a)
 	return
 }
 
@@ -5593,37 +3309,13 @@ func gdalMDArrayGetView(array GDALMDArray, viewExpr string) (result GDALMDArray)
 	return
 }
 
-func (a GDALMDArray) GetView(viewExpr string) (result GDALMDArray, err error) {
-	result = gdalMDArrayGetView(a, viewExpr)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalMDArrayTranspose(array GDALMDArray, newAxisCount int, mapNewAxisToOldAxis []int) (result GDALMDArray) {
 	result = GDALMDArray{cValue: C.GDALMDArrayTranspose(array.cValue, C.size_t(newAxisCount), cInts(mapNewAxisToOldAxis))}
 	return
 }
 
-func (a GDALMDArray) Transpose(mapNewAxisToOldAxis []int) (result GDALMDArray, err error) {
-	result = gdalMDArrayTranspose(a, len(mapNewAxisToOldAxis), mapNewAxisToOldAxis)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalMDArrayGetUnscaled(array GDALMDArray) (result GDALMDArray) {
 	result = GDALMDArray{cValue: C.GDALMDArrayGetUnscaled(array.cValue)}
-	return
-}
-
-func (a GDALMDArray) GetUnscaled() (result GDALMDArray, err error) {
-	result = gdalMDArrayGetUnscaled(a)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -5633,38 +3325,14 @@ func gdalMDArrayGetMask(array GDALMDArray, options CSLConstList) (result GDALMDA
 	return
 }
 
-func (a GDALMDArray) GetMask(options CSLConstList) (result GDALMDArray, err error) {
-	result = gdalMDArrayGetMask(a, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalMDArrayAsClassicDataset(array GDALMDArray, xDim, yDim int) (result GDALDataset) {
 	result = GDALDataset{cValue: C.GDALMDArrayAsClassicDataset(array.cValue, C.size_t(xDim), C.size_t(yDim))}
-	return
-}
-
-func (a GDALMDArray) AsClassicDataset(xDim, yDim int) (result GDALDataset, err error) {
-	result = gdalMDArrayAsClassicDataset(a, xDim, yDim)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
 func gdalMDArrayAsClassicDatasetEx(array GDALMDArray, xDim, yDim int, rootGroup GDALGroup, options CSLConstList) (result GDALDataset) {
 	opts := options.cValue
 	result = GDALDataset{cValue: C.GDALMDArrayAsClassicDatasetEx(array.cValue, C.size_t(xDim), C.size_t(yDim), rootGroup.cValue, opts)}
-	return
-}
-
-func (a GDALMDArray) AsClassicDatasetEx(xDim, yDim int, rootGroup GDALGroup, options CSLConstList) (result GDALDataset, err error) {
-	result = gdalMDArrayAsClassicDatasetEx(a, xDim, yDim, rootGroup, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -5680,11 +3348,6 @@ func gdalMDArrayGetStatistics(array GDALMDArray, dataset GDALDataset, approxOK, 
 	return
 }
 
-func (a GDALMDArray) GetStatistics(dataset GDALDataset, approxOK, force int, progress GDALProgressFunc, progressData unsafe.Pointer) (min, max, mean, stdDev float64, validCount uint64, err error) {
-	err = cplErr(gdalMDArrayGetStatistics(a, dataset, approxOK, force, &min, &max, &mean, &stdDev, &validCount, progress, progressData))
-	return
-}
-
 func gdalMDArrayComputeStatistics(array GDALMDArray, dataset GDALDataset, approxOK int, min, max, mean, stdDev *float64, validCount *uint64, progress GDALProgressFunc, progressData unsafe.Pointer) (result bool) {
 	var cMin, cMax, cMean, cStdDev C.double
 	var cValidCount C.GUInt64
@@ -5694,11 +3357,6 @@ func gdalMDArrayComputeStatistics(array GDALMDArray, dataset GDALDataset, approx
 	*mean = float64(cMean)
 	*stdDev = float64(cStdDev)
 	*validCount = uint64(cValidCount)
-	return
-}
-
-func (a GDALMDArray) ComputeStatistics(dataset GDALDataset, approxOK int, progress GDALProgressFunc, progressData unsafe.Pointer) (min, max, mean, stdDev float64, validCount uint64, ok bool) {
-	ok = gdalMDArrayComputeStatistics(a, dataset, approxOK, &min, &max, &mean, &stdDev, &validCount, progress, progressData)
 	return
 }
 
@@ -5712,27 +3370,11 @@ func gdalMDArrayGetResampled(array GDALMDArray, newDimCount int, newDims []GDALD
 	return
 }
 
-func (a GDALMDArray) GetResampled(newDims []GDALDimension, resampleAlg GDALRIOResampleAlg, targetSRS OGRSpatialReference, options CSLConstList) (result GDALMDArray, err error) {
-	result = gdalMDArrayGetResampled(a, len(newDims), newDims, resampleAlg, targetSRS, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalMDArrayGetGridded(array GDALMDArray, gridOptions string, xArray, yArray GDALMDArray, options CSLConstList) (result GDALMDArray) {
 	cGridOptions := C.CString(gridOptions)
 	defer C.free(unsafe.Pointer(cGridOptions))
 	opts := options.cValue
 	result = GDALMDArray{cValue: C.GDALMDArrayGetGridded(array.cValue, cGridOptions, xArray.cValue, yArray.cValue, opts)}
-	return
-}
-
-func (a GDALMDArray) GetGridded(gridOptions string, xArray, yArray GDALMDArray, options CSLConstList) (result GDALMDArray, err error) {
-	result = gdalMDArrayGetGridded(a, gridOptions, xArray, yArray, options)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -5751,11 +3393,6 @@ func gdalMDArrayGetCoordinateVariables(array GDALMDArray) (result []GDALMDArray)
 	return
 }
 
-func (a GDALMDArray) GetCoordinateVariables() (result []GDALMDArray) {
-	result = gdalMDArrayGetCoordinateVariables(a)
-	return
-}
-
 // GDALMDArrayGetMeshGrid (array-in/array-out), the GDALMDArrayRawBlockInfo
 // struct + GDALMDArrayRawBlockInfoCreate/Release/GDALMDArrayGetRawBlockInfo, and
 // GDALReleaseArrays are deferred.
@@ -5766,20 +3403,10 @@ func gdalMDArrayCache(array GDALMDArray, options CSLConstList) (result bool) {
 	return
 }
 
-func (a GDALMDArray) Cache(options CSLConstList) (result bool) {
-	result = gdalMDArrayCache(a, options)
-	return
-}
-
 func gdalMDArrayRename(array GDALMDArray, newName string) (result bool) {
 	cName := C.CString(newName)
 	defer C.free(unsafe.Pointer(cName))
 	result = bool(C.GDALMDArrayRename(array.cValue, cName))
-	return
-}
-
-func (a GDALMDArray) Rename(newName string) (result bool) {
-	result = gdalMDArrayRename(a, newName)
 	return
 }
 
@@ -5796,29 +3423,12 @@ func gdalCreateRasterAttributeTableFromMDArrays(tableType GDALRATTableType, nArr
 	return
 }
 
-func GDALCreateRasterAttributeTableFromMDArrays(tableType GDALRATTableType, arrays []GDALMDArray, usages []GDALRATFieldUsage) (result GDALRasterAttributeTable, err error) {
-	result = gdalCreateRasterAttributeTableFromMDArrays(tableType, len(arrays), arrays, usages)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalAttributeRelease(attr GDALAttribute) {
 	C.GDALAttributeRelease(attr.cValue)
 }
 
-func (attr GDALAttribute) Release() {
-	gdalAttributeRelease(attr)
-}
-
 func gdalAttributeGetName(attr GDALAttribute) (result string) {
 	result = C.GoString(C.GDALAttributeGetName(attr.cValue))
-	return
-}
-
-func (attr GDALAttribute) GetName() (result string) {
-	result = gdalAttributeGetName(attr)
 	return
 }
 
@@ -5827,28 +3437,13 @@ func gdalAttributeGetFullName(attr GDALAttribute) (result string) {
 	return
 }
 
-func (attr GDALAttribute) GetFullName() (result string) {
-	result = gdalAttributeGetFullName(attr)
-	return
-}
-
 func gdalAttributeGetTotalElementsCount(attr GDALAttribute) (result uint64) {
 	result = uint64(C.GDALAttributeGetTotalElementsCount(attr.cValue))
 	return
 }
 
-func (attr GDALAttribute) GetTotalElementsCount() (result uint64) {
-	result = gdalAttributeGetTotalElementsCount(attr)
-	return
-}
-
 func gdalAttributeGetDimensionCount(attr GDALAttribute) (result int) {
 	result = int(C.GDALAttributeGetDimensionCount(attr.cValue))
-	return
-}
-
-func (attr GDALAttribute) GetDimensionCount() (result int) {
-	result = gdalAttributeGetDimensionCount(attr)
 	return
 }
 
@@ -5867,21 +3462,8 @@ func gdalAttributeGetDimensionsSize(attr GDALAttribute) (result []uint64) {
 	return
 }
 
-func (attr GDALAttribute) GetDimensionsSize() (result []uint64) {
-	result = gdalAttributeGetDimensionsSize(attr)
-	return
-}
-
 func gdalAttributeGetDataType(attr GDALAttribute) (result GDALExtendedDataType) {
 	result = GDALExtendedDataType{cValue: C.GDALAttributeGetDataType(attr.cValue)}
-	return
-}
-
-func (attr GDALAttribute) GetDataType() (result GDALExtendedDataType, err error) {
-	result = gdalAttributeGetDataType(attr)
-	if result.cValue == nil {
-		err = lastError()
-	}
 	return
 }
 
@@ -5895,18 +3477,8 @@ func gdalAttributeReadAsRaw(attr GDALAttribute) (result []byte) {
 	return
 }
 
-func (attr GDALAttribute) ReadAsRaw() (result []byte) {
-	result = gdalAttributeReadAsRaw(attr)
-	return
-}
-
 func gdalAttributeReadAsString(attr GDALAttribute) (result string) {
 	result = C.GoString(C.GDALAttributeReadAsString(attr.cValue))
-	return
-}
-
-func (attr GDALAttribute) ReadAsString() (result string) {
-	result = gdalAttributeReadAsString(attr)
 	return
 }
 
@@ -5915,28 +3487,13 @@ func gdalAttributeReadAsInt(attr GDALAttribute) (result int) {
 	return
 }
 
-func (attr GDALAttribute) ReadAsInt() (result int) {
-	result = gdalAttributeReadAsInt(attr)
-	return
-}
-
 func gdalAttributeReadAsInt64(attr GDALAttribute) (result int64) {
 	result = int64(C.GDALAttributeReadAsInt64(attr.cValue))
 	return
 }
 
-func (attr GDALAttribute) ReadAsInt64() (result int64) {
-	result = gdalAttributeReadAsInt64(attr)
-	return
-}
-
 func gdalAttributeReadAsDouble(attr GDALAttribute) (result float64) {
 	result = float64(C.GDALAttributeReadAsDouble(attr.cValue))
-	return
-}
-
-func (attr GDALAttribute) ReadAsDouble() (result float64) {
-	result = gdalAttributeReadAsDouble(attr)
 	return
 }
 
@@ -5946,11 +3503,6 @@ func gdalAttributeReadAsStringArray(attr GDALAttribute) (result CSLConstList) {
 		return
 	}
 	result = cslConstList(raw)
-	return
-}
-
-func (attr GDALAttribute) ReadAsStringArray() (result CSLConstList) {
-	result = gdalAttributeReadAsStringArray(attr)
 	return
 }
 
@@ -5969,11 +3521,6 @@ func gdalAttributeReadAsIntArray(attr GDALAttribute) (result []int) {
 	return
 }
 
-func (attr GDALAttribute) ReadAsIntArray() (result []int) {
-	result = gdalAttributeReadAsIntArray(attr)
-	return
-}
-
 func gdalAttributeReadAsInt64Array(attr GDALAttribute) (result []int64) {
 	var count C.size_t
 	arr := C.GDALAttributeReadAsInt64Array(attr.cValue, &count)
@@ -5986,11 +3533,6 @@ func gdalAttributeReadAsInt64Array(attr GDALAttribute) (result []int64) {
 		result[i] = int64(src[i])
 	}
 	vsiFree(unsafe.Pointer(arr))
-	return
-}
-
-func (attr GDALAttribute) ReadAsInt64Array() (result []int64) {
-	result = gdalAttributeReadAsInt64Array(attr)
 	return
 }
 
@@ -6009,18 +3551,8 @@ func gdalAttributeReadAsDoubleArray(attr GDALAttribute) (result []float64) {
 	return
 }
 
-func (attr GDALAttribute) ReadAsDoubleArray() (result []float64) {
-	result = gdalAttributeReadAsDoubleArray(attr)
-	return
-}
-
 func gdalAttributeWriteRaw(attr GDALAttribute, data unsafe.Pointer, size int) (result bool) {
 	result = C.GDALAttributeWriteRaw(attr.cValue, data, C.size_t(size)) != 0
-	return
-}
-
-func (attr GDALAttribute) WriteRaw(data []byte) (result bool) {
-	result = gdalAttributeWriteRaw(attr, cBytes(data), len(data))
 	return
 }
 
@@ -6031,19 +3563,9 @@ func gdalAttributeWriteString(attr GDALAttribute, value string) (result bool) {
 	return
 }
 
-func (attr GDALAttribute) WriteString(value string) (result bool) {
-	result = gdalAttributeWriteString(attr, value)
-	return
-}
-
 func gdalAttributeWriteStringArray(attr GDALAttribute, values CSLConstList) (result bool) {
 	v := values.cValue
 	result = C.GDALAttributeWriteStringArray(attr.cValue, v) != 0
-	return
-}
-
-func (attr GDALAttribute) WriteStringArray(values CSLConstList) (result bool) {
-	result = gdalAttributeWriteStringArray(attr, values)
 	return
 }
 
@@ -6052,28 +3574,13 @@ func gdalAttributeWriteInt(attr GDALAttribute, value int) (result bool) {
 	return
 }
 
-func (attr GDALAttribute) WriteInt(value int) (result bool) {
-	result = gdalAttributeWriteInt(attr, value)
-	return
-}
-
 func gdalAttributeWriteIntArray(attr GDALAttribute, values []int, count int) (result bool) {
 	result = C.GDALAttributeWriteIntArray(attr.cValue, cInts(values), C.size_t(count)) != 0
 	return
 }
 
-func (attr GDALAttribute) WriteIntArray(values []int) (result bool) {
-	result = gdalAttributeWriteIntArray(attr, values, len(values))
-	return
-}
-
 func gdalAttributeWriteInt64(attr GDALAttribute, value int64) (result bool) {
 	result = C.GDALAttributeWriteInt64(attr.cValue, C.int64_t(value)) != 0
-	return
-}
-
-func (attr GDALAttribute) WriteInt64(value int64) (result bool) {
-	result = gdalAttributeWriteInt64(attr, value)
 	return
 }
 
@@ -6090,18 +3597,8 @@ func gdalAttributeWriteInt64Array(attr GDALAttribute, values []int64, count int)
 	return
 }
 
-func (attr GDALAttribute) WriteInt64Array(values []int64) (result bool) {
-	result = gdalAttributeWriteInt64Array(attr, values, len(values))
-	return
-}
-
 func gdalAttributeWriteDouble(attr GDALAttribute, value float64) (result bool) {
 	result = C.GDALAttributeWriteDouble(attr.cValue, C.double(value)) != 0
-	return
-}
-
-func (attr GDALAttribute) WriteDouble(value float64) (result bool) {
-	result = gdalAttributeWriteDouble(attr, value)
 	return
 }
 
@@ -6118,11 +3615,6 @@ func gdalAttributeWriteDoubleArray(attr GDALAttribute, values []float64, count i
 	return
 }
 
-func (attr GDALAttribute) WriteDoubleArray(values []float64) (result bool) {
-	result = gdalAttributeWriteDoubleArray(attr, values, len(values))
-	return
-}
-
 func gdalAttributeRename(attr GDALAttribute, newName string) (result bool) {
 	cName := C.CString(newName)
 	defer C.free(unsafe.Pointer(cName))
@@ -6130,26 +3622,12 @@ func gdalAttributeRename(attr GDALAttribute, newName string) (result bool) {
 	return
 }
 
-func (attr GDALAttribute) Rename(newName string) (result bool) {
-	result = gdalAttributeRename(attr, newName)
-	return
-}
-
 func gdalDimensionRelease(dim GDALDimension) {
 	C.GDALDimensionRelease(dim.cValue)
 }
 
-func (dim GDALDimension) Release() {
-	gdalDimensionRelease(dim)
-}
-
 func gdalDimensionGetName(dim GDALDimension) (result string) {
 	result = C.GoString(C.GDALDimensionGetName(dim.cValue))
-	return
-}
-
-func (dim GDALDimension) GetName() (result string) {
-	result = gdalDimensionGetName(dim)
 	return
 }
 
@@ -6158,18 +3636,8 @@ func gdalDimensionGetFullName(dim GDALDimension) (result string) {
 	return
 }
 
-func (dim GDALDimension) GetFullName() (result string) {
-	result = gdalDimensionGetFullName(dim)
-	return
-}
-
 func gdalDimensionGetType(dim GDALDimension) (result string) {
 	result = C.GoString(C.GDALDimensionGetType(dim.cValue))
-	return
-}
-
-func (dim GDALDimension) GetType() (result string) {
-	result = gdalDimensionGetType(dim)
 	return
 }
 
@@ -6178,18 +3646,8 @@ func gdalDimensionGetDirection(dim GDALDimension) (result string) {
 	return
 }
 
-func (dim GDALDimension) GetDirection() (result string) {
-	result = gdalDimensionGetDirection(dim)
-	return
-}
-
 func gdalDimensionGetSize(dim GDALDimension) (result uint64) {
 	result = uint64(C.GDALDimensionGetSize(dim.cValue))
-	return
-}
-
-func (dim GDALDimension) GetSize() (result uint64) {
-	result = gdalDimensionGetSize(dim)
 	return
 }
 
@@ -6198,21 +3656,8 @@ func gdalDimensionGetIndexingVariable(dim GDALDimension) (result GDALMDArray) {
 	return
 }
 
-func (dim GDALDimension) GetIndexingVariable() (result GDALMDArray, err error) {
-	result = gdalDimensionGetIndexingVariable(dim)
-	if result.cValue == nil {
-		err = lastError()
-	}
-	return
-}
-
 func gdalDimensionSetIndexingVariable(dim GDALDimension, array GDALMDArray) (result bool) {
 	result = C.GDALDimensionSetIndexingVariable(dim.cValue, array.cValue) != 0
-	return
-}
-
-func (dim GDALDimension) SetIndexingVariable(array GDALMDArray) (result bool) {
-	result = gdalDimensionSetIndexingVariable(dim, array)
 	return
 }
 
@@ -6220,11 +3665,6 @@ func gdalDimensionRename(dim GDALDimension, newName string) (result bool) {
 	cName := C.CString(newName)
 	defer C.free(unsafe.Pointer(cName))
 	result = bool(C.GDALDimensionRename(dim.cValue, cName))
-	return
-}
-
-func (dim GDALDimension) Rename(newName string) (result bool) {
-	result = gdalDimensionRename(dim, newName)
 	return
 }
 
