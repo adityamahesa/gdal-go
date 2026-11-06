@@ -377,7 +377,7 @@ func CPLCreateZip(zipFilename string, options CSLConstList) (result unsafe.Point
 	defer scope()
 	result = cplCreateZip(zipFilename, options)
 	if result == nil {
-		err = lastError()
+		err = lastErrorOr("CPLCreateZip")
 	}
 	return
 }

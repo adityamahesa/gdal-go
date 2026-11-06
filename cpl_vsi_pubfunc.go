@@ -7,7 +7,7 @@ func VSIFOpenL(filename, access string) (result VSILFile, err error) {
 	defer scope()
 	result = vsiFOpenL(filename, access)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("VSIFOpenL")
 	}
 	return
 }
@@ -15,9 +15,10 @@ func VSIFOpenL(filename, access string) (result VSILFile, err error) {
 func VSIFOpenExL(filename, access string, setError int) (result VSILFile, err error) {
 	scope := errScope()
 	defer scope()
+	VSIErrorReset()
 	result = vsiFOpenExL(filename, access, setError)
 	if result.cValue == nil {
-		err = lastError()
+		err = vsiLastErrorOr("VSIFOpenExL")
 	}
 	return
 }
@@ -25,9 +26,10 @@ func VSIFOpenExL(filename, access string, setError int) (result VSILFile, err er
 func VSIFOpenEx2L(filename, access string, setError int, options CSLConstList) (result VSILFile, err error) {
 	scope := errScope()
 	defer scope()
+	VSIErrorReset()
 	result = vsiFOpenEx2L(filename, access, setError, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = vsiLastErrorOr("VSIFOpenEx2L")
 	}
 	return
 }
@@ -117,7 +119,7 @@ func VSIIngestFile(file VSILFile, filename string, maxSize int64) (result []byte
 	var ret int
 	result, ret = vsiIngestFile(file, filename, maxSize)
 	if ret == 0 {
-		err = lastError()
+		err = lastErrorOr("VSIIngestFile")
 	}
 	return
 }
@@ -142,7 +144,7 @@ func VSIStatL(filename string) (result VSIStatBufL, err error) {
 	var ret int
 	result, ret = vsiStatL(filename)
 	if ret != 0 {
-		err = lastError()
+		err = lastErrorOr("VSIStatL")
 	}
 	return
 }
@@ -150,10 +152,11 @@ func VSIStatL(filename string) (result VSIStatBufL, err error) {
 func VSIStatExL(filename string, flags int) (result VSIStatBufL, err error) {
 	scope := errScope()
 	defer scope()
+	VSIErrorReset()
 	var ret int
 	result, ret = vsiStatExL(filename, flags)
 	if ret != 0 {
-		err = lastError()
+		err = vsiLastErrorOr("VSIStatExL")
 	}
 	return
 }
@@ -351,7 +354,7 @@ func VSIOpenDir(path string, recurseDepth int, options CSLConstList) (result VSI
 	defer scope()
 	result = vsiOpenDir(path, recurseDepth, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("VSIOpenDir")
 	}
 	return
 }
@@ -537,9 +540,10 @@ func VSIDuplicateFileSystemHandler(sourceFSName, newFSName string) (result bool)
 func VSIFileFromMemBuffer(filename string, data []byte, takeOwnership int) (result VSILFile, err error) {
 	scope := errScope()
 	defer scope()
+	VSIErrorReset()
 	result = vsiFileFromMemBuffer(filename, data, takeOwnership)
 	if result.cValue == nil {
-		err = lastError()
+		err = vsiLastErrorOr("VSIFileFromMemBuffer")
 	}
 	return
 }

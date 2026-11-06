@@ -49,6 +49,44 @@ func lastError() error {
 		CPLGetLastErrorNo().String(), errMsg)
 }
 
+// lastErrorOr is lastError for a call whose failure sentinel (NULL, -1, ...)
+// was already observed: it never returns nil. Many GDAL functions fail without
+// posting a CPLError (GDALOpenEx without GDAL_OF_VERBOSE_ERROR, VSIStatL,
+// lookups that miss, ...), so lastError alone would report success. fn is the
+// C function name, so the message can be looked up in the GDAL docs.
+//
+// Use plain lastError only where GDAL documents NULL as a legitimate value
+// (end of iteration, absent color table, SQL without a result set, ...).
+func lastErrorOr(fn string) error {
+	if err := lastError(); err != nil {
+		return err
+	}
+	return fmt.Errorf("[%s][%s] %s failed without a GDAL error message",
+		CEFailure.String(), CPLENone.String(), fn)
+}
+
+// vsiLastErrorOr is lastErrorOr for VSI calls that can record a VSIError
+// (VSIFOpenExL/VSIFOpenEx2L with setError, VSIStatExL with
+// VSIStatSetErrorFlag, VSIFileFromMemBuffer). The VSI error context is
+// separate from the CPL one, so the pending VSIError is first promoted with
+// VSIToCPLError, which keeps its message and maps VSIE codes to CPLE codes.
+// Callers must VSIErrorReset at entry so a stale VSIError cannot leak in.
+func vsiLastErrorOr(fn string) error {
+	VSIToCPLError(CEFailure, CPLEFileIO)
+	return lastErrorOr(fn)
+}
+
+// cplErrNoValues is cplErr for functions whose CE_Warning means "no values
+// returned" (statistics/histogram queries with force=0): the outputs are then
+// unset, so the warning must surface as an error.
+func cplErrNoValues(e CPLErr, fn string) error {
+	if e == CEWarning {
+		return fmt.Errorf("[%s][%s] %s: no values available (pass force=1 to compute them)",
+			CEWarning.String(), CPLENone.String(), fn)
+	}
+	return cplErr(e)
+}
+
 func cplErr(e CPLErr) error {
 	if !(e == CEFailure || e == CEFatal) {
 		return nil

@@ -12,7 +12,7 @@ func OGRGeomCoordinatePrecisionCreate() (result OGRGeomCoordinatePrecision, err 
 	defer scope()
 	result = ogrGeomCoordinatePrecisionCreate()
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGRGeomCoordinatePrecisionCreate")
 	}
 	return
 }
@@ -99,7 +99,7 @@ func OGRGCreateFromEnvelope(minX, maxX, minY, maxY float64, sr OGRSpatialReferen
 	defer scope()
 	result = ogrGCreateFromEnvelope(minX, maxX, minY, maxY, sr)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_CreateFromEnvelope")
 	}
 	return
 }
@@ -113,7 +113,7 @@ func OGRGCreateGeometry(eType OGRwkbGeometryType) (result OGRGeometry, err error
 	defer scope()
 	result = ogrGCreateGeometry(eType)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_CreateGeometry")
 	}
 	return
 }
@@ -123,7 +123,7 @@ func OGRGApproximateArcAngles(centerX, centerY, z, primaryRadius, secondaryAxis,
 	defer scope()
 	result = ogrGApproximateArcAngles(centerX, centerY, z, primaryRadius, secondaryAxis, rotation, startAngle, endAngle, maxAngleStepSizeDegrees)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_ApproximateArcAngles")
 	}
 	return
 }
@@ -133,7 +133,7 @@ func (g OGRGeometry) ForceToPolygon() (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGForceToPolygon(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_ForceToPolygon")
 	}
 	return
 }
@@ -143,7 +143,7 @@ func (g OGRGeometry) ForceToLineString() (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGForceToLineString(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_ForceToLineString")
 	}
 	return
 }
@@ -153,7 +153,7 @@ func (g OGRGeometry) ForceToMultiPolygon() (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGForceToMultiPolygon(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_ForceToMultiPolygon")
 	}
 	return
 }
@@ -163,7 +163,7 @@ func (g OGRGeometry) ForceToMultiPoint() (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGForceToMultiPoint(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_ForceToMultiPoint")
 	}
 	return
 }
@@ -173,7 +173,7 @@ func (g OGRGeometry) ForceToMultiLineString() (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGForceToMultiLineString(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_ForceToMultiLineString")
 	}
 	return
 }
@@ -183,7 +183,7 @@ func (g OGRGeometry) ForceTo(eTargetType OGRwkbGeometryType, options CSLConstLis
 	defer scope()
 	result = ogrGForceTo(g, eTargetType, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_ForceTo")
 	}
 	return
 }
@@ -193,7 +193,7 @@ func (g OGRGeometry) RemoveLowerDimensionSubGeoms() (result OGRGeometry, err err
 	defer scope()
 	result = ogrGRemoveLowerDimensionSubGeoms(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_RemoveLowerDimensionSubGeoms")
 	}
 	return
 }
@@ -240,7 +240,7 @@ func (g OGRGeometry) Clone() (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGClone(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_Clone")
 	}
 	return
 }
@@ -285,7 +285,7 @@ func OGRwkbExportOptionsCreate() (result OGRwkbExportOptions, err error) {
 	defer scope()
 	result = ogrwkbExportOptionsCreate()
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGRwkbExportOptionsCreate")
 	}
 	return
 }
@@ -373,7 +373,7 @@ func OGRGCreateFromGML(gml string) (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGCreateFromGML(gml)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_CreateFromGML")
 	}
 	return
 }
@@ -393,7 +393,7 @@ func OGRGCreateFromGMLTree(tree CPLXMLNode) (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGCreateFromGMLTree(tree)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_CreateFromGMLTree")
 	}
 	return
 }
@@ -403,7 +403,7 @@ func (g OGRGeometry) ExportToGMLTree() (result CPLXMLNode, err error) {
 	defer scope()
 	result = ogrGExportToGMLTree(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_ExportToGMLTree")
 	}
 	return
 }
@@ -413,7 +413,7 @@ func (g OGRGeometry) ExportEnvelopeToGMLTree() (result CPLXMLNode, err error) {
 	defer scope()
 	result = ogrGExportEnvelopeToGMLTree(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_ExportEnvelopeToGMLTree")
 	}
 	return
 }
@@ -439,7 +439,7 @@ func OGRGCreateGeometryFromJson(json string) (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGCreateGeometryFromJson(json)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_CreateGeometryFromJson")
 	}
 	return
 }
@@ -450,7 +450,7 @@ func OGRGCreateGeometryFromEsriJson(json string) (result OGRGeometry, err error)
 	defer scope()
 	result = ogrGCreateGeometryFromEsriJson(json)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_CreateGeometryFromEsriJson")
 	}
 	return
 }
@@ -483,7 +483,7 @@ func OGRGeomTransformerCreate(ct OGRCoordinateTransformation, options CSLConstLi
 	defer scope()
 	result = ogrGeomTransformerCreate(ct, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_GeomTransformer_Create")
 	}
 	return
 }
@@ -493,7 +493,7 @@ func (t OGRGeomTransformer) Transform(g OGRGeometry) (result OGRGeometry, err er
 	defer scope()
 	result = ogrGeomTransformerTransform(t, g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_GeomTransformer_Transform")
 	}
 	return
 }
@@ -507,7 +507,7 @@ func (g OGRGeometry) Simplify(tolerance float64) (result OGRGeometry, err error)
 	defer scope()
 	result = ogrGSimplify(g, tolerance)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_Simplify")
 	}
 	return
 }
@@ -517,7 +517,7 @@ func (g OGRGeometry) SimplifyPreserveTopology(tolerance float64) (result OGRGeom
 	defer scope()
 	result = ogrGSimplifyPreserveTopology(g, tolerance)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_SimplifyPreserveTopology")
 	}
 	return
 }
@@ -527,7 +527,7 @@ func (g OGRGeometry) DelaunayTriangulation(tolerance float64, onlyEdges int) (re
 	defer scope()
 	result = ogrGDelaunayTriangulation(g, tolerance, onlyEdges)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_DelaunayTriangulation")
 	}
 	return
 }
@@ -537,7 +537,7 @@ func (g OGRGeometry) ConstrainedDelaunayTriangulation() (result OGRGeometry, err
 	defer scope()
 	result = ogrGConstrainedDelaunayTriangulation(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_ConstrainedDelaunayTriangulation")
 	}
 	return
 }
@@ -591,7 +591,7 @@ func (g OGRGeometry) Boundary() (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGBoundary(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_Boundary")
 	}
 	return
 }
@@ -601,7 +601,7 @@ func (g OGRGeometry) ConvexHull() (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGConvexHull(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_ConvexHull")
 	}
 	return
 }
@@ -611,7 +611,7 @@ func (g OGRGeometry) ConcaveHull(ratio float64, allowHoles bool) (result OGRGeom
 	defer scope()
 	result = ogrGConcaveHull(g, ratio, allowHoles)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_ConcaveHull")
 	}
 	return
 }
@@ -621,7 +621,7 @@ func (g OGRGeometry) Buffer(dist float64, quadSegs int) (result OGRGeometry, err
 	defer scope()
 	result = ogrGBuffer(g, dist, quadSegs)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_Buffer")
 	}
 	return
 }
@@ -631,7 +631,7 @@ func (g OGRGeometry) BufferEx(dist float64, options CSLConstList) (result OGRGeo
 	defer scope()
 	result = ogrGBufferEx(g, dist, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_BufferEx")
 	}
 	return
 }
@@ -641,7 +641,7 @@ func (g OGRGeometry) Intersection(other OGRGeometry) (result OGRGeometry, err er
 	defer scope()
 	result = ogrGIntersection(g, other)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_Intersection")
 	}
 	return
 }
@@ -651,7 +651,7 @@ func (g OGRGeometry) Union(other OGRGeometry) (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGUnion(g, other)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_Union")
 	}
 	return
 }
@@ -661,7 +661,7 @@ func (g OGRGeometry) UnionCascaded() (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGUnionCascaded(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_UnionCascaded")
 	}
 	return
 }
@@ -671,7 +671,7 @@ func (g OGRGeometry) UnaryUnion() (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGUnaryUnion(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_UnaryUnion")
 	}
 	return
 }
@@ -681,7 +681,7 @@ func (g OGRGeometry) PointOnSurface() (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGPointOnSurface(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_PointOnSurface")
 	}
 	return
 }
@@ -691,7 +691,7 @@ func (g OGRGeometry) Difference(other OGRGeometry) (result OGRGeometry, err erro
 	defer scope()
 	result = ogrGDifference(g, other)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_Difference")
 	}
 	return
 }
@@ -701,7 +701,7 @@ func (g OGRGeometry) SymDifference(other OGRGeometry) (result OGRGeometry, err e
 	defer scope()
 	result = ogrGSymDifference(g, other)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_SymDifference")
 	}
 	return
 }
@@ -754,7 +754,7 @@ func (g OGRGeometry) Value(distance float64) (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGValue(g, distance)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_Value")
 	}
 	return
 }
@@ -778,7 +778,7 @@ func (g OGRGeometry) MakeValid() (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGMakeValid(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_MakeValid")
 	}
 	return
 }
@@ -788,7 +788,7 @@ func (g OGRGeometry) MakeValidEx(options CSLConstList) (result OGRGeometry, err 
 	defer scope()
 	result = ogrGMakeValidEx(g, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_MakeValidEx")
 	}
 	return
 }
@@ -798,7 +798,7 @@ func (g OGRGeometry) Normalize() (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGNormalize(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_Normalize")
 	}
 	return
 }
@@ -818,7 +818,7 @@ func (g OGRGeometry) SetPrecision(gridSize float64, flags int) (result OGRGeomet
 	defer scope()
 	result = ogrGSetPrecision(g, gridSize, flags)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_SetPrecision")
 	}
 	return
 }
@@ -828,7 +828,7 @@ func (g OGRGeometry) Polygonize() (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGPolygonize(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_Polygonize")
 	}
 	return
 }
@@ -838,7 +838,7 @@ func (g OGRGeometry) BuildArea() (result OGRGeometry, err error) {
 	defer scope()
 	result = ogrGBuildArea(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_BuildArea")
 	}
 	return
 }
@@ -977,7 +977,7 @@ func (g OGRGeometry) GetLinearGeometry(maxAngleStepSizeDegrees float64, options 
 	defer scope()
 	result = ogrGGetLinearGeometry(g, maxAngleStepSizeDegrees, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_GetLinearGeometry")
 	}
 	return
 }
@@ -987,7 +987,7 @@ func (g OGRGeometry) GetCurveGeometry(options CSLConstList) (result OGRGeometry,
 	defer scope()
 	result = ogrGGetCurveGeometry(g, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_G_GetCurveGeometry")
 	}
 	return
 }
@@ -1032,7 +1032,7 @@ func OGRCreatePreparedGeometry(g OGRGeometry) (result OGRPreparedGeometry, err e
 	defer scope()
 	result = ogrCreatePreparedGeometry(g)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGRCreatePreparedGeometry")
 	}
 	return
 }
@@ -1056,7 +1056,7 @@ func OGRFldCreate(name string, eType OGRFieldType) (result OGRFieldDefn, err err
 	defer scope()
 	result = ogrFldCreate(name, eType)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_Fld_Create")
 	}
 	return
 }
@@ -1239,7 +1239,7 @@ func OGRGFldCreate(name string, eType OGRwkbGeometryType) (result OGRGeomFieldDe
 	defer scope()
 	result = ogrGFldCreate(name, eType)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_GFld_Create")
 	}
 	return
 }
@@ -1307,7 +1307,7 @@ func OGRFDCreate(name string) (result OGRFeatureDefn, err error) {
 	defer scope()
 	result = ogrFDCreate(name)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_FD_Create")
 	}
 	return
 }
@@ -1436,7 +1436,7 @@ func OGRFCreate(fd OGRFeatureDefn) (result OGRFeature, err error) {
 	defer scope()
 	result = ogrFCreate(fd)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_F_Create")
 	}
 	return
 }
@@ -1484,7 +1484,7 @@ func (feat OGRFeature) Clone() (result OGRFeature, err error) {
 	defer scope()
 	result = ogrFClone(feat)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_F_Clone")
 	}
 	return
 }
@@ -1836,7 +1836,7 @@ func OGRCodedFldDomainCreate(name, description string, eFieldType OGRFieldType, 
 	defer scope()
 	result = ogrCodedFldDomainCreate(name, description, eFieldType, eFieldSubType, enumeration)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_CodedFldDomain_Create")
 	}
 	return
 }
@@ -1851,7 +1851,7 @@ func OGRRangeFldDomainCreate(name, description string, eFieldType OGRFieldType, 
 	defer scope()
 	result = ogrRangeFldDomainCreate(name, description, eFieldType, eFieldSubType, min, minInclusive, max, maxInclusive)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_RangeFldDomain_Create")
 	}
 	return
 }
@@ -1871,7 +1871,7 @@ func OGRGlobFldDomainCreate(name, description string, eFieldType OGRFieldType, e
 	defer scope()
 	result = ogrGlobFldDomainCreate(name, description, eFieldType, eFieldSubType, glob)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_GlobFldDomain_Create")
 	}
 	return
 }
@@ -1955,7 +1955,7 @@ func (l OGRLayer) GetFeature(fid int64) (result OGRFeature, err error) {
 	defer scope()
 	result = ogrLGetFeature(l, fid)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_L_GetFeature")
 	}
 	return
 }
@@ -2264,7 +2264,7 @@ func (ds OGRDataSource) GetLayer(layer int) (result OGRLayer, err error) {
 	defer scope()
 	result = ogrDSGetLayer(ds, layer)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_DS_GetLayer")
 	}
 	return
 }
@@ -2274,7 +2274,7 @@ func (ds OGRDataSource) GetLayerByName(name string) (result OGRLayer, err error)
 	defer scope()
 	result = ogrDSGetLayerByName(ds, name)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_DS_GetLayerByName")
 	}
 	return
 }
@@ -2286,6 +2286,8 @@ func (ds OGRDataSource) DeleteLayer(layer int) (err error) {
 	return
 }
 
+// GetDriver returns the driver of the data source. A nil handle with a nil error means no driver
+// is associated with it.
 func (ds OGRDataSource) GetDriver() (result OGRSFDriver, err error) {
 	scope := errScope()
 	defer scope()
@@ -2301,7 +2303,7 @@ func (ds OGRDataSource) CreateLayer(name string, sr OGRSpatialReference, geomTyp
 	defer scope()
 	result = ogrDSCreateLayer(ds, name, sr, geomType, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_DS_CreateLayer")
 	}
 	return
 }
@@ -2311,7 +2313,7 @@ func (ds OGRDataSource) CopyLayer(srcLayer OGRLayer, newName string, options CSL
 	defer scope()
 	result = ogrDSCopyLayer(ds, srcLayer, newName, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_DS_CopyLayer")
 	}
 	return
 }
@@ -2321,6 +2323,8 @@ func (ds OGRDataSource) TestCapability(capability string) (result bool) {
 	return
 }
 
+// ExecuteSQL runs statement. A nil handle with a nil error means the statement produced no
+// result set (e.g. DELETE, CREATE INDEX).
 func (ds OGRDataSource) ExecuteSQL(statement string, spatialFilter OGRGeometry, dialect string) (result OGRLayer, err error) {
 	scope := errScope()
 	defer scope()
@@ -2389,7 +2393,7 @@ func (dr OGRSFDriver) Open(name string, update int) (result OGRDataSource, err e
 	defer scope()
 	result = ogrDrOpen(dr, name, update)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_Dr_Open")
 	}
 	return
 }
@@ -2404,7 +2408,7 @@ func (dr OGRSFDriver) CreateDataSource(name string, options CSLConstList) (resul
 	defer scope()
 	result = ogrDrCreateDataSource(dr, name, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_Dr_CreateDataSource")
 	}
 	return
 }
@@ -2414,7 +2418,7 @@ func (dr OGRSFDriver) CopyDataSource(srcDS OGRDataSource, newName string, option
 	defer scope()
 	result = ogrDrCopyDataSource(dr, srcDS, newName, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_Dr_CopyDataSource")
 	}
 	return
 }
@@ -2431,7 +2435,7 @@ func OGROpen(name string, update int) (result OGRDataSource, driver OGRSFDriver,
 	defer scope()
 	result, driver = ogrOpen(name, update)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGROpen")
 	}
 	return
 }
@@ -2441,7 +2445,7 @@ func OGROpenShared(name string, update int) (result OGRDataSource, driver OGRSFD
 	defer scope()
 	result, driver = ogrOpenShared(name, update)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGROpenShared")
 	}
 	return
 }
@@ -2471,7 +2475,7 @@ func OGRGetDriver(driver int) (result OGRSFDriver, err error) {
 	defer scope()
 	result = ogrGetDriver(driver)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGRGetDriver")
 	}
 	return
 }
@@ -2481,7 +2485,7 @@ func OGRGetDriverByName(name string) (result OGRSFDriver, err error) {
 	defer scope()
 	result = ogrGetDriverByName(name)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGRGetDriverByName")
 	}
 	return
 }
@@ -2496,7 +2500,7 @@ func OGRGetOpenDS(ds int) (result OGRDataSource, err error) {
 	defer scope()
 	result = ogrGetOpenDS(ds)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGRGetOpenDS")
 	}
 	return
 }
@@ -2516,7 +2520,7 @@ func OGRSMCreate(styleTable OGRStyleTable) (result OGRStyleMgr, err error) {
 	defer scope()
 	result = ogrSMCreate(styleTable)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_SM_Create")
 	}
 	return
 }
@@ -2560,7 +2564,7 @@ func OGRSTCreate(classId OGRSTClassId) (result OGRStyleTool, err error) {
 	defer scope()
 	result = ogrSTCreate(classId)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_ST_Create")
 	}
 	return
 }
@@ -2625,7 +2629,7 @@ func OGRSTBLCreate() (result OGRStyleTable, err error) {
 	defer scope()
 	result = ogrSTBLCreate()
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OGR_STBL_Create")
 	}
 	return
 }

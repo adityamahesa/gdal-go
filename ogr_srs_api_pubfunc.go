@@ -44,7 +44,7 @@ func OSRNewSpatialReference(wkt string) (result OGRSpatialReference, err error) 
 	defer scope()
 	result = osrNewSpatialReference(wkt)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OSRNewSpatialReference")
 	}
 	return
 }
@@ -54,7 +54,7 @@ func (sr OGRSpatialReference) CloneGeogCS() (result OGRSpatialReference, err err
 	defer scope()
 	result = osrCloneGeogCS(sr)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OSRCloneGeogCS")
 	}
 	return
 }
@@ -64,7 +64,7 @@ func (sr OGRSpatialReference) Clone() (result OGRSpatialReference, err error) {
 	defer scope()
 	result = osrClone(sr)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OSRClone")
 	}
 	return
 }
@@ -333,7 +333,7 @@ func (sr OGRSpatialReference) ConvertToOtherProjection(targetProjection string, 
 	defer scope()
 	result = osrConvertToOtherProjection(sr, targetProjection, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OSRConvertToOtherProjection")
 	}
 	return
 }
@@ -1156,7 +1156,7 @@ func OSRGetCRSInfoListFromDatabase(authName string, params OSRCRSListParameters)
 	var count int
 	list := osrGetCRSInfoListFromDatabase(authName, params, &count)
 	if list.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OSRGetCRSInfoListFromDatabase")
 		return
 	}
 	src := unsafe.Slice(list.cValue, count)
@@ -1181,7 +1181,7 @@ func OCTNewCoordinateTransformation(source, target OGRSpatialReference) (result 
 	defer scope()
 	result = octNewCoordinateTransformation(source, target)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OCTNewCoordinateTransformation")
 	}
 	return
 }
@@ -1191,7 +1191,7 @@ func OCTNewCoordinateTransformationOptions() (result OGRCoordinateTransformation
 	defer scope()
 	result = octNewCoordinateTransformationOptions()
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OCTNewCoordinateTransformationOptions")
 	}
 	return
 }
@@ -1238,7 +1238,7 @@ func OCTNewCoordinateTransformationEx(source, target OGRSpatialReference, option
 	defer scope()
 	result = octNewCoordinateTransformationEx(source, target, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OCTNewCoordinateTransformationEx")
 	}
 	return
 }
@@ -1248,7 +1248,7 @@ func (ct OGRCoordinateTransformation) Clone() (result OGRCoordinateTransformatio
 	defer scope()
 	result = octClone(ct)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OCTClone")
 	}
 	return
 }
@@ -1268,7 +1268,7 @@ func (ct OGRCoordinateTransformation) GetInverse() (result OGRCoordinateTransfor
 	defer scope()
 	result = octGetInverse(ct)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("OCTGetInverse")
 	}
 	return
 }

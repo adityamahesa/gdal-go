@@ -138,7 +138,7 @@ func (d GDALDriver) Create(name string, xSize, ySize, bands int, dataType GDALDa
 	defer scope()
 	result = gdalCreate(d, name, xSize, ySize, bands, dataType, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALCreate")
 	}
 	return
 }
@@ -148,7 +148,7 @@ func (d GDALDriver) CreateCopy(name string, src GDALDataset, strict int, options
 	defer scope()
 	result = gdalCreateCopy(d, name, src, strict, options, progress, progressData)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALCreateCopy")
 	}
 	return
 }
@@ -158,7 +158,7 @@ func GDALIdentifyDriver(filename string, fileList CSLConstList) (result GDALDriv
 	defer scope()
 	result = gdalIdentifyDriver(filename, fileList)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALIdentifyDriver")
 	}
 	return
 }
@@ -168,7 +168,7 @@ func GDALIdentifyDriverEx(filename string, identifyFlags uint, allowedDrivers, f
 	defer scope()
 	result = gdalIdentifyDriverEx(filename, identifyFlags, allowedDrivers, fileList)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALIdentifyDriverEx")
 	}
 	return
 }
@@ -178,7 +178,7 @@ func GDALOpen(filename string, access GDALAccess) (result GDALDataset, err error
 	defer scope()
 	result = gdalOpen(filename, access)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALOpen")
 	}
 	return
 }
@@ -188,7 +188,7 @@ func GDALOpenShared(filename string, access GDALAccess) (result GDALDataset, err
 	defer scope()
 	result = gdalOpenShared(filename, access)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALOpenShared")
 	}
 	return
 }
@@ -198,7 +198,7 @@ func GDALOpenEx(filename string, openFlags GDALOpenFlag, allowedDrivers, openOpt
 	defer scope()
 	result = gdalOpenEx(filename, openFlags, allowedDrivers, openOptions, siblingFiles)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALOpenEx")
 	}
 	return
 }
@@ -214,7 +214,7 @@ func GDALGetDriverByName(name string) (result GDALDriver, err error) {
 	defer scope()
 	result = gdalGetDriverByName(name)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGetDriverByName")
 	}
 	return
 }
@@ -229,7 +229,7 @@ func GDALGetDriver(index int) (result GDALDriver, err error) {
 	defer scope()
 	result = gdalGetDriver(index)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGetDriver")
 	}
 	return
 }
@@ -239,7 +239,7 @@ func GDALCreateDriver() (result GDALDriver, err error) {
 	defer scope()
 	result = gdalCreateDriver()
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALCreateDriver")
 	}
 	return
 }
@@ -463,7 +463,7 @@ func (ds GDALDataset) GetRasterBand(band int) (result GDALRasterBand, err error)
 	defer scope()
 	result = gdalGetRasterBand(ds, band)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGetRasterBand")
 	}
 	return
 }
@@ -478,7 +478,7 @@ func (ds GDALDataset) GetThreadSafeDataset(scopeFlags int, options CSLConstList)
 	defer scope()
 	result = gdalGetThreadSafeDataset(ds, scopeFlags, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGetThreadSafeDataset")
 	}
 	return
 }
@@ -495,7 +495,7 @@ func (ds GDALDataset) BeginAsyncReader(xOff, yOff, xSize, ySize int, buf []byte,
 	defer scope()
 	result = gdalBeginAsyncReader(ds, xOff, yOff, xSize, ySize, cBytes(buf), bufXSize, bufYSize, bufType, bandCount, bandMap, pixelSpace, lineSpace, bandSpace, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALBeginAsyncReader")
 	}
 	return
 }
@@ -753,11 +753,13 @@ func (ds GDALDataset) GetLayer(index int) (result OGRLayer, err error) {
 	defer scope()
 	result = gdalDatasetGetLayer(ds, index)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALDatasetGetLayer")
 	}
 	return
 }
 
+// GetDataset returns the dataset owning the layer. A nil handle with a nil error means the layer is
+// not attached to a dataset.
 func (l OGRLayer) GetDataset() (result GDALDataset, err error) {
 	scope := errScope()
 	defer scope()
@@ -773,7 +775,7 @@ func (ds GDALDataset) GetLayerByName(name string) (result OGRLayer, err error) {
 	defer scope()
 	result = gdalDatasetGetLayerByName(ds, name)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALDatasetGetLayerByName")
 	}
 	return
 }
@@ -795,7 +797,7 @@ func (ds GDALDataset) CreateLayer(name string, srs OGRSpatialReference, geomType
 	defer scope()
 	result = gdalDatasetCreateLayer(ds, name, srs, geomType, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALDatasetCreateLayer")
 	}
 	return
 }
@@ -805,7 +807,7 @@ func (ds GDALDataset) CreateLayerFromGeomFieldDefn(name string, geomFieldDefn OG
 	defer scope()
 	result = gdalDatasetCreateLayerFromGeomFieldDefn(ds, name, geomFieldDefn, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALDatasetCreateLayerFromGeomFieldDefn")
 	}
 	return
 }
@@ -815,7 +817,7 @@ func (ds GDALDataset) CopyLayer(srcLayer OGRLayer, newName string, options CSLCo
 	defer scope()
 	result = gdalDatasetCopyLayer(ds, srcLayer, newName, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALDatasetCopyLayer")
 	}
 	return
 }
@@ -824,6 +826,8 @@ func (ds GDALDataset) ResetReading() {
 	gdalDatasetResetReading(ds)
 }
 
+// GetNextFeature returns the next feature across all layers. A nil feature
+// with a nil error means the end of iteration.
 func (ds GDALDataset) GetNextFeature(progress GDALProgressFunc, progressData unsafe.Pointer) (feature OGRFeature, belongingLayer OGRLayer, progressPct float64, err error) {
 	scope := errScope()
 	defer scope()
@@ -839,6 +843,8 @@ func (ds GDALDataset) TestCapability(capability string) (result bool) {
 	return
 }
 
+// ExecuteSQL runs statement. A nil handle with a nil error means the statement produced no
+// result set (e.g. DELETE, CREATE INDEX).
 func (ds GDALDataset) ExecuteSQL(statement string, spatialFilter OGRGeometry, dialect string) (result OGRLayer, err error) {
 	scope := errScope()
 	defer scope()
@@ -860,6 +866,8 @@ func (ds GDALDataset) ReleaseResultSet(layer OGRLayer) {
 	gdalDatasetReleaseResultSet(ds, layer)
 }
 
+// GetStyleTable returns the dataset style table. A nil handle with a nil error means the dataset has
+// no style table.
 func (ds GDALDataset) GetStyleTable() (result OGRStyleTable, err error) {
 	scope := errScope()
 	defer scope()
@@ -908,7 +916,7 @@ func (ds GDALDataset) AsMDArray(options CSLConstList) (result GDALMDArray, err e
 	defer scope()
 	result = gdalDatasetAsMDArray(ds, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALDatasetAsMDArray")
 	}
 	return
 }
@@ -923,7 +931,7 @@ func (ds GDALDataset) GetFieldDomain(name string) (result OGRFieldDomain, err er
 	defer scope()
 	result = gdalDatasetGetFieldDomain(ds, name)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALDatasetGetFieldDomain")
 	}
 	return
 }
@@ -953,7 +961,7 @@ func (ds GDALDataset) GetRelationship(name string) (result GDALRelationship, err
 	defer scope()
 	result = gdalDatasetGetRelationship(ds, name)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALDatasetGetRelationship")
 	}
 	return
 }
@@ -973,6 +981,8 @@ func (ds GDALDataset) UpdateRelationship(relationship GDALRelationship) (ok bool
 	return
 }
 
+// GDALGetSubdatasetInfo parses a subdataset path. A nil handle with a nil error means fileName is
+// not a subdataset path of any registered driver.
 func GDALGetSubdatasetInfo(fileName string) (result GDALSubdatasetInfo, err error) {
 	scope := errScope()
 	defer scope()
@@ -1074,6 +1084,8 @@ func (b GDALRasterBand) GetBandNumber() (result int) {
 	return
 }
 
+// GetDataset returns the dataset owning the band. A nil handle with a nil error means the band is
+// not attached to a dataset.
 func (b GDALRasterBand) GetDataset() (result GDALDataset, err error) {
 	scope := errScope()
 	defer scope()
@@ -1096,6 +1108,8 @@ func (b GDALRasterBand) SetColorInterpretation(colorInterp GDALColorInterp) (err
 	return
 }
 
+// GetColorTable returns the band color table. A nil handle with a nil error means the band has no
+// color table.
 func (b GDALRasterBand) GetColorTable() (result GDALColorTable, err error) {
 	scope := errScope()
 	defer scope()
@@ -1128,7 +1142,7 @@ func (b GDALRasterBand) GetOverview(index int) (result GDALRasterBand, err error
 	defer scope()
 	result = gdalGetOverview(b, index)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGetOverview")
 	}
 	return
 }
@@ -1211,7 +1225,7 @@ func (b GDALRasterBand) GetMaximum() (value float64, ok bool) {
 func (b GDALRasterBand) GetStatistics(approxOK, force int) (min, max, mean, stdDev float64, err error) {
 	scope := errScope()
 	defer scope()
-	err = cplErr(gdalGetRasterStatistics(b, approxOK, force, &min, &max, &mean, &stdDev))
+	err = cplErrNoValues(gdalGetRasterStatistics(b, approxOK, force, &min, &max, &mean, &stdDev), "GDALGetRasterStatistics")
 	return
 }
 
@@ -1234,7 +1248,7 @@ func (b GDALRasterBand) AsMDArray() (result GDALMDArray, err error) {
 	defer scope()
 	result = gdalRasterBandAsMDArray(b)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALRasterBandAsMDArray")
 	}
 	return
 }
@@ -1327,7 +1341,7 @@ func (b GDALRasterBand) GetHistogramEx(min, max float64, nBuckets, includeOutOfR
 func (b GDALRasterBand) GetDefaultHistogramEx(force int, progress GDALProgressFunc, progressData unsafe.Pointer) (min, max float64, buckets int, histogram []uint64, err error) {
 	scope := errScope()
 	defer scope()
-	err = cplErr(gdalGetDefaultHistogramEx(b, &min, &max, &buckets, &histogram, force, progress, progressData))
+	err = cplErrNoValues(gdalGetDefaultHistogramEx(b, &min, &max, &buckets, &histogram, force, progress, progressData), "GDALGetDefaultHistogramEx")
 	return
 }
 
@@ -1349,7 +1363,7 @@ func (b GDALRasterBand) GetSampleOverview(desiredSamples int) (result GDALRaster
 	defer scope()
 	result = gdalGetRasterSampleOverview(b, desiredSamples)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGetRasterSampleOverview")
 	}
 	return
 }
@@ -1359,7 +1373,7 @@ func (b GDALRasterBand) GetSampleOverviewEx(desiredSamples uint64) (result GDALR
 	defer scope()
 	result = gdalGetRasterSampleOverviewEx(b, desiredSamples)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGetRasterSampleOverviewEx")
 	}
 	return
 }
@@ -1385,6 +1399,8 @@ func (b GDALRasterBand) OverviewMagnitudeCorrection(overviews GDALRasterBands, p
 	return
 }
 
+// GetDefaultRAT returns the band default raster attribute table. A nil handle with a nil error means
+// the band has none.
 func (b GDALRasterBand) GetDefaultRAT() (result GDALRasterAttributeTable, err error) {
 	scope := errScope()
 	defer scope()
@@ -1421,7 +1437,7 @@ func (b GDALRasterBand) GetMaskBand() (result GDALRasterBand, err error) {
 	defer scope()
 	result = gdalGetMaskBand(b)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGetMaskBand")
 	}
 	return
 }
@@ -1457,7 +1473,7 @@ func (b GDALRasterBand) UnaryOp(op GDALRasterAlgebraUnaryOperation) (result GDAL
 	defer scope()
 	result = gdalRasterBandUnaryOp(b, op)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALRasterBandUnaryOp")
 	}
 	return
 }
@@ -1467,7 +1483,7 @@ func (b GDALRasterBand) BinaryOpBand(op GDALRasterAlgebraBinaryOperation, otherB
 	defer scope()
 	result = gdalRasterBandBinaryOpBand(b, op, otherBand)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALRasterBandBinaryOpBand")
 	}
 	return
 }
@@ -1477,7 +1493,7 @@ func (b GDALRasterBand) BinaryOpDouble(op GDALRasterAlgebraBinaryOperation, cons
 	defer scope()
 	result = gdalRasterBandBinaryOpDouble(b, op, constant)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALRasterBandBinaryOpDouble")
 	}
 	return
 }
@@ -1487,7 +1503,7 @@ func GDALRasterBandBinaryOpDoubleToBand(constant float64, op GDALRasterAlgebraBi
 	defer scope()
 	result = gdalRasterBandBinaryOpDoubleToBand(constant, op, band)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALRasterBandBinaryOpDoubleToBand")
 	}
 	return
 }
@@ -1497,7 +1513,7 @@ func (b GDALRasterBand) IfThenElse(thenBand, elseBand GDALRasterBand) (result GD
 	defer scope()
 	result = gdalRasterBandIfThenElse(b, thenBand, elseBand)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALRasterBandIfThenElse")
 	}
 	return
 }
@@ -1507,7 +1523,7 @@ func (b GDALRasterBand) AsDataType(dataType GDALDataType) (result GDALComputedRa
 	defer scope()
 	result = gdalRasterBandAsDataType(b, dataType)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALRasterBandAsDataType")
 	}
 	return
 }
@@ -1517,7 +1533,7 @@ func GDALMaximumOfNBands(bands GDALRasterBands) (result GDALComputedRasterBand, 
 	defer scope()
 	result = gdalMaximumOfNBands(len(bands), bands)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALMaximumOfNBands")
 	}
 	return
 }
@@ -1527,7 +1543,7 @@ func (b GDALRasterBand) MaxConstant(constant float64) (result GDALComputedRaster
 	defer scope()
 	result = gdalRasterBandMaxConstant(b, constant)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALRasterBandMaxConstant")
 	}
 	return
 }
@@ -1537,7 +1553,7 @@ func GDALMinimumOfNBands(bands GDALRasterBands) (result GDALComputedRasterBand, 
 	defer scope()
 	result = gdalMinimumOfNBands(len(bands), bands)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALMinimumOfNBands")
 	}
 	return
 }
@@ -1547,7 +1563,7 @@ func (b GDALRasterBand) MinConstant(constant float64) (result GDALComputedRaster
 	defer scope()
 	result = gdalRasterBandMinConstant(b, constant)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALRasterBandMinConstant")
 	}
 	return
 }
@@ -1557,7 +1573,7 @@ func GDALMeanOfNBands(bands GDALRasterBands) (result GDALComputedRasterBand, err
 	defer scope()
 	result = gdalMeanOfNBands(len(bands), bands)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALMeanOfNBands")
 	}
 	return
 }
@@ -1655,7 +1671,7 @@ func GDALCreateColorTable(paletteInterp GDALPaletteInterp) (result GDALColorTabl
 	defer scope()
 	result = gdalCreateColorTable(paletteInterp)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALCreateColorTable")
 	}
 	return
 }
@@ -1669,7 +1685,7 @@ func (ct GDALColorTable) Clone() (result GDALColorTable, err error) {
 	defer scope()
 	result = gdalCloneColorTable(ct)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALCloneColorTable")
 	}
 	return
 }
@@ -1707,7 +1723,7 @@ func GDALCreateRasterAttributeTable() (result GDALRasterAttributeTable, err erro
 	defer scope()
 	result = gdalCreateRasterAttributeTable()
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALCreateRasterAttributeTable")
 	}
 	return
 }
@@ -1887,7 +1903,7 @@ func (rat GDALRasterAttributeTable) TranslateToColorTable(entryCount int) (resul
 	defer scope()
 	result = gdalRATTranslateToColorTable(rat, entryCount)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALRATTranslateToColorTable")
 	}
 	return
 }
@@ -1903,7 +1919,7 @@ func (rat GDALRasterAttributeTable) Clone() (result GDALRasterAttributeTable, er
 	defer scope()
 	result = gdalRATClone(rat)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALRATClone")
 	}
 	return
 }
@@ -1922,7 +1938,7 @@ func GDALRelationshipCreate(name, leftTableName, rightTableName string, cardinal
 	defer scope()
 	result = gdalRelationshipCreate(name, leftTableName, rightTableName, cardinality)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALRelationshipCreate")
 	}
 	return
 }
@@ -2070,7 +2086,7 @@ func GDALCreatePansharpenedVRT(xml string, panchroBand GDALRasterBand, inputSpec
 	defer scope()
 	result = gdalCreatePansharpenedVRT(xml, panchroBand, len(inputSpectralBands), inputSpectralBands)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALCreatePansharpenedVRT")
 	}
 	return
 }
@@ -2080,7 +2096,7 @@ func GDALGetJPEG2000Structure(filename string, options CSLConstList) (result CPL
 	defer scope()
 	result = gdalGetJPEG2000Structure(filename, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGetJPEG2000Structure")
 	}
 	return
 }
@@ -2090,7 +2106,7 @@ func (d GDALDriver) CreateMultiDimensional(name string, rootGroupOptions, option
 	defer scope()
 	result = gdalCreateMultiDimensional(d, name, rootGroupOptions, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALCreateMultiDimensional")
 	}
 	return
 }
@@ -2100,7 +2116,7 @@ func GDALExtendedDataTypeCreate(dataType GDALDataType) (result GDALExtendedDataT
 	defer scope()
 	result = gdalExtendedDataTypeCreate(dataType)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALExtendedDataTypeCreate")
 	}
 	return
 }
@@ -2110,7 +2126,7 @@ func GDALExtendedDataTypeCreateString(maxStringLength int) (result GDALExtendedD
 	defer scope()
 	result = gdalExtendedDataTypeCreateString(maxStringLength)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALExtendedDataTypeCreateString")
 	}
 	return
 }
@@ -2120,7 +2136,7 @@ func GDALExtendedDataTypeCreateStringEx(maxStringLength int, subType GDALExtende
 	defer scope()
 	result = gdalExtendedDataTypeCreateStringEx(maxStringLength, subType)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALExtendedDataTypeCreateStringEx")
 	}
 	return
 }
@@ -2130,7 +2146,7 @@ func GDALExtendedDataTypeCreateCompound(name string, totalSize int, comps []GDAL
 	defer scope()
 	result = gdalExtendedDataTypeCreateCompound(name, totalSize, len(comps), comps)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALExtendedDataTypeCreateCompound")
 	}
 	return
 }
@@ -2179,6 +2195,8 @@ func (edt GDALExtendedDataType) GetSubType() (result GDALExtendedDataTypeSubType
 	return
 }
 
+// GetRAT returns the raster attribute table of the data type. A nil handle with a nil error means
+// the data type has none.
 func (edt GDALExtendedDataType) GetRAT() (result GDALRasterAttributeTable, err error) {
 	scope := errScope()
 	defer scope()
@@ -2194,7 +2212,7 @@ func GDALEDTComponentCreate(name string, offset int, dataType GDALExtendedDataTy
 	defer scope()
 	result = gdalEDTComponentCreate(name, offset, dataType)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALEDTComponentCreate")
 	}
 	return
 }
@@ -2218,11 +2236,13 @@ func (comp GDALEDTComponent) GetType() (result GDALExtendedDataType, err error) 
 	defer scope()
 	result = gdalEDTComponentGetType(comp)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALEDTComponentGetType")
 	}
 	return
 }
 
+// GetRootGroup returns the root group of a multidimensional dataset. A nil handle with a nil error means
+// the dataset does not expose the multidimensional API.
 func (ds GDALDataset) GetRootGroup() (result GDALGroup, err error) {
 	scope := errScope()
 	defer scope()
@@ -2262,7 +2282,7 @@ func (g GDALGroup) OpenMDArray(name string, options CSLConstList) (result GDALMD
 	defer scope()
 	result = gdalGroupOpenMDArray(g, name, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGroupOpenMDArray")
 	}
 	return
 }
@@ -2272,7 +2292,7 @@ func (g GDALGroup) OpenMDArrayFromFullname(name string, options CSLConstList) (r
 	defer scope()
 	result = gdalGroupOpenMDArrayFromFullname(g, name, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGroupOpenMDArrayFromFullname")
 	}
 	return
 }
@@ -2282,7 +2302,7 @@ func (g GDALGroup) ResolveMDArray(name, startingPoint string, options CSLConstLi
 	defer scope()
 	result = gdalGroupResolveMDArray(g, name, startingPoint, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGroupResolveMDArray")
 	}
 	return
 }
@@ -2297,7 +2317,7 @@ func (g GDALGroup) OpenGroup(name string, options CSLConstList) (result GDALGrou
 	defer scope()
 	result = gdalGroupOpenGroup(g, name, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGroupOpenGroup")
 	}
 	return
 }
@@ -2307,7 +2327,7 @@ func (g GDALGroup) OpenGroupFromFullname(name string, options CSLConstList) (res
 	defer scope()
 	result = gdalGroupOpenGroupFromFullname(g, name, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGroupOpenGroupFromFullname")
 	}
 	return
 }
@@ -2322,7 +2342,7 @@ func (g GDALGroup) OpenVectorLayer(name string, options CSLConstList) (result OG
 	defer scope()
 	result = gdalGroupOpenVectorLayer(g, name, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGroupOpenVectorLayer")
 	}
 	return
 }
@@ -2337,7 +2357,7 @@ func (g GDALGroup) GetAttribute(name string) (result GDALAttribute, err error) {
 	defer scope()
 	result = gdalGroupGetAttribute(g, name)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGroupGetAttribute")
 	}
 	return
 }
@@ -2357,7 +2377,7 @@ func (g GDALGroup) CreateGroup(name string, options CSLConstList) (result GDALGr
 	defer scope()
 	result = gdalGroupCreateGroup(g, name, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGroupCreateGroup")
 	}
 	return
 }
@@ -2372,7 +2392,7 @@ func (g GDALGroup) CreateDimension(name, dimType, direction string, size uint64,
 	defer scope()
 	result = gdalGroupCreateDimension(g, name, dimType, direction, size, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGroupCreateDimension")
 	}
 	return
 }
@@ -2382,7 +2402,7 @@ func (g GDALGroup) CreateMDArray(name string, dimensions []GDALDimension, dataTy
 	defer scope()
 	result = gdalGroupCreateMDArray(g, name, len(dimensions), dimensions, dataType, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGroupCreateMDArray")
 	}
 	return
 }
@@ -2397,7 +2417,7 @@ func (g GDALGroup) CreateAttribute(name string, dimensions []uint64, dataType GD
 	defer scope()
 	result = gdalGroupCreateAttribute(g, name, len(dimensions), dimensions, dataType, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGroupCreateAttribute")
 	}
 	return
 }
@@ -2417,7 +2437,7 @@ func (g GDALGroup) SubsetDimensionFromSelection(selection string, options CSLCon
 	defer scope()
 	result = gdalGroupSubsetDimensionFromSelection(g, selection, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGroupSubsetDimensionFromSelection")
 	}
 	return
 }
@@ -2432,7 +2452,7 @@ func (g GDALGroup) GetDataType(index int) (result GDALExtendedDataType, err erro
 	defer scope()
 	result = gdalGroupGetDataType(g, index)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALGroupGetDataType")
 	}
 	return
 }
@@ -2471,7 +2491,7 @@ func (a GDALMDArray) GetDataType() (result GDALExtendedDataType, err error) {
 	defer scope()
 	result = gdalMDArrayGetDataType(a)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALMDArrayGetDataType")
 	}
 	return
 }
@@ -2481,7 +2501,7 @@ func (a GDALMDArray) GetAttribute(name string) (result GDALAttribute, err error)
 	defer scope()
 	result = gdalMDArrayGetAttribute(a, name)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALMDArrayGetAttribute")
 	}
 	return
 }
@@ -2496,7 +2516,7 @@ func (a GDALMDArray) CreateAttribute(name string, dimensions []uint64, dataType 
 	defer scope()
 	result = gdalMDArrayCreateAttribute(a, name, len(dimensions), dimensions, dataType, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALMDArrayCreateAttribute")
 	}
 	return
 }
@@ -2611,7 +2631,7 @@ func (a GDALMDArray) GetView(viewExpr string) (result GDALMDArray, err error) {
 	defer scope()
 	result = gdalMDArrayGetView(a, viewExpr)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALMDArrayGetView")
 	}
 	return
 }
@@ -2621,7 +2641,7 @@ func (a GDALMDArray) Transpose(mapNewAxisToOldAxis []int) (result GDALMDArray, e
 	defer scope()
 	result = gdalMDArrayTranspose(a, len(mapNewAxisToOldAxis), mapNewAxisToOldAxis)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALMDArrayTranspose")
 	}
 	return
 }
@@ -2631,7 +2651,7 @@ func (a GDALMDArray) GetUnscaled() (result GDALMDArray, err error) {
 	defer scope()
 	result = gdalMDArrayGetUnscaled(a)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALMDArrayGetUnscaled")
 	}
 	return
 }
@@ -2641,7 +2661,7 @@ func (a GDALMDArray) GetMask(options CSLConstList) (result GDALMDArray, err erro
 	defer scope()
 	result = gdalMDArrayGetMask(a, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALMDArrayGetMask")
 	}
 	return
 }
@@ -2651,7 +2671,7 @@ func (a GDALMDArray) AsClassicDataset(xDim, yDim int) (result GDALDataset, err e
 	defer scope()
 	result = gdalMDArrayAsClassicDataset(a, xDim, yDim)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALMDArrayAsClassicDataset")
 	}
 	return
 }
@@ -2661,7 +2681,7 @@ func (a GDALMDArray) AsClassicDatasetEx(xDim, yDim int, rootGroup GDALGroup, opt
 	defer scope()
 	result = gdalMDArrayAsClassicDatasetEx(a, xDim, yDim, rootGroup, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALMDArrayAsClassicDatasetEx")
 	}
 	return
 }
@@ -2669,7 +2689,7 @@ func (a GDALMDArray) AsClassicDatasetEx(xDim, yDim int, rootGroup GDALGroup, opt
 func (a GDALMDArray) GetStatistics(dataset GDALDataset, approxOK, force int, progress GDALProgressFunc, progressData unsafe.Pointer) (min, max, mean, stdDev float64, validCount uint64, err error) {
 	scope := errScope()
 	defer scope()
-	err = cplErr(gdalMDArrayGetStatistics(a, dataset, approxOK, force, &min, &max, &mean, &stdDev, &validCount, progress, progressData))
+	err = cplErrNoValues(gdalMDArrayGetStatistics(a, dataset, approxOK, force, &min, &max, &mean, &stdDev, &validCount, progress, progressData), "GDALMDArrayGetStatistics")
 	return
 }
 
@@ -2683,7 +2703,7 @@ func (a GDALMDArray) GetResampled(newDims []GDALDimension, resampleAlg GDALRIORe
 	defer scope()
 	result = gdalMDArrayGetResampled(a, len(newDims), newDims, resampleAlg, targetSRS, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALMDArrayGetResampled")
 	}
 	return
 }
@@ -2693,7 +2713,7 @@ func (a GDALMDArray) GetGridded(gridOptions string, xArray, yArray GDALMDArray, 
 	defer scope()
 	result = gdalMDArrayGetGridded(a, gridOptions, xArray, yArray, options)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALMDArrayGetGridded")
 	}
 	return
 }
@@ -2718,7 +2738,7 @@ func GDALCreateRasterAttributeTableFromMDArrays(tableType GDALRATTableType, arra
 	defer scope()
 	result = gdalCreateRasterAttributeTableFromMDArrays(tableType, len(arrays), arrays, usages)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALCreateRasterAttributeTableFromMDArrays")
 	}
 	return
 }
@@ -2757,7 +2777,7 @@ func (attr GDALAttribute) GetDataType() (result GDALExtendedDataType, err error)
 	defer scope()
 	result = gdalAttributeGetDataType(attr)
 	if result.cValue == nil {
-		err = lastError()
+		err = lastErrorOr("GDALAttributeGetDataType")
 	}
 	return
 }
@@ -2886,6 +2906,8 @@ func (dim GDALDimension) GetSize() (result uint64) {
 	return
 }
 
+// GetIndexingVariable returns the variable indexing the dimension. A nil handle with a nil error means
+// the dimension has none.
 func (dim GDALDimension) GetIndexingVariable() (result GDALMDArray, err error) {
 	scope := errScope()
 	defer scope()
